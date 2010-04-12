@@ -1,8 +1,6 @@
 #ifndef __SINGLETON_H__
 #define __SINGLETON_H__
 
-#include <Server.h>
-
 template <typename T>
 class Singleton
 {
