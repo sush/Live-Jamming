@@ -20,13 +20,12 @@ int UserModule_mysql::Connection() {
 }
 
 int UserModule_mysql::Authentification(std::string const &login, std::string const &password) {
-  std::string request = "SELECT * FROM users WHERE login = '"+login+"' AND password='"+password+"'";
+  std::string request = "SELECT * FROM users WHERE login = '"+login+"' AND password = SHA1('DYhG93b0qLive-JammingDIENOOBVoUubWwvniR2G0FgaC9mi"+password+"');";
   mysqlpp::Query query = _dbLink.query(request);
 
   if (mysqlpp::StoreQueryResult res = query.store()) {
     if (res.size() == 1)
       return 0;
-    else
-      return 1;
   }
+  return 1;
 }
