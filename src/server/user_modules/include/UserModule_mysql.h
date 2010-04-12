@@ -10,14 +10,15 @@ class UserModule_mysql : public IUserBackend<UserModule_mysql>, public IDatabase
   friend class Singleton<UserModule_mysql>;
 
  public :
-  virtual int Connection();
-  virtual int Authentification();
+  virtual int Authentification(std::string const &, std::string const &);
+  int _status; // to remove here for connectivity test
   // RetrieveUserInfos();
 
  private :
   UserModule_mysql();
   virtual ~UserModule_mysql();
-  // _dbLink;
+  virtual int Connection();
+  mysqlpp::Connection _dbLink;
 };
 
 #endif

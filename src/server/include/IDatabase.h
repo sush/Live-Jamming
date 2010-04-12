@@ -3,7 +3,7 @@
 
 class IDatabase {
 
- public :
+ private :
   // All inherent database methods
   virtual int Connection() = 0;
 };
