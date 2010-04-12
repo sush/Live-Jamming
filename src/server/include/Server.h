@@ -16,8 +16,6 @@ namespace lj
     void	Init(int, char *[]);
     
   private:
-    Server() {}
-    virtual ~Server() {}
 
     int		_argc;
     char 	**_argv;
