@@ -3,9 +3,10 @@
 
 #include <Singleton.h>
 
-class IUserBackend : public Singleton<IUserBackend> {
+template <typename T>
+class IUserBackend : public Singleton<T> {
 
-  friend class Singleton<IUserBackend>;
+  friend class Singleton<T>;
 
  public :
   virtual ~IUserBackend() {};

@@ -3,15 +3,18 @@
 
 #include <IUserBackend.h>
 
-class Database : public IUserBackend {
+class Database : public IUserBackend<Database> {
+
+  friend class Singleton<Database>;
 
  public :
   virtual int Authentification();
   //  RetrieveUserInfos();
 
- private :
+ private:
   Database();
   virtual ~Database();
+
   int Connection();
   //  Database _dbLink;
 
