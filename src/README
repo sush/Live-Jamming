@@ -1,2 +1,5 @@
 placez a la racine les fichiers communs aux deux (client + serveur)
 et dans le repertoire correspondant (client/serveur) les fichiers specifiques
+
+placez egalement les include communs dans celui a la racine 
+et ceux specifiques dans client ou serveur

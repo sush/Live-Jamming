@@ -1,14 +1,14 @@
 # livejammin Makefile
 #
 
-EXEC		=		livejammin
+EXEC		=		livejammin_server
 BUILD_DIR	=		build
 DEBUG		=		no
 CPP		=		g++
 SRC		=		server/main.cpp\
 				server/Server.cpp
 OBJ		=		$(SRC:.cpp=.o)
-INCLUDE_DIR	=		-Iinclude
+INCLUDE_DIR	=		-Iinclude -Iserver/include -Iclient/include
 LIB_DIR		=		-Llibs
 CXXFLAGS	=		-W -Wall -ansi $(INCLUDE_DIR)
 LDFLAGS		=		
