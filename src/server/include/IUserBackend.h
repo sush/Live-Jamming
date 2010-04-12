@@ -6,10 +6,8 @@
 template <typename T>
 class IUserBackend : public Singleton<T> {
 
-  friend class Singleton<T>;
-
  public :
-  virtual ~IUserBackend() {};
+  // All User informations methods
   virtual int Authentification() = 0;
   //  virtual RetrieveUserInfos() = 0;
 };
