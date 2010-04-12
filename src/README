@@ -1,0 +1,2 @@
+placez a la racine les fichiers communs aux deux (client + serveur)
+et dans le repertoire correspondant (client/serveur) les fichiers specifiques
