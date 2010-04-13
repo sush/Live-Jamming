@@ -1,0 +1,6 @@
+serverName: Live-Jamming
+port: 5042
+bindAdress: 0.0.0.0
+maxUsers: 300
+userModule: mysql
+logFile: server.log
