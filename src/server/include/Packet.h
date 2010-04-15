@@ -16,10 +16,12 @@ class Packet
   virtual ~Packet();
 
   void	Print() const;
+  int	getMaxSize() const;
 
  private:
   buffer_t const *		_buffer;
   std::size_t			_len;
+  int				_maxSize;
 
 };
 

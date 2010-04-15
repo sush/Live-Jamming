@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SIZE=56
+SIZE=500
 ADDRESS=192.168.0.17
 
 while (true) ;do

@@ -40,7 +40,8 @@ namespace lj
   void		Server::Thread_task()
   {
     Packet	*packet = _packetQueue->PopPacket();
-    packet->Print();
+    //    packet->Print();
+    std::cout << "Queue max Size = " << _packetQueue->getMaxSize() << std::endl;
     delete packet;
   }
 
