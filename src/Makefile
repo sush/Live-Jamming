@@ -6,12 +6,14 @@ BUILD_DIR	=		build
 DEBUG		=		yes
 CPP		=		g++
 SRC		=		server/main.cpp\
-				server/Server.cpp
+				server/Server.cpp\
+				server/Packet.cpp\
+				server/PacketQueue.cpp
 OBJ		=		$(SRC:.cpp=.o)
 INCLUDE_DIR	=		-Iinclude -Iserver/include -Iclient/include
 LIB_DIR		=		-Llibs
 CXXFLAGS	=		-W -Wall -ansi $(INCLUDE_DIR)
-LDFLAGS		=		
+LDFLAGS		=		-lboost_system -lboost_thread
 ifeq ($(DEBUG), yes)
 	CXXFLAGS	+=		-g3 -pg -D_DEBUG
 	LDFLAGS		+=		-pg
