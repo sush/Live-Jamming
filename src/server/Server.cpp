@@ -3,11 +3,11 @@
 namespace lj
 {
 
-  const std::string	Server::_address = "192.168.0.17";
+  const std::string	Server::_address = "127.0.0.1";
   const int		Server::_port	= 5042;
   const int		Server::_poolSize = 8;
   const int		updateTime = 1;
-  const int		treat_delay = 5000; //micro seconds
+  const int		treat_delay = 0; //micro seconds
 
   void		Server::Run()
   {
@@ -45,7 +45,7 @@ namespace lj
 
   void		Server::Debug_Print()
   {
-    std::cout << "[PaquetQueue] MaxSize = " << _packetQueue->getMaxSize() << ", Size = " << _packetQueue->getSize() << std::endl;
+    std::cout << "[PaquetQueue] packet_no[" << _packetQueue->getPacketCount() << "] MaxSize = " << _packetQueue->getMaxSize() << ", Size = " << _packetQueue->getSize() << std::endl;
     _timer->expires_at(_timer->expires_at() + boost::posix_time::seconds(updateTime));
     _timer->async_wait(boost::bind(&Server::Debug_Print, this));
   }
@@ -62,7 +62,9 @@ namespace lj
 
     //        packet->Print();
     delete packet;
+    ////////////////////////// WAIT //////////////////
     usleep(treat_delay); // wait 15ms to fake for delay introduced by treatment
+    ////////////////////////// WAIT //////////////////
   }
 
   void		Server::Init(int argc, char *argv[])

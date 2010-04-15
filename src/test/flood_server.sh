@@ -1,7 +1,7 @@
 #!/bin/bash
 
 SIZE=15000
-ADDRESS=192.168.0.17
+ADDRESS=127.0.0.1
 
 while (true) ;do
 

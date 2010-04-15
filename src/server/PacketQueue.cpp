@@ -1,7 +1,7 @@
 #include <PacketQueue.h>
 
 PacketQueue::PacketQueue()
-  :_maxSize(0)
+  :_maxSize(0), _packetCount(0)
 {
   _packetList = new l_Packet;
 }
@@ -28,13 +28,15 @@ int		PacketQueue::getSize() const
   return _packetList->size();
 }
 
+int		PacketQueue::getPacketCount() const
+{
+  return _packetCount;
+}
+
 Packet *	PacketQueue::PopPacket()
 {
-  if (_packetList->size() > 0)
-    {
-      Packet *	ret = _packetList->front();
-      _packetList->erase(_packetList->begin());
-      return ret;
-    }
-  return 0;
+  ++_packetCount;
+  Packet *	ret = _packetList->front();
+  _packetList->erase(_packetList->begin());
+  return ret;
 }

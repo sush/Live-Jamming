@@ -15,6 +15,7 @@ public:
   int		getMaxSize() const;
   int		getSize() const;
   int		getCurrentSize() const;
+  int		getPacketCount() const;
   
 private:
   typedef std::list<Packet *>	l_Packet;
@@ -22,7 +23,8 @@ private:
   l_Packet::const_iterator	l_Packet_cit;
 
   l_Packet			*_packetList;
-  unsigned int			_maxSize;
+  unsigned int			_maxSize; //max size of list
+  unsigned int			_packetCount; //number of packets having been treated
 };
 
 
