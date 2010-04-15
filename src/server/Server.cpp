@@ -28,21 +28,31 @@ namespace lj
 
   void	Server::CallBack_handle_receive(boost::system::error_code const & error, std::size_t recv_count)
   {
-    std::cout << "receive" << std::endl;
     if (!error || error == boost::asio::error::message_size)
       {
+	////////// THREAD SAFE//////////////////////
+	_push_mutex.lock();
+
+	std::cout << "receive" << std::endl;
 	_packetQueue->PushPacket(new Packet(_recv_buffer, recv_count));
 	_pool->schedule(boost::bind(&Server::Thread_task, this));
 	start_receive();
+
+	_push_mutex.unlock();
+	////////////////////////////////////////////
       }
   }
 
   void		Server::Thread_task()
   {
+    ///////////// THREAD SAFE ///////////////////////
+    _pop_mutex.lock();
     Packet	*packet = _packetQueue->PopPacket();
     //    packet->Print();
     std::cout << "Queue max Size = " << _packetQueue->getMaxSize() << std::endl;
     delete packet;
+    _pop_mutex.unlock();
+    ////////////////////////////////////////////////
   }
 
   void		Server::Init(int argc, char *argv[])

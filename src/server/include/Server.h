@@ -35,6 +35,9 @@ namespace lj
     static const int		_port;
     static const int		_poolSize;
 
+    boost::mutex			_push_mutex;
+    boost::mutex			_pop_mutex;
+
     boost::threadpool::pool		*_pool;
     boost::asio::ip::udp::socket	*_socket;
     boost::asio::ip::udp::endpoint	*_local_endpoint;
