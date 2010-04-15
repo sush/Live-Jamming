@@ -1,0 +1,25 @@
+#ifndef __PACKETQUEUE_H__
+#define __PACKETQUEUE_H__
+
+#include <list>
+
+#include <Packet.h>
+
+class PacketQueue
+{
+public:
+  PacketQueue();
+  virtual ~PacketQueue();
+  void		PushPacket(Packet *);
+  Packet *	PopPacket();
+  
+private:
+  typedef std::list<Packet *>	l_Packet;
+  l_Packet::iterator		l_Packet_it;
+  l_Packet::const_iterator	l_Packet_cit;
+
+  l_Packet	*_packetList;
+};
+
+
+#endif // ! __PACKETQUEUE_H__
