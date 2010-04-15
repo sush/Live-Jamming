@@ -32,27 +32,30 @@ namespace lj
       {
 	////////// THREAD SAFE//////////////////////
 	_push_mutex.lock();
-
 	std::cout << "receive" << std::endl;
 	_packetQueue->PushPacket(new Packet(_recv_buffer, recv_count));
-	_pool->schedule(boost::bind(&Server::Thread_task, this));
-	start_receive();
-
 	_push_mutex.unlock();
 	////////////////////////////////////////////
+
+	_pool->schedule(boost::bind(&Server::Thread_task, this));
+	start_receive();
       }
   }
 
   void		Server::Thread_task()
   {
+    Packet	*packet;
+
     ///////////// THREAD SAFE ///////////////////////
     _pop_mutex.lock();
-    Packet	*packet = _packetQueue->PopPacket();
-    //    packet->Print();
+    packet = _packetQueue->PopPacket();
     std::cout << "Queue max Size = " << _packetQueue->getMaxSize() << std::endl;
-    delete packet;
     _pop_mutex.unlock();
     ////////////////////////////////////////////////
+
+    //    packet->Print();
+    delete packet;
+    usleep(5000); // wait 15ms to fake for delay introduced by treatment
   }
 
   void		Server::Init(int argc, char *argv[])
