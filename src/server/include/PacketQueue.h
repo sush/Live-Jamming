@@ -13,6 +13,8 @@ public:
   void		PushPacket(Packet *);
   Packet *	PopPacket();
   int		getMaxSize() const;
+  int		getSize() const;
+  int		getCurrentSize() const;
   
 private:
   typedef std::list<Packet *>	l_Packet;

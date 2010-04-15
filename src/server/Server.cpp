@@ -3,9 +3,11 @@
 namespace lj
 {
 
-  const std::string	Server::_address = "192.168.0.13";
+  const std::string	Server::_address = "192.168.0.17";
   const int		Server::_port	= 5042;
   const int		Server::_poolSize = 8;
+  const int		updateTime = 1;
+  const int		treat_delay = 5000; //micro seconds
 
   void		Server::Run()
   {
@@ -31,10 +33,9 @@ namespace lj
     if (!error || error == boost::asio::error::message_size)
       {
 	////////// THREAD SAFE//////////////////////
-	_push_mutex.lock();
-	std::cout << "receive" << std::endl;
+	_packetQueue_mutex.lock();
 	_packetQueue->PushPacket(new Packet(_recv_buffer, recv_count));
-	_push_mutex.unlock();
+	_packetQueue_mutex.unlock();
 	////////////////////////////////////////////
 
 	_pool->schedule(boost::bind(&Server::Thread_task, this));
@@ -42,20 +43,26 @@ namespace lj
       }
   }
 
+  void		Server::Debug_Print()
+  {
+    std::cout << "[PaquetQueue] MaxSize = " << _packetQueue->getMaxSize() << ", Size = " << _packetQueue->getSize() << std::endl;
+    _timer->expires_at(_timer->expires_at() + boost::posix_time::seconds(updateTime));
+    _timer->async_wait(boost::bind(&Server::Debug_Print, this));
+  }
+
   void		Server::Thread_task()
   {
     Packet	*packet;
 
     ///////////// THREAD SAFE ///////////////////////
-    _pop_mutex.lock();
+    _packetQueue_mutex.lock();
     packet = _packetQueue->PopPacket();
-    std::cout << "Queue max Size = " << _packetQueue->getMaxSize() << std::endl;
-    _pop_mutex.unlock();
+    _packetQueue_mutex.unlock();
     ////////////////////////////////////////////////
 
-    //    packet->Print();
+    //        packet->Print();
     delete packet;
-    usleep(5000); // wait 15ms to fake for delay introduced by treatment
+    usleep(treat_delay); // wait 15ms to fake for delay introduced by treatment
   }
 
   void		Server::Init(int argc, char *argv[])
@@ -68,6 +75,9 @@ namespace lj
     _socket->open(boost::asio::ip::udp::v4());
     _socket->bind(*_local_endpoint);
     _packetQueue = new PacketQueue;
+
+    _timer = new boost::asio::deadline_timer(_io_service, boost::posix_time::seconds(updateTime));
+    _timer->async_wait(boost::bind(&Server::Debug_Print, this));
   }
 
 }

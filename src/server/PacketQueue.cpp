@@ -23,6 +23,11 @@ int		PacketQueue::getMaxSize() const
   return _maxSize;
 }
 
+int		PacketQueue::getSize() const
+{
+  return _packetList->size();
+}
+
 Packet *	PacketQueue::PopPacket()
 {
   if (_packetList->size() > 0)

@@ -28,6 +28,7 @@ namespace lj
     void			Thread_task();
     void			start_receive();
     void			CallBack_handle_receive(boost::system::error_code const &, std::size_t);
+    void			Debug_Print();
 
     int				_argc;
     char			**_argv;
@@ -35,9 +36,9 @@ namespace lj
     static const int		_port;
     static const int		_poolSize;
 
-    boost::mutex			_push_mutex;
-    boost::mutex			_pop_mutex;
+    boost::mutex			_packetQueue_mutex;
 
+    boost::asio::deadline_timer		*_timer;
     boost::threadpool::pool		*_pool;
     boost::asio::ip::udp::socket	*_socket;
     boost::asio::ip::udp::endpoint	*_local_endpoint;
