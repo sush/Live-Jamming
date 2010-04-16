@@ -15,14 +15,15 @@ namespace lj
  
     _pool = new boost::threadpool::pool(_poolSize);
     start_receive();
-    _io_service.run();
+    _io_service->run();
   }
 
 
   void Server::start_receive()
   {
     _recv_buffer = new Packet::buffer_t;
-    _socket->async_receive_from(boost::asio::buffer(*_recv_buffer), _remote_endpoint,
+    _remote_point = new boost::asio::ip::udp::endpoint;
+    _socket->async_receive_from(boost::asio::buffer(*_recv_buffer), *_remote_endpoint,
 				boost::bind(&Server::CallBack_handle_receive, this,
 					    boost::asio::placeholders::error,
 					    boost::asio::placeholders::bytes_transferred));
@@ -32,28 +33,32 @@ namespace lj
   {
     if (!error || error == boost::asio::error::message_size)
       {
+	////////// THREAD SAFE//////////////////////
+	// !!! to implement !!!
 	// this lock should have a very high priority for locking
 	// the main receiver thread shouldn t be waiting for all thread workers finishing to treat
 	// packets
-	////////// THREAD SAFE//////////////////////
+	///////////////////////////////////////////////////////
+
 	_packetQueue_mutex.lock();
-	_packetQueue->PushPacket(new Packet(_recv_buffer, recv_count));
+	_packetQueue->PushPacket(new Packet(_remote_endpoint, _recv_buffer, recv_count, _));
 	_packetQueue_mutex.unlock();
+
 	////////////////////////////////////////////
 
-	_pool->schedule(boost::bind(&Server::Thread_task, this));
+	_pool->schedule(boost::bind(&Server::Thread_TreatPacket, this));
 	start_receive();
       }
   }
 
-  void		Server::Debug_Print()
+  void		Server::CallBack_Debug_Print()
   {
     std::cout << "[PaquetQueue] packet_no[" << _packetQueue->getPacketCount() << "] MaxSize = " << _packetQueue->getMaxSize() << ", Size = " << _packetQueue->getSize() << std::endl;
     _timer->expires_at(_timer->expires_at() + boost::posix_time::seconds(updateTime));
-    _timer->async_wait(boost::bind(&Server::Debug_Print, this));
+    _timer->async_wait(boost::bind(&Server::CallBack_Debug_Print, this));
   }
 
-  void		Server::Thread_task()
+  void		Server::Thread_TreatPacket()
   {
     Packet	*packet;
 
@@ -70,19 +75,30 @@ namespace lj
     ////////////////////////// WAIT //////////////////
   }
 
+  void		Server::CallBack_TimeOutTest(Session * session)
+  {
+    _pool->schedule(boost::bind(&SessionManager::TimeOutTest, _sessionManager, session));
+  }
+
+  void		Server::CallBack_TimeOutOccurred(Session * session)
+  {
+    _pool->schedule(boost::bind(&SessionManager::Disconnect, _sessionManager, session));
+  }
+
   void		Server::Init(int argc, char *argv[])
   {
     _argc = argc;
     _argv = argv;
+    _io_service = new boost::asio::io_service;
     _local_endpoint = new boost::asio::ip::udp::endpoint(boost::asio::ip::address::from_string(_address.c_str()), _port);
  
-    _socket = new boost::asio::ip::udp::socket (_io_service);
+    _socket = new boost::asio::ip::udp::socket (*_io_service);
     _socket->open(boost::asio::ip::udp::v4());
     _socket->bind(*_local_endpoint);
     _packetQueue = new PacketQueue;
 
-    _timer = new boost::asio::deadline_timer(_io_service, boost::posix_time::seconds(updateTime));
-    _timer->async_wait(boost::bind(&Server::Debug_Print, this));
+    _timer = new boost::asio::deadline_timer(*_io_service, boost::posix_time::seconds(updateTime));
+    _timer->async_wait(boost::bind(&Server::CallBack_Debug_Print, this));
+    _sessionManager = new SessionManager(this, *_io_service);
   }
-
 }

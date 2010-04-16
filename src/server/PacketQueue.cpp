@@ -37,6 +37,6 @@ Packet *	PacketQueue::PopPacket()
 {
   ++_packetCount;
   Packet *	ret = _packetList->front();
-  _packetList->erase(_packetList->begin());
+  _packetList->pop_front();
   return ret;
 }

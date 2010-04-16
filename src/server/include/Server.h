@@ -1,6 +1,8 @@
 #ifndef __SERVER_H__
 #define __SERVER_H__
 
+class Server;
+
 #include <boost/array.hpp>
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
@@ -12,6 +14,7 @@
 #include <Packet.h>
 #include <PacketQueue.h>
 #include <Singleton.h>
+#include <SessionManager.h>
 
 namespace lj
 {
@@ -25,10 +28,10 @@ namespace lj
     void			Init(int, char *[]);
     
   private:
-    void			Thread_task();
+    void			Thread_TreatPacket();
     void			start_receive();
     void			CallBack_handle_receive(boost::system::error_code const &, std::size_t);
-    void			Debug_Print();
+    void			CallBack_Debug_Print();
 
     int				_argc;
     char			**_argv;
@@ -42,10 +45,11 @@ namespace lj
     boost::threadpool::pool		*_pool;
     boost::asio::ip::udp::socket	*_socket;
     boost::asio::ip::udp::endpoint	*_local_endpoint;
-    boost::asio::io_service		_io_service;
-    boost::asio::ip::udp::endpoint	_remote_endpoint;
+    boost::asio::io_service		*_io_service;
+    boost::asio::ip::udp::endpoint	*_remote_endpoint;
     Packet::buffer_t			*_recv_buffer;
     PacketQueue				*_packetQueue;
+    SessionManager			*_sessionManager;
   };
 }
 
