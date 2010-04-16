@@ -19,17 +19,16 @@ public:
   virtual	~SessionManager();
 
   void		Manage(Packet *);
-
-
+  void		TimeoutTest(Session const *);
+  void		Disconnect(Session const *);
 
 private:
   typedef std::list<Session *>		l_Session;
   typedef l_Session::iterator		l_Session_it;
   typedef l_Session::const_iterator	l_Session_cit;
 
-  Session 				* FindSession(Packet const *) const;
+  l_Session_cit				FindSession(Packet const *) const;
   Session				*DoAuth(Packet const *);
-  void					Disconnect(Session const *);
 
   boost::asio::ip::udp::socket *	_socket;
   boost::asio::io_service const &	_io_service;

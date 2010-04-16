@@ -14,20 +14,19 @@ SessionManager::~SessionManager()
 
 void		SessionManager::Manage(Packet * packet)
 {
-  Session	*session;
   l_Session_cit	found = FindSession(packet);
   
-  if (found != _sessionList->end())
+  if (found != _sessionList.end())
     printf("found");
   else
     printf("not found");
 }
 
-l_Session_cit	SessionManager::FindSession(Packet const * packet) const
+SessionManager::l_Session_cit	SessionManager::FindSession(Packet const * packet) const
 {
-  l_Session_cit	it, end = _sessionList->end();
+  l_Session_cit	it, end = _sessionList.end();
 
-  for (it = _sessionList->begin(); it != end; ++it)
+  for (it = _sessionList.begin(); it != end; ++it)
     if (*it == *packet)
       return it;
   return end;
@@ -35,7 +34,7 @@ l_Session_cit	SessionManager::FindSession(Packet const * packet) const
 
 Session 	*SessionManager::DoAuth(Packet const * packet)
 {
-
+  _sessionList.push_back(new Session(packet));
 }
 
 void		SessionManager::Disconnect(Session const * session)

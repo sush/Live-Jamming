@@ -10,7 +10,7 @@ class Session;
 class Session
 {
 public:
-  Session(boost::asio::io_service const &, boost::asio::ip::udp, Packet const *);
+  Session(boost::asio::io_service const &, Packet const *);
   virtual				~Session();
   bool					operator == (Session const &) const;
   bool					operator == (Packet const &) const;

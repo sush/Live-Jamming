@@ -32,6 +32,8 @@ namespace lj
     void			start_receive();
     void			CallBack_handle_receive(boost::system::error_code const &, std::size_t);
     void			CallBack_Debug_Print();
+    void			CallBack_TimeOutTest(Session *);
+    void			CallBack_TimeOutOccurred(Session *);
 
     int				_argc;
     char			**_argv;
@@ -41,11 +43,12 @@ namespace lj
 
     boost::mutex			_packetQueue_mutex;
 
-    boost::asio::deadline_timer		*_timer;
+    boost::asio::io_service		*_io_service;
     boost::threadpool::pool		*_pool;
+
+    boost::asio::deadline_timer		*_timer;
     boost::asio::ip::udp::socket	*_socket;
     boost::asio::ip::udp::endpoint	*_local_endpoint;
-    boost::asio::io_service		*_io_service;
     boost::asio::ip::udp::endpoint	*_remote_endpoint;
     Packet::buffer_t			*_recv_buffer;
     PacketQueue				*_packetQueue;

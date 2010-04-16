@@ -1,7 +1,7 @@
 #include <Packet.h>
 
 Packet::Packet(boost::asio::ip::udp::endpoint const * endpoint, buffer_t const *buffer, std::size_t len)
-  :_endpoint(endpoint), _buffer(buffer), _len(len)
+  :_buffer(buffer), _len(len), _endpoint(endpoint)
 {
 
 }

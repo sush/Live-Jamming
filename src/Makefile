@@ -8,7 +8,9 @@ CPP		=		g++
 SRC		=		server/main.cpp\
 				server/Server.cpp\
 				server/Packet.cpp\
-				server/PacketQueue.cpp
+				server/PacketQueue.cpp\
+				server/SessionManager.cpp\
+				server/Session.cpp
 OBJ		=		$(SRC:.cpp=.o)
 INCLUDE_DIR	=		-Iinclude -Iserver/include -Iclient/include
 LIB_DIR		=		-Llibs

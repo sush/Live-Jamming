@@ -22,7 +22,7 @@ namespace lj
   void Server::start_receive()
   {
     _recv_buffer = new Packet::buffer_t;
-    _remote_point = new boost::asio::ip::udp::endpoint;
+    _remote_endpoint = new boost::asio::ip::udp::endpoint;
     _socket->async_receive_from(boost::asio::buffer(*_recv_buffer), *_remote_endpoint,
 				boost::bind(&Server::CallBack_handle_receive, this,
 					    boost::asio::placeholders::error,
@@ -41,7 +41,7 @@ namespace lj
 	///////////////////////////////////////////////////////
 
 	_packetQueue_mutex.lock();
-	_packetQueue->PushPacket(new Packet(_remote_endpoint, _recv_buffer, recv_count, _));
+	_packetQueue->PushPacket(new Packet(_remote_endpoint, _recv_buffer, recv_count));
 	_packetQueue_mutex.unlock();
 
 	////////////////////////////////////////////
@@ -77,7 +77,7 @@ namespace lj
 
   void		Server::CallBack_TimeOutTest(Session * session)
   {
-    _pool->schedule(boost::bind(&SessionManager::TimeOutTest, _sessionManager, session));
+    _pool->schedule(boost::bind(&SessionManager::TimeoutTest, _sessionManager, session));
   }
 
   void		Server::CallBack_TimeOutOccurred(Session * session)
@@ -99,6 +99,6 @@ namespace lj
 
     _timer = new boost::asio::deadline_timer(*_io_service, boost::posix_time::seconds(updateTime));
     _timer->async_wait(boost::bind(&Server::CallBack_Debug_Print, this));
-    _sessionManager = new SessionManager(this, *_io_service);
+    _sessionManager = new SessionManager(*_io_service);
   }
 }
