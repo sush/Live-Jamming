@@ -1,0 +1,1 @@
+Config|a:3:{s:9:"userAgent";s:32:"329403c2ad9ea5dcfed9329a15a6cdf1";s:4:"time";i:1270999251;s:7:"timeout";i:10;}Message|a:1:{s:4:"auth";a:3:{s:7:"message";s:10:"auth_error";s:7:"element";s:7:"default";s:6:"params";a:0:{}}}Auth|a:1:{s:8:"redirect";s:20:"/users/captcha_image";}
