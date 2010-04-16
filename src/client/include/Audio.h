@@ -1,5 +1,5 @@
-#ifndef __AUDIODEVICE_H__
-#define __AUDIODEVICE_H__
+#ifndef __AUDIO_H__
+#define __AUDIO_H__
 
 #include <RtAudio.h>
 #include <iostream>
@@ -16,11 +16,12 @@
 #define SLEEP( milliseconds ) usleep( (unsigned long) (milliseconds * 1000.0) )
 #endif
 
-class AudioDevice {
+class Audio {
  public:
-  AudioDevice();
-  ~AudioDevice();
+  Audio();
+  ~Audio();
  private:
+  RtAudio _audio;
 };
 
-#endif // !__AUDIODEVICE_H__
+#endif // !__AUDIO_H__
