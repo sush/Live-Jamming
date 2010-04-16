@@ -32,6 +32,9 @@ namespace lj
   {
     if (!error || error == boost::asio::error::message_size)
       {
+	// this lock should have a very high priority for locking
+	// the main receiver thread shouldn t be waiting for all thread workers finishing to treat
+	// packets
 	////////// THREAD SAFE//////////////////////
 	_packetQueue_mutex.lock();
 	_packetQueue->PushPacket(new Packet(_recv_buffer, recv_count));
@@ -63,7 +66,7 @@ namespace lj
     //        packet->Print();
     delete packet;
     ////////////////////////// WAIT //////////////////
-    usleep(treat_delay); // wait 15ms to fake for delay introduced by treatment
+    usleep(treat_delay); // wait <treat_delay> to fake for delay introduced by treatment
     ////////////////////////// WAIT //////////////////
   }
 
