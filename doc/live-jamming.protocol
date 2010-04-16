@@ -4,45 +4,43 @@ Live Jamming Protocol (LJP):
 UDP packet description :
 
 ----------------------------------------------
-| id | type | datas | version |\\| jam datas |
+| clientid[16bit] | type[6bit] | datalen[12bit] | proto_version[4bit] |\\| datas[variable len] |
 ----------------------------------------------
-<------------YAML------------>
 
-type :  - session
-	- chat
+type :  - auth request/respond
+	- chat send msg request/respond
+	- chat receive msg event/respond
 	- informations
 	- jam
 
-
-Yaml format :
-
-{id: user_id, type : [packet_type], datas: [packet_datas], version: client_version}
 
 Connection Steps :
 
  Step 1: Client requests session with server:
 {
  type : 
-		session : session_initialization
+		auth_request : session_initialization
  datas :
  		login : user_login
 		password : user_password
- version : client_version
+ version : proto_version
 }
 
+authrequest example:
+clientid | type = auth_request | datalen = ... | proto_version = ...| [datas] = null_terminated_login,null_terminated_pass
 
  Step 2: Server informs client that session has been created:
 {
  id : user_id
  type : 
-		session : session_created
+		authentification_respond
  datas :
 		profil : user_profil
 		status : user_status
 		musician : user_instrument
 		friend_list : user_friends
 		ping_estimation : user_ping
- version : server_version
+ version : proto_version
 }   
 
 
@@ -52,7 +50,7 @@ Connection Steps :
 		session : session_failed
  datas :
 		session_information :
- version : server_version
+ version : proto_version
 }   
 
   Step 3 : Client disconnects from server :
@@ -60,7 +58,7 @@ Connection Steps :
  id : user_id
  type : 
 		session : session_disconnected
- version : server_version
+ version : proto_version
 }   
 
 
@@ -73,7 +71,7 @@ Various Step :
 		informations : status_changed
  datas :
 		status : user_status
- version : client_version
+ version : proto_version
 }  
 
  Get user profil :
@@ -83,7 +81,7 @@ Various Step :
 		informations : get_user_profil
  datas :
 		user : selected_user
- version : client_version
+ version : proto_version
 } 
 
  Send channel message :
@@ -94,7 +92,7 @@ Various Step :
  datas :
 		channel : selected_channel
 		message : user_message
- version : client_version
+ version : proto_version
 }  
 
  Send private message :
@@ -105,7 +103,7 @@ Various Step :
  datas :
 		user : selected_user
 		message : user_message
- version : client_version
+ version : proto_version
 }  
 
  Receive private message :
@@ -116,7 +114,7 @@ Various Step :
  datas :
 		sender : sender_user
 		message : sender_message
- version : server_version
+ version : proto_version
 }  
 
  Receive channel message :
@@ -127,7 +125,7 @@ Various Step :
  datas :
 		channel : selected_channel
 		message : sender_message
- version : server_version
+ version : proto_version
 }  
 
  Evaluate latency :
@@ -137,7 +135,7 @@ Various Step :
 		informations : evaluate_latency
  datas :
 		latency : user_latency
- version : client_version
+ version : proto_version
 }  
 
  Create room :
@@ -149,7 +147,7 @@ Various Step :
 		room_name : name
 		room_settings : settings
 		room_participants : participants
- version : client_version
+ version : proto_version
 }  
 
  Leave room :
@@ -160,7 +158,7 @@ Various Step :
  datas :
 		room_name : name
 		room_participants : participants
- version : client_version
+ version : proto_version
 }  
 
  Send invitation to room :
@@ -172,7 +170,7 @@ Various Step :
 		room_name : name
 		room_invited : user
 		room_invitation_message : message
- version : client_version
+ version : proto_version
 }  
 
  Receive invitation to a room :
@@ -184,7 +182,7 @@ Various Step :
 		room_name : name
 		room_host : user
 		room_invitation_message : message
- version : server_version
+ version : proto_version
 }  
 
  Send kick from room :
@@ -196,7 +194,7 @@ Various Step :
 		room_name : name
 		room_kicked : user
 		room_kick_reason : message
- version : client_version
+ version : proto_version
 }  
 
  Receive kick from a room :
@@ -208,7 +206,7 @@ Various Step :
 		room_name : name
 		room_host : user
 		room_kick_reason : message
- version : server_version
+ version : proto_version
 }  
 
  Room settings :
@@ -219,7 +217,7 @@ Various Step :
  datas :
 		room_name : name
 		room_settings : settings
- version : client_version
+ version : proto_version
 }  
 
  Start jam :
@@ -229,7 +227,7 @@ Various Step :
 		jam : start
  datas :
 		room_name : name
- version : client_version
+ version : proto_version
 }  + JAM_DATAS
 
  Record jam :
@@ -239,7 +237,7 @@ Various Step :
 		jam : record
  datas :
 		room_name : name
- version : client_version
+ version : proto_version
 }  + JAM_DATAS
 
  Stop jam :
@@ -249,7 +247,7 @@ Various Step :
 		jam : stop
  datas :
 		room_name : name
- version : client_version
+ version : proto_version
 }  + JAM_DATAS
 
 	
