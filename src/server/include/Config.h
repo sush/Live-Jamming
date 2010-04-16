@@ -25,7 +25,8 @@ class Config {
   void UpdateOptionFromConfig(std::string const &);
   void UpdateOptionFromCommand(int, char** const &);
   std::string* getValueFromConfig(std::string const &);
-  std::vector<std::string>* getValueFromCommand(std::string const &);
+  std::vector<std::string> getValueFromCommand(std::string const &);
+
   std::multimap<std::string, std::string> _config;
   std::map<std::string, Option*> _options;
   boost::program_options::variables_map _args;
