@@ -3,8 +3,8 @@
 Session::Session(boost::asio::io_service const & io_service, Packet const * packet)
   :_io_service(io_service)
 {
-  _ip = packet->getEndpoint().getIP();
-  _port  = packet->getEndpoint().getPort();
+  _ip = packet->getEndpoint().address();
+  _port  = packet->getEndpoint().port();
 }
 
 Session::~Session()
@@ -13,12 +13,12 @@ Session::~Session()
 
 bool				Session::operator == (Session const & right) const
 {
-  return (this->_ip == right->_ip);
+  return (this->_ip == right._ip);
 }
 
 bool				Session::operator == (Packet const & right) const
 {
-  return (this->_ip == right.getEndpoint().getIP());
+  return (this->_ip == right.getEndpoint().address());
 }
 
 

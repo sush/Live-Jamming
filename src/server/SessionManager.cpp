@@ -27,14 +27,17 @@ SessionManager::l_Session_cit	SessionManager::FindSession(Packet const * packet)
   l_Session_cit	it, end = _sessionList.end();
 
   for (it = _sessionList.begin(); it != end; ++it)
-    if (*it == *packet)
+    //if (*it == *packet)
       return it;
   return end;
 }
 
 Session 	*SessionManager::DoAuth(Packet const * packet)
 {
-  _sessionList.push_back(new Session(packet));
+  Session	*new_session = new Session(_io_service, packet);
+
+  _sessionList.push_back(new_session);
+  return new_session;
 }
 
 void		SessionManager::Disconnect(Session const * session)
