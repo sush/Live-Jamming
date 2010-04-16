@@ -16,6 +16,9 @@ public:
 private:
     Ui::ConfigurationDialog*	ui;
 
+
+private slots:
+    void on_buttonBox_accepted();
 };
 
 #endif // CONFIGURATION_DIALOG_H
