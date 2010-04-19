@@ -1,6 +1,7 @@
 #include <Client.h>
 
 const char		connect_address[] = "127.0.0.1";
+const int		Client::_connect_port	= 5042;
 const int		Client::_port	= 5043;
 const int		Client::_poolSize = 1;
 const int		updateTime = 1;
@@ -78,24 +79,33 @@ void		Client::CallBack_handle_connect(boost::system::error_code const & error)
   std::cout << "connected" << std::endl;
 }
 
+
+void		Client::CallBack_handle_send()
+{
+  std::cout << "sent" << std::endl;
+}
+
+
 void		Client::Init(int argc, char *argv[])
 {
   _argc = argc;
   _argv = argv;
   _io_service = new boost::asio::io_service;
   _local_endpoint = new boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), _port);
-  _remote_endpoint = new boost::asio::ip::udp::endpoint(boost::asio::ip::address::from_string("127.0.0.1"), Client::_port);
+  _remote_endpoint = new boost::asio::ip::udp::endpoint(boost::asio::ip::address::from_string("127.0.0.1"), Client::_connect_port);
 
   _socket = new boost::asio::ip::udp::socket (*_io_service);
-  _socket->async_connect(_remote_endpoint,
-  			 boost::bind(&Client::CallBack_handle_connect, this,
-				     boost::asio::placeholders::error));
-  _socket->open(boost::asio::ip::udp::v4());
-  _socket->bind(*_local_endpoint);
+  _socket->async_connect(*_remote_endpoint,
+			 boost::bind(&Client::CallBack_handle_connect, this, boost::asio::placeholders::error));
+  //_socket->open(boost::asio::ip::udp::v4());
+  //  _socket->bind(*_local_endpoint);
   _packetQueue = new PacketQueue;
 
   _timer = new boost::asio::deadline_timer(*_io_service, boost::posix_time::seconds(updateTime));
   _timer->async_wait(boost::bind(&Client::CallBack_Debug_Print, this));
+  char *		hello = "hello";
+  _socket->async_send_to(boost::asio::buffer(hello), *_remote_endpoint,
+			boost::bind(&Client::CallBack_handle_send, this));
   _pool = new boost::threadpool::pool(_poolSize);
   //  _sessionManager = new SessionManager(*_io_service, *_pool);
 }

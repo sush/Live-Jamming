@@ -1,8 +1,12 @@
 #include <iostream>
+#include <Client.h>
 
-int	main(int argc, char *argv[])
+int		main(int argc, char *argv[])
 {
-  std::cout << "client" << std::endl;
+  Client	*client = Client::getInstance();
+  client->Init(argc, argv);
+  client->Run();
 
+  client->Delete();
   return 0;
 }

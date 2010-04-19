@@ -30,11 +30,13 @@ class Client;
     void			CallBack_handle_receive(boost::system::error_code const &, std::size_t);
     void			CallBack_Debug_Print();
     void			CallBack_handle_connect(boost::system::error_code const &);
+    void			CallBack_handle_send();
 
     int				_argc;
     char			**_argv;
     static const std::string	_address;
     static const int		_port;
+    static const int		_connect_port;
     static const int		_poolSize;
 
     boost::mutex			_packetQueue_mutex;
