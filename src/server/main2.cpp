@@ -3,6 +3,7 @@
 
 #include "Config.h"
 #include "Argument.h"
+#include "Syslog.h"
 
 int main(int argc, char *argv[]) {
   // authentification test
@@ -11,8 +12,9 @@ int main(int argc, char *argv[]) {
   //   std::cout << "Login check status : " << userModule->Authentification("dude", "12345678") << std::endl;
 
   // Config & Arguments test
-  Config *conf = new Config("config.yaml", argc, argv);
-
+  //Config *conf = new Config("config.yaml", argc, argv);
+  Syslog *syslog = new Syslog();
+  syslog->AddLine(1, "TEST LIVE-JAMMING!!!!!!!!!!!!");
   //  Argument *args = new Argument(argc, argv);
   return 0;
 }

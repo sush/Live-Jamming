@@ -11,6 +11,7 @@ type :  - auth request/respond
 	- chat send msg request/respond
 	- chat receive msg event/respond
 	- informations
+	- session
 	- jam
 
 
