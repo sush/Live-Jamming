@@ -1,11 +1,13 @@
 # livejammin Makefile
 #
 
-EXEC		=		livejammin_server
+EXEC_SERVER	=		livejammin_server
+EXEC_CLIENT	=		livejammin_client
 BUILD_DIR	=		build
-DEBUG		=		no
+DEBUG		=		yes
 CPP		=		g++
-SRC		=		server/main.cpp\
+SERVER_SRC	=		server/main.cpp\
+				server/logger_modules/Syslog.cpp
 				server/Server.cpp\
 				server/Packet.cpp\
 				server/PacketQueue.cpp\
@@ -14,6 +16,13 @@ SRC		=		server/main.cpp\
 				server/Config.cpp\
 				server/Option.cpp\
 				server/Argument.cpp
+CLIENT_SRC	=		client/main_net.cpp\
+				client/Client.cpp\
+				server/Packet.cpp\
+				server/PacketQueue.cpp
+OBJ_SERVER	=		$(SERVER_SRC:.cpp=.o)
+OBJ_CLIENT	=		$(CLIENT_SRC:.cpp=.o)
+SRC		=		$(SERVER_SRC) $(CLIENT_SRC)
 OBJ		=		$(SRC:.cpp=.o)
 INCLUDE_DIR	=		-Iinclude -Iserver/include -Iclient/include
 LIB_DIR		=		-Llibs
@@ -26,22 +35,33 @@ else
 	CXXFLAGS	+=		-DNDEBUG
 	LDFLAGS		+=		
 endif
-LDFLAGS		+=	$(LIB_DIR)	# must be at the end
+LDFLAGS		+=		$(LIB_DIR)	# must be at the end
 RM		=		rm -f
 STRIP		=		strip
 CP		=		cp
 
-all: 	$(EXEC)
+all: 	client server
 
-$(EXEC): $(OBJ)
+server: $(OBJ_SERVER)
 ifneq ($(DEBUG), yes)
-	 $(CPP) -o $(EXEC) $(OBJ) $(LDFLAGS)
-	strip	$(EXEC)
-	$(CP) $(EXEC) $(BUILD_DIR)/$(EXEC)_release
+	 $(CPP) -o $(EXEC_SERVER) $(OBJ_SERVER) $(LDFLAGS)
+	strip	$(EXEC_SERVER)
+	$(CP) $(EXEC_SERVER) $(BUILD_DIR)/$(EXEC_SERVER)_release
 else
-	 $(CPP) -o $(EXEC) $(OBJ) $(LDFLAGS)
-	$(CP) $(EXEC) $(BUILD_DIR)/$(EXEC)_debug
+	 $(CPP) -o $(EXEC_SERVER) $(OBJ_SERVER) $(LDFLAGS)
+	$(CP) $(EXEC_SERVER) $(BUILD_DIR)/$(EXEC)_debug
 endif
+
+client: $(OBJ_CLIENT)
+ifneq ($(DEBUG), yes)
+	 $(CPP) -o $(EXEC_CLIENT) $(OBJ_CLIENT) $(LDFLAGS)
+	strip	$(EXEC_CLIENT)
+	$(CP) $(EXEC_CLIENT) $(BUILD_DIR)/$(EXEC_CLIENT)_release
+else
+	 $(CPP) -o $(EXEC_CLIENT) $(OBJ_CLIENT) $(LDFLAGS)
+	$(CP) $(EXEC_CLIENT) $(BUILD_DIR)/$(EXEC)_debug
+endif
+
 
 clean:
 	@$(RM) $(OBJ)

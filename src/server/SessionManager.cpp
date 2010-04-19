@@ -85,6 +85,9 @@ SessionManager::l_Session_it	SessionManager::FindSession(Session * session)
 
 Session 	*SessionManager::DoAuth(Packet const * packet)
 {
+  // if packet is auth request type
+  // extract auth information from
+
   Session	*new_session = new Session(this, _io_service, packet, GenSessionId());
 
   _sessionList->push_back(new_session);

@@ -1,6 +1,6 @@
 #include <Client.h>
 
-const std::string	Client::_address = "127.0.0.1";
+const char		connect_address[] = "127.0.0.1";
 const int		Client::_port	= 5043;
 const int		Client::_poolSize = 1;
 const int		updateTime = 1;
@@ -73,6 +73,10 @@ void		Client::Thread_TreatPacket()
   ////////////////////////// WAIT //////////////////
 }
 
+void		Client::CallBack_handle_connect(boost::system::error_code const & error)
+{
+  std::cout << "connected" << std::endl;
+}
 
 void		Client::Init(int argc, char *argv[])
 {
@@ -80,8 +84,12 @@ void		Client::Init(int argc, char *argv[])
   _argv = argv;
   _io_service = new boost::asio::io_service;
   _local_endpoint = new boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), _port);
- 
+  _remote_endpoint = new boost::asio::ip::udp::endpoint(boost::asio::ip::address::from_string("127.0.0.1"), Client::_port);
+
   _socket = new boost::asio::ip::udp::socket (*_io_service);
+  _socket->async_connect(_remote_endpoint,
+  			 boost::bind(&Client::CallBack_handle_connect, this,
+				     boost::asio::placeholders::error));
   _socket->open(boost::asio::ip::udp::v4());
   _socket->bind(*_local_endpoint);
   _packetQueue = new PacketQueue;
