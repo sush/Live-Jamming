@@ -37,17 +37,30 @@ void		SessionManager::Manage(Packet * packet)
   
   if (found != _sessionList->end())
     {
-      std::cout << (*found)->getPort() << std::endl;
-      std::cout << "-> OK you are already authentificated." << std::endl;
       (*found)->setTimeOutTest();
       (*found)->CancelTimeOutOccurred();
+      PrintSession(*found);
+      std::cout << " Authentificated." << std::endl;
     }
   else
     {
-      std::cout << "-> You are not authentificated" << std::endl;
-      std::cout << "-> doing authentification" << std::endl;
+      PrintSession(packet);
+      std::cout << " Unauthentificated -> Authentificating..." << std::endl;
       session = DoAuth(packet);
     }
+}
+
+void		SessionManager::PrintSession(Session const * session) const
+{
+  std::cout << "[" << session->getIP() << ":" << session->getPort() << "]" <<
+    "{" << session->getSessionId() << "}";
+
+}
+
+void		SessionManager::PrintSession(Packet const * packet) const
+{
+      std::cout << "[" << packet->getEndpoint().address() << ":" << packet->getEndpoint().port() << "]" <<
+	"{}";
 }
 
 SessionManager::l_Session_it	SessionManager::FindSession(Packet const * packet)
@@ -82,14 +95,17 @@ void		SessionManager::Disconnect(Session * session)
 {
   l_Session_it	it = FindSession(session);
 
-  std::cout << "disconnect" << std::endl;
+  PrintSession(*it);
+  std::cout << " Disconnected" << std::endl;
   _sessionList->erase(it);
 }
 
 void		SessionManager::TimeOutTest(Session * session)
 {
+  l_Session_it	it = FindSession(session);
 
-  std::cout << "timeout test" << std::endl;
+  PrintSession(*it);
+  std::cout << " Testing Session" << std::endl;
   session->CancelTimeOutTest();
   session->setTimeOutOccurred();
 }

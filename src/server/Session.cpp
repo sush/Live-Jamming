@@ -13,7 +13,6 @@ Session::Session(SessionManager * sessionManager, boost::asio::io_service & io_s
   _timer_timeOutTest = new boost::asio::deadline_timer(_io_service);
   _timer_timeOutOccurred = new boost::asio::deadline_timer(_io_service);
   setTimeOutTest();
-  std::cout << "_sessionId = " << _sessionId << std::endl;
 }
 
 Session::~Session()

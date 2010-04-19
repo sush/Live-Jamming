@@ -39,6 +39,8 @@ private:
   void					CallBack_TimeOutOccurred(Session *, boost::system::error_code const &);
   bool					IsUniqId(unsigned int) const;
   unsigned int				GenSessionId();
+  void					PrintSession(Session const *) const;
+  void					PrintSession(Packet const *) const;
 
   boost::rand48				_rng;
   boost::asio::io_service &		_io_service;
