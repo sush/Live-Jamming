@@ -15,12 +15,12 @@ class Option {
   void setOptargc(std::string const &);
   void setMandatory(bool);
   void setValue(std::vector<std::string> const &);
-  std::string const & getName();
-  std::string const & getCommutatorShort();
-  std::string const & getCommutatorLong();
-  std::string const & getOptargc();
-  bool getMandatory();
-  std::vector<std::string> const & getValue();
+  std::string const & getName() const;
+  std::string const & getCommutatorShort() const;
+  std::string const & getCommutatorLong() const;
+  std::string const & getOptargc() const ;
+  bool getMandatory() const;
+  std::vector<std::string> const & getValue() const;
 
  private:
   std::string _name;

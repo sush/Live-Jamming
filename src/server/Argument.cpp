@@ -23,6 +23,6 @@ int Argument::BuildCommandLine(int argc, char** const & argv) {
   return 0;
 }
 
-boost::program_options::variables_map Argument::getArgument() {
+boost::program_options::variables_map const & Argument::getArgument() const {
   return _args;
 }

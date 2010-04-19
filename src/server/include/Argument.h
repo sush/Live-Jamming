@@ -12,11 +12,11 @@ class Argument {
  public :
   Argument(int, char** const &);
   virtual ~Argument();
-  boost::program_options::variables_map getArgument();
+  boost::program_options::variables_map const & getArgument() const;
 
  private :
   int BuildCommandLine(int argc, char** const & argv);
-  std::map<std::string, std::string> & ParseArguments(int, char** const &);
+
   boost::program_options::variables_map _args;
 };
 

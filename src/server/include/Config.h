@@ -15,7 +15,7 @@ class Config {
  public :
   Config(std::string const &, int, char** const &);
   virtual ~Config();
-  Option* getSelectedOption(std::string const &);
+  const Option* getSelectedOption(std::string const &);
   void TraceOption();
 
  private :
@@ -24,10 +24,11 @@ class Config {
   int BuildConfig();
   void UpdateOptionFromConfig(std::string const &);
   void UpdateOptionFromCommand(int, char** const &);
-  std::string* getValueFromConfig(std::string const &);
-  std::vector<std::string> getValueFromCommand(std::string const &);
+  const std::string* getValueFromConfig(std::string const &) const;
+  const std::vector<std::string>* getValueFromCommand(std::string const &) const;
 
-  std::multimap<std::string, std::string> _config;
+  typedef std::multimap<std::string, std::string> m_config;
+  m_config _config;
   std::map<std::string, Option*> _options;
   boost::program_options::variables_map _args;
   std::ifstream _fd;

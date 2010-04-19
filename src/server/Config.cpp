@@ -38,8 +38,8 @@ int Config::BuildConfig() {
   return 0;
 }
   
-std::string* Config::getValueFromConfig(std::string const & key) {
-  std::map<std::string,std::string>::iterator it;
+const std::string* Config::getValueFromConfig(std::string const & key) const {
+  m_config::const_iterator it;
 
   it = _config.find(key);
   if (it != _config.end()) {
@@ -49,32 +49,27 @@ std::string* Config::getValueFromConfig(std::string const & key) {
     return NULL;
 }
 
-std::vector<std::string> Config::getValueFromCommand(std::string const & key) {
-  std::vector<std::string> commands;
-
+const std::vector<std::string>* Config::getValueFromCommand(std::string const & key) const{
   if (_args.count(key)) {
-    return _args[key].as< std::vector<std::string> >();
+    return &_args[key].as< std::vector<std::string> >();
    }
-  return commands;
+  //  return commands;
+  return NULL;
 }
 
 void Config::BuildOption() {
   _options.insert(std::pair<std::string, Option*>("HostName", new Option("HostName", "-h", "-hostname", "1", true, std::vector<std::string>(1, "Live-Jamming"))));
   _options.insert(std::pair<std::string, Option*>("Port", new Option("Port", "-p", "-port", "1", true, std::vector<std::string>(1, "5042"))));
   _options.insert(std::pair<std::string, Option*>("BindAdress", new Option("BindAdress", "-b", "-bind", "1-", true, std::vector<std::string>(1, "0.0.0.0"))));
-  Option *toto = _options["Port"];
-  std::vector<std::string> test;
-  test = toto->getValue();
-  std::cout << "TEST = " << test.size() << std::endl;
 }
 
 void Config::UpdateOptionFromConfig(std::string const & filename) {
   OpenConfig(filename);
   BuildConfig();
 
-  std::map<std::string, Option*>::iterator it;
+  std::map<std::string, Option*>::const_iterator it, end = _options.end();
   
-  for (it=_options.begin(); it!=_options.end(); it++) {
+  for (it = _options.begin(); it != end; ++it) {
     if (getValueFromConfig(it->first) != 0) {
       std::vector<std::string> configValue;
       configValue.push_back(*getValueFromConfig(it->first));
@@ -85,28 +80,28 @@ void Config::UpdateOptionFromConfig(std::string const & filename) {
 }
 
 void Config::UpdateOptionFromCommand(int argc, char** const & argv) {
-  std::map<std::string, Option*>::iterator it;
+  std::map<std::string, Option*>::const_iterator it, end = _options.end();
   
   Argument *argument = new Argument(argc, argv);
   _args = argument->getArgument();
 
-  for (it=_options.begin(); it!=_options.end(); it++) {
-    if (!getValueFromCommand(it->first).empty()) {
+  for (it = _options.begin(); it != end; ++it) {
+    if (getValueFromCommand(it->first) != 0) {
       Option *selectedOption = it->second;
-      selectedOption->setValue(getValueFromCommand(it->first));
+      selectedOption->setValue(*getValueFromCommand(it->first));
     }
   }
 }
 
-Option* Config::getSelectedOption(std::string const & key) {
+const Option* Config::getSelectedOption(std::string const & key) {
   return _options[key];
 }
 
 // trace Options value, to remove after
 void Config::TraceOption() {
-  std::map<std::string, Option*>::iterator it;
+  std::map<std::string, Option*>::iterator it, end = _options.end();
 
-  for (it=_options.begin(); it!=_options.end(); it++) {
+  for (it =_options.begin(); it != end; ++it) {
     std::cout << it->first << " = ";
     Option *selectedOption = it->second;
     std::vector<std::string> test = selectedOption->getValue();
