@@ -1,10 +1,11 @@
-#include "Config.h"
+#include <Config.h>
 
-Config::Config(std::string const & filename, int argc, char** const & argv) {
+Config::Config(int argc, char** const & argv) {
   BuildOption();
-  UpdateOptionFromConfig(filename);
+  // to change to be dynamic
+  UpdateOptionFromConfig("config.yaml");
   UpdateOptionFromCommand(argc, argv);
-  TraceOption();
+  //TraceOption();
 }
 
 Config::~Config() {}
@@ -53,11 +54,11 @@ const std::vector<std::string>* Config::getValueFromCommand(std::string const & 
   if (_args.count(key)) {
     return &_args[key].as< std::vector<std::string> >();
    }
-  //  return commands;
   return NULL;
 }
 
 void Config::BuildOption() {
+  _options.insert(std::pair<std::string, Option*>("ConfigFile", new Option("ConfigFile", "-f", "-file", "1", true, std::vector<std::string>(1, "config.yaml"))));
   _options.insert(std::pair<std::string, Option*>("HostName", new Option("HostName", "-h", "-hostname", "1", true, std::vector<std::string>(1, "Live-Jamming"))));
   _options.insert(std::pair<std::string, Option*>("Port", new Option("Port", "-p", "-port", "1", true, std::vector<std::string>(1, "5042"))));
   _options.insert(std::pair<std::string, Option*>("BindAdress", new Option("BindAdress", "-b", "-bind", "1-", true, std::vector<std::string>(1, "0.0.0.0"))));
@@ -93,8 +94,11 @@ void Config::UpdateOptionFromCommand(int argc, char** const & argv) {
   }
 }
 
-const Option* Config::getSelectedOption(std::string const & key) {
-  return _options[key];
+std::vector<std::string> const & Config::getValue(std::string const & key) {
+  Option *selectedOption;
+
+  selectedOption = _options[key];
+  return selectedOption->getValue();
 }
 
 // trace Options value, to remove after

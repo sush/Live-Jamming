@@ -81,6 +81,9 @@ namespace lj
   {
     _argc = argc;
     _argv = argv;
+
+    _config = new Config(argc, argv);
+
     _io_service = new boost::asio::io_service;
     _local_endpoint = new boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), _port);
  

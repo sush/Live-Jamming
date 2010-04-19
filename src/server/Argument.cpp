@@ -1,4 +1,4 @@
-#include "Argument.h"
+#include <Argument.h>
 
 Argument::Argument(int argc, char** const & argv) {
   BuildCommandLine(argc, argv);
@@ -18,7 +18,7 @@ int Argument::BuildCommandLine(int argc, char** const & argv) {
   
   if (_args.count("help")) {
     std::cout << desc << "\n";
-    return 1;
+    exit(0);
   }
   return 0;
 }

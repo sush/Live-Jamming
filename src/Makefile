@@ -10,12 +10,15 @@ SRC		=		server/main.cpp\
 				server/Packet.cpp\
 				server/PacketQueue.cpp\
 				server/SessionManager.cpp\
-				server/Session.cpp
+				server/Session.cpp\
+				server/Config.cpp\
+				server/Option.cpp\
+				server/Argument.cpp
 OBJ		=		$(SRC:.cpp=.o)
 INCLUDE_DIR	=		-Iinclude -Iserver/include -Iclient/include
 LIB_DIR		=		-Llibs
 CXXFLAGS	=		-W -Wall -ansi $(INCLUDE_DIR)
-LDFLAGS		=		-lboost_system -lboost_thread
+LDFLAGS		=		-lboost_system -lboost_thread -lboost_program_options -lyaml-cpp
 ifeq ($(DEBUG), yes)
 	CXXFLAGS	+=		-g3 -pg -D_DEBUG
 	LDFLAGS		+=		-pg

@@ -16,6 +16,7 @@ class Server;
 #include <PacketQueue.h>
 #include <Singleton.h>
 #include <SessionManager.h>
+#include <Config.h>
 
 namespace lj
 {
@@ -54,6 +55,7 @@ namespace lj
     Packet::buffer_t			*_recv_buffer;
     PacketQueue				*_packetQueue;
     SessionManager			*_sessionManager;
+    Config			        *_config;
   };
 }
 

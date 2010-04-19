@@ -6,16 +6,16 @@
 #include <fstream>
 #include <map>
 #include <yaml-cpp/yaml.h>
-#include "Option.h"
+#include <Option.h>
 #include <boost/program_options.hpp>
-#include "Argument.h"
+#include <Argument.h>
 
 class Config {
 
  public :
-  Config(std::string const &, int, char** const &);
+  Config(int, char** const &);
   virtual ~Config();
-  const Option* getSelectedOption(std::string const &);
+  std::vector<std::string> const & getValue(std::string const &);
   void TraceOption();
 
  private :

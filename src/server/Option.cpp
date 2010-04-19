@@ -1,4 +1,4 @@
-#include "Option.h"
+#include <Option.h>
 
 Option::Option(std::string const & name, std::string const & commutatorShort, std::string const & commutatorLong, std::string const & optargc, bool mandatory, std::vector<std::string> const & values)
   : _name(name), _commutatorShort(commutatorShort), _commutatorLong(commutatorLong), _optargc(optargc), _mandatory(mandatory), _values(values) {}
