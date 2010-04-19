@@ -4,35 +4,47 @@
 class SessionManager;
 
 #include <iostream>
+#include <list>
 #include <boost/asio.hpp>
+#include <boost/threadpool.hpp>
+#include <boost/shared_ptr.hpp>
+#include <boost/random.hpp>
 
+#include <Server.h>
 #include <Packet.h>
 #include <Session.h>
-#include <list>
-#include <Server.h>
 
 class SessionManager
 {
+  friend class Session;
+
 public:
 
-  SessionManager(boost::asio::io_service const &);
+  SessionManager(boost::asio::io_service &, boost::threadpool::pool &);
   virtual	~SessionManager();
 
   void		Manage(Packet *);
-  void		TimeoutTest(Session const *);
-  void		Disconnect(Session const *);
 
 private:
   typedef std::list<Session *>		l_Session;
   typedef l_Session::iterator		l_Session_it;
   typedef l_Session::const_iterator	l_Session_cit;
 
-  l_Session_cit				FindSession(Packet const *) const;
+  l_Session_it				FindSession(Packet const *);
+  l_Session_it				FindSession(Session *);
   Session				*DoAuth(Packet const *);
+  void					TimeOutTest(Session *);
+  void					Disconnect(Session *);
+  void					CallBack_TimeOutTest(Session *, boost::system::error_code const &);
+  void					CallBack_TimeOutOccurred(Session *, boost::system::error_code const &);
+  bool					IsUniqId(unsigned int) const;
+  unsigned int				GenSessionId();
 
+  boost::rand48				_rng;
+  boost::asio::io_service &		_io_service;
+  boost::threadpool::pool &		_pool;
   boost::asio::ip::udp::socket *	_socket;
-  boost::asio::io_service const &	_io_service;
-  l_Session				_sessionList;
+  l_Session				*_sessionList;
 };
 
 

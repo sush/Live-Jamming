@@ -1,53 +1,107 @@
 #include <SessionManager.h>
 
-const int	session_timeout_test = 10;
-const int	response_timeout = 2;
-
-SessionManager::SessionManager(boost::asio::io_service const & io_service)
-  :_io_service(io_service)
+SessionManager::SessionManager(boost::asio::io_service & io_service, boost::threadpool::pool & pool)
+  :_io_service(io_service), _pool(pool)
 {
-
+  _sessionList = new l_Session;
+  _rng.seed(std::clock());
 }
 
 SessionManager::~SessionManager()
 {}
 
-void		SessionManager::Manage(Packet * packet)
+unsigned int		SessionManager::GenSessionId()
 {
-  l_Session_cit	found = FindSession(packet);
-  
-  if (found != _sessionList.end())
-    printf("found");
-  else
-    printf("not found");
+  unsigned int	sessionId;
+
+  do {
+    sessionId = _rng();
+  } while (! IsUniqId(sessionId));
+  return sessionId;
 }
 
-SessionManager::l_Session_cit	SessionManager::FindSession(Packet const * packet) const
+bool		SessionManager::IsUniqId(unsigned int sessionId) const
 {
-  l_Session_cit	it, end = _sessionList.end();
+  l_Session_it	it, end = _sessionList->end();
 
-  for (it = _sessionList.begin(); it != end; ++it)
-    //if (*it == *packet)
+  for (it = _sessionList->begin(); it != end; ++it)
+    if ((*it)->getSessionId() == sessionId)
+      return false;
+  return true;
+}
+
+void		SessionManager::Manage(Packet * packet)
+{
+  l_Session_it	found = FindSession(packet);
+  Session	*session;
+  
+  if (found != _sessionList->end())
+    {
+      std::cout << (*found)->getPort() << std::endl;
+      std::cout << "-> OK you are already authentificated." << std::endl;
+      (*found)->setTimeOutTest();
+      (*found)->CancelTimeOutOccurred();
+    }
+  else
+    {
+      std::cout << "-> You are not authentificated" << std::endl;
+      std::cout << "-> doing authentification" << std::endl;
+      session = DoAuth(packet);
+    }
+}
+
+SessionManager::l_Session_it	SessionManager::FindSession(Packet const * packet)
+{
+  l_Session_it	it, end = _sessionList->end();
+
+  for (it = _sessionList->begin(); it != end; ++it)
+    if (**it == *packet)
+      return it;
+  return end;
+}
+
+SessionManager::l_Session_it	SessionManager::FindSession(Session * session)
+{
+  l_Session_it	it, end = _sessionList->end();
+
+  for (it = _sessionList->begin(); it != end; ++it)
+    if (**it == *session)
       return it;
   return end;
 }
 
 Session 	*SessionManager::DoAuth(Packet const * packet)
 {
-  Session	*new_session = new Session(_io_service, packet);
+  Session	*new_session = new Session(this, _io_service, packet, GenSessionId());
 
-  _sessionList.push_back(new_session);
+  _sessionList->push_back(new_session);
   return new_session;
 }
 
-void		SessionManager::Disconnect(Session const * session)
+void		SessionManager::Disconnect(Session * session)
 {
+  l_Session_it	it = FindSession(session);
+
   std::cout << "disconnect" << std::endl;
-  delete session;
+  _sessionList->erase(it);
 }
 
-void		SessionManager::TimeoutTest(Session const * session)
+void		SessionManager::TimeOutTest(Session * session)
 {
 
+  std::cout << "timeout test" << std::endl;
+  session->CancelTimeOutTest();
+  session->setTimeOutOccurred();
+}
 
+void		SessionManager::CallBack_TimeOutTest(Session * session, boost::system::error_code const & error_code)
+{
+  if (error_code != boost::asio::error::operation_aborted)
+    _pool.schedule(boost::bind(&SessionManager::TimeOutTest, this, session));
+}
+
+void		SessionManager::CallBack_TimeOutOccurred(Session * session, boost::system::error_code const & error_code)
+{
+  if (error_code != boost::asio::error::operation_aborted)
+    _pool.schedule(boost::bind(&SessionManager::Disconnect, this, session));
 }

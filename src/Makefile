@@ -3,7 +3,7 @@
 
 EXEC		=		livejammin_server
 BUILD_DIR	=		build
-DEBUG		=		yes
+DEBUG		=		no
 CPP		=		g++
 SRC		=		server/main.cpp\
 				server/Server.cpp\

@@ -1,6 +1,7 @@
 #ifndef __SERVER_H__
 #define __SERVER_H__
 
+
 class Server;
 
 #include <boost/array.hpp>
@@ -19,6 +20,8 @@ class Server;
 namespace lj
 {
 
+
+
   class Server : public Singleton<Server>
   {
     friend class Singleton<Server>;
@@ -32,8 +35,6 @@ namespace lj
     void			start_receive();
     void			CallBack_handle_receive(boost::system::error_code const &, std::size_t);
     void			CallBack_Debug_Print();
-    void			CallBack_TimeOutTest(Session *);
-    void			CallBack_TimeOutOccurred(Session *);
 
     int				_argc;
     char			**_argv;

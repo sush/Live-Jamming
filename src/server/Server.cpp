@@ -5,7 +5,7 @@ namespace lj
 
   const std::string	Server::_address = "127.0.0.1";
   const int		Server::_port	= 5042;
-  const int		Server::_poolSize = 8;
+  const int		Server::_poolSize = 1;
   const int		updateTime = 1;
   const int		treat_delay = 0; //micro seconds
 
@@ -13,7 +13,6 @@ namespace lj
   {
     std::cout << "Server started..." << std::endl;
  
-    _pool = new boost::threadpool::pool(_poolSize);
     start_receive();
     _io_service->run();
   }
@@ -53,7 +52,9 @@ namespace lj
 
   void		Server::CallBack_Debug_Print()
   {
+#ifdef _DEBUG
     std::cout << "[PaquetQueue] packet_no[" << _packetQueue->getPacketCount() << "] MaxSize = " << _packetQueue->getMaxSize() << ", Size = " << _packetQueue->getSize() << std::endl;
+#endif
     _timer->expires_at(_timer->expires_at() + boost::posix_time::seconds(updateTime));
     _timer->async_wait(boost::bind(&Server::CallBack_Debug_Print, this));
   }
@@ -69,28 +70,19 @@ namespace lj
     ////////////////////////////////////////////////
 
     //        packet->Print();
-    delete packet;
+    _sessionManager->Manage(packet);
     ////////////////////////// WAIT //////////////////
     usleep(treat_delay); // wait <treat_delay> to fake for delay introduced by treatment
     ////////////////////////// WAIT //////////////////
   }
 
-  void		Server::CallBack_TimeOutTest(Session * session)
-  {
-    _pool->schedule(boost::bind(&SessionManager::TimeoutTest, _sessionManager, session));
-  }
-
-  void		Server::CallBack_TimeOutOccurred(Session * session)
-  {
-    _pool->schedule(boost::bind(&SessionManager::Disconnect, _sessionManager, session));
-  }
 
   void		Server::Init(int argc, char *argv[])
   {
     _argc = argc;
     _argv = argv;
     _io_service = new boost::asio::io_service;
-    _local_endpoint = new boost::asio::ip::udp::endpoint(boost::asio::ip::address::from_string(_address.c_str()), _port);
+    _local_endpoint = new boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), _port);
  
     _socket = new boost::asio::ip::udp::socket (*_io_service);
     _socket->open(boost::asio::ip::udp::v4());
@@ -99,6 +91,7 @@ namespace lj
 
     _timer = new boost::asio::deadline_timer(*_io_service, boost::posix_time::seconds(updateTime));
     _timer->async_wait(boost::bind(&Server::CallBack_Debug_Print, this));
-    _sessionManager = new SessionManager(*_io_service);
+    _pool = new boost::threadpool::pool(_poolSize);
+    _sessionManager = new SessionManager(*_io_service, *_pool);
   }
 }
