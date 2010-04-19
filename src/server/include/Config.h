@@ -5,7 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <map>
-#include <yaml.h>
+#include <yaml-cpp/yaml.h>
 #include <Option.h>
 #include <boost/program_options.hpp>
 #include <Argument.h>

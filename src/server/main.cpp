@@ -3,7 +3,7 @@
 
   int		main(int argc, char *argv[])
   {
-    lj::Server	*server = lj::Server::getInstance();
+    Server	*server = Server::getInstance();
 
     server->Init(argc, argv);
     server->Run();
