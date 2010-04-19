@@ -7,7 +7,7 @@ BUILD_DIR	=		build
 DEBUG		=		yes
 CPP		=		g++
 SERVER_SRC	=		server/main.cpp\
-				server/logger_modules/Syslog.cpp
+				server/logger_modules/Syslog.cpp\
 				server/Server.cpp\
 				server/Packet.cpp\
 				server/PacketQueue.cpp\
@@ -24,7 +24,7 @@ OBJ_SERVER	=		$(SERVER_SRC:.cpp=.o)
 OBJ_CLIENT	=		$(CLIENT_SRC:.cpp=.o)
 SRC		=		$(SERVER_SRC) $(CLIENT_SRC)
 OBJ		=		$(SRC:.cpp=.o)
-INCLUDE_DIR	=		-Iinclude -Iserver/include -Iclient/include
+INCLUDE_DIR	=		-Iinclude -Iserver/include -Iclient/include -Iserver/logger_modules -Iserver/logger_modules/include
 LIB_DIR		=		-Llibs
 CXXFLAGS	=		-W -Wall -ansi $(INCLUDE_DIR)
 LDFLAGS		=		-lboost_system -lboost_thread -lboost_program_options -lyaml-cpp
