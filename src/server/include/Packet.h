@@ -9,7 +9,7 @@
 
 class Packet
 {
- public:
+public:
   typedef boost::array<char, PACKET_MAXSIZE> buffer_t;
 
   Packet(boost::asio::ip::udp::endpoint const *, buffer_t const *, std::size_t);
@@ -19,8 +19,10 @@ class Packet
   boost::asio::ip::udp::endpoint const &	getEndpoint() const;
 
   void						Print() const;
+  buffer_t const &				getData() const;
+  unsigned short int				getSessionId() const;
 
- private:
+private:
   buffer_t const *				_buffer;
   std::size_t					_len;
   int						_maxSize;

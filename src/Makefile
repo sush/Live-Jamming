@@ -16,8 +16,10 @@ SERVER_SRC	=		server/main.cpp\
 				server/Config.cpp\
 				server/Option.cpp\
 				server/Argument.cpp
+
 CLIENT_SRC	=		client/main_net.cpp\
 				client/Client.cpp\
+				client/ClientSession.cpp\
 				server/Packet.cpp\
 				server/PacketQueue.cpp
 OBJ_SERVER	=		$(SERVER_SRC:.cpp=.o)
@@ -49,7 +51,7 @@ ifneq ($(DEBUG), yes)
 	$(CP) $(EXEC_SERVER) $(BUILD_DIR)/$(EXEC_SERVER)_release
 else
 	 $(CPP) -o $(EXEC_SERVER) $(OBJ_SERVER) $(LDFLAGS)
-	$(CP) $(EXEC_SERVER) $(BUILD_DIR)/$(EXEC)_debug
+	$(CP) $(EXEC_SERVER) $(BUILD_DIR)/$(EXEC_SERVER)_debug
 endif
 
 client: $(OBJ_CLIENT)
@@ -59,7 +61,7 @@ ifneq ($(DEBUG), yes)
 	$(CP) $(EXEC_CLIENT) $(BUILD_DIR)/$(EXEC_CLIENT)_release
 else
 	 $(CPP) -o $(EXEC_CLIENT) $(OBJ_CLIENT) $(LDFLAGS)
-	$(CP) $(EXEC_CLIENT) $(BUILD_DIR)/$(EXEC)_debug
+	$(CP) $(EXEC_CLIENT) $(BUILD_DIR)/$(EXEC_CLIENT)_debug
 endif
 
 
