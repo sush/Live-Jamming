@@ -36,13 +36,3 @@ boost::asio::ip::udp::endpoint const &		Packet::getEndpoint() const
 {
   return *_endpoint;
 }
-
-unsigned short int	Packet::getSessionId() const
-{
-   unsigned short int	res = 1;
-   
-   std::cout << "[0] = " <<  (int)(*_buffer)[0]
-	     << " [1] = " << (int)(*_buffer)[1]
-	     << std::endl;
-   return res;
-}

@@ -38,7 +38,6 @@ void	Server::CallBack_handle_receive(boost::system::error_code const & error, st
 
       _packetQueue_mutex.lock();
       Packet * p = new Packet(_remote_endpoint, _recv_buffer, recv_count);
-      p->getSessionId();
       _packetQueue->PushPacket(p);
       _packetQueue_mutex.unlock();
 

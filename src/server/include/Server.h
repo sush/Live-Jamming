@@ -44,7 +44,7 @@ class Server : public Singleton<Server>
   boost::threadpool::pool		*_pool;
 
   boost::asio::deadline_timer		*_timer;
-  boost::asio::ip::udp::socket	*_socket;
+  boost::asio::ip::udp::socket		*_socket;
   boost::asio::ip::udp::endpoint	*_local_endpoint;
   boost::asio::ip::udp::endpoint	*_remote_endpoint;
   Packet::buffer_t			*_recv_buffer;

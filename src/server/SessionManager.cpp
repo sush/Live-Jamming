@@ -1,5 +1,11 @@
 #include <SessionManager.h>
 
+SessionManager::Packet_binding	SessionManager::Packet_type[] = 
+  {
+    {PROTO_AUTH_REQUEST, &SessionManager::AuthRequest},
+    {PROTO_AUTH_RESPOND, &SessionManager::AuthRespond}
+  };
+
 SessionManager::SessionManager(boost::asio::io_service & io_service, boost::threadpool::pool & pool)
   :_io_service(io_service), _pool(pool)
 {
@@ -124,3 +130,15 @@ void		SessionManager::CallBack_TimeOutOccurred(Session * session, boost::system:
   if (error_code != boost::asio::error::operation_aborted)
     _pool.schedule(boost::bind(&SessionManager::Disconnect, this, session));
 }
+
+void		SessionManager::AuthRequest()
+{
+
+}
+
+void		SessionManager::AuthRespond()
+{
+
+}
+
+

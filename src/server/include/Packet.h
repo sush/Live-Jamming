@@ -7,6 +7,9 @@
 
 #define PACKET_MAXSIZE 2048
 
+#define PACKET_TYPE_SESSION_AUTH_REQ 1
+#define PACKET_TYPE_SESSION_AUTH_RESP 1
+
 class Packet
 {
 public:
@@ -20,7 +23,6 @@ public:
 
   void						Print() const;
   buffer_t const &				getData() const;
-  unsigned short int				getSessionId() const;
 
 protected:
   Packet(boost::asio::ip::udp::endpoint *);
