@@ -7,19 +7,29 @@
 //            5    9
 // decimal = 1493172224
 
-unsigned int	raw = 1493172224;
-int	sessionID_size = 4;
-int	champs2_size = 4;
+// [4bits][3bit][1bit][9bit][8bit][7bit]          <=> raw
+// c1	   c2    c3    c4    c5    c6     32bit   <=> raw
 
-int	MakePacket(int sessionID, int champs2)
+int	c1_size = 4;
+int	c2_size = 3;
+int	c3_size = 1;
+int	c4_size = 9;
+int	c5_size = 8;
+int	c6_size = 7;
+
+int	MakePacket(int c1, int c2, int c3, int c4, int c5, int c6)
 {
+  int	raw;
 
-
+  //make raw
+  return raw;
 }
 
-int	ReadPacket(int)
+int	ReadPacket(int raw)
 {
+  int	c1, c2, c3, c4, c5, c6;
 
+  // get and print values from raw
 }
 
 void	print()
