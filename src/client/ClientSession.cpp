@@ -38,6 +38,14 @@ void		ClientSession::Client_AuthRequest()
   buffer[1] = 'o';
   std::cout << "[0] = " << (unsigned short int)buffer[0]
 	    << " [1] = " << (unsigned short int)buffer[1] << std::endl;
+  // 2int sur 4 bit
+  // [int sur 4 bits][int sur 4bits]
+  //  7 puis 6
+  //0111.0110 [8bits]
+  // 7  . 6
+  // 118 [8bits]
+  // buffer[0] = 118
+
   _socket.async_send_to(boost::asio::buffer(buffer), _remote_endpoint,
 			boost::bind(&ClientSession::CallBack_handle_send, this));
   // make buffer containing authRequestData

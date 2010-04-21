@@ -42,7 +42,7 @@ RM		=		rm -f
 STRIP		=		strip
 CP		=		cp
 
-all: 	client server
+all: server client
 
 server: $(OBJ_SERVER)
 ifneq ($(DEBUG), yes)

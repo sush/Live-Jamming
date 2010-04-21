@@ -1,9 +1,13 @@
 #include <Packet.h>
 
-Packet::Packet(boost::asio::ip::udp::endpoint const * endpoint, buffer_t const *buffer, std::size_t len)
+Packet::Packet(boost::asio::ip::udp::endpoint * endpoint, buffer_t *buffer, std::size_t len)
   :_buffer(buffer), _len(len), _endpoint(endpoint)
-{
-}
+{}
+
+Packet::Packet(boost::asio::ip::udp::endpoint * endpoint)
+  :_endpoint(endpoint)
+{}
+
 
 Packet::~Packet()
 {
@@ -36,7 +40,7 @@ boost::asio::ip::udp::endpoint const &		Packet::getEndpoint() const
 unsigned short int	Packet::getSessionId() const
 {
    unsigned short int	res = 1;
-
+   
    std::cout << "[0] = " <<  (int)(*_buffer)[0]
 	     << " [1] = " << (int)(*_buffer)[1]
 	     << std::endl;
