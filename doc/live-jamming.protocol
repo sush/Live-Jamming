@@ -11,7 +11,6 @@ type :  - auth request/respond
 	- chat send msg request/respond
 	- chat receive msg event/respond
 	- informations
-	- session
 	- jam
 
 
@@ -27,14 +26,17 @@ Connection Steps :
  version : proto_version
 }
 
-authrequest example:
-clientid | type = auth_request | datalen = ... | proto_version = ...| [datas] = null_terminated_login,null_terminated_pass
+client authrequest packet example:
+
+----------------------------------------------------------------------------------------------------------------------------
+clientid | type = auth_request | datalen = ... | proto_version = ...| [datas] = null_terminated_login,null_terminated_pass |
+----------------------------------------------------------------------------------------------------------------------------
 
  Step 2: Server informs client that session has been created:
 {
  id : user_id
  type : 
-		authentification_respond
+		auth_respond
  datas :
 		profil : user_profil
 		status : user_status
@@ -43,6 +45,12 @@ clientid | type = auth_request | datalen = ... | proto_version = ...| [datas] = 
 		ping_estimation : user_ping
  version : proto_version
 }   
+
+server authrequest respond packet example:
+
+----------------------------------------------------------------------------------------------------------------------------
+clientid = ... | type = auth_respond | datalen = ... | proto_version = ...| [datas] = null_terminated_login,null_terminated_pass |
+----------------------------------------------------------------------------------------------------------------------------
 
 
   Step 2 (alt): Server informs client that session has NOT beed created:

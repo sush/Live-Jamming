@@ -1,0 +1,421 @@
+﻿
+Live Jamming Protocol (LJP):  
+
+
+
+                
+
+UDP packet description:
+
+
+----------------------------------------------
+| clientid[16bit] | type[6bit] | datalen[12bit] | proto_version[4bit] |\\| datas[variable len] |
+----------------------------------------------
+
+type :  	- auth request/respond
+		- chat send msg request/respond
+		- chat receive msg event/respond
+		- informations
+		- jam
+
+
+Connection Steps:
+
+
+ Step 1: Client requests session with server:
+{
+ type : 		auth_request : session_initialization
+
+ datas : 		login
+		password
+
+ version :	proto_version
+}
+
+packet format example:
+
+----------------------------------------------------------------------------------------------------------------------------
+clientid | type = auth_request | datalen = ... | proto_version = ...| [datas] = null_terminated_login,null_terminated_pass |
+----------------------------------------------------------------------------------------------------------------------------
+
+
+ Step 2: Server informs client that session has been created:
+{
+ clientid :	clientid
+
+ type : 		auth_respond : session_created
+
+ datas :		profil
+		status
+		musician
+		friend_list
+		ping_estimation
+
+ version : 	proto_version
+}   
+
+packet format example:
+
+----------------------------------------------------------------------------------------------------------------------------------
+clientid = ... | type = auth_respond | datalen = ... | proto_version = ...| [datas] = null_terminated_login,null_terminated_pass |
+----------------------------------------------------------------------------------------------------------------------------------
+
+
+ Step 2 (alt): Server informs client that session has NOT beed created:
+{
+ type : 		session : session_failed
+
+ datas :		NULL
+
+ version : 	proto_version
+}   
+
+packet format example:
+
+----------------------------------------------------------------------------------------------------------------------------
+clientid = ... | type = auth_respond | datalen = ... | proto_version = ...| [datas] = null_terminated_login,null_terminated_pass |
+----------------------------------------------------------------------------------------------------------------------------
+
+
+ Step 3 : Client disconnects from server :
+{
+ clientid : 	clientid
+
+ type : 		session : session_disconnected
+
+ version : 	proto_version
+}   
+
+packet format example:
+
+----------------------------------------------------------------------------------------------------------------------------
+clientid = ... | type = auth_respond | datalen = ... | proto_version = ...| [datas] = null_terminated_login,null_terminated_pass |
+----------------------------------------------------------------------------------------------------------------------------
+
+
+
+Various Step :
+
+ Change status :
+{
+ clientid : 	clientid
+
+ type : 		informations : status_changed
+
+ datas :		status
+
+ version : 	proto_version
+}
+
+packet format example:
+
+----------------------------------------------------------------------------------------------------------------------------
+clientid = ... | type = auth_respond | datalen = ... | proto_version = ...| [datas] = null_terminated_login,null_terminated_pass |
+----------------------------------------------------------------------------------------------------------------------------
+
+
+ Get user profil :
+{
+ clientid : 	clientid
+
+ type : 		informations : get_user_profil
+
+ datas :		user
+
+ version : 	proto_version
+} 
+
+packet format example:
+
+----------------------------------------------------------------------------------------------------------------------------
+clientid = ... | type = auth_respond | datalen = ... | proto_version = ...| [datas] = null_terminated_login,null_terminated_pass |
+----------------------------------------------------------------------------------------------------------------------------
+
+
+ Send channel message :
+{
+ clientid : 	clientid
+
+ type : 		chat : send_channel_message
+
+ datas :		channel
+		message
+
+ version : 	proto_version
+}  
+
+packet format example:
+
+----------------------------------------------------------------------------------------------------------------------------
+clientid = ... | type = auth_respond | datalen = ... | proto_version = ...| [datas] = null_terminated_login,null_terminated_pass |
+----------------------------------------------------------------------------------------------------------------------------
+
+
+ Send private message :
+{
+ clientid : 	clientid
+
+ type : 		chat : send_private_message
+
+ datas :		user
+		message
+
+ version : 	proto_version
+}  
+
+packet format example:
+
+----------------------------------------------------------------------------------------------------------------------------
+clientid = ... | type = auth_respond | datalen = ... | proto_version = ...| [datas] = null_terminated_login,null_terminated_pass |
+----------------------------------------------------------------------------------------------------------------------------
+
+
+ Receive private message :
+{
+ clientid : 	clientid
+
+ type :		chat : receive_private_message
+
+ datas :		sender
+		message
+
+ version : 	proto_version
+}  
+
+packet format example:
+
+----------------------------------------------------------------------------------------------------------------------------
+clientid = ... | type = auth_respond | datalen = ... | proto_version = ...| [datas] = null_terminated_login,null_terminated_pass |
+----------------------------------------------------------------------------------------------------------------------------
+
+
+ Receive channel message :
+{
+ clientid : 	clientid
+
+ type : 		chat : receive_channel_message
+
+ datas :		channel
+		message
+ version : 	proto_version
+}  
+
+packet format example:
+
+----------------------------------------------------------------------------------------------------------------------------
+clientid = ... | type = auth_respond | datalen = ... | proto_version = ...| [datas] = null_terminated_login,null_terminated_pass |
+----------------------------------------------------------------------------------------------------------------------------
+
+
+ Evaluate latency :
+{
+ clientid : 	clientid
+
+ type : 		informations : evaluate_latency
+
+ datas :		latency
+
+ version : 	proto_version
+}  
+
+packet format example:
+
+----------------------------------------------------------------------------------------------------------------------------
+clientid = ... | type = auth_respond | datalen = ... | proto_version = ...| [datas] = null_terminated_login,null_terminated_pass |
+----------------------------------------------------------------------------------------------------------------------------
+
+
+ Create room :
+{
+ clientid : 	clientid
+
+ type : 		jam : create
+
+ datas :		room_name
+		room_settings
+		room_participants
+
+ version : 	proto_version
+}  
+
+packet format example:
+
+----------------------------------------------------------------------------------------------------------------------------
+clientid = ... | type = auth_respond | datalen = ... | proto_version = ...| [datas] = null_terminated_login,null_terminated_pass |
+----------------------------------------------------------------------------------------------------------------------------
+
+
+ Leave room :
+{
+ clientid : 	clientid
+
+ type : 		jam : end
+
+ datas :		room_name
+		room_participants
+
+ version : 	proto_version
+}  
+
+packet format example:
+
+----------------------------------------------------------------------------------------------------------------------------
+clientid = ... | type = auth_respond | datalen = ... | proto_version = ...| [datas] = null_terminated_login,null_terminated_pass |
+----------------------------------------------------------------------------------------------------------------------------
+
+
+ Send invitation to room :
+{
+ clientid : 	clientid
+
+ type : 		jam : invite
+
+ datas :		room_name
+		room_invited
+		room_invitation_message
+
+ version :	proto_version
+}  
+
+packet format example:
+
+----------------------------------------------------------------------------------------------------------------------------
+clientid = ... | type = auth_respond | datalen = ... | proto_version = ...| [datas] = null_terminated_login,null_terminated_pass |
+----------------------------------------------------------------------------------------------------------------------------
+
+
+ Receive invitation to a room :
+{
+ clientid : 	clientid
+
+ type : 		jam : invite
+
+ datas :		room_name
+		room_host
+		room_invitation_message
+
+ version : 	proto_version
+}  
+
+packet format example:
+
+----------------------------------------------------------------------------------------------------------------------------
+clientid = ... | type = auth_respond | datalen = ... | proto_version = ...| [datas] = null_terminated_login,null_terminated_pass |
+----------------------------------------------------------------------------------------------------------------------------
+
+
+ Send kick from room :
+{
+ clientid : 	clientid
+
+ type : 		jam : kick
+
+ datas :		room_name
+		room_kicked
+		room_kick_reason
+
+ version : 	proto_version
+}  
+
+packet format example:
+
+----------------------------------------------------------------------------------------------------------------------------
+clientid = ... | type = auth_respond | datalen = ... | proto_version = ...| [datas] = null_terminated_login,null_terminated_pass |
+----------------------------------------------------------------------------------------------------------------------------
+
+
+ Receive kick from a room :
+{
+ clientid : 	clientid
+ type : 
+		jam : kick
+ datas :
+		room_name
+		room_host
+		room_kick_reason
+
+ version : 	proto_version
+}  
+
+packet format example:
+
+----------------------------------------------------------------------------------------------------------------------------
+clientid = ... | type = auth_respond | datalen = ... | proto_version = ...| [datas] = null_terminated_login,null_terminated_pass |
+----------------------------------------------------------------------------------------------------------------------------
+
+
+ Room settings :
+{
+ clientid : 	clientid
+
+ type : 		jam : settings
+
+ datas :		room_name
+		room_settings
+
+ version : 	proto_version
+}  
+
+packet format example:
+
+----------------------------------------------------------------------------------------------------------------------------
+clientid = ... | type = auth_respond | datalen = ... | proto_version = ...| [datas] = null_terminated_login,null_terminated_pass |
+----------------------------------------------------------------------------------------------------------------------------
+
+
+ Start jam :
+{
+ clientid : 	clientid
+
+ type : 		jam : start
+
+ datas :		room_name
+
+ version : 	proto_version
+}
+
+packet format example:
+
+----------------------------------------------------------------------------------------------------------------------------
+clientid = ... | type = auth_respond | datalen = ... | proto_version = ...| [datas] = null_terminated_login,null_terminated_pass |
+----------------------------------------------------------------------------------------------------------------------------
+
+
+ Record jam :
+{
+ clientid : 	clientid
+
+ type : 		jam : record
+
+ datas :		room_name
+
+ version : 	proto_version
+}
+
+packet format example:
+
+----------------------------------------------------------------------------------------------------------------------------
+clientid = ... | type = auth_respond | datalen = ... | proto_version = ...| [datas] = null_terminated_login,null_terminated_pass |
+----------------------------------------------------------------------------------------------------------------------------
+
+
+ Stop jam :
+{
+ clientid : 	clientid
+
+ type : 		jam : stop
+
+ datas :		room_name
+
+ version : 	proto_version
+}
+
+packet format example:
+
+----------------------------------------------------------------------------------------------------------------------------
+clientid = ... | type = auth_respond | datalen = ... | proto_version = ...| [datas] = null_terminated_login,null_terminated_pass |
+----------------------------------------------------------------------------------------------------------------------------
+
+
+	
+		
