@@ -3,8 +3,9 @@
 SessionManager::Packet_binding	SessionManager::Packet_type[] = 
   {
     {SESSION_AUTH_REQUEST, &SessionManager::Packet_AuthRequest},
-    {SESSION_KEEPALIVE, &SessionManager::Packet_Disconnect}
-    {SESSION_TIMEOUT, &SessionManager::Packet_Disconnect}
+    {SESSION_KEEPALIVE, &SessionManager::Packet_KeepAlive},
+    {SESSION_DISCONNECT, &SessionManager::Packet_Disconnect},
+    {SESSION_TIMEOUT, &SessionManager::Packet_TimeOut}
   };
 
 SessionManager::SessionManager(boost::asio::io_service & io_service, boost::threadpool::pool & pool)
@@ -41,7 +42,9 @@ void		SessionManager::Manage(Packet * packet)
 {
   l_Session_it	found = FindSession(packet);
   Session	*session;
-  
+  Packet_v1	*packet_v1;
+
+  packet_v1 = dynamic_cast<Packet_v1 *>(packet);
   if (found != _sessionList->end())
     {
       (*found)->setTimeOutTest();
@@ -101,7 +104,7 @@ Session 	*SessionManager::DoAuth(Packet const * packet)
   return new_session;
 }
 
-void		SessionManager::Disconnect(Session * session)
+void		SessionManager::Packet_Disconnect(Session * session)
 {
   l_Session_it	it = FindSession(session);
 
@@ -129,10 +132,15 @@ void		SessionManager::CallBack_TimeOutTest(Session * session, boost::system::err
 void		SessionManager::CallBack_TimeOutOccurred(Session * session, boost::system::error_code const & error_code)
 {
   if (error_code != boost::asio::error::operation_aborted)
-    _pool.schedule(boost::bind(&SessionManager::Disconnect, this, session));
+    _pool.schedule(boost::bind(&SessionManager::Packet_Disconnect, this, session));
 }
 
-void		SessionManager::AuthRequest()
+void		SessionManager::Packet_AuthRequest(Packet *)
+{
+
+}
+
+void		SessionManager::Packet_KeepAlive(Packet *)
 {
 
 }

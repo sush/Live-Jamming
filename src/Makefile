@@ -10,6 +10,7 @@ SERVER_SRC	=		server/main.cpp\
 				server/logger_modules/Syslog.cpp\
 				server/Server.cpp\
 				server/Packet.cpp\
+				server/Packet_v1.cpp\
 				server/PacketQueue.cpp\
 				server/SessionManager.cpp\
 				server/Session.cpp\
@@ -21,6 +22,7 @@ CLIENT_SRC	=		client/main_net.cpp\
 				client/Client.cpp\
 				client/ClientSession.cpp\
 				server/Packet.cpp\
+				server/Packet_v1.cpp\
 				server/PacketQueue.cpp
 OBJ_SERVER	=		$(SERVER_SRC:.cpp=.o)
 OBJ_CLIENT	=		$(CLIENT_SRC:.cpp=.o)

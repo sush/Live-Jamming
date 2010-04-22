@@ -11,7 +11,7 @@ class SessionManager;
 #include <boost/random.hpp>
 
 #include <Server.h>
-#include <Packet.h>
+#include <Packet_v1.h>
 #include <Session.h>
 #include <Protocol.h>
 
@@ -42,14 +42,14 @@ private:
   l_Session_it				FindSession(Session *);
   Session				*DoAuth(Packet const *);
   void					TimeOutTest(Session *);
-  void					Disconnect(Session *);
   void					CallBack_TimeOutTest(Session *, boost::system::error_code const &);
   void					CallBack_TimeOutOccurred(Session *, boost::system::error_code const &);
   bool					IsUniqId(unsigned int) const;
   unsigned int				GenSessionId();
   void					PrintSession(Session const *) const;
   void					PrintSession(Packet const *) const;
-  void					Packet_AuthRequest();
+  void					Packet_AuthRequest(Packet);
+  void					Packet_Disconnect(Session *);
   void					AuthRespond();
 
   boost::rand48				_rng;
