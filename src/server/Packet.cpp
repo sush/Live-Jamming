@@ -37,14 +37,11 @@ boost::asio::ip::udp::endpoint const &		Packet::getEndpoint() const
   return *_endpoint;
 }
 
-void				Packet::MakePacket()
-{
-
-}
-
 field_t				Packet::getProtoVersion() const
 {
-  return _buffer[0] >> sizeof_bin(_buffer[0] - PROTO_VERSION_SIZE);
+//   field_t proto = _buffer[0];
+//   return proto >> (sizeof_bin(proto) - PROTO_VERSION_SIZE);
+  return 0;
 }
 
 void				Packet::setProtoVersion(field_t version)

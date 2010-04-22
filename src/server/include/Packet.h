@@ -13,7 +13,7 @@
 
 typedef	unsigned int	field_t;
 
-struct b_field {
+struct bit_field {
   field_t proto : PROTO_VERSION_SIZE;
 } p_field;
 
