@@ -7,8 +7,7 @@
 
 #define PACKET_MAXSIZE 2048
 
-#define PACKET_TYPE_SESSION_AUTH_REQ 1
-#define PACKET_TYPE_SESSION_AUTH_RESP 1
+typedef	unsigned int	field_t;
 
 class Packet
 {
@@ -23,11 +22,11 @@ public:
 
   void						Print() const;
   buffer_t const &				getData() const;
+  field_t					getProtoVersion() const;
 
 protected:
   Packet(boost::asio::ip::udp::endpoint *);
 
-private:
   buffer_t *				_buffer;
   std::size_t				_len;
   boost::asio::ip::udp::endpoint *	_endpoint;

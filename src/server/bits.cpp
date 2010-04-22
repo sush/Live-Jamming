@@ -17,12 +17,19 @@ int	c4_size = 9;
 int	c5_size = 8;
 int	c6_size = 7;
 
+#define C1_SIZE 4
+#define C2_SIZE 4
+#define C1_SIZE 4
+#define C1_SIZE 4
+#define C1_SIZE 4
+#define C1_SIZE 4
+
 
 struct bits {
-  unsigned int f1 : 4;
-  unsigned int f2 : 3;
-  unsigned int f3 : 1;
-  unsigned int f4 : 9;
+  unsigned int c1 : C1_SIZE;
+  unsigned int c2 : c1;
+  unsigned int c3 : 1;
+  unsigned int c4 : 9;
   unsigned int f5 : 8;
   unsigned int f6 : 7;
 } field;
@@ -38,7 +45,7 @@ int	MakePacket(int c1, int c2, int c3, int c4, int c5, int c6)
 //   unsigned int test = c1 << sizeof_bin(c1) - c1_size;
 //   std::cout << test << std::endl;
   //make raw
-  return raw;
+  return ReadPacket(int)raw;
 }
 
 int	ReadPacket(int raw)

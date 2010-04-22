@@ -2,8 +2,9 @@
 
 SessionManager::Packet_binding	SessionManager::Packet_type[] = 
   {
-    {PROTO_AUTH_REQUEST, &SessionManager::AuthRequest},
-    {PROTO_AUTH_RESPOND, &SessionManager::AuthRespond}
+    {SESSION_AUTH_REQUEST, &SessionManager::Packet_AuthRequest},
+    {SESSION_KEEPALIVE, &SessionManager::Packet_Disconnect}
+    {SESSION_TIMEOUT, &SessionManager::Packet_Disconnect}
   };
 
 SessionManager::SessionManager(boost::asio::io_service & io_service, boost::threadpool::pool & pool)

@@ -13,9 +13,7 @@ class SessionManager;
 #include <Server.h>
 #include <Packet.h>
 #include <Session.h>
-
-#define PROTO_AUTH_REQUEST 1
-#define PROTO_AUTH_RESPOND 2
+#include <Protocol.h>
 
 class SessionManager
 {
@@ -32,8 +30,8 @@ private:
   typedef void (SessionManager::*pMethod)();
   struct Packet_binding
   {
-    int		type;
-    pMethod	method;
+    proto_v1_packet_type		type;
+    pMethod				method;
   };
 
   typedef std::list<Session *>		l_Session;
@@ -51,7 +49,7 @@ private:
   unsigned int				GenSessionId();
   void					PrintSession(Session const *) const;
   void					PrintSession(Packet const *) const;
-  void					AuthRequest();
+  void					Packet_AuthRequest();
   void					AuthRespond();
 
   boost::rand48				_rng;

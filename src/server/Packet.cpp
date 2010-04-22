@@ -36,3 +36,9 @@ boost::asio::ip::udp::endpoint const &		Packet::getEndpoint() const
 {
   return *_endpoint;
 }
+
+field_t				Packet::getProtoVersion() const
+{
+  // extract and return proto_version
+  // (should be first field of packet)
+}
