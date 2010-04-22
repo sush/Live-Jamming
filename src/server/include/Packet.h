@@ -2,12 +2,20 @@
 #define __PACKET_H__
 
 #include <iostream>
+#include <string.h>
 #include <boost/asio.hpp>
 #include <boost/array.hpp>
 
+#define sizeof_bin(A) sizeof(A) * 8
+
 #define PACKET_MAXSIZE 2048
+#define PROTO_VERSION_SIZE 4
 
 typedef	unsigned int	field_t;
+
+struct b_field {
+  field_t proto : PROTO_VERSION_SIZE;
+} p_field;
 
 class Packet
 {
@@ -23,6 +31,7 @@ public:
   void						Print() const;
   buffer_t const &				getData() const;
   field_t					getProtoVersion() const;
+  void						setProtoVersion(field_t);
 
 protected:
   Packet(boost::asio::ip::udp::endpoint *);
