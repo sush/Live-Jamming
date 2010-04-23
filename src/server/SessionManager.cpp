@@ -1,18 +1,11 @@
 #include <SessionManager.h>
 
-SessionManager::Packet_binding	SessionManager::Packet_type[] = 
-  {
-    {SESSION_AUTH_REQUEST,	&SessionManager::Packet_AuthRequest},
-    {SESSION_KEEPALIVE,		&SessionManager::Packet_KeepAlive},
-    {SESSION_DISCONNECT,	&SessionManager::Packet_Disconnect},
-    {SESSION_TIMEOUT,		&SessionManager::Packet_TimeOut}
-  };
-
 SessionManager::SessionManager(boost::asio::io_service & io_service, boost::threadpool::pool & pool)
   :_io_service(io_service), _pool(pool)
 {
   _sessionList = new l_Session;
   _rng.seed(std::clock());
+  Init_PacketBinding();
 }
 
 SessionManager::~SessionManager()
@@ -44,15 +37,17 @@ void		SessionManager::Manage(Packet * packet)
   Session	*session;
   Packet_v1	*packet_v1;
 
-  packet_v1 = dynamic_cast<Packet_v1 *>(packet);
+  packet_v1 = static_cast<Packet_v1 *>(packet);
   found = FindSession(packet_v1);
-  FindSession(packet_v1);
   if (found != _sessionList->end())
     {
       (*found)->setTimeOutTest();
       (*found)->CancelTimeOutOccurred();
       PrintSession(*found);
-      std::cout << " Authentificated." << std::endl;
+      if (_packetBinding.find(packet_v1->getType()) != _packetBinding.end())
+	(this->*_packetBinding.find(packet_v1->getType())->second)(packet_v1);
+      else
+	std::cout << "UNKNOWN PACKET_TYPE (" << packet_v1->getType() << ")" << std::endl;
     }
   else
     {
@@ -88,7 +83,7 @@ SessionManager::l_Session_it	SessionManager::FindSession(Packet_v1 const * packe
 SessionManager::l_Session_it	SessionManager::FindSession(Session * session)
 {
   l_Session_it	it, end = _sessionList->end();
-
+  
   for (it = _sessionList->begin(); it != end; ++it)
     if (**it == *session)
       return it;
@@ -99,7 +94,7 @@ Session 	*SessionManager::DoAuth(Packet const * packet)
 {
   // if packet is auth request type
   // extract auth information from
-
+  
   Session	*new_session = new Session(this, _io_service, packet, GenSessionId());
 
   _sessionList->push_back(new_session);
@@ -139,22 +134,22 @@ void		SessionManager::CallBack_TimeOutOccurred(Session * session, boost::system:
 
 void		SessionManager::Packet_AuthRequest(Packet_v1 *)
 {
-
+  std::cout << "packet_auth_request received" << std::endl;
 }
 
 void		SessionManager::AuthRespond()
 {
-
+  
 }
 
 void		SessionManager::Packet_KeepAlive(Packet_v1 *)
 {
-
+  std::cout << "packet_keep_alive received" << std::endl;
 }
 
 void		SessionManager::Packet_TimeOut(Packet_v1 *)
 {
-
+  std::cout << "packet_timeout received" << std::endl;
 }
 
 void		SessionManager::Packet_Disconnect(Packet_v1 * packet_v1)
@@ -164,5 +159,12 @@ void		SessionManager::Packet_Disconnect(Packet_v1 * packet_v1)
   PrintSession(*it);
   std::cout << " Disconnected" << std::endl;
   _sessionList->erase(it);
+}
 
+void		SessionManager::Init_PacketBinding()
+{
+  _packetBinding[SESSION_AUTH_REQUEST] = &SessionManager::Packet_AuthRequest;
+  _packetBinding[SESSION_KEEPALIVE] = &SessionManager::Packet_KeepAlive;
+  _packetBinding[SESSION_DISCONNECT] = &SessionManager::Packet_Disconnect;
+  _packetBinding[SESSION_TIMEOUT] = &SessionManager::Packet_TimeOut;
 }

@@ -5,6 +5,7 @@ class SessionManager;
 
 #include <iostream>
 #include <list>
+#include <map>
 #include <boost/asio.hpp>
 #include <boost/threadpool.hpp>
 #include <boost/shared_ptr.hpp>
@@ -28,15 +29,14 @@ public:
 
 private:
   typedef void (SessionManager::*pMethod)(Packet_v1 *);
-  struct Packet_binding
-  {
-    proto_v1_packet_type		type;
-    pMethod				method;
-  };
 
-  typedef std::list<Session *>		l_Session;
-  typedef l_Session::iterator		l_Session_it;
-  typedef l_Session::const_iterator	l_Session_cit;
+  typedef std::list<Session *>			l_Session;
+  typedef l_Session::iterator			l_Session_it;
+  typedef l_Session::const_iterator		l_Session_cit;
+  typedef std::map<field_t, pMethod>		m_packet_binding;
+  typedef m_packet_binding::iterator		m_packet_binding_it;
+  typedef m_packet_binding::const_iterator	m_packet_binding_cit;
+
 
   l_Session_it				FindSession(Packet_v1 const *);
   l_Session_it				FindSession(Session *);
@@ -54,13 +54,14 @@ private:
   void					Packet_KeepAlive(Packet_v1 *);
   void					Packet_TimeOut(Packet_v1 *);
   void					AuthRespond();
+  void					Init_PacketBinding();
 
   boost::rand48				_rng;
   boost::asio::io_service &		_io_service;
   boost::threadpool::pool &		_pool;
   boost::asio::ip::udp::socket *	_socket;
   l_Session				*_sessionList;
-  static Packet_binding			Packet_type[];
+  m_packet_binding			_packetBinding;
 };
 
 
