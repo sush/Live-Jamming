@@ -7,6 +7,7 @@ Argument::Argument(int argc, char** const & argv) {
 Argument::~Argument() {}
 
 int Argument::BuildCommandLine(int argc, char** const & argv) {
+
   boost::program_options::options_description desc("Usage: livejammin_server [options]\nAllowed options");
 
   try {

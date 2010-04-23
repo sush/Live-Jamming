@@ -1,10 +1,14 @@
-// #include <iostream>
+ #include <iostream>
 // #include <UserModule_mysql.h>
 
 //#include "Config.h"
 //#include "Argument.h"
 //#include "Syslog.h"
-#include "Forge.h"
+// #include "Forge.h"
+
+#include <Packet_v1.h>
+
+
 int main(int argc, char *argv[]) {
   // authentification test
   //   UserModule_mysql *userModule = UserModule_mysql::getInstance();
@@ -16,7 +20,10 @@ int main(int argc, char *argv[]) {
   // Syslog *syslog = new Syslog();
   //   syslog->AddLine(1, "TEST LIVE-JAMMING!!!!!!!!!!!!");
   //  Argument *args = new Argument(argc, argv);
-  Forge *forge = new Forge();
-  forge->ForgePacket();
+  Packet_v1* test = new Packet_v1(0);
+  test->setType(42);
+  std::cout << test->getType() << std::endl;
+
+
   return 0;
 }

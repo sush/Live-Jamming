@@ -15,7 +15,7 @@ typedef struct
   field_t type : TYPE_SIZE;
   field_t session : SESSION_ID_SIZE;
   field_t datalen : DATALEN_SIZE;
-} b_field ;
+} p1_field ;
 
 
 class Packet_v1 : public Packet

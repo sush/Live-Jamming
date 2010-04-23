@@ -1,6 +1,6 @@
 #include <Packet.h>
 
-bit_field	p_field;
+p_field	proto_field;
 
 Packet::Packet(boost::asio::ip::udp::endpoint * endpoint, buffer_t *buffer, std::size_t len)
   :_buffer(buffer), _len(len), _endpoint(endpoint)
@@ -8,7 +8,10 @@ Packet::Packet(boost::asio::ip::udp::endpoint * endpoint, buffer_t *buffer, std:
 
 Packet::Packet(boost::asio::ip::udp::endpoint * endpoint)
   :_endpoint(endpoint)
-{}
+{
+  _buffer = new buffer_t;
+  this->setProtoVersion(45);
+}
 
 
 Packet::~Packet()
@@ -41,13 +44,12 @@ boost::asio::ip::udp::endpoint const &		Packet::getEndpoint() const
 
 field_t				Packet::getProtoVersion() const
 {
-//   field_t proto = _buffer[0];
-//   return proto >> (sizeof_bin(proto) - PROTO_VERSION_SIZE);
-  return 0;
+  char proto = _buffer->at(0);
+  return proto >> (sizeof_bin(proto) - PROTO_VERSION_SIZE);
 }
 
 void				Packet::setProtoVersion(field_t version)
 {
-  p_field.proto = version;
-  memcpy(_buffer, &p_field, 1);
+  proto_field.proto = version;
+  memcpy(_buffer, &proto_field, 1);
 }
