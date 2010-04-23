@@ -10,14 +10,6 @@
 #define SESSION_ID_SIZE 16
 #define DATALEN_SIZE 16
 
-typedef struct
-{
-  field_t type : TYPE_SIZE;
-  field_t session : SESSION_ID_SIZE;
-  field_t datalen : DATALEN_SIZE;
-} p1_field ;
-
-
 class Packet_v1 : public Packet
 {
 public:

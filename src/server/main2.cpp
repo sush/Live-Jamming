@@ -24,7 +24,9 @@ int main(int argc, char *argv[]) {
   test->setProtoVersion(3);
   //  test->setType(42);
   //  std::cout << "proto = " << test->getProtoVersion() << " type = " << test->getType() << std::endl;
-    std::cout << "proto = " << test->getProtoVersion() << std::endl;
+  std::cout << "proto = " << (int)(unsigned char)test->getProtoVersion() << std::endl;
+    test->setType(42);
+    std::cout << "type = " << (int)(unsigned char)test->getType() << std::endl;
 
 
   return 0;

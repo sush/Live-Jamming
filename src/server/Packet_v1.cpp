@@ -1,7 +1,5 @@
 #include <Packet_v1.h>
 
-p1_field	 data_field;
-
 Packet_v1::Packet_v1(boost::asio::ip::udp::endpoint *endpoint)
   : Packet(endpoint)
 {
@@ -13,21 +11,37 @@ Packet_v1::~Packet_v1()
 
 void		Packet_v1::MakePacket()
 {
-  memcpy(_buffer, &data_field, 3);
+  //  memcpy(_buffer, &data_field, 3);
 }
 
 field_t		Packet_v1::getType() const
 {
   // 4 derniers de buffer[0] + 2 premiers de buffer[1]
+  unsigned char size = sizeof_bin(_buffer->at(1));
 
-  char b_type = _buffer->at(0);
-  char e_type = _buffer->at(1);
+//   return ((b_type << PROTO_VERSION_SIZE)
+// 	  + (e_type >> (sizeof_bin(e_type) - PROTO_VERSION_SIZE)))
+// 	  >> (sizeof_bin(b_type) - TYPE_SIZE);
 
-  std::cout << (field_t)_buffer->at(0) << " : " << (field_t)_buffer->at(1) << std::endl;
+  unsigned char c;
+  unsigned char d;
 
-  return ((b_type << PROTO_VERSION_SIZE)
-	  + (e_type >> (sizeof_bin(e_type) - PROTO_VERSION_SIZE)))
-	  >> (sizeof_bin(b_type) - TYPE_SIZE);
+  // octet1	octet2
+  // ....XXXX  YY......
+  // XXXX0000
+  // 00XXXX00  000000YY
+  // 00XXXXYY
+
+  c = _buffer->at(0);
+  c = c << 4;
+  std::cout << "00YYYY00 = " << (int)(unsigned char)c << std::endl;
+  c = c >> 2;
+  std::cout << "00YYYY00 = " << (int)(unsigned char)c << std::endl;
+
+  d = (unsigned char)_buffer->at(1) >> 6;
+  std::cout << "d = " << (int)(unsigned char)d << std::endl;
+
+  return c + d;
 }
 
 field_t		Packet_v1::getSessionId() const
@@ -53,25 +67,44 @@ field_t		Packet_v1::getDataLen() const
 
 void		Packet_v1::setType(field_t type)
 {
-  data_field.type = type;
-  //  memcpy(_buffer, &data_field, 1);
-  char proto = _buffer->at(0);
+  // size 6
+  unsigned char size = sizeof_bin(_buffer->at(1));
+  unsigned char c;
+  unsigned char d;
+  unsigned char type_c = type;
 
-  //  proto = proto << 4 << 
+  // buffer[0] = [4 proto] [4 type]
 
+  // octet1	octet2
+  // XXXX....   ..YYYYYY
+  // XXXX0000
+  // 00XXXX00  000000YY
+  // 00XXXXYY
+
+
+  c = _buffer->at(0) >> 4; // 0000XXXX
+  c = c << 4;              // XXXX0000
+  
+  d = _buffer->at(1) << 2; // YYYYYY00
+  d = _buffer->at(1) >> 2; // 00YYYYYY
+
+  _buffer->at(0) = c + (type_c >> 2);
+  type_c = type_c << 6;
+  _buffer->at(1) = d + type_c;
+  std::cout << "[0] = " << (int) (unsigned char)_buffer->at(0) << " [1] = " << (int)(unsigned char)_buffer->at(1) << std::endl;
 }
+
+
+
+
 
 void		Packet_v1::setSessionId(field_t session)
 {
-  data_field.session = session;
+
 }
 
 void		Packet_v1::setDataLen(field_t datalen)
 {
-  data_field.session = datalen;
+
 }
 
-//	     380 (16bits)		       209 (16bits)
-// 0000 0001    0111 1100	       0000 0000   1101 0001
-// buffer[0]	buffer[1]	       buffer[2]   buffer[3]
-//    1		  124			0	     209
