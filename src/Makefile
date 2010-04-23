@@ -4,7 +4,7 @@
 EXEC_SERVER	=		livejammin_server
 EXEC_CLIENT	=		livejammin_client
 BUILD_DIR	=		build
-DEBUG		=		yes
+DEBUG		=		no
 CPP		=		g++
 SERVER_SRC	=		server/main.cpp\
 				server/logger_modules/Syslog.cpp\
