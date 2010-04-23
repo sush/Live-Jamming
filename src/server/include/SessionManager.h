@@ -27,7 +27,7 @@ public:
   void		Manage(Packet *);
 
 private:
-  typedef void (SessionManager::*pMethod)();
+  typedef void (SessionManager::*pMethod)(Packet_v1 *);
   struct Packet_binding
   {
     proto_v1_packet_type		type;
@@ -38,7 +38,7 @@ private:
   typedef l_Session::iterator		l_Session_it;
   typedef l_Session::const_iterator	l_Session_cit;
 
-  l_Session_it				FindSession(Packet const *);
+  l_Session_it				FindSession(Packet_v1 const *);
   l_Session_it				FindSession(Session *);
   Session				*DoAuth(Packet const *);
   void					TimeOutTest(Session *);
@@ -48,8 +48,11 @@ private:
   unsigned int				GenSessionId();
   void					PrintSession(Session const *) const;
   void					PrintSession(Packet const *) const;
-  void					Packet_AuthRequest(Packet);
-  void					Packet_Disconnect(Session *);
+  void					Disconnect(Session *);
+  void					Packet_AuthRequest(Packet_v1 *);
+  void					Packet_Disconnect(Packet_v1 *);
+  void					Packet_KeepAlive(Packet_v1 *);
+  void					Packet_TimeOut(Packet_v1 *);
   void					AuthRespond();
 
   boost::rand48				_rng;

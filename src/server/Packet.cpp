@@ -1,5 +1,7 @@
 #include <Packet.h>
 
+bit_field	p_field;
+
 Packet::Packet(boost::asio::ip::udp::endpoint * endpoint, buffer_t *buffer, std::size_t len)
   :_buffer(buffer), _len(len), _endpoint(endpoint)
 {}

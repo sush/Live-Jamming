@@ -13,9 +13,9 @@
 
 typedef	unsigned int	field_t;
 
-struct bit_field {
+typedef struct {
   field_t proto : PROTO_VERSION_SIZE;
-} p_field;
+}bit_field;
 
 class Packet
 {

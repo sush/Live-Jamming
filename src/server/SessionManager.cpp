@@ -2,10 +2,10 @@
 
 SessionManager::Packet_binding	SessionManager::Packet_type[] = 
   {
-    {SESSION_AUTH_REQUEST, &SessionManager::Packet_AuthRequest},
-    {SESSION_KEEPALIVE, &SessionManager::Packet_KeepAlive},
-    {SESSION_DISCONNECT, &SessionManager::Packet_Disconnect},
-    {SESSION_TIMEOUT, &SessionManager::Packet_TimeOut}
+    {SESSION_AUTH_REQUEST,	&SessionManager::Packet_AuthRequest},
+    {SESSION_KEEPALIVE,		&SessionManager::Packet_KeepAlive},
+    {SESSION_DISCONNECT,	&SessionManager::Packet_Disconnect},
+    {SESSION_TIMEOUT,		&SessionManager::Packet_TimeOut}
   };
 
 SessionManager::SessionManager(boost::asio::io_service & io_service, boost::threadpool::pool & pool)
@@ -40,11 +40,13 @@ bool		SessionManager::IsUniqId(unsigned int sessionId) const
 
 void		SessionManager::Manage(Packet * packet)
 {
-  l_Session_it	found = FindSession(packet);
+  l_Session_it	found;
   Session	*session;
   Packet_v1	*packet_v1;
 
   packet_v1 = dynamic_cast<Packet_v1 *>(packet);
+  found = FindSession(packet_v1);
+  FindSession(packet_v1);
   if (found != _sessionList->end())
     {
       (*found)->setTimeOutTest();
@@ -73,7 +75,7 @@ void		SessionManager::PrintSession(Packet const * packet) const
 	"{}";
 }
 
-SessionManager::l_Session_it	SessionManager::FindSession(Packet const * packet)
+SessionManager::l_Session_it	SessionManager::FindSession(Packet_v1 const * packet)
 {
   l_Session_it	it, end = _sessionList->end();
 
@@ -104,7 +106,7 @@ Session 	*SessionManager::DoAuth(Packet const * packet)
   return new_session;
 }
 
-void		SessionManager::Packet_Disconnect(Session * session)
+void		SessionManager::Disconnect(Session * session)
 {
   l_Session_it	it = FindSession(session);
 
@@ -132,15 +134,10 @@ void		SessionManager::CallBack_TimeOutTest(Session * session, boost::system::err
 void		SessionManager::CallBack_TimeOutOccurred(Session * session, boost::system::error_code const & error_code)
 {
   if (error_code != boost::asio::error::operation_aborted)
-    _pool.schedule(boost::bind(&SessionManager::Packet_Disconnect, this, session));
+    _pool.schedule(boost::bind(&SessionManager::Disconnect, this, session));
 }
 
-void		SessionManager::Packet_AuthRequest(Packet *)
-{
-
-}
-
-void		SessionManager::Packet_KeepAlive(Packet *)
+void		SessionManager::Packet_AuthRequest(Packet_v1 *)
 {
 
 }
@@ -150,4 +147,22 @@ void		SessionManager::AuthRespond()
 
 }
 
+void		SessionManager::Packet_KeepAlive(Packet_v1 *)
+{
 
+}
+
+void		SessionManager::Packet_TimeOut(Packet_v1 *)
+{
+
+}
+
+void		SessionManager::Packet_Disconnect(Packet_v1 * packet_v1)
+{
+  l_Session_it	it = FindSession(packet_v1);
+
+  PrintSession(*it);
+  std::cout << " Disconnected" << std::endl;
+  _sessionList->erase(it);
+
+}

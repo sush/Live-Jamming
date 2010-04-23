@@ -1,5 +1,7 @@
 #include <Packet_v1.h>
 
+b_field	 p1_field;
+
 Packet_v1::Packet_v1(boost::asio::ip::udp::endpoint *endpoint)
   : Packet(endpoint)
 {
