@@ -57,7 +57,7 @@ void		Packet_v1::setType(field_t type)
   //  memcpy(_buffer, &data_field, 1);
   char proto = _buffer->at(0);
 
-  proto = proto << 4 << 
+  //  proto = proto << 4 << 
 
 }
 

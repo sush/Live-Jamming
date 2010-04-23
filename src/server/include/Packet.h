@@ -13,10 +13,6 @@
 
 typedef	unsigned int	field_t;
 
-typedef struct {
-  field_t proto : PROTO_VERSION_SIZE;
-} p_field;
-
 class Packet
 {
 public:

@@ -37,6 +37,7 @@ void		SessionManager::Manage(Packet * packet)
   Session	*session;
   Packet_v1	*packet_v1;
 
+  std::cout << "proto packet = " << packet->getProtoVersion() << std::endl;
   packet_v1 = static_cast<Packet_v1 *>(packet);
   found = FindSession(packet_v1);
   if (found != _sessionList->end())

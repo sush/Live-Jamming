@@ -21,8 +21,10 @@ int main(int argc, char *argv[]) {
   //   syslog->AddLine(1, "TEST LIVE-JAMMING!!!!!!!!!!!!");
   //  Argument *args = new Argument(argc, argv);
   Packet_v1* test = new Packet_v1(0);
-  test->setType(42);
-  std::cout << test->getType() << std::endl;
+  test->setProtoVersion(3);
+  //  test->setType(42);
+  //  std::cout << "proto = " << test->getProtoVersion() << " type = " << test->getType() << std::endl;
+    std::cout << "proto = " << test->getProtoVersion() << std::endl;
 
 
   return 0;
