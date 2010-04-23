@@ -37,7 +37,6 @@ private:
   typedef m_packet_binding::iterator		m_packet_binding_it;
   typedef m_packet_binding::const_iterator	m_packet_binding_cit;
 
-
   l_Session_it				FindSession(Packet_v1 const *);
   l_Session_it				FindSession(Session *);
   Session				*DoAuth(Packet const *);
