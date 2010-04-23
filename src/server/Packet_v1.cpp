@@ -34,12 +34,12 @@ field_t		Packet_v1::getType() const
 
   c = _buffer->at(0);
   c = c << 4;
-  std::cout << "00YYYY00 = " << (int)(unsigned char)c << std::endl;
+  //  std::cout << "00YYYY00 = " << (int)(unsigned char)c << std::endl;
   c = c >> 2;
-  std::cout << "00YYYY00 = " << (int)(unsigned char)c << std::endl;
+  //  std::cout << "00YYYY00 = " << (int)(unsigned char)c << std::endl;
 
   d = (unsigned char)_buffer->at(1) >> 6;
-  std::cout << "d = " << (int)(unsigned char)d << std::endl;
+  //  std::cout << "d = " << (int)(unsigned char)d << std::endl;
 
   return c + d;
 }
@@ -91,7 +91,7 @@ void		Packet_v1::setType(field_t type)
   _buffer->at(0) = c + (type_c >> 2);
   type_c = type_c << 6;
   _buffer->at(1) = d + type_c;
-  std::cout << "[0] = " << (int) (unsigned char)_buffer->at(0) << " [1] = " << (int)(unsigned char)_buffer->at(1) << std::endl;
+  //  std::cout << "[0] = " << (int) (unsigned char)_buffer->at(0) << " [1] = " << (int)(unsigned char)_buffer->at(1) << std::endl;
 }
 
 
