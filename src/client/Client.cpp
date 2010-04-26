@@ -68,7 +68,7 @@ void		Client::Thread_TreatPacket()
   ////////////////////////////////////////////////
 
   //        packet->Print();
-  //  _sessionManager->Manage(packet);
+  _clientSession->Manage(packet);
   ////////////////////////// WAIT //////////////////
   usleep(treat_delay); // wait <treat_delay> to fake for delay introduced by treatment
   ////////////////////////// WAIT //////////////////

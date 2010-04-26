@@ -9,21 +9,24 @@ CPP		=		g++
 SERVER_SRC	=		server/main.cpp\
 				server/logger_modules/Syslog.cpp\
 				server/Server.cpp\
-				server/Packet.cpp\
-				server/Packet_v1.cpp\
-				server/PacketQueue.cpp\
-				server/SessionManager.cpp\
+				server/ServerManager.cpp\
+				server/Component_SessionManager.cpp\
 				server/Session.cpp\
 				server/Config.cpp\
 				server/Option.cpp\
-				server/Argument.cpp
+				server/Argument.cpp\
+				Packet.cpp\
+				Packet_v1.cpp\
+				PacketQueue.cpp
 
 CLIENT_SRC	=		client/main_net.cpp\
 				client/Client.cpp\
 				client/ClientSession.cpp\
-				server/Packet.cpp\
-				server/Packet_v1.cpp\
-				server/PacketQueue.cpp
+				client/Component_Session.cpp\
+				Packet.cpp\
+				Packet_v1.cpp\
+				PacketQueue.cpp
+
 OBJ_SERVER	=		$(SERVER_SRC:.cpp=.o)
 OBJ_CLIENT	=		$(CLIENT_SRC:.cpp=.o)
 SRC		=		$(SERVER_SRC) $(CLIENT_SRC)

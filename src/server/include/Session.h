@@ -6,14 +6,14 @@ class Session;
 #include <iostream>
 #include <boost/asio.hpp>
 #include <Packet.h>
-#include <SessionManager.h>
+#include <Component_SessionManager.h>
 #include <boost/shared_ptr.hpp>
 #include <boost/bind.hpp>
 
 class Session
 {
 public:
-  Session(SessionManager *, boost::asio::io_service &, Packet const *, unsigned int);
+  Session(Component_SessionManager *, boost::asio::io_service &, Packet const *, unsigned int);
   virtual				~Session();
   bool					operator == (Session const &) const;
   bool					operator == (Packet const &) const;
@@ -27,7 +27,7 @@ public:
   void					CancelTimeOutOccurred();
 
 private:
-  SessionManager			*_sessionManager;
+  Component_SessionManager		*_sessionManager;
   boost::asio::io_service &		_io_service;
   boost::asio::ip::address		_ip;
   unsigned short			_port;

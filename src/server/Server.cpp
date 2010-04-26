@@ -68,7 +68,7 @@ void		Server::Thread_TreatPacket()
   ////////////////////////////////////////////////
 
   //        packet->Print();
-  _sessionManager->Manage(packet);
+  _serverManager->Manage(packet);
   ////////////////////////// WAIT //////////////////
   usleep(treat_delay); // wait <treat_delay> to fake for delay introduced by treatment
   ////////////////////////// WAIT //////////////////
@@ -93,5 +93,5 @@ void		Server::Init(int argc, char *argv[])
   _timer = new boost::asio::deadline_timer(*_io_service, boost::posix_time::seconds(updateTime));
   _timer->async_wait(boost::bind(&Server::CallBack_Debug_Print, this));
   _pool = new boost::threadpool::pool(_poolSize);
-  _sessionManager = new SessionManager(*_io_service, *_pool);
+  _serverManager = new ServerManager(*_io_service, *_pool);
 }

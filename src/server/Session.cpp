@@ -3,7 +3,7 @@
  int	_timeOutTest_delay = 10;
  int	_timeOutOccurred_delay = 2;
 
-Session::Session(SessionManager * sessionManager, boost::asio::io_service & io_service, Packet const * packet, unsigned int sessionId)
+Session::Session(Component_SessionManager * sessionManager, boost::asio::io_service & io_service, Packet const * packet, unsigned int sessionId)
   :_sessionManager(sessionManager), _io_service(io_service), _sessionId(sessionId)
 {
   _ip = packet->getEndpoint().address();
@@ -49,14 +49,14 @@ void					Session::setTimeOutTest()
 {
   _timer_timeOutTest->cancel();
   _timer_timeOutTest->expires_from_now(boost::posix_time::seconds(_timeOutTest_delay));
-  _timer_timeOutTest->async_wait(boost::bind(&SessionManager::CallBack_TimeOutTest, _sessionManager, this, boost::asio::placeholders::error));
+  _timer_timeOutTest->async_wait(boost::bind(&Component_SessionManager::CallBack_TimeOutTest, _sessionManager, this, boost::asio::placeholders::error));
 }
 
 void					Session::setTimeOutOccurred()
 {
   _timer_timeOutOccurred->cancel();
   _timer_timeOutOccurred->expires_from_now(boost::posix_time::seconds(_timeOutOccurred_delay));
-  _timer_timeOutOccurred->async_wait(boost::bind(&SessionManager::CallBack_TimeOutOccurred, _sessionManager, this, boost::asio::placeholders::error));
+  _timer_timeOutOccurred->async_wait(boost::bind(&Component_SessionManager::CallBack_TimeOutOccurred, _sessionManager, this, boost::asio::placeholders::error));
 }
 
 void				Session::CancelTimeOutTest()

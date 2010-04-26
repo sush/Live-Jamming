@@ -14,7 +14,7 @@ class Server;
 #include <Packet.h>
 #include <PacketQueue.h>
 #include <Singleton.h>
-#include <SessionManager.h>
+#include <ServerManager.h>
 #include <Config.h>
 
 
@@ -49,7 +49,7 @@ class Server : public Singleton<Server>
   boost::asio::ip::udp::endpoint	*_remote_endpoint;
   Packet::buffer_t			*_recv_buffer;
   PacketQueue				*_packetQueue;
-  SessionManager			*_sessionManager;
+  ServerManager				*_serverManager;
   Config				*_config;
 };
 
