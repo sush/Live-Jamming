@@ -6,10 +6,6 @@
 
 #include <Packet.h>
 
-#define TYPE_SIZE 6
-#define SESSION_ID_SIZE 16
-#define DATALEN_SIZE 16
-
 class Packet_v1 : public Packet
 {
 public:

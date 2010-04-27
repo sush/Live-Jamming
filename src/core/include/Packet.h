@@ -5,11 +5,11 @@
 #include <string.h>
 #include <boost/asio.hpp>
 #include <boost/array.hpp>
+#include <Protocol.h>
 
 #define sizeof_bin(A) sizeof(A) * 8
 
 #define PACKET_MAXSIZE 2048
-#define PROTO_VERSION_SIZE 4
 
 typedef	unsigned int	field_t;
 
