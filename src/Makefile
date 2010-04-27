@@ -7,31 +7,31 @@ BUILD_DIR	=		build
 DEBUG		=		no
 CPP		=		g++
 SERVER_SRC	=		server/main.cpp\
-				server/logger_modules/Syslog.cpp\
+				server/logger_modules/LoggerModule_syslog.cpp\
 				server/Server.cpp\
 				server/ServerManager.cpp\
 				server/Component_SessionManager.cpp\
 				server/Session.cpp\
 				server/Config.cpp\
 				server/Option.cpp\
-				server/Argument.cpp\
-				Packet.cpp\
-				Packet_v1.cpp\
-				PacketQueue.cpp
+				server/Argument.cpp\				
+				core/Packet.cpp\
+				core/Packet_v1.cpp\
+				core/PacketQueue.cpp
 
 CLIENT_SRC	=		client/main_net.cpp\
 				client/Client.cpp\
 				client/ClientSession.cpp\
 				client/Component_Session.cpp\
-				Packet.cpp\
-				Packet_v1.cpp\
-				PacketQueue.cpp
+				core/Packet.cpp\
+				core/Packet_v1.cpp\
+				core/PacketQueue.cpp
 
 OBJ_SERVER	=		$(SERVER_SRC:.cpp=.o)
 OBJ_CLIENT	=		$(CLIENT_SRC:.cpp=.o)
 SRC		=		$(SERVER_SRC) $(CLIENT_SRC)
 OBJ		=		$(SRC:.cpp=.o)
-INCLUDE_DIR	=		-Iinclude -Iserver/include -Iclient/include -Iserver/logger_modules/include
+INCLUDE_DIR	=		-Iinclude -Iserver/include -Iclient/include -Iserver/logger_modules/include -Icore/include
 LIB_DIR		=		-Llibs
 CXXFLAGS	=		-W -Wall -ansi $(INCLUDE_DIR)
 LDFLAGS		=		-lboost_system -lboost_thread -lboost_program_options -lyaml-cpp
