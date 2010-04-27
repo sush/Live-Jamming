@@ -8,9 +8,15 @@ template <typename T>
 class IUserBackend : public Singleton<T> {
 
  public :
-  // All User informations methods
+
+  typedef std::map<std::string, std::string> m_userinfo;
+  typedef m_userinfo::iterator m_userinfo_it;
+  typedef m_userinfo::const_iterator m_userinfo_cit;
+  typedef std::pair<std::string, std::string> m_userinfo_pair;
+
   virtual int Authentification(std::string const &, std::string const &) = 0;
-  //  virtual RetrieveUserInfos() = 0;
+  virtual m_userinfo const *getProfil(int) = 0;
+  virtual m_userinfo const *getFriendList(int) = 0;
 };
 
 #endif

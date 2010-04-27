@@ -5,7 +5,6 @@ Config::Config(int argc, char** const & argv) {
   // to change to be dynamic
   UpdateOptionFromConfig("config.yaml");
   UpdateOptionFromCommand(argc, argv);
-  //TraceOption();
 }
 
 Config::~Config() {}
@@ -30,17 +29,17 @@ int Config::BuildConfig() {
     return 1;
   }
 
-  for(YAML::Iterator it=doc.begin();it!=doc.end();++it) {
+  for(YAML::Iterator it = doc.begin(); it != doc.end(); ++it) {
     std::string key, value;
     it.first() >> key;
     it.second() >> value;
-    _config.insert(std::pair<std::string, std::string>(key, value));
+    _config.insert(m_config_pair(key, value));
   }
   return 0;
 }
   
-const std::string* Config::getValueFromConfig(std::string const & key) const {
-  m_config::const_iterator it;
+std::string const * Config::getValueFromConfig(std::string const & key) const {
+  m_config_cit it;
 
   it = _config.find(key);
   if (it != _config.end()) {
@@ -50,7 +49,7 @@ const std::string* Config::getValueFromConfig(std::string const & key) const {
     return NULL;
 }
 
-const std::vector<std::string>* Config::getValueFromCommand(std::string const & key) const{
+std::vector<std::string> const * Config::getValueFromCommand(std::string const & key) const{
   if (_args.count(key)) {
     return &_args[key].as< std::vector<std::string> >();
    }
@@ -58,17 +57,17 @@ const std::vector<std::string>* Config::getValueFromCommand(std::string const & 
 }
 
 void Config::BuildOption() {
-  _options.insert(std::pair<std::string, Option*>("ConfigFile", new Option("ConfigFile", "-f", "-file", "1", true, std::vector<std::string>(1, "config.yaml"))));
-  _options.insert(std::pair<std::string, Option*>("HostName", new Option("HostName", "-h", "-hostname", "1", true, std::vector<std::string>(1, "Live-Jamming"))));
-  _options.insert(std::pair<std::string, Option*>("Port", new Option("Port", "-p", "-port", "1", true, std::vector<std::string>(1, "5042"))));
-  _options.insert(std::pair<std::string, Option*>("BindAdress", new Option("BindAdress", "-b", "-bind", "1-", true, std::vector<std::string>(1, "0.0.0.0"))));
+  _options.insert(m_option_pair("ConfigFile", new Option("ConfigFile", "-f", "-file", "1", true, std::vector<std::string>(1, "config.yaml"))));
+  _options.insert(m_option_pair("HostName", new Option("HostName", "-h", "-hostname", "1", true, std::vector<std::string>(1, "Live-Jamming"))));
+  _options.insert(m_option_pair("Port", new Option("Port", "-p", "-port", "1", true, std::vector<std::string>(1, "5042"))));
+  _options.insert(m_option_pair("BindAdress", new Option("BindAdress", "-b", "-bind", "1-", true, std::vector<std::string>(1, "0.0.0.0"))));
 }
 
 void Config::UpdateOptionFromConfig(std::string const & filename) {
   OpenConfig(filename);
   BuildConfig();
 
-  std::map<std::string, Option*>::const_iterator it, end = _options.end();
+  m_option_cit it, end = _options.end();
   
   for (it = _options.begin(); it != end; ++it) {
     if (getValueFromConfig(it->first) != 0) {
@@ -81,7 +80,7 @@ void Config::UpdateOptionFromConfig(std::string const & filename) {
 }
 
 void Config::UpdateOptionFromCommand(int argc, char** const & argv) {
-  std::map<std::string, Option*>::const_iterator it, end = _options.end();
+  m_option_cit it, end = _options.end();
   
   Argument *argument = new Argument(argc, argv);
   _args = argument->getArgument();
@@ -99,20 +98,4 @@ std::vector<std::string> const & Config::getValue(std::string const & key) {
 
   selectedOption = _options[key];
   return selectedOption->getValue();
-}
-
-// trace Options value, to remove after
-void Config::TraceOption() {
-  std::map<std::string, Option*>::iterator it, end = _options.end();
-
-  for (it =_options.begin(); it != end; ++it) {
-    std::cout << it->first << " = ";
-    Option *selectedOption = it->second;
-    std::vector<std::string> test = selectedOption->getValue();
-
-    for (unsigned int i=0; i<test.size(); i++) {
-      std::cout << test.at(i) << " ";
-    }
-    std::cout << "\n";
-  }
 }

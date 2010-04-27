@@ -5,7 +5,7 @@ class IDatabase {
 
  private :
   // All inherent database methods
-  virtual int Connection() = 0;
+  virtual void Connection() = 0;
 };
 
 #endif

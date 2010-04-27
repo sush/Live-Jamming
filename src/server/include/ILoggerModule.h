@@ -8,7 +8,7 @@ template <typename T>
 class ILoggerModule : public Singleton<T> {
 
  public :
-  virtual void AddLine(int, std::string const &) = 0;
+  virtual void AddLine(int, std::string const &) const = 0;
 };
 
 #endif
