@@ -14,7 +14,7 @@ SERVER_SRC	=		server/main.cpp\
 				server/Session.cpp\
 				server/Config.cpp\
 				server/Option.cpp\
-				server/Argument.cpp\				
+				server/Argument.cpp\
 				core/Packet.cpp\
 				core/Packet_v1.cpp\
 				core/PacketQueue.cpp

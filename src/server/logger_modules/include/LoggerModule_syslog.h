@@ -4,7 +4,7 @@
 #include <syslog.h>
 #include <ILoggerModule.h>
 
-class LoggerModule_syslog : public ILoggerModule<Syslog> {
+class LoggerModule_syslog : public ILoggerModule<LoggerModule_syslog> {
 
   friend class Singleton<LoggerModule_syslog>;
 
