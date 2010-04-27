@@ -109,8 +109,11 @@ void		Component_SessionManager::CallBack_TimeOutOccurred(Session * session, boos
     _pool.schedule(boost::bind(&Component_SessionManager::Disconnect, this, session));
 }
 
-void		Component_SessionManager::Recv_AuthRequest(Packet_v1 *)
+void				Component_SessionManager::Recv_AuthRequest(Packet_v1 *packet_v1)
 {
+  Packet_v1_Session_AuthRequest	*packet_authRequest =
+    static_cast<Packet_v1_Session_AuthRequest *>(packet_v1);
+
   std::cout << "packet_auth_request received" << std::endl;
 }
 

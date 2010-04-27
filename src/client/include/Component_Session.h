@@ -6,6 +6,8 @@
 #include <boost/array.hpp>
 #include <boost/asio.hpp>
 #include <IComponent.h>
+#include <Packet_v1.h>
+#include <Packet_v1_Session_AuthRequest.h>
 
 class Component_Session : public IComponent
 {

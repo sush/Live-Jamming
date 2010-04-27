@@ -19,9 +19,7 @@ Packet::~Packet()
 
 void	Packet::Print() const
 {
-  std::cout << "[packet] ";
-  //  std::cout.write(_buffer->data(), _len);
-  std::cout << " [" << _len << " bytes]" << std::endl;
+  std::cout << "[PROTO_VERSION: " << getProtoVersion() << " {" << PROTO_PROTOVERSION_SIZE << "}]" << std::endl;
 }
 
 int	Packet::getMaxSize() const
@@ -54,8 +52,10 @@ field_t					Packet::getField(unsigned int bin_offset, unsigned int bin_len) cons
   field_t				value = 0;
   unsigned int				start_byte;
   unsigned int				end_byte;
-  unsigned char				byte;
+  byte_t				byte;
   
+  //  std::cout << "[0] " << (int)_buffer->at(0) << " [1] " << (int)_buffer->at(1) << std::endl;
+
   start_byte = bin_offset / 8;
   end_byte = (bin_offset + bin_len) / 8;
   if ((bin_offset + bin_len) % 8 == 0)
@@ -70,6 +70,7 @@ field_t					Packet::getField(unsigned int bin_offset, unsigned int bin_len) cons
   // 0000.00BB -> value;
 
   value = byte;
+  //  std::cout << "value = " << value << std::endl;
   if (start_byte == end_byte)
     return value >> (8 - ((bin_offset + bin_len) % 8));
   for (unsigned int i = start_byte + 1; i <= end_byte; ++i)
@@ -78,7 +79,10 @@ field_t					Packet::getField(unsigned int bin_offset, unsigned int bin_len) cons
 	value = (value << 8) + _buffer->at(i);
       else
 	{
+	  //std::cout << "[0] " << (int)_buffer->at(0) << " [1] " << (int)_buffer->at(1) << std::endl;
 	  byte = _buffer->at(i) >> (8 - (bin_offset + bin_len) % 8);
+	  //std::cout << "byte = " << (int)byte << std::endl;
+	  //std::cout << "value << (bin_offset + bin_len) % 8" << (value << (bin_offset + bin_len) % 8) << std::endl;
 	  value = (value << (bin_offset + bin_len) % 8) + byte;
 	}
     }
@@ -88,7 +92,7 @@ field_t					Packet::getField(unsigned int bin_offset, unsigned int bin_len) cons
 void					Packet::setField(field_t value, unsigned int bin_offset, unsigned int bin_len)
 {
   unsigned int		start_byte, end_byte, tmp_val;
-  unsigned char		save_before, save_after;
+  byte_t		save_before, save_after;
 
   if (!bin_len)  // bin_len = 0 nothing to set
     return;
@@ -169,4 +173,5 @@ void					Packet::setField(field_t value, unsigned int bin_offset, unsigned int b
   // xxxx.xxBB
   // 00xx.xxxx
   // xxxx.xx00
+  //std::cout << "[0] " << (int)_buffer->at(0) << " [1] " << (int)_buffer->at(1) << std::endl;
 }

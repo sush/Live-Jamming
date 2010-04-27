@@ -78,22 +78,12 @@ void		Component_Session::Recv_Disconnected(Packet_v1 *)
 
 void		Component_Session::Send_AuthRequest()
 {
-  boost::array<char, PACKET_MAXSIZE> buffer;
+  Packet_v1_Session_AuthRequest	*packet_v1_SAR = new Packet_v1_Session_AuthRequest(&_remote_endpoint);
   
-  buffer[0] = 'l';
-  buffer[1] = 'o';
-  std::cout << "[0] = " << (unsigned short int)buffer[0]
-	    << " [1] = " << (unsigned short int)buffer[1] << std::endl;
-  // 2int sur 4 bit
-  // [int sur 4 bits][int sur 4bits]
-  //  7 puis 6
-  //0111.0110 [8bits]
-  // 7  . 6
-  // 118 [8bits]
-  // buffer[0] = 118
-  
-  // make buffer containing authRequestData
-  // send 
+  packet_v1_SAR->setLogin("login_not_used_yet");
+  packet_v1_SAR->setPass("pass_not_used_yet");
+
+  Send(packet_v1_SAR);
 }
 
 void		Component_Session::Send_TimeOutTestRequest()

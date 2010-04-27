@@ -13,6 +13,7 @@ class Component_SessionManager;
 
 #include <Server.h>
 #include <Packet_v1.h>
+#include <Packet_v1_Session_AuthRequest.h>
 #include <Session.h>
 #include <Protocol.h>
 #include <IComponent.h>

@@ -13,6 +13,7 @@ public:
   virtual ~Packet_v1();
   void MakePacket();
 
+  virtual void	Print() const;
   field_t	getType() const;
   field_t	getSessionId() const;
   field_t	getDataLen() const;

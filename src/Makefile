@@ -18,6 +18,7 @@ SERVER_SRC	=		server/main.cpp\
 				server/Argument.cpp\
 				core/Packet.cpp\
 				core/Packet_v1.cpp\
+				core/Packet_v1_Session_AuthRequest.cpp\
 				core/PacketQueue.cpp
 
 CLIENT_SRC	=		client/main_net.cpp\
@@ -26,7 +27,9 @@ CLIENT_SRC	=		client/main_net.cpp\
 				client/Component_Session.cpp\
 				core/Packet.cpp\
 				core/Packet_v1.cpp\
-				core/PacketQueue.cpp
+				core/PacketQueue.cpp\
+				core/Packet_v1_Session_AuthRequest.cpp\
+
 
 OBJ_SERVER	=		$(SERVER_SRC:.cpp=.o)
 OBJ_CLIENT	=		$(CLIENT_SRC:.cpp=.o)
