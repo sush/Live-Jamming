@@ -16,7 +16,7 @@ typedef	unsigned int	field_t;
 class Packet
 {
 public:
-  typedef boost::array<char, PACKET_MAXSIZE> buffer_t;
+  typedef boost::array<unsigned char, PACKET_MAXSIZE> buffer_t;
 
   Packet(boost::asio::ip::udp::endpoint *, buffer_t *, std::size_t);
   virtual ~Packet();
@@ -31,6 +31,8 @@ public:
 
 protected:
   Packet(boost::asio::ip::udp::endpoint *);
+  field_t					getField(unsigned int, unsigned int) const;
+  void						setField(field_t, unsigned int, unsigned int);
 
   buffer_t *				_buffer;
   std::size_t				_len;

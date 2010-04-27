@@ -38,7 +38,7 @@ field_t		Packet_v1::getType() const
   c = c >> 2;
   //  std::cout << "00YYYY00 = " << (int)(unsigned char)c << std::endl;
 
-  d = (unsigned char)_buffer->at(1) >> 6;
+  d = _buffer->at(1) >> 6;
   //  std::cout << "d = " << (int)(unsigned char)d << std::endl;
 
   return c + d;
