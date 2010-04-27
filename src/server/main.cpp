@@ -1,13 +1,16 @@
 #include <iostream>
 #include <Server.h>
+#include <Protocol.h>
 
-  int		main(int argc, char *argv[])
-  {
-    Server	*server = Server::getInstance();
+int		main(int argc, char *argv[])
+{
+  Server	*server = Server::getInstance();
 
-    server->Init(argc, argv);
-    server->Run();
+  std::cout << "PROTOV1_START_OF_DATA = " << PROTOV1_START_OF_DATA << std::endl;
 
-    server->Delete();
-    return 0;
-  }
+  server->Init(argc, argv);
+  server->Run();
+
+  server->Delete();
+  return 0;
+}

@@ -37,7 +37,7 @@ SRC		=		$(SERVER_SRC) $(CLIENT_SRC)
 OBJ		=		$(SRC:.cpp=.o)
 INCLUDE_DIR	=		-Iinclude -Iserver/include -Iclient/include -Iserver/logger_modules/include -Icore/include -Iserver/user_modules/include
 LIB_DIR		=		-Llibs
-CXXFLAGS	=		-W -Wall -ansi $(INCLUDE_DIR)
+CXXFLAGS	=		-W -Wall -ansi $(INCLUDE_DIR) -DMYSQLPP_MYSQL_HEADERS_BURIED # if not def mysql++ doesnt find loads of files
 LDFLAGS		=		-lboost_system -lboost_thread -lboost_program_options -lyaml-cpp -lmysqlpp
 ifeq ($(DEBUG), yes)
 	CXXFLAGS	+=		-g3 -pg -D_DEBUG
