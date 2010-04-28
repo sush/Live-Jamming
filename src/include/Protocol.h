@@ -1,6 +1,7 @@
 #ifndef __PROTOCOL_H__
 #define __PROTOCOL_H__
 
+typedef unsigned int field_t;
 #define PACKET_MAXSIZE 2048
 
 // This file defines network protocols used in livejamming
@@ -30,28 +31,32 @@
 #define PROTOV1_TYPE_SIZE 6
 
 #define PROTOV1_SESSIONID_OFF (PROTOV1_TYPE_OFF + PROTOV1_TYPE_SIZE)
-#define PROTOV1_SESSIONID_SIZE 16
+#define PROTOV1_SESSIONID_SIZE 32
 
 #define PROTOV1_DATALEN_OFF (PROTOV1_SESSIONID_OFF + PROTOV1_SESSIONID_SIZE)
 #define PROTOV1_DATALEN_SIZE 12
 
 #define PROTOV1_START_OF_DATA (((PROTOV1_DATALEN_OFF + PROTOV1_DATALEN_SIZE) % 8 == 0)? \
 			       ((PROTOV1_DATALEN_OFF + PROTOV1_DATALEN_SIZE) / 8): \
-			       ((PROTOV1_DATALEN_OFF + PROTOV1_DATALEN_SIZE) / 8 + 8))
+			       ((PROTOV1_DATALEN_OFF + PROTOV1_DATALEN_SIZE) / 8 + 1))
 
 //////////// Packet types  /////////////
 typedef enum 
  {
-   SESSION_AUTH_REQUEST = 1,
-   SESSION_AUTH_RESPOND_OK,
-   SESSION_AUTH_RESPOND_NOK_BADAUTH,
-   SESSION_AUTH_RESPOND_NOK_DUPLICATE,
-   SESSION_DISCONNECT,
-   SESSION_DISCONNECTED,
-   SESSION_TIMEOUT,
-   SESSION_KEEPALIVE
+   /* 1  */	SESSION_AUTH_REQUEST = 1,
+   /* 2  */	SESSION_AUTH_RESPONSE_OK,
+   /* 3  */	SESSION_AUTH_RESPONSE_NOK_BADAUTH,
+   /* 4  */	SESSION_AUTH_RESPONSE_NOK_DUPLICATE,
+   /* 5  */	SESSION_DISCONNECT,
+   /* 6  */	SESSION_DISCONNECTED,
+   /* 7  */	SESSION_TIMEOUT,
+   /* 8  */	SESSION_KEEPALIVE
  }proto_v1_packet_type;
 
+///// NOT WORKING runtime8 cuz MACRO ///
+
+#define PACKET_TYPE_NAME(x) #x
+///////////////////////////////////////
 
 
     //////////////////////////////////////////////////////////////////

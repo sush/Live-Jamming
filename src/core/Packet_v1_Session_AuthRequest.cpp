@@ -1,6 +1,6 @@
 #include <Packet_v1_Session_AuthRequest.h>
 
-Packet_v1_Session_AuthRequest::Packet_v1_Session_AuthRequest(boost::asio::ip::udp::endpoint *endpoint)
+Packet_v1_Session_AuthRequest::Packet_v1_Session_AuthRequest(boost::asio::ip::udp::endpoint const *endpoint)
   : Packet_v1(endpoint), _login(0), _pass(0)
 {
   setType(SESSION_AUTH_REQUEST);

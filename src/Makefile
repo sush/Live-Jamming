@@ -23,7 +23,7 @@ SERVER_SRC	=		server/main.cpp\
 
 CLIENT_SRC	=		client/main_net.cpp\
 				client/Client.cpp\
-				client/ClientSession.cpp\
+				client/ClientManager.cpp\
 				client/Component_Session.cpp\
 				core/Packet.cpp\
 				core/Packet_v1.cpp\

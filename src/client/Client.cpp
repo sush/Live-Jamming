@@ -1,9 +1,11 @@
 #include <Client.h>
 
-const char		connect_address[] = "127.0.0.1";
+//const char		connect_address[] = "127.0.0.1";
+const char		connect_address[] = "88.191.94.150";
+
 const int		Client::_connect_port	= 5042;
-const int		Client::_port	= 5051;
-const int		Client::_poolSize = 1;
+int			Client::_port	= _connect_port;
+int			Client::_poolSize = 1;
 const int		updateTime = 1;
 const int		treat_delay = 0; //micro seconds
 
@@ -30,6 +32,7 @@ void	Client::CallBack_handle_receive(boost::system::error_code const & error, st
 {
   if (!error || error == boost::asio::error::message_size)
     {
+
       ////////// THREAD SAFE//////////////////////
       // !!! to implement !!!
       // this lock should have a very high priority for locking
@@ -68,7 +71,7 @@ void		Client::Thread_TreatPacket()
   ////////////////////////////////////////////////
 
   //        packet->Print();
-  _clientSession->Manage(packet);
+  _clientManager->Manage(packet);
   ////////////////////////// WAIT //////////////////
   usleep(treat_delay); // wait <treat_delay> to fake for delay introduced by treatment
   ////////////////////////// WAIT //////////////////
@@ -78,22 +81,37 @@ void		Client::CallBack_handle_send()
 {
 }
 
+void		Client::BindToLocalPort()
+{
+  do {
+    try {
+      _local_endpoint = new boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), _port);
+      _socket->bind(*_local_endpoint);
+    }
+    catch (std::exception e)
+      {
+	++_port; // try to bind to next local port until one is available
+	delete _local_endpoint;
+	_local_endpoint = 0;
+      }
+  }
+  while (!_local_endpoint);
+}
 
 void		Client::Init(int argc, char *argv[])
 {
   _argc = argc;
   _argv = argv;
   _io_service = new boost::asio::io_service;
-  _local_endpoint = new boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), _port);
-  _remote_endpoint = new boost::asio::ip::udp::endpoint(boost::asio::ip::address::from_string("127.0.0.1"), Client::_connect_port);
+  _remote_endpoint = new boost::asio::ip::udp::endpoint(boost::asio::ip::address::from_string(connect_address), Client::_connect_port);
 
   _socket = new boost::asio::ip::udp::socket (*_io_service);
   _socket->open(boost::asio::ip::udp::v4());
-  _socket->bind(*_local_endpoint);
+  BindToLocalPort();
   _packetQueue = new PacketQueue;
 
   _timer = new boost::asio::deadline_timer(*_io_service, boost::posix_time::seconds(updateTime));
   _timer->async_wait(boost::bind(&Client::CallBack_Debug_Print, this));
   _pool = new boost::threadpool::pool(_poolSize);
-  _clientSession = new ClientSession(*_io_service, *_pool, *_socket, *_remote_endpoint);
+  _clientManager = new ClientManager(*_io_service, *_pool, *_socket, *_remote_endpoint);
 }

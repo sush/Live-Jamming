@@ -10,7 +10,7 @@
 class Packet_v1_Session_AuthRequest : public Packet_v1
 {
 public:
-  Packet_v1_Session_AuthRequest(boost::asio::ip::udp::endpoint *);
+  Packet_v1_Session_AuthRequest(boost::asio::ip::udp::endpoint const *);
   virtual ~Packet_v1_Session_AuthRequest();
 
   byte_t const	*getLogin() const;

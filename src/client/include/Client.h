@@ -15,7 +15,7 @@ class Client;
 #include <PacketQueue.h>
 #include <Singleton.h>
 #include <Config.h>
-#include <ClientSession.h>
+#include <ClientManager.h>
 
 class Client : public Singleton<Client>
 {
@@ -26,6 +26,7 @@ public:
   void					Init(int, char *[]);
     
 private:
+  void					BindToLocalPort();
   void					Thread_TreatPacket();
   void					start_receive();
   void					CallBack_handle_receive(boost::system::error_code const &, std::size_t);
@@ -35,9 +36,9 @@ private:
   int					_argc;
   char					**_argv;
   static const std::string		_address;
-  static const int			_port;
+  static int				_port;
   static const int			_connect_port;
-  static const int			_poolSize;
+  static int				_poolSize;
 
   boost::mutex				_packetQueue_mutex;
 
@@ -51,7 +52,7 @@ private:
   Packet::buffer_t			*_recv_buffer;
   PacketQueue				*_packetQueue;
   Config				*_config;
-  ClientSession				*_clientSession;
+  ClientManager				*_clientManager;
 };
 
 #endif // ! __CLIENT_H__ 

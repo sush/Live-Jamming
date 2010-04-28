@@ -1,10 +1,10 @@
 #include <Packet.h>
 
-Packet::Packet(boost::asio::ip::udp::endpoint * endpoint, buffer_t *buffer, std::size_t len)
+Packet::Packet(boost::asio::ip::udp::endpoint const * endpoint, buffer_t *buffer, std::size_t len)
   :_buffer(buffer), _len(len), _endpoint(endpoint)
 {}
 
-Packet::Packet(boost::asio::ip::udp::endpoint * endpoint)
+Packet::Packet(boost::asio::ip::udp::endpoint const * endpoint)
   :_endpoint(endpoint)
 {
   _buffer = new buffer_t;

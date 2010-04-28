@@ -17,6 +17,7 @@ class Component_SessionManager;
 #include <Session.h>
 #include <Protocol.h>
 #include <IComponent.h>
+#include <ServerManager.h>
 
 class Component_SessionManager :public IComponent
 {
@@ -25,44 +26,47 @@ class Component_SessionManager :public IComponent
 
 public:
 
-  Component_SessionManager(IComponent::m_packet_bindings &, boost::asio::io_service &, boost::asio::ip::udp::socket &, boost::threadpool::pool &);
+  Component_SessionManager(IComponent::m_packet_bindings &, ServerManager *);
   virtual	~Component_SessionManager();
 
   void		Manage(Packet *);
 
 private:
-  typedef std::list<Session *>			l_Session;
-  typedef l_Session::iterator			l_Session_it;
-  typedef l_Session::const_iterator		l_Session_cit;
+  typedef std::map<field_t, Session *>			m_Session;
+  typedef m_Session::iterator				m_Session_it;
+  typedef m_Session::const_iterator			m_Session_cit;
 
   void					PacketBindings();
 
   Session				*FindSession(Packet_v1 const *);
-  l_Session_it				FindSession_it(Session *);
-  Session				*DoAuth(Packet const *);
+  Session				*DoAuth(Packet_v1 const *);
   bool					IsUniqId(unsigned int) const;
   unsigned int				GenSessionId();
   void					PrintSession(Session const *) const;
   void					PrintSession(Packet const *) const;
   void					Disconnect(Session *);
 
+  //recv
   void					Recv_AuthRequest(Packet_v1 *);
   void					Recv_Disconnect(Packet_v1 *);
   void					Recv_KeepAlive(Packet_v1 *);
   void					Recv_TimeOutTest(Packet_v1 *);
+  // send
   void					Send_TimeOutTest(Session *);
-  void					Send_AuthResponse();
+  void					Send_AuthResponse_OK(Session *);
+  void					Send_AuthResponse_NOK_BADAUTH(Session *);
+  void					Send_AuthResponse_NOK_DUPLICATE(Session *);
+  void					Send_KeepAlive(Session *);
+
   void					CallBack_TimeOutTest(Session *, boost::system::error_code const &);
   void					CallBack_TimeOutOccurred(Session *, boost::system::error_code const &);
   
 
   IComponent::m_packet_bindings		&_packetBindings;
-  boost::asio::io_service &		_io_service;
-  boost::asio::ip::udp::socket &	_socket;
-  boost::threadpool::pool &		_pool;
+  ServerManager				*_serverManager;
 
   boost::rand48				_rng;
-  l_Session				*_sessionList;
+  m_Session				*_sessionMap;
 };
 
 #endif // ! __COMPONENT_SESSIONMANAGER_H__

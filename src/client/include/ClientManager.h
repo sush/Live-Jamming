@@ -1,5 +1,7 @@
-#ifndef __CLIENTSESSION_H__
-#define __CLIENTSESSION_H__
+#ifndef __CLIENTMANAGER_H__
+#define __CLIENTMANAGER_H__
+
+class ClientManager;
 
 #include <iostream>
 #include <map>
@@ -11,14 +13,19 @@
 #include <IComponent.h>
 #include <Component_Session.h>
 
-class ClientSession
+class ClientManager
 {
 public:
-  ClientSession(boost::asio::io_service &, boost::threadpool::pool &,
+  ClientManager(boost::asio::io_service &, boost::threadpool::pool &,
 		boost::asio::ip::udp::socket &, boost::asio::ip::udp::endpoint &);
-  virtual	~ClientSession();
+  virtual	~ClientManager();
   void		Manage(Packet *);
 
+  boost::asio::ip::udp::endpoint &	getEndpoint();
+
+  void					CallBack_handle_send(Packet_v1 *) const;
+  void					Send(proto_v1_packet_type) const;
+  void					Send(Packet_v1 *) const;
 
 private:
   void		Init_Components();
@@ -26,7 +33,7 @@ private:
   boost::asio::io_service &		_io_service;
   boost::threadpool::pool &		_pool;
   boost::asio::ip::udp::socket &	_socket;
-  boost::asio::ip::udp::endpoint	_remote_endpoint;
+  boost::asio::ip::udp::endpoint &	_remote_endpoint;
   IComponent::m_packet_bindings		_packetBindings;
   // core components
   Component_Session			*_session;
@@ -34,5 +41,5 @@ private:
 };
 
 
-#endif // ! __CLIENTSESSION_H__
+#endif // ! __CLIENTMANAGER_H__
 

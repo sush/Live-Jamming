@@ -51,7 +51,7 @@ void	Server::CallBack_handle_receive(boost::system::error_code const & error, st
 void		Server::CallBack_Debug_Print()
 {
 #ifdef _DEBUG
-  std::cout << "[PaquetQueue] packet_no[" << _packetQueue->getPacketCount() << "] MaxSize = " << _packetQueue->getMaxSize() << ", Size = " << _packetQueue->getSize() << std::endl;
+  std::cerr << "[PaquetQueue] packet_no[" << _packetQueue->getPacketCount() << "] MaxSize = " << _packetQueue->getMaxSize() << ", Size = " << _packetQueue->getSize() << std::endl;
 #endif
   _timer->expires_at(_timer->expires_at() + boost::posix_time::seconds(updateTime));
   _timer->async_wait(boost::bind(&Server::CallBack_Debug_Print, this));
@@ -93,5 +93,5 @@ void		Server::Init(int argc, char *argv[])
   _timer = new boost::asio::deadline_timer(*_io_service, boost::posix_time::seconds(updateTime));
   _timer->async_wait(boost::bind(&Server::CallBack_Debug_Print, this));
   _pool = new boost::threadpool::pool(_poolSize);
-  _serverManager = new ServerManager(*_io_service, *_pool);
+  _serverManager = new ServerManager(*_io_service, *_pool, *_socket);
 }

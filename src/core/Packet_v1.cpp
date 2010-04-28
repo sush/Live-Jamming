@@ -1,6 +1,6 @@
 #include <Packet_v1.h>
 
-Packet_v1::Packet_v1(boost::asio::ip::udp::endpoint *endpoint)
+Packet_v1::Packet_v1(boost::asio::ip::udp::endpoint const *endpoint)
   : Packet(endpoint)
 {
   setProtoVersion(PROTOV1);
@@ -10,6 +10,13 @@ Packet_v1::~Packet_v1()
 {}
 
 void		Packet_v1::Print() const
+{
+  // problem with dynamic_cast from Packet* to Packet_v1*
+  // wrong function is called so Print_v1 was created
+  Print_v1();  
+}
+
+void		Packet_v1::Print_v1() const
 {
   std::cout << "[PROTO_VERSION: " << getProtoVersion() << " {" << PROTO_PROTOVERSION_SIZE << "}]"
 	    << "[TYPE: " << getType() << " {" << PROTOV1_TYPE_SIZE << "}]"

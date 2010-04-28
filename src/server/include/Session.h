@@ -5,7 +5,7 @@ class Session;
 
 #include <iostream>
 #include <boost/asio.hpp>
-#include <Packet.h>
+#include <Packet_v1.h>
 #include <Component_SessionManager.h>
 #include <boost/shared_ptr.hpp>
 #include <boost/bind.hpp>
@@ -13,18 +13,21 @@ class Session;
 class Session
 {
 public:
-  Session(Component_SessionManager *, boost::asio::io_service &, Packet const *, unsigned int);
+  Session(Component_SessionManager *, boost::asio::io_service &, Packet_v1 const *, unsigned int);
   virtual				~Session();
   bool					operator == (Session const &) const;
-  bool					operator == (Packet const &) const;
+  bool					operator != (Session const &) const;
+  bool					operator == (Packet_v1 const &) const;
+  bool					operator != (Packet_v1 const &) const;
 
-  boost::asio::ip::address		getIP() const;
-  unsigned short			getPort() const;
-  unsigned int				getSessionId() const;
-  void					setTimeOutTest();
-  void					setTimeOutOccurred();
-  void					CancelTimeOutTest();
-  void					CancelTimeOutOccurred();
+  boost::asio::ip::udp::endpoint const &	getEndpoint() const;
+  boost::asio::ip::address			getIP() const;
+  unsigned short				getPort() const;
+  field_t					getSessionId() const;
+  void						setTimeOutTest();
+  void						setTimeOutOccurred();
+  void						CancelTimeOutTest();
+  void						CancelTimeOutOccurred();
 
 private:
   Component_SessionManager		*_sessionManager;
@@ -34,6 +37,7 @@ private:
   boost::asio::deadline_timer		*_timer_timeOutTest;
   boost::asio::deadline_timer		*_timer_timeOutOccurred;
   unsigned int				_sessionId;
+  boost::asio::ip::udp::endpoint const	&_remote_endpoint;
 };
 
 
