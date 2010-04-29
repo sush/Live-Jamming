@@ -39,6 +39,11 @@ boost::asio::ip::udp::endpoint &	ClientManager::getEndpoint()
   return _remote_endpoint;
 }
 
+boost::asio::io_service		&ClientManager::getIO()
+{
+   return _io_service;
+}
+
 
 void		ClientManager::CallBack_handle_send(Packet_v1 *packet_v1) const
 {

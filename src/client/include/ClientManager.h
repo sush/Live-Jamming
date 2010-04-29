@@ -21,7 +21,8 @@ public:
   virtual	~ClientManager();
   void		Manage(Packet *);
 
-  boost::asio::ip::udp::endpoint &	getEndpoint();
+  boost::asio::ip::udp::endpoint 	&getEndpoint();
+  boost::asio::io_service		&getIO();
 
   void					CallBack_handle_send(Packet_v1 *) const;
   void					Send(proto_v1_packet_type) const;
@@ -40,6 +41,4 @@ private:
   // list of additional optional components
 };
 
-
 #endif // ! __CLIENTMANAGER_H__
-

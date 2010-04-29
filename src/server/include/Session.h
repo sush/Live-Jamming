@@ -24,8 +24,11 @@ public:
   boost::asio::ip::address			getIP() const;
   unsigned short				getPort() const;
   field_t					getSessionId() const;
+  unsigned int					getTimeOutTestCount() const;
   void						setTimeOutTest();
   void						setTimeOutOccurred();
+  void						setTimeOutTestCount(unsigned int);
+
   void						CancelTimeOutTest();
   void						CancelTimeOutOccurred();
 
@@ -38,6 +41,7 @@ private:
   boost::asio::deadline_timer		*_timer_timeOutOccurred;
   unsigned int				_sessionId;
   boost::asio::ip::udp::endpoint const	&_remote_endpoint;
+  unsigned int				_timeOutTestCount;
 };
 
 

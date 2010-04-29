@@ -1,5 +1,7 @@
 #include <Component_SessionManager.h>
 
+int		timeOutTest_maxRetry = 3;
+
 Component_SessionManager::Component_SessionManager(IComponent::m_packet_bindings &packetBindings,
 						   ServerManager * serverManager)
   :IComponent(serverManager), _packetBindings(packetBindings), _serverManager(serverManager)
@@ -94,7 +96,14 @@ void		Component_SessionManager::CallBack_TimeOutTest(Session * session, boost::s
 void		Component_SessionManager::CallBack_TimeOutOccurred(Session * session, boost::system::error_code const & error_code)
 {
   if (error_code != boost::asio::error::operation_aborted)
-    _serverManager->getPool().schedule(boost::bind(&Component_SessionManager::Disconnect, this, session));
+    {
+      
+      session->setTimeOutTestCount(session->getTimeOutTestCount() + 1);
+      if (session->getTimeOutTestCount() >= timeOutTest_maxRetry)
+	_serverManager->getPool().schedule(boost::bind(&Component_SessionManager::Disconnect, this, session));
+      else
+	Send_TimeOutTest(session);
+    }
 }
 
 void				Component_SessionManager::Recv_AuthRequest(Packet_v1 *packet_v1)

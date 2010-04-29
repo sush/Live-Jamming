@@ -21,6 +21,7 @@ public:
   virtual void	PacketBindings();
   
   field_t	getSessionId() const;
+  ClientManager	&getClientManager();
   void		Connect(std::string const &, std::string const &);
   bool		IsLogged() const;
 
@@ -30,8 +31,7 @@ private:
   void		Send(Packet_v1 *) const;
   void		Send(proto_v1_packet_type) const;
 
-  void		Recv_AuthResponse_OK(Packet_v1 *);
-  void		Recv_AuthResponse_NOK(Packet_v1 *);
+  void		Recv_AuthResponse(Packet_v1 *);
   void		Recv_TimeOutTest(Packet_v1 *);
   void		Recv_KeepAlive(Packet_v1 *);
   void		Recv_Disconnected(Packet_v1 *);
@@ -39,11 +39,13 @@ private:
   void		Send_TimeOutTestRequest();
   void		Send_Disconnect();
   void		Send_KeepAlive();
+  void		CallBack_AuthRequest_timeout(boost::system::error_code const &);
   
   m_packet_bindings  &			_packetBindings;
   ClientManager				*_clientManager;
   bool					_logged;
   field_t				_sessionId;
+  boost::asio::deadline_timer		*_authRequest_timeout;
 };
 
 #endif // ! __COMPONENT_SESSION_H__
