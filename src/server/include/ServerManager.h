@@ -35,6 +35,7 @@ public:
   void		Send(Packet_v1 *, boost::asio::ip::udp::endpoint *) const;
   void		Send(Packet_v1 *, Session *) const;
   void		Send(proto_v1_packet_type, Session *) const;
+  unsigned int	CountActiveSessions() const;
   
 private:
   boost::asio::io_service &		_io_service;

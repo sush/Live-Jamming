@@ -52,6 +52,11 @@ Session		*Component_SessionManager::FindSession(Packet_v1 const * packet_v1)
   return it->second;
 }
 
+unsigned int	Component_SessionManager::CountActiveSessions() const
+{
+  return _sessionMap->size();
+}
+
 Session 	*Component_SessionManager::DoAuth(Packet_v1 const * packet_v1)
 {
   // if packet is auth request type

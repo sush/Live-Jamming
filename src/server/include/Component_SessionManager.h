@@ -39,6 +39,7 @@ private:
   void					PacketBindings();
 
   Session				*FindSession(Packet_v1 const *);
+  unsigned int				CountActiveSessions() const;
   Session				*DoAuth(Packet_v1 const *);
   bool					IsUniqId(unsigned int) const;
   unsigned int				GenSessionId();

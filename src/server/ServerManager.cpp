@@ -78,3 +78,8 @@ void		ServerManager::Init_Components()
 {
   _sessionManager = new Component_SessionManager(_packetBindings, this);
 }
+
+unsigned int	ServerManager::CountActiveSessions() const
+{
+  return _sessionManager->CountActiveSessions();
+}
