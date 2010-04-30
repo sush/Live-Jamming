@@ -27,10 +27,6 @@ public:
 
 private:
 
-  void		CallBack_handle_send() const;
-  void		Send(Packet_v1 *) const;
-  void		Send(proto_v1_packet_type) const;
-
   void		Recv_AuthResponse(Packet_v1 *);
   void		Recv_TimeOutTest(Packet_v1 *);
   void		Recv_KeepAlive(Packet_v1 *);
