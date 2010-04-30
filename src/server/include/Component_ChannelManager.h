@@ -1,7 +1,7 @@
-#ifndef __COMPONENT_CHANNEL_H__
-#define __COMPONENT_CHANNEL_H__
+#ifndef __COMPONENT_CHANNELMANAGER_H__
+#define __COMPONENT_CHANNELMANAGER_H__
 
-class Component_Channel;
+class Component_ChannelManager;
 
 #include <iostream>
 #include <boost/bind.hpp>
@@ -11,23 +11,28 @@ class Component_Channel;
 #include <Protocol.h>
 #include <Packet_v1.h>
 #include <ClientManager.h>
+#include <boost/thread.hpp>
+#include <boost/threadpool.hpp>
 
-class Component_Channel : public IComponent
+class Component_ChannelManager : public IComponent
 {
  public:
 
-  Component_Channel(IComponent::m_packet_bindings &, ClientManager *);
-  virtual       ~Component_Channel();
+  Component_ChannelManager(IComponent::m_packet_bindings &, ClientManager *);
+  virtual       ~Component_ChannelManager();
   virtual void  PacketBindings();
 
  private:
 
-  void          Recv_Channel_MSG(Packet_v1 *);
   void          Recv_Channel_JOIN(Packet_v1 *);
   void          Recv_Channel_LEAVE(Packet_v1 *);
 
   m_packet_bindings  &                  _packetBindings;
   ClientManager                         *_clientManager;
+  boost::mutex				_channel_mutex;
+
+  typedef std::multimap<std::string, std::vector<int>> m_channel;
+  m_channel				_channel;
 };
 
-#endif // ! __COMPONENT_CHANNEL_H__
+#endif // ! __COMPONENT_CHANNELMANAGER_H__

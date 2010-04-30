@@ -20,3 +20,11 @@
 	send(send_private)
 	send(join)
 	send(leave)
+
+
+
+Component_ChannelManager
+{
+packet_v1_channel.getChannelName -> 
+map [name | vector<user>]
+}
