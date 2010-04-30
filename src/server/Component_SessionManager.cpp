@@ -1,5 +1,6 @@
 #include <Component_SessionManager.h>
 
+
 int		timeOutTest_maxRetry = 3;
 
 Component_SessionManager::Component_SessionManager(IComponent::m_packet_bindings &packetBindings,
@@ -7,7 +8,7 @@ Component_SessionManager::Component_SessionManager(IComponent::m_packet_bindings
   :IComponent(serverManager), _packetBindings(packetBindings), _serverManager(serverManager)
 {
   _sessionMap = new m_Session;
-  _rng.seed(std::clock());
+  _rng.seed((int32_t)std::clock());
   PacketBindings();
 }
 
