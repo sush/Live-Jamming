@@ -1,0 +1,22 @@
+
+[server]
+	recv (send)		// a client from channel sends message to channel
+	recv (send_private)	// a client from channel sends private message to another user of channel
+	recv (join)		// a new client joins channel	(create if not exists)	  // THREAD SAFE (PROTECT with mutex)
+	recv (leave)		// a client leaves channel      (delete if no users left) // THREAD SAFE (PROTECT with mutex)
+
+	send(send)
+	send(send_private)
+	send(join)
+	send(leave)
+
+[client]
+	recv (send)
+	recv (send_private)
+	recv (join)
+	recv (leave)
+
+	send(send)
+	send(send_private)
+	send(join)
+	send(leave)
