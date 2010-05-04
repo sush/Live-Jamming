@@ -127,10 +127,13 @@ void		Component_SessionManager::BindingsRecv()
 {
   _bindingsRecv[SESSION_AUTH_REQUEST] =
     new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_SessionManager::Recv_AuthRequest));
+
   _bindingsRecv[SESSION_KEEPALIVE] =
     new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_SessionManager::Recv_KeepAlive));
+
   _bindingsRecv[SESSION_DISCONNECT] =
     new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_SessionManager::Recv_Disconnect));
+
   _bindingsRecv[SESSION_TIMEOUT] =
     new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_SessionManager::Recv_TimeOutTest));
 }

@@ -122,7 +122,7 @@ void				Session::setRetry(Packet_v1 * packet_v1)
   if (_sendTimerMap.find(type) == _sendTimerMap.end())
     _sendTimerMap[type] = new boost::asio::deadline_timer(_io_service);
   _sendTimerMap[type]->expires_from_now(boost::posix_time::seconds(_manager->getRetryDelay()));
-  _sendTimerMap[type]->async_wait(boost::bind(&Manager::Send_TimeOut, _manager, this, packet_v1, boost::asio::placeholders::error));
+  _sendTimerMap[type]->async_wait(boost::bind(&Manager::CallBack_Send_TimeOut, _manager, this, packet_v1, boost::asio::placeholders::error));
 }
 
 

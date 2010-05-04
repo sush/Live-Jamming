@@ -38,7 +38,7 @@ public:
   void		Send(proto_v1_packet_type, Session *, bool) const;
   // this is useful for sending without being authentificated
   void		Send(Packet_v1 *, boost::asio::ip::udp::endpoint &) const;
-  void		Send_TimeOut(Session *, Packet_v1 *, boost::system::error_code);
+  void		CallBack_Send_TimeOut(Session *, Packet_v1 *, boost::system::error_code);
   void		CallBack_TimeOutTest(Session *, boost::system::error_code const &);
   void		CallBack_TimeOutOccurred(Session *, boost::system::error_code const &);
 

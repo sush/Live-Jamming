@@ -33,7 +33,7 @@ void		Manager::CallBack_handle_send(Packet_v1 *) const
   //  delete packet_v1;
 }
 
-void		Manager::Send_TimeOut(Session * session, Packet_v1 *packet_v1, boost::system::error_code error_code)
+void		Manager::CallBack_Send_TimeOut(Session * session, Packet_v1 *packet_v1, boost::system::error_code error_code)
 {
   if (error_code != boost::asio::error::operation_aborted)
     _pool.schedule(boost::bind(&Manager::Send_bind, this, packet_v1, session, RETRY));
