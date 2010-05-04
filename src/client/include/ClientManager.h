@@ -4,39 +4,29 @@
 class ClientManager;
 
 #include <iostream>
-#include <map>
 #include <boost/asio.hpp>
-#include <boost/threadpool.hpp>
-#include <boost/array.hpp>
 
-#include <Protocol.h>
-#include <IComponent.h>
+#include <Manager.h>
+#include <Session.h>
 #include <Component_Session.h>
 
-class ClientManager
+class ClientManager : public Manager
 {
 public:
-  ClientManager(boost::asio::io_service &, boost::threadpool::pool &,
-		boost::asio::ip::udp::socket &, boost::asio::ip::udp::endpoint &);
-  virtual	~ClientManager();
-  void		Manage(Packet *);
+					ClientManager(boost::asio::io_service &, boost::threadpool::pool &,
+						      boost::asio::ip::udp::socket &, boost::asio::ip::udp::endpoint &);
+  virtual				~ClientManager();
 
-  boost::asio::ip::udp::endpoint 	&getEndpoint();
-  boost::asio::io_service		&getIO();
-
-  void					CallBack_handle_send(Packet_v1 *) const;
-  void					Send(proto_v1_packet_type) const;
-  void					Send(Packet_v1 *) const;
+  virtual void				Manage(Packet *);
+  boost::asio::ip::udp::endpoint	&getEndpoint();
 
 private:
-  void		Init_Components();
+  virtual void				Init_Components();
+  virtual void				Disconnect(Session *);
 
-  boost::asio::io_service &		_io_service;
-  boost::threadpool::pool &		_pool;
-  boost::asio::ip::udp::socket &	_socket;
-  boost::asio::ip::udp::endpoint &	_remote_endpoint;
-  IComponent::m_packet_bindings		_packetBindings;
+private:
   // core components
+  boost::asio::ip::udp::endpoint	&_remote_endpoint;
   Component_Session			*_session;
   // list of additional optional components
 };

@@ -6,30 +6,35 @@ EXEC_CLIENT	=		livejammin_client
 BUILD_DIR	=		build
 DEBUG		=		yes
 CPP		=		g++
+
 SERVER_SRC	=		server/main.cpp\
 				server/logger_modules/LoggerModule_syslog.cpp\
 				server/user_modules/UserModule_mysql.cpp\
 				server/Server.cpp\
 				server/ServerManager.cpp\
 				server/Component_SessionManager.cpp\
-				server/Session.cpp\
 				server/Config.cpp\
 				server/Option.cpp\
 				server/Argument.cpp\
+				core/Session.cpp\
+				core/Manager.cpp\
 				core/Packet.cpp\
 				core/Packet_v1.cpp\
 				core/Packet_v1_Session_AuthRequest.cpp\
-				core/PacketQueue.cpp
+				core/PacketQueue.cpp\
+				core/Bind_recv.cpp
 
 CLIENT_SRC	=		client/main_net.cpp\
 				client/Client.cpp\
 				client/ClientManager.cpp\
 				client/Component_Session.cpp\
+				core/Manager.cpp\
+				core/Session.cpp\
 				core/Packet.cpp\
 				core/Packet_v1.cpp\
 				core/PacketQueue.cpp\
 				core/Packet_v1_Session_AuthRequest.cpp\
-
+				core/Bind_recv.cpp
 
 OBJ_SERVER	=		$(SERVER_SRC:.cpp=.o)
 OBJ_CLIENT	=		$(CLIENT_SRC:.cpp=.o)

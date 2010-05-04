@@ -13,14 +13,15 @@ public:
   virtual ~Packet_v1();
   void MakePacket();
 
-  void		Print() const;
-  void		Print_v1() const;
-  field_t	getType() const;
-  field_t	getSessionId() const;
-  field_t	getDataLen() const;
-  void		setType(field_t);
-  void		setSessionId(field_t);
-  void		setDataLen(field_t);
+  void			Print() const;
+  void			Print_v1() const;
+  proto_v1_packet_type	getType() const;
+  field_t		getSessionId() const;
+  field_t		getDataLen() const;
+  void			setType(field_t);
+  void			setSessionId(field_t);
+  void			setDataLen(field_t);
+  char *		getStartOfData();
 
 private:
   

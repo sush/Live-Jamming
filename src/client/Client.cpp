@@ -4,7 +4,7 @@ const char		connect_address[] = "127.0.0.1";
 //const char		connect_address[] = "88.191.94.150";
 
 const int		Client::_connect_port	= 5042;
-int			Client::_port	= _connect_port;
+int			Client::_port	= _connect_port + 1;
 int			Client::_poolSize = 1;
 const int		updateTime = 1;
 const int		treat_delay = 0; //micro seconds
@@ -21,7 +21,6 @@ void		Client::Run()
 void Client::start_receive()
 {
   _recv_buffer = new Packet::buffer_t;
-  _remote_endpoint = new boost::asio::ip::udp::endpoint;
   _socket->async_receive_from(boost::asio::buffer(*_recv_buffer), *_remote_endpoint,
 			      boost::bind(&Client::CallBack_handle_receive, this,
 					  boost::asio::placeholders::error,
@@ -54,7 +53,7 @@ void	Client::CallBack_handle_receive(boost::system::error_code const & error, st
 void		Client::CallBack_Debug_Print()
 {
 #ifdef _DEBUG
-  std::cout << "[PaquetQueue] packet_no[" << _packetQueue->getPacketCount() << "] MaxSize = " << _packetQueue->getMaxSize() << ", Size = " << _packetQueue->getSize() << std::endl;
+  std::cerr << "[PaquetQueue] packet_no[" << _packetQueue->getPacketCount() << "] MaxSize = " << _packetQueue->getMaxSize() << ", Size = " << _packetQueue->getSize() << std::endl;
 #endif
   _timer->expires_at(_timer->expires_at() + boost::posix_time::seconds(updateTime));
   _timer->async_wait(boost::bind(&Client::CallBack_Debug_Print, this));
@@ -104,7 +103,6 @@ void		Client::Init(int argc, char *argv[])
   _argv = argv;
   _io_service = new boost::asio::io_service;
   _remote_endpoint = new boost::asio::ip::udp::endpoint(boost::asio::ip::address::from_string(connect_address), Client::_connect_port);
-
   _socket = new boost::asio::ip::udp::socket (*_io_service);
   _socket->open(boost::asio::ip::udp::v4());
   BindToLocalPort();

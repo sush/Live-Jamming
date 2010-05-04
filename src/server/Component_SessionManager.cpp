@@ -1,15 +1,12 @@
 #include <Component_SessionManager.h>
 
-
-int		timeOutTest_maxRetry = 3;
-
-Component_SessionManager::Component_SessionManager(IComponent::m_packet_bindings &packetBindings,
+Component_SessionManager::Component_SessionManager(IComponent::m_bindings_recv &bindingsRecv,
 						   ServerManager * serverManager)
-  :IComponent(serverManager), _packetBindings(packetBindings), _serverManager(serverManager)
+ :IComponent(serverManager), _bindingsRecv(bindingsRecv), _serverManager(serverManager)
 {
   _sessionMap = new m_Session;
   _rng.seed((int32_t)std::clock());
-  PacketBindings();
+  BindingsRecv();
 }
 
 Component_SessionManager::~Component_SessionManager()
@@ -34,7 +31,6 @@ void		Component_SessionManager::PrintSession(Session const * session) const
 {
   std::cout << "[" << session->getIP() << ":" << session->getPort() << "]" <<
     "{" << session->getSessionId() << "}";
-
 }
 
 void		Component_SessionManager::PrintSession(Packet const * packet) const
@@ -65,7 +61,7 @@ Session 	*Component_SessionManager::DoAuth(Packet_v1 const * packet_v1)
   // if packet is auth request type
   // extract auth information from
   
-  Session	*new_session = new Session(this, _serverManager->getIO(), packet_v1, GenSessionId());
+  Session	*new_session = new Session(_serverManager, _serverManager->getIO(), packet_v1, GenSessionId());
 
   (*_sessionMap)[new_session->getSessionId()] = new_session;
   Send_AuthResponse_OK(new_session);
@@ -79,86 +75,62 @@ void		Component_SessionManager::Disconnect(Session * session)
   _sessionMap->erase(session->getSessionId());
 }
 
-void		Component_SessionManager::Send_TimeOutTest(Session * session)
-{
-  _serverManager->Send(SESSION_TIMEOUT, session);
-  PrintSession(session);
-  std::cout << "-> sending timeout test" << std::endl;
-  session->CancelTimeOutTest();
-  session->setTimeOutOccurred();
-}
 
-void		Component_SessionManager::CallBack_TimeOutTest(Session * session, boost::system::error_code const & error_code)
+void				Component_SessionManager::Recv_AuthRequest(Packet_v1 const*packet_v1, Session *)
 {
-  if (error_code != boost::asio::error::operation_aborted)
-      _serverManager->getPool().schedule(boost::bind(&Component_SessionManager::Send_TimeOutTest, this, session));
-}
+  Packet_v1_Session_AuthRequest	const *packet_authRequest =
+    static_cast<Packet_v1_Session_AuthRequest const *>(packet_v1);
 
-void		Component_SessionManager::CallBack_TimeOutOccurred(Session * session, boost::system::error_code const & error_code)
-{
-  if (error_code != boost::asio::error::operation_aborted)
-    {
-      
-      session->setTimeOutTestCount(session->getTimeOutTestCount() + 1);
-      if (session->getTimeOutTestCount() >= timeOutTest_maxRetry)
-	_serverManager->getPool().schedule(boost::bind(&Component_SessionManager::Disconnect, this, session));
-      else
-	Send_TimeOutTest(session);
-    }
-}
-
-void				Component_SessionManager::Recv_AuthRequest(Packet_v1 *packet_v1)
-{
-  Packet_v1_Session_AuthRequest	*packet_authRequest =
-    static_cast<Packet_v1_Session_AuthRequest *>(packet_v1);
-
+  packet_authRequest = packet_authRequest;
   std::cout << "packet_auth_request received" << std::endl;
 }
 
 void		Component_SessionManager::Send_AuthResponse_OK(Session * session)
 {
-  _serverManager->Send(SESSION_AUTH_RESPONSE_OK, session);
+  _serverManager->Send(SESSION_AUTH_RESPONSE_OK, session, NORETRY);
 }
 
 void		Component_SessionManager::Send_AuthResponse_NOK_BADAUTH(Session * session)
 {
-  _serverManager->Send(SESSION_AUTH_RESPONSE_NOK_BADAUTH, session);
+  _serverManager->Send(SESSION_AUTH_RESPONSE_NOK_BADAUTH, session, NORETRY);
 }
 
 void		Component_SessionManager::Send_AuthResponse_NOK_DUPLICATE(Session * session)
 {
-  _serverManager->Send(SESSION_AUTH_RESPONSE_NOK_DUPLICATE, session);
+  _serverManager->Send(SESSION_AUTH_RESPONSE_NOK_DUPLICATE, session, NORETRY);
 }
 
 
 void		Component_SessionManager::Send_KeepAlive(Session *session)
 {
-  _serverManager->Send(SESSION_KEEPALIVE, session);
+  std::cout << "send_keepalive" << std::endl;
+  _serverManager->Send(SESSION_KEEPALIVE, session, NORETRY);
 }
 
-void		Component_SessionManager::Recv_KeepAlive(Packet_v1 *)
+void		Component_SessionManager::Recv_KeepAlive(Packet_v1 const *, Session *)
 {
   std::cout << "packet_keep_alive received" << std::endl;
 }
 
-void		Component_SessionManager::Recv_TimeOutTest(Packet_v1 *)
+void		Component_SessionManager::Recv_TimeOutTest(Packet_v1 const*, Session *session)
 {
   std::cout << "packet_timeout received" << std::endl;
+  Send_KeepAlive(session);
 }
 
-void		Component_SessionManager::Recv_Disconnect(Packet_v1 * packet_v1)
+void		Component_SessionManager::Recv_Disconnect(Packet_v1 const *, Session *)
 {
   std::cout << " recv_Disconnected" << std::endl;
 }
 
-void		Component_SessionManager::PacketBindings()
+void		Component_SessionManager::BindingsRecv()
 {
-  _packetBindings[SESSION_AUTH_REQUEST] =
-    {this, static_cast<IComponent::pMethod>(&Component_SessionManager::Recv_AuthRequest)};
-  _packetBindings[SESSION_KEEPALIVE] =
-    {this, static_cast<IComponent::pMethod>(&Component_SessionManager::Recv_KeepAlive)};
-  _packetBindings[SESSION_DISCONNECT] =
-    {this, static_cast<IComponent::pMethod>(&Component_SessionManager::Recv_Disconnect)};
-  _packetBindings[SESSION_TIMEOUT] =
-    {this, static_cast<IComponent::pMethod>(&Component_SessionManager::Recv_TimeOutTest)};
+  _bindingsRecv[SESSION_AUTH_REQUEST] =
+    new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_SessionManager::Recv_AuthRequest));
+  _bindingsRecv[SESSION_KEEPALIVE] =
+    new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_SessionManager::Recv_KeepAlive));
+  _bindingsRecv[SESSION_DISCONNECT] =
+    new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_SessionManager::Recv_Disconnect));
+  _bindingsRecv[SESSION_TIMEOUT] =
+    new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_SessionManager::Recv_TimeOutTest));
 }

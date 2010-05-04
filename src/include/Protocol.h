@@ -43,6 +43,7 @@ typedef unsigned int field_t;
 //////////// Packet types  /////////////
 typedef enum 
  {
+   /* 0  */	NOREQUEST = 0,
    /* 1  */	SESSION_AUTH_REQUEST = 1,
    /* 2  */	SESSION_AUTH_RESPONSE_OK,
    /* 3  */	SESSION_AUTH_RESPONSE_NOK_BADAUTH,

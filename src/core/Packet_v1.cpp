@@ -25,9 +25,9 @@ void		Packet_v1::Print_v1() const
 	    << std::endl;
 }
 
-field_t		Packet_v1::getType() const
+proto_v1_packet_type	Packet_v1::getType() const
 {
-  return getField(PROTOV1_TYPE_OFF, PROTOV1_TYPE_SIZE);
+  return static_cast<proto_v1_packet_type>(getField(PROTOV1_TYPE_OFF, PROTOV1_TYPE_SIZE));
 }
 
 field_t		Packet_v1::getSessionId() const
@@ -55,3 +55,7 @@ void		Packet_v1::setDataLen(field_t dataLen)
   setField(dataLen, PROTOV1_DATALEN_OFF, PROTOV1_DATALEN_SIZE);
 }
 
+char		*Packet_v1::getStartOfData()
+{
+  return (char *)_buffer->at(PROTOV1_START_OF_DATA);
+}

@@ -26,7 +26,7 @@ class Component_SessionManager :public IComponent
 
 public:
 
-  Component_SessionManager(IComponent::m_packet_bindings &, ServerManager *);
+  Component_SessionManager(IComponent::m_bindings_recv &, ServerManager *);
   virtual	~Component_SessionManager();
 
   void		Manage(Packet *);
@@ -36,7 +36,7 @@ private:
   typedef m_Session::iterator				m_Session_it;
   typedef m_Session::const_iterator			m_Session_cit;
 
-  void					PacketBindings();
+  void					BindingsRecv();
 
   Session				*FindSession(Packet_v1 const *);
   unsigned int				CountActiveSessions() const;
@@ -48,22 +48,17 @@ private:
   void					Disconnect(Session *);
 
   //recv
-  void					Recv_AuthRequest(Packet_v1 *);
-  void					Recv_Disconnect(Packet_v1 *);
-  void					Recv_KeepAlive(Packet_v1 *);
-  void					Recv_TimeOutTest(Packet_v1 *);
+  void					Recv_AuthRequest(Packet_v1 const *, Session *);
+  void					Recv_Disconnect(Packet_v1 const *, Session *);
+  void					Recv_KeepAlive(Packet_v1 const *, Session *);
+  void					Recv_TimeOutTest(Packet_v1 const *, Session *);
   // send
-  void					Send_TimeOutTest(Session *);
   void					Send_AuthResponse_OK(Session *);
   void					Send_AuthResponse_NOK_BADAUTH(Session *);
   void					Send_AuthResponse_NOK_DUPLICATE(Session *);
   void					Send_KeepAlive(Session *);
 
-  void					CallBack_TimeOutTest(Session *, boost::system::error_code const &);
-  void					CallBack_TimeOutOccurred(Session *, boost::system::error_code const &);
-  
-
-  IComponent::m_packet_bindings		&_packetBindings;
+  IComponent::m_bindings_recv		&_bindingsRecv;
   ServerManager				*_serverManager;
 
   boost::rand48				_rng;

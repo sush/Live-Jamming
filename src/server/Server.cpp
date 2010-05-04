@@ -67,7 +67,6 @@ void		Server::Thread_TreatPacket()
   _packetQueue_mutex.unlock();
   ////////////////////////////////////////////////
 
-  //        packet->Print();
   _serverManager->Manage(packet);
   ////////////////////////// WAIT //////////////////
   usleep(treat_delay); // wait <treat_delay> to fake for delay introduced by treatment
