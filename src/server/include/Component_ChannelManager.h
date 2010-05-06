@@ -3,35 +3,41 @@
 
 class Component_ChannelManager;
 
-#include <iostream>
 #include <boost/bind.hpp>
 #include <boost/array.hpp>
 #include <boost/asio.hpp>
+#include <map>
 #include <IComponent.h>
 #include <Protocol.h>
 #include <Packet_v1.h>
-#include <ClientManager.h>
-#include <boost/thread.hpp>
-#include <boost/threadpool.hpp>
+#include <ServerManager.h>
+#include <Channel.h>
 
 class Component_ChannelManager : public IComponent
 {
- public:
+public:
 
-  Component_ChannelManager(IComponent::m_packet_bindings &, ClientManager *);
+  Component_ChannelManager(IComponent::m_bindings_recv &, ServerManager *);
   virtual       ~Component_ChannelManager();
-  virtual void  PacketBindings();
+  virtual void  bindingsRecv();
+  
+private:
+  
+  void          Recv_JOIN(Packet_v1 *, Session *);
+  void          Recv_LEAVE(Packet_v1 *, Session *);
+  void          Recv_MSG(Packet_v1 *, Session *);
 
- private:
+  void          Send_JOINED_OK(Channel *, Packet_v1 *, Session *);
+  void          Send_JOINED_NOK_ALREADYINCHAN(Session *);
+  void          Send_LEAVED_OK(Channel *, Session *);
+  void          Send_LEAVED_NOK_NOTINCHAN(Session *);
+  void          Send_MSG(Channel *, Session *, std::string);
 
-  void          Recv_Channel_JOIN(Packet_v1 *);
-  void          Recv_Channel_LEAVE(Packet_v1 *);
-
-  m_packet_bindings  &                  _packetBindings;
-  ClientManager                         *_clientManager;
-  boost::mutex				_channel_mutex;
-
-  typedef std::multimap<std::string, std::vector<int>> m_channel;
+  
+  Icomponent::m_bindings_recv  &        _bindingsRecv;
+  ServerManager                         *_serverManager;
+  
+  typedef std::map<std::string, Channel*> m_channel;
   m_channel				_channel;
 };
 
