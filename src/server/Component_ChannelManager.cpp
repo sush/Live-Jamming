@@ -6,6 +6,8 @@ Component_ChannelManager::Component_ChannelManager(IComponent::m_bindings_recv &
   BindingsRecv();
 }
 
+Component_ChannelManager::~Component_ChannelManager() {}
+
 void	Component_ChannelManager::BindingsRecv()
 {
   _bindingsRecv[CHANNEL_JOIN] =

@@ -3,9 +3,6 @@
 
 class Component_ChannelManager;
 
-#include <boost/bind.hpp>
-#include <boost/array.hpp>
-#include <boost/asio.hpp>
 #include <map>
 #include <IComponent.h>
 #include <Protocol.h>
