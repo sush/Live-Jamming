@@ -23,15 +23,17 @@ public:
   
 private:
   
-  void          Recv_JOIN(Packet_v1 *, Session *);
-  void          Recv_LEAVE(Packet_v1 *, Session *);
-  void          Recv_MSG(Packet_v1 *, Session *);
+  void          Recv_Join(Packet_v1 *, Session *);
+  void          Recv_Leave(Packet_v1 *, Session *);
+  void          Recv_Message(Packet_v1 *, Session *);
 
-  void          Send_JOINED_OK(Channel *, Packet_v1 *, Session *);
-  void          Send_JOINED_NOK_ALREADYINCHAN(Session *);
-  void          Send_LEAVED_OK(Channel *, Session *);
-  void          Send_LEAVED_NOK_NOTINCHAN(Session *);
-  void          Send_MSG(Channel *, Session *, std::string);
+  void          Send_Joined_OK(Channel *, Packet_v1 *, Session *);
+  void          Send_Joined_NOK_ALREADYINCHAN(Session *);
+
+  void          Send_Leave_OK(Channel *, Session *);
+  void          Send_Leave_NOK_NOTINCHAN(Session *);
+
+  void          Send_Message(Channel *, Session *, std::string);
 
   
   Icomponent::m_bindings_recv  &        _bindingsRecv;

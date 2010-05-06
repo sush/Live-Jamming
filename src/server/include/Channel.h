@@ -11,7 +11,7 @@ class Channel
  public:
   Channel();
   Channel(Session*);
-  ~Channel();
+  virtual ~Channel();
   
   std::vector<int> const & getConnected() const;
   
