@@ -1,14 +1,7 @@
 #include "accountconnection.h"
 #include "ui_accountconnection.h"
-#include "accountinformations.h"
 
-#include <yaml.h>
-#include <fstream>
-#include <QTemporaryFile>
-#include <QTcpSocket>
-#include <QPushButton>
-#include <QMessageBox>
-#include <QObject>
+#include <qdebug.h>
 
 AccountConnection::AccountConnection(QWidget *parent) :
     QDialog(parent),
@@ -37,8 +30,10 @@ void AccountConnection::changeEvent(QEvent *e)
 bool  AccountConnection::run(QString& login, QString & password)
 {
     AccountConnection ac;
-    bool retv = ac.exec();
-    if (retv != 0) //FIXME: return value to be tested
+    //pas présent dans le ui
+    connect(ac.ui->buttonBox, SIGNAL(accepted()), &ac, SLOT(accept()));
+    connect(ac.ui->buttonBox, SIGNAL(rejected()), &ac, SLOT(reject()));
+    if (ac.exec() != QDialog::Accepted)
        return false;
     login = ac.ui->loginLineEdit->text();
     password = ac.ui->passwordLineEdit->text();

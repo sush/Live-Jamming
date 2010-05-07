@@ -13,5 +13,5 @@ bool    Network::connect(QString const& login, QString const& password)
 
 bool    Network::isConnected()
 {
-    return connected;
+    return false;
 }

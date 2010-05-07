@@ -78,15 +78,15 @@
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Debug</value>
    <valuelist key="abstractProcess.Environment" type="QVariantList">
     <value type="QString">CVS_RSH=ssh</value>
-    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-RrqY9hVC9a,guid=18fd88ecbee5eb3bbf01ba864bdab1e4</value>
+    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-IpssHFa8po,guid=833e6c9e870aaf54dc2a9e204be3ed66</value>
     <value type="QString">DESKTOP_SESSION=gnome</value>
     <value type="QString">DISPLAY=:0.0</value>
     <value type="QString">GDMSESSION=gnome</value>
     <value type="QString">GDM_KEYBOARD_LAYOUT=us</value>
     <value type="QString">GDM_LANG=en_US.UTF-8</value>
     <value type="QString">GNOME_DESKTOP_SESSION_ID=this-is-deprecated</value>
-    <value type="QString">GNOME_KEYRING_PID=1521</value>
-    <value type="QString">GNOME_KEYRING_SOCKET=/tmp/keyring-6nD3zD/socket</value>
+    <value type="QString">GNOME_KEYRING_PID=1604</value>
+    <value type="QString">GNOME_KEYRING_SOCKET=/tmp/keyring-b3tX9M/socket</value>
     <value type="QString">GTK_RC_FILES=/etc/gtk/gtkrc:/home/harddisc/.gtkrc-1.2-gnome2</value>
     <value type="QString">G_BROKEN_FILENAMES=1</value>
     <value type="QString">HISTCONTROL=ignoreboth</value>
@@ -101,20 +101,22 @@
     <value type="QString">LOGNAME=harddisc</value>
     <value type="QString">MAIL=/var/spool/mail/harddisc</value>
     <value type="QString">ORBIT_SOCKETDIR=/tmp/orbit-harddisc</value>
-    <value type="QString">PATH=/usr/lib/qt4/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/home/harddisc/bin</value>
+    <value type="QString">PATH=/usr/lib/qt4/bin:/usr/kerberos/sbin:/usr/kerberos/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/home/harddisc/bin</value>
+    <value type="QString">PULSE_PROP_media.role=none</value>
+    <value type="QString">PULSE_PROP_phonon.streamid={9d84f354-4e7b-4564-88a8-9635473c20b7}</value>
     <value type="QString">PWD=/home/harddisc</value>
     <value type="QString">QTDIR=/usr/lib/qt4</value>
     <value type="QString">QT_IM_MODULE=xim</value>
-    <value type="QString">SESSION_MANAGER=local/unix:@/tmp/.ICE-unix/1528,unix/unix:/tmp/.ICE-unix/1528</value>
+    <value type="QString">SESSION_MANAGER=local/unix:@/tmp/.ICE-unix/1611,unix/unix:/tmp/.ICE-unix/1611</value>
     <value type="QString">SHELL=/bin/bash</value>
     <value type="QString">SHLVL=1</value>
     <value type="QString">SSH_ASKPASS=/usr/libexec/openssh/gnome-ssh-askpass</value>
-    <value type="QString">SSH_AUTH_SOCK=/tmp/keyring-6nD3zD/socket.ssh</value>
+    <value type="QString">SSH_AUTH_SOCK=/tmp/keyring-b3tX9M/socket.ssh</value>
     <value type="QString">TERM=dumb</value>
     <value type="QString">USER=harddisc</value>
     <value type="QString">USERNAME=harddisc</value>
-    <value type="QString">XAUTHORITY=/var/run/gdm/auth-for-harddisc-4WSPko/database</value>
-    <value type="QString">XDG_SESSION_COOKIE=72afc6bcaa9f5f64fc0888e74b7faf74-1272623587.590215-624595119</value>
+    <value type="QString">XAUTHORITY=/var/run/gdm/auth-for-harddisc-an1vp8/database</value>
+    <value type="QString">XDG_SESSION_COOKIE=72afc6bcaa9f5f64fc0888e74b7faf74-1273228645.722206-953646010</value>
     <value type="QString">XMODIFIERS=@im=none</value>
    </valuelist>
    <valuelist key="abstractProcess.arguments" type="QVariantList">
@@ -135,15 +137,15 @@
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Debug</value>
    <valuelist key="abstractProcess.Environment" type="QVariantList">
     <value type="QString">CVS_RSH=ssh</value>
-    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-RrqY9hVC9a,guid=18fd88ecbee5eb3bbf01ba864bdab1e4</value>
+    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-IpssHFa8po,guid=833e6c9e870aaf54dc2a9e204be3ed66</value>
     <value type="QString">DESKTOP_SESSION=gnome</value>
     <value type="QString">DISPLAY=:0.0</value>
     <value type="QString">GDMSESSION=gnome</value>
     <value type="QString">GDM_KEYBOARD_LAYOUT=us</value>
     <value type="QString">GDM_LANG=en_US.UTF-8</value>
     <value type="QString">GNOME_DESKTOP_SESSION_ID=this-is-deprecated</value>
-    <value type="QString">GNOME_KEYRING_PID=1521</value>
-    <value type="QString">GNOME_KEYRING_SOCKET=/tmp/keyring-6nD3zD/socket</value>
+    <value type="QString">GNOME_KEYRING_PID=1604</value>
+    <value type="QString">GNOME_KEYRING_SOCKET=/tmp/keyring-b3tX9M/socket</value>
     <value type="QString">GTK_RC_FILES=/etc/gtk/gtkrc:/home/harddisc/.gtkrc-1.2-gnome2</value>
     <value type="QString">G_BROKEN_FILENAMES=1</value>
     <value type="QString">HISTCONTROL=ignoreboth</value>
@@ -158,20 +160,22 @@
     <value type="QString">LOGNAME=harddisc</value>
     <value type="QString">MAIL=/var/spool/mail/harddisc</value>
     <value type="QString">ORBIT_SOCKETDIR=/tmp/orbit-harddisc</value>
-    <value type="QString">PATH=/usr/lib/qt4/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/home/harddisc/bin</value>
+    <value type="QString">PATH=/usr/lib/qt4/bin:/usr/kerberos/sbin:/usr/kerberos/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/home/harddisc/bin</value>
+    <value type="QString">PULSE_PROP_media.role=none</value>
+    <value type="QString">PULSE_PROP_phonon.streamid={9d84f354-4e7b-4564-88a8-9635473c20b7}</value>
     <value type="QString">PWD=/home/harddisc</value>
     <value type="QString">QTDIR=/usr/lib/qt4</value>
     <value type="QString">QT_IM_MODULE=xim</value>
-    <value type="QString">SESSION_MANAGER=local/unix:@/tmp/.ICE-unix/1528,unix/unix:/tmp/.ICE-unix/1528</value>
+    <value type="QString">SESSION_MANAGER=local/unix:@/tmp/.ICE-unix/1611,unix/unix:/tmp/.ICE-unix/1611</value>
     <value type="QString">SHELL=/bin/bash</value>
     <value type="QString">SHLVL=1</value>
     <value type="QString">SSH_ASKPASS=/usr/libexec/openssh/gnome-ssh-askpass</value>
-    <value type="QString">SSH_AUTH_SOCK=/tmp/keyring-6nD3zD/socket.ssh</value>
+    <value type="QString">SSH_AUTH_SOCK=/tmp/keyring-b3tX9M/socket.ssh</value>
     <value type="QString">TERM=dumb</value>
     <value type="QString">USER=harddisc</value>
     <value type="QString">USERNAME=harddisc</value>
-    <value type="QString">XAUTHORITY=/var/run/gdm/auth-for-harddisc-4WSPko/database</value>
-    <value type="QString">XDG_SESSION_COOKIE=72afc6bcaa9f5f64fc0888e74b7faf74-1272623587.590215-624595119</value>
+    <value type="QString">XAUTHORITY=/var/run/gdm/auth-for-harddisc-an1vp8/database</value>
+    <value type="QString">XDG_SESSION_COOKIE=72afc6bcaa9f5f64fc0888e74b7faf74-1273228645.722206-953646010</value>
     <value type="QString">XMODIFIERS=@im=none</value>
    </valuelist>
    <value key="abstractProcess.IgnoreReturnValue" type="bool">false</value>

@@ -25,6 +25,7 @@ private:
     Parameters      *params;
 
 private slots:
+    void on_actionCreate_account_triggered();
     void on_actionNew_Room_triggered();
     void on_actionQuit_triggered();
     void on_actionPreferences_triggered();

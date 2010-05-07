@@ -13,7 +13,6 @@ SOURCES += main.cpp \
     parameters.cpp
 HEADERS += mainwindow.h \
     accountconnection.h \
-    accountinformations.h \
     configuration_dialog.h \
     roomdialog.h \
     network.h \

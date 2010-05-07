@@ -2,13 +2,13 @@
 #define ACCOUNTCONNECTION_H
 
 #include <QDialog>
-#include <QAbstractSocket>
 
 namespace Ui {
     class AccountConnection;
 }
 
-class AccountConnection : public QDialog {
+class AccountConnection : public QDialog
+{
     Q_OBJECT
 public:
     AccountConnection(QWidget *parent = 0);

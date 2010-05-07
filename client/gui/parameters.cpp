@@ -6,5 +6,5 @@ Parameters::Parameters()
 
 bool    Parameters::haveId()
 {
-    return false;
+    return login.isEmpty() == false && password.isEmpty() == false;
 }
