@@ -7,7 +7,7 @@ class Component_Jam;
 #include <Packet_v1.h>
 #include <ClientManager.h>
 #include <Session.h>
-#include <Packet_v1.h>
+#include <Audio.h>
 
 class Component_Jam : public IComponent
 {
@@ -27,6 +27,7 @@ class Component_Jam : public IComponent
 
   m_bindings_recv &     _bindingsRecv;
   ClientManager         *_clientManager;
+/*Audio			_audio;*/
 };
 
 #endif
