@@ -20,6 +20,18 @@ void	Component_ChannelManager::BindingsRecv()
     new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_ChannelManager::Recv_Message));
 }
 
+void	Component_ChannelManager::RegisteredRequests()
+{
+  // SEND requests
+  (*_registeredRequests)[SESSION_AUTH_RESPONSE_OK] = 
+    new Request(SESSION_AUTH_RESPONSE_OK, SEND, "Session Authentification response OK", NORETRY);
+
+
+
+
+  // RECV requests
+}
+
 void	Component_ChannelManager::Recv_Join(Packet_v1 *packet_v1, Session *session)
 {
   std::string channel = packet_v1->getChannel();

@@ -1,0 +1,9 @@
+#ifndef __PROTOCOL_CHANNEL_H__
+#define __PROTOCOL_CHANNEL_H__
+
+#define CHANNEL_COMPONENTID	2
+
+#define CHANNEL_JOIN		1
+
+
+#endif // ! __PROTOCOL_CHANNEL_H__
