@@ -1,0 +1,4 @@
+# NETWORK CORE
+-- multiple packet lost for same requestid => timestamp => one timer per request instead of per type
+-- packet memory free
+-- disconnect connexion on too much retries for the server
