@@ -33,7 +33,8 @@ void					Bind_recv::Receive(Packet_v1 const * packet_v1, Session * session) cons
       // if packet received is a response to a waiting send
 //       if (_componentId && _requestId != RESPONSETONOTHING)
 // 	session->CancelTimer(_componentId, _requestId);
-      (_instance->*_method)(packet_v1, session);
+      if (_instance != 0 && _method != 0)
+	(_instance->*_method)(packet_v1, session);
     }
     // send a need_auth_request to clients if in   !   S E R V E R   !!   S E R V E R   !
     // pop a error message in client requesting auth in   !   C L I E N T   !!   C L I E N T   !
