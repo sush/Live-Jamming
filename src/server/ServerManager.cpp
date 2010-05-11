@@ -22,6 +22,7 @@ void				ServerManager::Manage(Packet * packet)
   Packet_v1			*packet_v1;
   
   packet_v1 = static_cast<Packet_v1 *>(packet);
+  field_t			componentId = packet_v1->getComponentId(), requestId = packet_v1->getRequestId();
   session = _sessionManager->FindSession(packet_v1);
 
   std::cout << "==> ";
@@ -30,13 +31,23 @@ void				ServerManager::Manage(Packet * packet)
     {
       session->setTimeOutTest();
       session->CancelTimeOutOccurred();
-      //_sessionManager->PrintSession(session);
-      if (_bindingsRecv.find(packet_v1->getType()) != _bindingsRecv.end())
-	_bindingsRecv.find(packet_v1->getType())->second->Receive(packet_v1, session);
+
+      if (IsRegisteredComponent(componentId))
+	{
+	  if (IsRegisteredRequest(componentId, requestId))
+	    {
+	      getBindRecv(componentId, requestId).Receive(packet_v1, session);
+	      Request const & r = getRegisteredRequest(componentId, requestId);
+	      if (r.IsResponseTo())
+		session->CancelAutoRetry(componentId, r.getResponseTo());
+	    }
+	  else
+	    std::cout << "UNREGISTERED REQUEST ID" << std::endl;
+	}
       else
-	std::cout << "UNKNOWN PACKET TYPE" << std::endl; // not implemented
+	std::cout << "UNREGISTERED COMPONENT ID" << std::endl;
     }
-  else if (packet_v1->getType() == SESSION_AUTH_REQUEST)
+  else if (componentId == SESSION_COMPONENTID && requestId == SESSION_AUTH_REQUEST)
     _sessionManager->DoAuth(packet_v1);
   else
     {
@@ -48,7 +59,8 @@ void				ServerManager::Manage(Packet * packet)
 
 void		ServerManager::Init_Components()
 {
-  _sessionManager = new Component_SessionManager(_bindingsRecv, this);
+  _sessionManager = new Component_SessionManager(this);
+  RegisterComponent(_sessionManager);
 }
 
 unsigned int	ServerManager::CountActiveSessions() const

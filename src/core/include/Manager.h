@@ -19,8 +19,20 @@ class Session;
 
 class Manager
 {
-public:
+private:
+  typedef struct
+  {
+    IComponent::m_bindings_recv	_bindingsRecv;
+    IComponent::m_request	_registeredRequests;
+  }component_binding;
 
+  typedef std::map<field_t, component_binding*>	m_component_bindings;
+  typedef m_component_bindings::iterator	m_component_bindings_it;
+  typedef m_component_bindings::const_iterator	m_component_bindings_cit;
+
+  m_component_bindings		_componentBindings;
+
+public:
   Manager(boost::asio::io_service &, boost::threadpool::pool &, boost::asio::ip::udp::socket &);
   virtual	~Manager();
 
@@ -34,8 +46,8 @@ public:
 
   virtual void		Manage(Packet *) = 0;
 
-  void		Send(Packet_v1 *, Session *, bool) const;
-  void		Send(proto_v1_packet_type, Session *, bool) const;
+  void		Send(Packet_v1 *, Session *) const;
+  void		Send(field_t, field_t, Session *) const;
   // this is useful for sending without being authentificated
   void		Send(Packet_v1 *, boost::asio::ip::udp::endpoint &) const;
   void		CallBack_Send_TimeOut(Session *, Packet_v1 *, boost::system::error_code);
@@ -50,9 +62,19 @@ protected:
   void		Send_TimeOutTest(Session *);
 
   // this is needed cuz boost::bind has trouble when binding overloaded functions
-  void		Send_bind(Packet_v1 *, Session *, bool) const;
-  
-  
+  void		Send_bind(Packet_v1 *, Session *) const;
+
+protected:
+  IComponent::m_bindings_recv const 	&getBindingsRecv(field_t) const;
+  IComponent::m_request const		&getRegisteredRequests(field_t) const;
+
+  void					RegisterComponent(IComponent *);
+  bool					IsRegisteredComponent(field_t) const;
+  bool					IsRegisteredRequest(field_t, field_t) const;
+  bool					IsBindRecv(field_t, field_t) const;
+  Bind_recv const			&getBindRecv(field_t, field_t) const;
+  Request const				&getRegisteredRequest(field_t, field_t) const;
+    
 protected:
   // these should be made part of options
   unsigned int				_retryDelay;
@@ -62,7 +84,6 @@ protected:
   boost::asio::io_service &		_io_service;
   boost::threadpool::pool &		_pool;
   boost::asio::ip::udp::socket &	_socket;
-  IComponent::m_bindings_recv		_bindingsRecv;
 };
 
 #include <Session.h>

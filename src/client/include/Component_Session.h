@@ -17,9 +17,10 @@ class Component_Session;
 class Component_Session : public IComponent
 {
 public:
-  Component_Session(IComponent::m_bindings_recv &, ClientManager *);
+  Component_Session(ClientManager *);
   virtual	~Component_Session();
   virtual void	BindingsRecv();
+  virtual void	RegisteredRequests();
   
   field_t	getSessionId() const;
   ClientManager	&getClientManager();
@@ -40,7 +41,6 @@ private:
   void		Send_KeepAlive();
   void		CallBack_AuthRequest_timeout(boost::system::error_code const &);
   
-  m_bindings_recv  &			_bindingsRecv;
   ClientManager				*_clientManager;
   bool					_logged;
   Session				*_session;

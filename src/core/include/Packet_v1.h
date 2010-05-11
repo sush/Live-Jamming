@@ -10,15 +10,17 @@ class Packet_v1 : public Packet
 {
 public:
   Packet_v1(boost::asio::ip::udp::endpoint const *);
-  virtual ~Packet_v1();
-  void MakePacket();
+  virtual		~Packet_v1();
+  void			MakePacket();
 
   void			Print() const;
   void			Print_v1() const;
-  proto_v1_packet_type	getType() const;
+  field_t		getRequestId() const;
+  field_t		getComponentId() const;
   field_t		getSessionId() const;
   field_t		getDataLen() const;
-  void			setType(field_t);
+  void			setRequestId(field_t);
+  void			setComponentId(field_t);
   void			setSessionId(field_t);
   void			setDataLen(field_t);
   char *		getStartOfData();

@@ -16,6 +16,7 @@ class Component_SessionManager;
 #include <Packet_v1_Session_AuthRequest.h>
 #include <Session.h>
 #include <Protocol.h>
+#include <Protocol_Session.h>
 #include <IComponent.h>
 #include <ServerManager.h>
 
@@ -26,7 +27,7 @@ class Component_SessionManager :public IComponent
 
 public:
 
-  Component_SessionManager(IComponent::m_bindings_recv &, ServerManager *);
+  Component_SessionManager(ServerManager *);
   virtual	~Component_SessionManager();
 
   void		Manage(Packet *);
@@ -36,7 +37,8 @@ private:
   typedef m_Session::iterator				m_Session_it;
   typedef m_Session::const_iterator			m_Session_cit;
 
-  void					BindingsRecv();
+  virtual void					BindingsRecv();
+  virtual void					RegisteredRequests();
 
   Session				*FindSession(Packet_v1 const *);
   unsigned int				CountActiveSessions() const;
@@ -58,7 +60,6 @@ private:
   void					Send_AuthResponse_NOK_DUPLICATE(Session *);
   void					Send_KeepAlive(Session *);
 
-  IComponent::m_bindings_recv		&_bindingsRecv;
   ServerManager				*_serverManager;
 
   boost::rand48				_rng;

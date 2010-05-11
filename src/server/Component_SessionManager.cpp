@@ -1,12 +1,10 @@
 #include <Component_SessionManager.h>
 
-Component_SessionManager::Component_SessionManager(IComponent::m_bindings_recv &bindingsRecv,
-						   ServerManager * serverManager)
- :IComponent(serverManager), _bindingsRecv(bindingsRecv), _serverManager(serverManager)
+Component_SessionManager::Component_SessionManager(ServerManager * serverManager)
+  :IComponent(SESSION_COMPONENTID), _serverManager(serverManager)
 {
   _sessionMap = new m_Session;
   _rng.seed((int32_t)std::clock());
-  BindingsRecv();
 }
 
 Component_SessionManager::~Component_SessionManager()
@@ -87,24 +85,24 @@ void				Component_SessionManager::Recv_AuthRequest(Packet_v1 const*packet_v1, Se
 
 void		Component_SessionManager::Send_AuthResponse_OK(Session * session)
 {
-  _serverManager->Send(SESSION_AUTH_RESPONSE_OK, session, NORETRY);
+  _serverManager->Send(_componentId, SESSION_AUTH_RESPONSE_OK, session);
 }
 
 void		Component_SessionManager::Send_AuthResponse_NOK_BADAUTH(Session * session)
 {
-  _serverManager->Send(SESSION_AUTH_RESPONSE_NOK_BADAUTH, session, NORETRY);
+  _serverManager->Send(_componentId, SESSION_AUTH_RESPONSE_NOK_BADAUTH, session);
 }
 
 void		Component_SessionManager::Send_AuthResponse_NOK_DUPLICATE(Session * session)
 {
-  _serverManager->Send(SESSION_AUTH_RESPONSE_NOK_DUPLICATE, session, NORETRY);
+  _serverManager->Send(_componentId, SESSION_AUTH_RESPONSE_NOK_DUPLICATE, session);
 }
 
 
 void		Component_SessionManager::Send_KeepAlive(Session *session)
 {
   std::cout << "send_keepalive" << std::endl;
-  _serverManager->Send(SESSION_KEEPALIVE, session, NORETRY);
+  _serverManager->Send(_componentId, SESSION_KEEPALIVE, session);
 }
 
 void		Component_SessionManager::Recv_KeepAlive(Packet_v1 const *, Session *)
@@ -125,15 +123,46 @@ void		Component_SessionManager::Recv_Disconnect(Packet_v1 const *, Session *)
 
 void		Component_SessionManager::BindingsRecv()
 {
-  _bindingsRecv[SESSION_AUTH_REQUEST] =
+  (*_bindingsRecv)[SESSION_AUTH_REQUEST] =
     new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_SessionManager::Recv_AuthRequest));
 
-  _bindingsRecv[SESSION_KEEPALIVE] =
+  (*_bindingsRecv)[SESSION_KEEPALIVE] =
     new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_SessionManager::Recv_KeepAlive));
 
-  _bindingsRecv[SESSION_DISCONNECT] =
+  (*_bindingsRecv)[SESSION_DISCONNECT] =
     new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_SessionManager::Recv_Disconnect));
 
-  _bindingsRecv[SESSION_TIMEOUT] =
+  (*_bindingsRecv)[SESSION_TIMEOUT] =
     new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_SessionManager::Recv_TimeOutTest));
+}
+
+
+void	Component_SessionManager::RegisteredRequests()
+{
+  // SEND requests 
+  (*_registeredRequests)[SESSION_AUTH_RESPONSE_OK] = 
+    new Request(SESSION_AUTH_RESPONSE_OK, SEND, "Session Authentification response OK", NORETRY);
+
+  (*_registeredRequests)[SESSION_AUTH_RESPONSE_NOK_BADAUTH] = 
+    new Request(SESSION_AUTH_RESPONSE_NOK_BADAUTH, RECV, "Session Authentification response Bad Login information", NORETRY);
+
+  (*_registeredRequests)[SESSION_AUTH_RESPONSE_NOK_DUPLICATE] = 
+    new Request(SESSION_AUTH_RESPONSE_NOK_DUPLICATE, RECV, "Session Authentification response Duplicate Login", NORETRY);
+  
+  // RECV requests
+  (*_registeredRequests)[SESSION_AUTH_REQUEST] = 
+    new Request(SESSION_AUTH_REQUEST, RECV, "Session Authentification request", RESPONSETONOTHING);
+
+  (*_registeredRequests)[SESSION_DISCONNECT] = 
+    new Request(SESSION_DISCONNECT, RECV, "Session Disconnect request", RESPONSETONOTHING);
+
+  (*_registeredRequests)[SESSION_DISCONNECTED] = 
+    new Request(SESSION_DISCONNECTED, RECV, "Session ended", RESPONSETONOTHING);
+
+  // BIDIRECTIONNAL requests 
+  (*_registeredRequests)[SESSION_TIMEOUT] = 
+    new Request(SESSION_TIMEOUT, BIDIRECTIONNAL, "Session timeout request", NORETRY, RESPONSETONOTHING);
+
+  (*_registeredRequests)[SESSION_KEEPALIVE] =   // keepalive is a response actually but its managed on its own
+    new Request(SESSION_TIMEOUT, BIDIRECTIONNAL, "Session keepalive response", NORETRY, RESPONSETONOTHING);
 }

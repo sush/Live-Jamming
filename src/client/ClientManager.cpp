@@ -24,6 +24,7 @@ void				ClientManager::Manage(Packet * packet)
   Packet_v1			*packet_v1;
   Session 			*session;
 
+
   packet_v1 = static_cast<Packet_v1 *>(packet);
   session = _session->getSession();
   
@@ -36,16 +37,28 @@ void				ClientManager::Manage(Packet * packet)
       session->setTimeOutTest();
       session->CancelTimeOutOccurred();
     }
-  if (_bindingsRecv.find(packet_v1->getType()) != _bindingsRecv.end())
-    _bindingsRecv.find(packet_v1->getType())->second->Receive(packet_v1, session);
-  else 
-    std::cout << "UNKNOWN PACKET TYPE" << std::endl; // not implemented
   
+  field_t	componentId = packet_v1->getComponentId(), requestId = packet_v1->getRequestId();
+  if (IsRegisteredComponent(componentId))
+    {
+      if (IsBindRecv(componentId, requestId))
+	{
+	  getBindRecv(componentId, requestId).Receive(packet_v1, session);
+	  Request const & r = getRegisteredRequest(componentId, requestId);
+	  if (r.IsResponseTo())
+	    session->CancelAutoRetry(componentId, r.getResponseTo());
+	}
+      else
+	std::cout << "UNREGISTERED REQUEST ID" << std::endl;
+    }
+  else
+    std::cout << "UNREGISTERED COMPONENT ID" << std::endl;
 }
 
 void			ClientManager::Init_Components()
 {
-  _session = new Component_Session(_bindingsRecv, this);
+  _session = new Component_Session(this);
+  RegisterComponent(_session);
 }
 	   
 void			ClientManager::Disconnect(Session *)

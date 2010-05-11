@@ -6,6 +6,7 @@
 
 #include <Packet_v1.h>
 #include <Protocol.h>
+#include <Protocol_Session.h>
 
 class Packet_v1_Session_AuthRequest : public Packet_v1
 {

@@ -19,15 +19,21 @@ void		Packet_v1::Print() const
 void		Packet_v1::Print_v1() const
 {
   std::cout << "[PROTO_VERSION: " << getProtoVersion() << " {" << PROTO_PROTOVERSION_SIZE << "}]"
-	    << "[TYPE: " << getType() << " {" << PROTOV1_TYPE_SIZE << "}]"
+	    << "[COMPONENTID: " << getComponentId() << " {" << PROTOV1_COMPONENTID_SIZE << "}]"
+	    << "[REQUESTID: " << getRequestId() << " {" << PROTOV1_REQUESTID_SIZE << "}]"
 	    << "[SESSIONID: " << getSessionId() << " {" << PROTOV1_SESSIONID_SIZE << "}]"
 	    << "[DATALEN: " << getDataLen() << " {" << PROTOV1_DATALEN_SIZE << "}]"
 	    << std::endl;
 }
 
-proto_v1_packet_type	Packet_v1::getType() const
+field_t		Packet_v1::getRequestId() const
 {
-  return static_cast<proto_v1_packet_type>(getField(PROTOV1_TYPE_OFF, PROTOV1_TYPE_SIZE));
+  return getField(PROTOV1_REQUESTID_OFF, PROTOV1_REQUESTID_SIZE);
+}
+
+field_t		Packet_v1::getComponentId() const
+{
+  return getField(PROTOV1_COMPONENTID_OFF, PROTOV1_COMPONENTID_SIZE);
 }
 
 field_t		Packet_v1::getSessionId() const
@@ -40,9 +46,14 @@ field_t		Packet_v1::getDataLen() const
   return getField(PROTOV1_DATALEN_OFF, PROTOV1_DATALEN_SIZE);
 }
 
-void		Packet_v1::setType(field_t type)
+void		Packet_v1::setRequestId(field_t reqId)
 {
-  setField(type, PROTOV1_TYPE_OFF, PROTOV1_TYPE_SIZE);
+  setField(reqId, PROTOV1_REQUESTID_OFF, PROTOV1_REQUESTID_SIZE);
+}
+
+void		Packet_v1::setComponentId(field_t catId)
+{
+  setField(catId, PROTOV1_COMPONENTID_OFF, PROTOV1_COMPONENTID_SIZE);
 }
 
 void		Packet_v1::setSessionId(field_t sessionId)

@@ -2,8 +2,6 @@
 #define __SESSION_H__
 
 class Session;
-#define RETRY true
-#define NORETRY false
 
 #include <iostream>
 #include <map>
@@ -13,7 +11,7 @@ class Session;
 #include <boost/bind.hpp>
 #include <Protocol.h>
 #include <Manager.h>
-
+#include <Protocol_Session.h>
 
 class Session
 {
@@ -46,14 +44,17 @@ public:
 
   void						CancelTimeOutTest();
   void						CancelTimeOutOccurred();
-  void						setRetry(Packet_v1 *);
-  void						CancelTimer(proto_v1_packet_type);
+  void						setAutoRetry(Packet_v1 *);
+  void						CancelAutoRetry(field_t, field_t);
 
 private:
-  typedef std::map<proto_v1_packet_type, boost::asio::deadline_timer *>	m_timer;
+  typedef std::map<field_t, boost::asio::deadline_timer *>		m_timer;
   typedef m_timer::iterator						m_timer_it;
   typedef m_timer::const_iterator					m_timer_cit;
-
+  typedef std::map<field_t, m_timer *>					m_m_timer;
+  typedef m_m_timer::iterator						m_m_timer_it;
+  typedef m_m_timer::const_iterator					m_m_timer_cit;
+  
   Manager				*_manager;
   boost::asio::io_service &		_io_service;
   boost::asio::ip::address		_ip;
@@ -63,7 +64,7 @@ private:
   unsigned int				_sessionId;
   boost::asio::ip::udp::endpoint const	&_remote_endpoint;
   unsigned int				_timeOutTestCount;
-  m_timer				_sendTimerMap;
+  m_m_timer				_timerMapMap;
   bool					_isLogged;
 };
 

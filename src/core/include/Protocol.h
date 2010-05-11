@@ -4,6 +4,8 @@
 typedef unsigned int field_t;
 #define PACKET_MAXSIZE 2048
 
+#define NOTARESPONSE	0
+
 // This file defines network protocols used in livejamming
 // keep the definitions in order of the fields in protocol definition
 // always define following offset relatively to previous offset
@@ -27,10 +29,13 @@ typedef unsigned int field_t;
 #define PROTOV1		1
 
 // size of bit fields in packets
-#define PROTOV1_TYPE_OFF (PROTO_PROTOVERSION_OFF + PROTO_PROTOVERSION_SIZE)
-#define PROTOV1_TYPE_SIZE 6
+#define PROTOV1_COMPONENTID_OFF (PROTO_PROTOVERSION_OFF + PROTO_PROTOVERSION_SIZE)
+#define PROTOV1_COMPONENTID_SIZE 10
 
-#define PROTOV1_SESSIONID_OFF (PROTOV1_TYPE_OFF + PROTOV1_TYPE_SIZE)
+#define PROTOV1_REQUESTID_OFF (PROTOV1_COMPONENTID_OFF + PROTOV1_COMPONENTID_SIZE)
+#define PROTOV1_REQUESTID_SIZE 6
+
+#define PROTOV1_SESSIONID_OFF (PROTOV1_REQUESTID_OFF + PROTOV1_REQUESTID_SIZE)
 #define PROTOV1_SESSIONID_SIZE 32
 
 #define PROTOV1_DATALEN_OFF (PROTOV1_SESSIONID_OFF + PROTOV1_SESSIONID_SIZE)
@@ -39,20 +44,6 @@ typedef unsigned int field_t;
 #define PROTOV1_START_OF_DATA (((PROTOV1_DATALEN_OFF + PROTOV1_DATALEN_SIZE) % 8 == 0)? \
 			       ((PROTOV1_DATALEN_OFF + PROTOV1_DATALEN_SIZE) / 8): \
 			       ((PROTOV1_DATALEN_OFF + PROTOV1_DATALEN_SIZE) / 8 + 1))
-
-//////////// Packet types  /////////////
-typedef enum 
- {
-   /* 0  */	NOREQUEST = 0,
-   /* 1  */	SESSION_AUTH_REQUEST = 1,
-   /* 2  */	SESSION_AUTH_RESPONSE_OK,
-   /* 3  */	SESSION_AUTH_RESPONSE_NOK_BADAUTH,
-   /* 4  */	SESSION_AUTH_RESPONSE_NOK_DUPLICATE,
-   /* 5  */	SESSION_DISCONNECT,
-   /* 6  */	SESSION_DISCONNECTED,
-   /* 7  */	SESSION_TIMEOUT,
-   /* 8  */	SESSION_KEEPALIVE
- }proto_v1_packet_type;
 
 ///// NOT WORKING runtime8 cuz MACRO ///
 

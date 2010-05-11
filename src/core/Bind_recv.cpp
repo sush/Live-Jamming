@@ -8,37 +8,16 @@
 ////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////
 
-boost::asio::io_service		*Bind_recv::_io_service;
-boost::asio::ip::udp::socket	*Bind_recv::_socket;
-boost::threadpool::pool		*Bind_recv::_pool;
+Bind_recv::Bind_recv(IComponent *instance, IComponent::pMethod method)
+  :_instance(instance), _method(method), _needsAuth(true)
+{}
 
-Bind_recv::Bind_recv(IComponent *instance, IComponent::pMethod method,
-		     proto_v1_packet_type sendType, bool needsAuth)
-  :_instance(instance), _method(method), _sendType(sendType), _needsAuth(needsAuth)
-{
-
-}
 Bind_recv::~Bind_recv()
 {
 
 }
 
-void				Bind_recv::setIO(boost::asio::io_service * io_service)
-{
-  _io_service = io_service;
-}
-
-void				Bind_recv::setSocket(boost::asio::ip::udp::socket * socket)
-{
-  _socket = socket;
-}
-
-void				Bind_recv::setPool(boost::threadpool::pool * pool)
-{
-  _pool = pool;
-}
-
-void					Bind_recv::Receive(Packet_v1 const * packet_v1, Session * session)
+void					Bind_recv::Receive(Packet_v1 const * packet_v1, Session * session) const
 {
   // on Server:is the client auth
   // on client:are we auth on the server
@@ -52,16 +31,11 @@ void					Bind_recv::Receive(Packet_v1 const * packet_v1, Session * session)
   //  if (!_needsAuth || session && _needsAuth == session->IsLogged())
     {
       // if packet received is a response to a waiting send
-      if (_sendType != NOREQUEST)
-	session->CancelTimer(_sendType);
+//       if (_componentId && _requestId != RESPONSETONOTHING)
+// 	session->CancelTimer(_componentId, _requestId);
       (_instance->*_method)(packet_v1, session);
     }
     // send a need_auth_request to clients if in   !   S E R V E R   !!   S E R V E R   !
     // pop a error message in client requesting auth in   !   C L I E N T   !!   C L I E N T   !
 }
 
-
-proto_v1_packet_type			Bind_recv::getSendType() const
-{
-  return _sendType;
-}

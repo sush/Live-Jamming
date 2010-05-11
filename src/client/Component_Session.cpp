@@ -1,9 +1,8 @@
 #include <Component_Session.h>
 
-Component_Session::Component_Session(IComponent::m_bindings_recv & bindingsRecv, ClientManager *clientManager)
-  :IComponent(clientManager), _bindingsRecv(bindingsRecv), _clientManager(clientManager), _logged(false)
+Component_Session::Component_Session(ClientManager *clientManager)
+  :IComponent(SESSION_COMPONENTID), _clientManager(clientManager), _logged(false), _session(0)
 {
-  BindingsRecv();
   _session = new Session(_clientManager, _clientManager->getIO(), _clientManager->getEndpoint());
 }
 
@@ -14,23 +13,53 @@ Component_Session::~Component_Session()
 
 void	Component_Session::BindingsRecv()
 {
-  _bindingsRecv[SESSION_AUTH_RESPONSE_OK] =
-    new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Session::Recv_AuthResponse), SESSION_AUTH_REQUEST);
+  (*_bindingsRecv)[SESSION_AUTH_RESPONSE_OK] =
+    new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Session::Recv_AuthResponse));
 
-  _bindingsRecv[SESSION_AUTH_RESPONSE_NOK_BADAUTH] =
-    new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Session::Recv_AuthResponse), SESSION_AUTH_REQUEST);
+  (*_bindingsRecv)[SESSION_AUTH_RESPONSE_NOK_BADAUTH] =
+    new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Session::Recv_AuthResponse));
 
-  _bindingsRecv[SESSION_AUTH_RESPONSE_NOK_DUPLICATE] =
-    new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Session::Recv_AuthResponse), SESSION_AUTH_REQUEST);
+  (*_bindingsRecv)[SESSION_AUTH_RESPONSE_NOK_DUPLICATE] =
+    new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Session::Recv_AuthResponse));
 
-  _bindingsRecv[SESSION_TIMEOUT] =
+  (*_bindingsRecv)[SESSION_TIMEOUT] =
     new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Session::Recv_TimeOutTest));
 
-  _bindingsRecv[SESSION_KEEPALIVE] =
+  (*_bindingsRecv)[SESSION_KEEPALIVE] =
     new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Session::Recv_KeepAlive));
 
-  _bindingsRecv[SESSION_DISCONNECTED] =
+  (*_bindingsRecv)[SESSION_DISCONNECTED] =
     new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Session::Recv_Disconnected));
+}
+
+void	Component_Session::RegisteredRequests()
+{
+  // SEND requests
+  (*_registeredRequests)[SESSION_AUTH_REQUEST] = 
+    new Request(SESSION_AUTH_REQUEST, SEND, "Session Authentification request", RETRY);
+
+  (*_registeredRequests)[SESSION_DISCONNECT] = 
+    new Request(SESSION_DISCONNECT, SEND, "Session Disconnect request", NORETRY);
+
+  // RECV requests
+  (*_registeredRequests)[SESSION_AUTH_RESPONSE_OK] = 
+    new Request(SESSION_AUTH_RESPONSE_OK, RECV, "Session Authentification response OK", SESSION_AUTH_REQUEST);
+
+  (*_registeredRequests)[SESSION_AUTH_RESPONSE_NOK_BADAUTH] = 
+    new Request(SESSION_AUTH_RESPONSE_NOK_BADAUTH, RECV, "Session Authentification response Bad Login information", SESSION_AUTH_REQUEST);
+
+  (*_registeredRequests)[SESSION_AUTH_RESPONSE_NOK_DUPLICATE] = 
+    new Request(SESSION_AUTH_RESPONSE_NOK_DUPLICATE, RECV, "Session Authentification response Duplicate Login", SESSION_AUTH_REQUEST);
+
+  (*_registeredRequests)[SESSION_DISCONNECTED] = 
+    new Request(SESSION_DISCONNECTED, RECV, "Session ended", RESPONSETONOTHING);
+
+  // BIDIRECTIONAL requests 
+  (*_registeredRequests)[SESSION_TIMEOUT] = 
+    new Request(SESSION_TIMEOUT, BIDIRECTIONNAL, "Session timeout request", NORETRY, RESPONSETONOTHING);
+
+  (*_registeredRequests)[SESSION_KEEPALIVE] =   // keepalive is a response actually but its managed on its own
+    new Request(SESSION_TIMEOUT, BIDIRECTIONNAL, "Session keepalive response", NORETRY, RESPONSETONOTHING);
 }
 
 field_t		Component_Session::getSessionId() const
@@ -58,7 +87,7 @@ void		Component_Session::Connect(std::string const &login, std::string const& pa
 
 void		Component_Session::Recv_AuthResponse(Packet_v1 const *packet_v1, Session *session)
 {
-  if (packet_v1->getType() == SESSION_AUTH_RESPONSE_OK)
+  if (packet_v1->getRequestId() == SESSION_AUTH_RESPONSE_OK)
     {
       _logged = true;
       session->Authentificated(packet_v1);
@@ -101,23 +130,23 @@ void		Component_Session::Send_AuthRequest()
   packet_v1_SAR->setLogin("login_not_used_yet");
   packet_v1_SAR->setPass("pass_not_used_yet");
 
-  _clientManager->Send(static_cast<Packet_v1 *>(packet_v1_SAR), _session, RETRY);
+  _clientManager->Send(static_cast<Packet_v1 *>(packet_v1_SAR), _session);
 }
 
 void		Component_Session::Send_TimeOutTestRequest()
 {
-  _clientManager->Send(SESSION_TIMEOUT, _session, NORETRY);
+  _clientManager->Send(_componentId, SESSION_TIMEOUT, _session);
 }
 
 void		Component_Session::Send_Disconnect()
 {
-  _clientManager->Send(SESSION_DISCONNECT, _session, NORETRY);
+  _clientManager->Send(_componentId, SESSION_DISCONNECT, _session);
 }
 
 void		Component_Session::Send_KeepAlive()
 {
   std::cout << "send_keep_alive" << std::endl;
-  _clientManager->Send(SESSION_KEEPALIVE, _session, NORETRY);
+  _clientManager->Send(_componentId, SESSION_KEEPALIVE, _session);
 }
 
 bool		Component_Session::IsLogged() const

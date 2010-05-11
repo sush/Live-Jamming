@@ -29,10 +29,7 @@ void	Session::Authentificated(Packet_v1 const * packet_v1)
 
 Session::~Session()
 {
-  m_timer_it	it, end = _sendTimerMap.end();
-  
-  for (it = _sendTimerMap.begin(); it != end; ++it)
-    delete it->second;
+  // empty various lists
   delete _timer_timeOutTest;
   delete _timer_timeOutOccurred;
 }
@@ -115,21 +112,37 @@ void				Session::CancelTimeOutOccurred()
   _timer_timeOutOccurred->cancel();
 }
 
-void				Session::setRetry(Packet_v1 * packet_v1)
+void				Session::setAutoRetry(Packet_v1 * packet_v1)
 {
-  proto_v1_packet_type		type = packet_v1->getType();
+  field_t			componentId = packet_v1->getComponentId(), requestId = packet_v1->getRequestId();
+  m_timer			*timerMap;
+  boost::asio::deadline_timer	*timer;
 
-  if (_sendTimerMap.find(type) == _sendTimerMap.end())
-    _sendTimerMap[type] = new boost::asio::deadline_timer(_io_service);
-  _sendTimerMap[type]->expires_from_now(boost::posix_time::seconds(_manager->getRetryDelay()));
-  _sendTimerMap[type]->async_wait(boost::bind(&Manager::CallBack_Send_TimeOut, _manager, this, packet_v1, boost::asio::placeholders::error));
+  if (_timerMapMap.find(componentId) == _timerMapMap.end())
+    _timerMapMap[componentId] = new m_timer;
+  timerMap = _timerMapMap.find(componentId)->second;
+  
+  if (timerMap->find(requestId) == timerMap->end())
+    (*timerMap)[requestId] = new boost::asio::deadline_timer(_io_service);
+  timer = timerMap->find(requestId)->second;
+  timer->expires_from_now(boost::posix_time::seconds(_manager->getRetryDelay()));
+  timer->async_wait(boost::bind(&Manager::CallBack_Send_TimeOut, _manager, this, packet_v1, boost::asio::placeholders::error));
 }
 
 
-void				Session::CancelTimer(proto_v1_packet_type packetType)
+void				Session::CancelAutoRetry(field_t componentId, field_t requestId)
 {
-  if (_sendTimerMap.find(packetType) != _sendTimerMap.end())
-    _sendTimerMap[packetType]->cancel();
+  m_timer			*timerMap;
+
+  if (_timerMapMap.find(componentId) != _timerMapMap.end())
+    {
+      timerMap = _timerMapMap.find(componentId)->second;
+      if (timerMap->find(requestId) != timerMap->end())
+	{
+	  (*timerMap)[requestId]->cancel();
+	  std::cout << "[" << componentId << "] [" << requestId << "] cancelled" << std::endl;
+	}
+    }
   // do we really want to throw an exception in case we try to cancel a non existing timer?
 }
 
@@ -141,5 +154,4 @@ bool				Session::IsLogged() const
 void				Session::Print() const
 {
   std::cout << "[" << _ip << ":" << _port << "]" << " {" << _sessionId << "}";
-
 }
