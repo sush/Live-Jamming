@@ -18,6 +18,7 @@ class Component_Jam : public IComponent
   virtual void          BindingsRecv();
 
  private:
+
   void			Recv_Start(Packet_v1*);
   void			Recv_Output(Packet_v1 *);
   void			Recv_Stop(Packet_v1 *);
@@ -27,8 +28,8 @@ class Component_Jam : public IComponent
 
   m_bindings_recv &     _bindingsRecv;
   ClientManager         *_clientManager;
-/*Audio			_audio;*/
+/*Audio			*_audio;*/
 };
 
-#endif
+#endif // ! __COMPONENT_JAM_H__
 

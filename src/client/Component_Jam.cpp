@@ -3,6 +3,7 @@
 omponent_Jam::Component_Jam(IComponent::m_bindings_recv & bindingsRecv, ClientManager *clientManager)
   : IComponent(clientManager), _bindingsRecv(bindingsRecv), _clientManager(clientManager)
 {
+  _audio = new Audio();
   BindingsRecv();
 }
 
@@ -20,7 +21,8 @@ void            Component_Jam::BindingsRecv()
     new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Jam::Recv_Start));   
 }
 
-void	Component_Jam::Recv_Start(Packet_v1 *packet_v1){
+void		Component_Jam::Recv_Start(Packet_v1 *packet_v1)
+{
   /*
     Init && test audio devices
     Gain Input;
@@ -31,13 +33,15 @@ void	Component_Jam::Recv_Start(Packet_v1 *packet_v1){
    */
 }
 
-void	Component_Jam::Recv_Input(Packet_v1 *packet_v1){
+void		Component_Jam::Recv_Input(Packet_v1 *packet_v1)
+{
   /*decode && send data to output device*/
 }
 
-void	Component_Jam::Recv_Stop(Packet_v1 *packet_v1){
+void		Component_Jam::Recv_Stop(Packet_v1 *packet_v1)
+{
   /*Clean stream && shutdown device*/
 }
 
-void	Component_Jam::Send_Input(Packet_v1 *packet_v1, Session *session){
+void		Component_Jam::Send_Input(Packet_v1 *packet_v1, Session *session){
 }

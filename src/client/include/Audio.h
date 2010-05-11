@@ -14,16 +14,22 @@ METHOD TO IMPLEMENT
 */
 
 
-class Audio {
+class Audio 
+{
  public:
+
   Audio();
   virtual ~Audio();
-  void	Init();
-  void	ERRCHECK(FMOD_RESULT);
+  void			PlayOutput(FMOD::Sound *);
+  FMOD::Sound *		RecordInput();
+  void			ERRCHECK(FMOD_RESULT);
+
  private:
-  FMOD::System	*_system;
-  FMOD::Sound	*_sound;
-  FMOD::Channel	*_channel;
+
+  FMOD::System		*_system;
+  FMOD::Sound		*_sound;
+  FMOD::Channel		*_channel;
+  FMOD_RESULT		_result;
 };
 
 #endif // ! __AUDIO_H__

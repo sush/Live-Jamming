@@ -1,30 +1,45 @@
 
-[server]
-	recv (send)		// a client from channel sends message to channel
-	recv (send_private)	// a client from channel sends private message to another user of channel
-	recv (join)		// a new client joins channel	(create if not exists)	  // THREAD SAFE (PROTECT with mutex)
-	recv (leave)		// a client leaves channel      (delete if no users left) // THREAD SAFE (PROTECT with mutex)
+Server :
 
-	send(send)
-	send(send_private)
-	send(join)
-	send(leave)
+RECV_JOIN
+	- channelId
 
-[client]
-	recv (send)
-	recv (send_private)
-	recv (join)
-	recv (leave)
+RECV_MESSAGE
+	- channelId
+	- message
 
-	send(send)
-	send(send_private)
-	send(join)
-	send(leave)
+SEND_JOINED_OK
+	- sessionId
+
+SEND_LEAVED_OK
+	- sessionId
+
+SEND_MESSAGE
+	- sessionId
+	- message
 
 
+Client :
 
-Component_ChannelManager
-{
-packet_v1_channel.getChannelName -> 
-map [name | vector<user>]
-}
+RECV_JOINED
+	- channelId
+	- sessionId
+
+RECV_LEAVED
+	- channelId
+	- sessionId
+
+RECV_MESSGAE
+	- channelId
+	- sessionId
+	- message
+
+SEND_MESSAGE
+	- channelId
+	- message
+
+SEND_JOINED
+	- channelId
+
+SEND_LEAVED
+	- channelId
