@@ -1,3 +1,36 @@
+JOIN			// MOI join un chan j'envoie JOIN
+			      	   MOI reenvoie tant que pas de reponse JOIN_OK/ JOIN_NOK_*
+			// CLIENT join un chan je recois JOINED
+			      	   SERV re-envoie JOINED tant qu'il ne recoit pas JOINED_ACK 
+MESSAGE
+			// MOI envoie un message j'envoie MESSAGE
+			       	    MOI reenvoie tant que pas de MESSAGE_ACK du serveur
+		       // CLIENT envoie un message au chan je recois MESSAGE_RECV
+		       	     	   SERV re-envoie MESSAGE_RECV tant qu'il ne recoit pas MESSAGE_RECV_ACK
+LEAVE
+			// MOI leave un channel j'envoie LEAVE
+			       	     MOI reenvoie LEAVE tant que je ne recois pas LEAVE_OK / LEAVE_NOK_*
+			// CLIENT Leave un chan je recois LEAVED
+			   	  SERV re-envoie LEAVED tant qu'il ne recoit pas de LEAVED_ACK
+
+JOIN			[client -> serv]
+JOIN_OK			[serv -> client]
+JOIN_NOK_...		[serv -> client]
+JOINED			[serv -> client]
+JOINED_ACK		[client -> serv]
+
+MESSAGE			[client -> serv]
+MESSAGE_ACK		[serv -> client]
+MESSAGE_RECV		[serv -> client]
+MESSAGE_RECV_ACK	[client -> serv]
+
+LEAVE			[client -> serv]
+LEAVE_OK		[serv -> client]
+LEAVE_NOK_...		[serv -> client]
+LEAVED			[serv -> client]
+LEAVED_ACK		[client -> serv]
+
+
 
 Server :
 
@@ -9,12 +42,15 @@ RECV_MESSAGE
 	- message
 
 SEND_JOINED_OK
+	- channelId
 	- sessionId
 
 SEND_LEAVED_OK
+	- channelId
 	- sessionId
 
 SEND_MESSAGE
+	- channelId
 	- sessionId
 	- message
 
