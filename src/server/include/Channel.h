@@ -9,21 +9,20 @@
 class Channel
 {
  public:
+
   Channel();
-  Channel(Session*);
+  Channel(Session *, field_t);
   virtual ~Channel();
   
-  std::vector<int> const & getConnected() const;
+  std::map<field_t, Session *> const & getConnected() const;
   
-  bool			addConnected(Session*);
-  bool			removeConnected(Session*);
-  bool			isConnected(Session*);
+  bool				addConnected(Session *, field_t);
+  bool				removeConnected(field_t);
   
 private:
   
-  std::map<Session*>	_connected;
-
-  boost::mutex		_channel_mutex;
+  std::map<field_t, Session*>	_connected;
+  boost::mutex			_channel_mutex;
 };
 
 #endif // ! __CHANNEL_H__

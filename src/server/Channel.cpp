@@ -2,55 +2,38 @@
 
 Channel::Channel() {}
 
-Channel::Channel(Session *session)
+Channel::Channel(Session *session, field_t sessionId)
 {
-  addConnected(session);
+  addConnected(session, sessionId);
 }
 
 Channel::~Channel() {}
 
-std::vector<Session*> const & Channel::getConnected() const
+std::map<field_t, Session*> const & Channel::getConnected() const
 {
   return _connected;
 }
 
-bool	Channel::addConnected(Session *session)
+bool	Channel::addConnected(Session *session, field_t sessionId)
 {
-  if (!isConnected(session))
+  if (_connected[sessionId])
     {
       _channel_mutex.lock();
-      _connected.push_back(session);
+      _connected.insert(std::pair<field_t, Session *>(sessionId, session));
       _channel_mutex.unlock();
       return true;
     }
   return false;
 }
 
-bool	Channel::removeConnected(Session *session)
+bool	Channel::removeConnected(field_t sessionId)
 {
-  for (unsigned int i = 0; i < _connected.size(); ++i)
+  if (_connected[sessionId])
     {
-      Session selectedSession = (Session) _connected[i];
-      if (selectedSession->getSessionId == session->getSessionId)
-	{
-	  if (isConnected(session))
-	    {
-	      _channel_mutex.lock();
-	      _connected.erase(i);
-	      _channel_mutex.unlock();
-	      return true;
-	    }
-	}
-    }
-  return false;
-}
-
-bool	Channel::isConnected(Session *session)
-{
-  for (unsigned int i = 0; i < _connected.size(); ++i)
-    {
-      if (_connected[i] == session)
-	return true;
+      _channel_mutex.lock();
+      _connected.erase(sessionId);
+      _channel_mutex.unlock();
+      return true;
     }
   return false;
 }
