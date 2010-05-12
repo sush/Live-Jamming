@@ -10,6 +10,10 @@ Packet::Packet(boost::asio::ip::udp::endpoint const * endpoint)
   _buffer = new buffer_t;
 }
 
+Packet::Packet()
+{
+  _buffer = new buffer_t;
+}
 
 Packet::~Packet()
 {
@@ -27,7 +31,7 @@ int	Packet::getMaxSize() const
   return PACKET_MAXSIZE;
 }
 
-Packet::buffer_t const &	Packet::getData() const
+Packet::buffer_t const &	Packet::getRawData() const
 {
   return *_buffer;
 }
@@ -174,4 +178,32 @@ void					Packet::setField(field_t value, unsigned int bin_offset, unsigned int b
   // 00xx.xxxx
   // xxxx.xx00
   //std::cout << "[0] " << (int)_buffer->at(0) << " [1] " << (int)_buffer->at(1) << std::endl;
+}
+
+byte_t						*Packet::getData(unsigned int start_of_data, unsigned int idx) const
+{
+  byte_t					*res;
+  unsigned int					i, j;
+
+  for (i = start_of_data; i < PACKET_MAXSIZE && idx > 0; ++i)
+    if (_buffer->at(i) == '\0')
+      {
+	--idx;
+	while (_buffer->at(i) == '\0' && i < PACKET_MAXSIZE)
+	  ++i;
+      }
+  // test if got to idx nth str and that its not pointed to PACKET_MAXSIZE (cuz it would be null)
+  if (idx > 0 || i == PACKET_MAXSIZE)
+    return 0;
+
+ // test the end of idx nth str has end before maxsize
+  for (j = i; j < PACKET_MAXSIZE && _buffer->at(j) != '\0'; ++j);
+  if (j == PACKET_MAXSIZE)
+    return 0;
+  return &(_buffer->at(i));
+}
+
+void						Packet::setData(unsigned int start_of_data, unsigned int idx, byte_t *value)
+{
+  
 }

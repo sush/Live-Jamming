@@ -10,7 +10,7 @@ class Component_Session;
 #include <IComponent.h>
 #include <Protocol.h>
 #include <Packet_v1.h>
-#include <Packet_v1_Session_AuthRequest.h>
+#include <Packet_v1_Session.h>
 #include <ClientManager.h>
 #include <Session.h>
 

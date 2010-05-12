@@ -53,7 +53,7 @@ void		Manager::Send(Packet_v1 *packet_v1, Session * session) const
   if (getRegisteredRequest(packet_v1->getComponentId(), packet_v1->getRequestId()).getRetry())
     session->setAutoRetry(packet_v1);
   // schedule a retry after a delay with no expected response for that send
-  _socket.async_send_to(boost::asio::buffer(packet_v1->getData()), session->getEndpoint(),
+  _socket.async_send_to(boost::asio::buffer(packet_v1->getRawData()), session->getEndpoint(),
 			boost::bind(&Manager::CallBack_handle_send, this, packet_v1));
 }
 
@@ -64,13 +64,13 @@ void		Manager::Send(Packet_v1 *packet_v1, boost::asio::ip::udp::endpoint &endpoi
   packet_v1->Print_v1();
 #endif
   //  packet_v1->setRequestId(requestId);
-  _socket.async_send_to(boost::asio::buffer(packet_v1->getData()), endpoint,
+  _socket.async_send_to(boost::asio::buffer(packet_v1->getRawData()), endpoint,
 			boost::bind(&Manager::CallBack_handle_send, this, packet_v1));
 }
 
 void		Manager::Send(field_t componentId, field_t requestId, Session * session) const
 {
-  Packet_v1	*packet_v1 = new Packet_v1(&session->getEndpoint());
+  Packet_v1	*packet_v1 = new Packet_v1(componentId, requestId);
 
   packet_v1->setComponentId(componentId);
   packet_v1->setRequestId(requestId);

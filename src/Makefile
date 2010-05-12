@@ -20,7 +20,7 @@ SERVER_SRC	=		server/main.cpp\
 				core/Manager.cpp\
 				core/Packet.cpp\
 				core/Packet_v1.cpp\
-				core/Packet_v1_Session_AuthRequest.cpp\
+				core/Packet_v1_Session.cpp\
 				core/PacketQueue.cpp\
 				core/Bind_recv.cpp\
 				core/Request.cpp
@@ -34,7 +34,7 @@ CLIENT_SRC	=		client/main_net.cpp\
 				core/Packet.cpp\
 				core/Packet_v1.cpp\
 				core/PacketQueue.cpp\
-				core/Packet_v1_Session_AuthRequest.cpp\
+				core/Packet_v1_Session.cpp\
 				core/Bind_recv.cpp\
 				core/Request.cpp
 

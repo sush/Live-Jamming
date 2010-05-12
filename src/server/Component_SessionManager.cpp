@@ -76,26 +76,26 @@ void		Component_SessionManager::Disconnect(Session * session)
 
 void				Component_SessionManager::Recv_AuthRequest(Packet_v1 const*packet_v1, Session *)
 {
-  Packet_v1_Session_AuthRequest	const *packet_authRequest =
-    static_cast<Packet_v1_Session_AuthRequest const *>(packet_v1);
+  Packet_v1_Session	const *packet_v1_Session =
+    static_cast<Packet_v1_Session const *>(packet_v1);
 
-  packet_authRequest = packet_authRequest;
+  packet_v1_Session = packet_v1_Session;
   std::cout << "packet_auth_request received" << std::endl;
 }
 
 void		Component_SessionManager::Send_AuthResponse_OK(Session * session)
 {
-  _serverManager->Send(_componentId, SESSION_AUTH_RESPONSE_OK, session);
+  _serverManager->Send(_componentId, SESSION_AUTHRESPONSE_OK, session);
 }
 
 void		Component_SessionManager::Send_AuthResponse_NOK_BADAUTH(Session * session)
 {
-  _serverManager->Send(_componentId, SESSION_AUTH_RESPONSE_NOK_BADAUTH, session);
+  _serverManager->Send(_componentId, SESSION_AUTHRESPONSE_NOK_BADAUTH, session);
 }
 
 void		Component_SessionManager::Send_AuthResponse_NOK_DUPLICATE(Session * session)
 {
-  _serverManager->Send(_componentId, SESSION_AUTH_RESPONSE_NOK_DUPLICATE, session);
+  _serverManager->Send(_componentId, SESSION_AUTHRESPONSE_NOK_DUPLICATE, session);
 }
 
 
@@ -123,7 +123,7 @@ void		Component_SessionManager::Recv_Disconnect(Packet_v1 const *, Session *)
 
 void		Component_SessionManager::BindingsRecv()
 {
-  (*_bindingsRecv)[SESSION_AUTH_REQUEST] =
+  (*_bindingsRecv)[SESSION_AUTHREQUEST] =
     new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_SessionManager::Recv_AuthRequest));
 
   (*_bindingsRecv)[SESSION_KEEPALIVE] =
@@ -140,18 +140,18 @@ void		Component_SessionManager::BindingsRecv()
 void	Component_SessionManager::RegisteredRequests()
 {
   // SEND requests 
-  (*_registeredRequests)[SESSION_AUTH_RESPONSE_OK] = 
-    new Request(SESSION_AUTH_RESPONSE_OK, SEND, "Session Authentification response OK", NORETRY);
+  (*_registeredRequests)[SESSION_AUTHRESPONSE_OK] = 
+    new Request(SESSION_AUTHRESPONSE_OK, SEND, "Session Authentification response OK", NORETRY);
 
-  (*_registeredRequests)[SESSION_AUTH_RESPONSE_NOK_BADAUTH] = 
-    new Request(SESSION_AUTH_RESPONSE_NOK_BADAUTH, RECV, "Session Authentification response Bad Login information", NORETRY);
+  (*_registeredRequests)[SESSION_AUTHRESPONSE_NOK_BADAUTH] = 
+    new Request(SESSION_AUTHRESPONSE_NOK_BADAUTH, RECV, "Session Authentification response Bad Login information", NORETRY);
 
-  (*_registeredRequests)[SESSION_AUTH_RESPONSE_NOK_DUPLICATE] = 
-    new Request(SESSION_AUTH_RESPONSE_NOK_DUPLICATE, RECV, "Session Authentification response Duplicate Login", NORETRY);
+  (*_registeredRequests)[SESSION_AUTHRESPONSE_NOK_DUPLICATE] = 
+    new Request(SESSION_AUTHRESPONSE_NOK_DUPLICATE, RECV, "Session Authentification response Duplicate Login", NORETRY);
   
   // RECV requests
-  (*_registeredRequests)[SESSION_AUTH_REQUEST] = 
-    new Request(SESSION_AUTH_REQUEST, RECV, "Session Authentification request", RESPONSETONOTHING);
+  (*_registeredRequests)[SESSION_AUTHREQUEST] = 
+    new Request(SESSION_AUTHREQUEST, RECV, "Session Authentification request", RESPONSETONOTHING);
 
   (*_registeredRequests)[SESSION_DISCONNECT] = 
     new Request(SESSION_DISCONNECT, RECV, "Session Disconnect request", RESPONSETONOTHING);

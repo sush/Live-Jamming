@@ -9,9 +9,8 @@
 class Packet_v1 : public Packet
 {
 public:
-  Packet_v1(boost::asio::ip::udp::endpoint const *);
+  Packet_v1(field_t, field_t);
   virtual		~Packet_v1();
-  void			MakePacket();
 
   void			Print() const;
   void			Print_v1() const;

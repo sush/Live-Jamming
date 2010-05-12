@@ -12,70 +12,29 @@ LEAVE
 			       	     MOI reenvoie LEAVE tant que je ne recois pas LEAVE_OK / LEAVE_NOK_*
 			// CLIENT Leave un chan je recois LEAVED
 			   	  SERV re-envoie LEAVED tant qu'il ne recoit pas de LEAVED_ACK
-
-JOIN			[client -> serv]
-JOIN_OK			[serv -> client]
-JOIN_NOK_...		[serv -> client]
-JOINED			[serv -> client]
-JOINED_ACK		[client -> serv]
-
-MESSAGE			[client -> serv]
-MESSAGE_ACK		[serv -> client]
-MESSAGE_RECV		[serv -> client]
-MESSAGE_RECV_ACK	[client -> serv]
-
-LEAVE			[client -> serv]
-LEAVE_OK		[serv -> client]
-LEAVE_NOK_...		[serv -> client]
-LEAVED			[serv -> client]
-LEAVED_ACK		[client -> serv]
+client				serv
+JOIN>
+				>JOIN
+				<treat>
+				<JOIN_OK
 
 
+						[-------------------------- BINARY FIELDS --------------------------] [---------------------------- DATA ---------------------------]
+JOIN			[client -> serv]	CHANNELID
+JOIN_OK			[serv -> client]	CHANNELID
+JOIN_NOK_ALREADYINCHAN	[serv -> client]	
+JOINED			[serv -> client]	CHANNELID	SESSIONID
+JOINED_ACK		[client -> serv]	CHANNELID	SESSIONID
 
-Server :
+MESSAGE			[client -> serv]	CHANNELID								STRING1 STRING2 getData(PROTOV1_START_OF_DATA + CHANNEL_ID_SIZE ROUNDED UP 8 / 8, 2)
+MESSAGE_ACK		[serv -> client]	CHANNELID
+MESSAGE_RECV		[serv -> client]	CHANNELID	SESSIONID
+MESSAGE_RECV_ACK	[client -> serv]	CHANNELID	SESSIONID
 
-RECV_JOIN
-	- channelId
-
-RECV_MESSAGE
-	- channelId
-	- message
-
-SEND_JOINED_OK
-	- channelId
-	- sessionId
-
-SEND_LEAVED_OK
-	- channelId
-	- sessionId
-
-SEND_MESSAGE
-	- channelId
-	- sessionId
-	- message
+LEAVE			[client -> serv]	CHANNELID
+LEAVE_OK		[serv -> client]	CHANNELID
+LEAVE_NOK_NOTINCHAN	[serv -> client]	CHANNELID
+LEAVED			[serv -> client]	CHANNELID	SESSIONID
+LEAVED_ACK		[client -> serv]	CHANNELID	SESSIONID
 
 
-Client :
-
-RECV_JOINED
-	- channelId
-	- sessionId
-
-RECV_LEAVED
-	- channelId
-	- sessionId
-
-RECV_MESSGAE
-	- channelId
-	- sessionId
-	- message
-
-SEND_MESSAGE
-	- channelId
-	- message
-
-SEND_JOINED
-	- channelId
-
-SEND_LEAVED
-	- channelId

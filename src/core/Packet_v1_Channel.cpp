@@ -1,15 +1,9 @@
-#include <Packet_v1.h>
+#include <Packet_v1_Channel.h>
 
-// Packet_v1::Packet_v1(boost::asio::ip::udp::endpoint const *endpoint)
-//   : Packet(endpoint)
-// {
-//   setProtoVersion(PROTOV1);
-// }
-
-Packet_v1::Packet_v1(field_t componentId, field_t requestId)
+Packet_v1::Packet_v1(boost::asio::ip::udp::endpoint const *endpoint)
+  : Packet(endpoint)
 {
-  setComponentId(componentId);
-  setRequestId(requestId);
+  setProtoVersion(PROTOV1);
 }
 
 Packet_v1::~Packet_v1()
