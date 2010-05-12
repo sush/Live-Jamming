@@ -63,7 +63,6 @@ void		Manager::Send(Packet_v1 *packet_v1, boost::asio::ip::udp::endpoint &endpoi
   std::cout << "<..... SEND .....> ";
   packet_v1->Print_v1();
 #endif
-  //  packet_v1->setRequestId(requestId);
   _socket.async_send_to(boost::asio::buffer(packet_v1->getRawData()), endpoint,
 			boost::bind(&Manager::CallBack_handle_send, this, packet_v1));
 }
