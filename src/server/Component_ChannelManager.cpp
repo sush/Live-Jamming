@@ -84,14 +84,20 @@ void	Component_ChannelManager::Recv_Join(Packet_v1 const *packet_v1, Session *se
   field_t sessionId = session->getSessionId();
   Channel *chan;
 
+  std::cout << ">>>>>>>>>>>> RECV [JOIN] Channel [" << channelId << "]<<<<<<<<<<<<" << std::endl;
+
   if (!_channelMap[channelId])
     {
+      std::cout << ">>>>>>>>>>>> Channel [" << channelId << "]<<<<<<<<<<<< NOT EXIST -> CREATED" << std::endl;
       _channelMap[channelId] =  new Channel();
       chan = _channelMap[channelId];
     }
   else
-    chan = _channelMap.find(channelId)->second; 
-
+    {
+      std::cout << ">>>>>>>>>>>> Channel [" << channelId << "]<<<<<<<<<<<< EXISTS" << std::endl;
+      chan = _channelMap.find(channelId)->second; 
+    }
+  
   if (chan->addConnected(session, sessionId))
     {
       Send_Join_OK(session, channelId);
@@ -117,7 +123,7 @@ void	Component_ChannelManager::Send_Join_OK(Session *session, field_t channelId)
 
   packet_v1_channel->setChannelId(channelId);
   // also send list of users actualy connected to chan
-
+  std::cout << ">>>>>>>>>>>> SEND [JOIN_OK] Channel [" <<  channelId  <<"]<<<<<<<<<<<<" << std::endl;
   _serverManager->Send(packet_v1_channel, session);
 }
 
@@ -126,7 +132,7 @@ void	Component_ChannelManager::Send_Join_NOK_ALREADYINCHAN(Session *session, fie
   Packet_v1_Channel *packet_v1_channel = new Packet_v1_Channel(CHANNEL_JOIN_NOK_ALREADYINCHAN);
 
   packet_v1_channel->setChannelId(channelId);
-  
+    std::cout << ">>>>>>>>>>>> SEND [JOIN_NOK_ALREADYINCHAN] Channel [" <<  channelId  <<"]<<<<<<<<<<<<" << std::endl;
   _serverManager->Send(packet_v1_channel, session);
 }
 
@@ -136,7 +142,9 @@ void	Component_ChannelManager::Send_Joined(Session *session, field_t channelId, 
   
   packet_v1_channel->setChannelId(channelId);
   packet_v1_channel->setClientSessionId(clientSessionId);
-  
+
+  std::cout << ">>>>>>>>>>>> SEND [JOINED] Channel [" <<  channelId  <<"] User [" << clientSessionId  << "]<<<<<<<<<<<<" << std::endl;
+
   _serverManager->Send(packet_v1_channel, session);
 }
 
@@ -148,6 +156,8 @@ void	Component_ChannelManager::Recv_Message(Packet_v1 const *packet_v1, Session 
   field_t channelId = packet_v1_channel->getChannelId();
   field_t sessionId = packet_v1_channel->getSessionId();
   char const *message = packet_v1_channel->getMessage();
+
+  std::cout << ">>>>>>>>>>>> RECV [MESSAGE] Channel [" <<  channelId  <<"] Message [" << message  << "<<<<<<<<<<<<" << std::endl;
 
   if (_channelMap[channelId])
     {
@@ -166,6 +176,7 @@ void	Component_ChannelManager::Recv_Message(Packet_v1 const *packet_v1, Session 
 
 void	Component_ChannelManager::Send_Message_ACK(Session *session)
 {
+    std::cout << ">>>>>>>>>>>> SEND [MESSAGE_ACK]<<<<<<<<<<<<" << std::endl;
   _serverManager->Send(_componentId, CHANNEL_MESSAGE_ACK, session);
 }
 
@@ -176,6 +187,8 @@ void	Component_ChannelManager::Send_Message_RECV(Session *session, char const *m
   packet_v1_channel->setChannelId(channelId);
   packet_v1_channel->setMessage(message);
   packet_v1_channel->setClientSessionId(clientSessionId);
+
+  std::cout << ">>>>>>>>>>>> SEND [MESSAGE_RECV] Channel [" <<  channelId  <<"] User [" << clientSessionId  << "] Message [" << message  << "<<<<<<<<<<<<" << std::endl;
 
   _serverManager->Send(packet_v1_channel, session);
 }
@@ -188,6 +201,8 @@ void	Component_ChannelManager::Recv_Leave(Packet_v1 const *packet_v1, Session *s
   field_t channelId = packet_v1_channel->getChannelId();
   field_t sessionId = session->getSessionId();
   
+  std::cout << ">>>>>>>>>>>> RECV [LEAVE] Channel [" <<  channelId  <<"] User [" << sessionId  << "]<<<<<<<<<<<<" << std::endl;
+
   if (_channelMap[channelId])
     {
       Channel *chan = _channelMap.find(channelId)->second;
@@ -214,6 +229,8 @@ void	Component_ChannelManager::Send_Leave_OK(Session *session, field_t channelId
 
   packet_v1_channel->setChannelId(channelId);
 
+  std::cout << ">>>>>>>>>>>> SEND [LEAVE_OK] Channel [" <<  channelId  <<"<<<<<<<<<<<<" << std::endl;
+
   _serverManager->Send(packet_v1_channel, session);
 }
 
@@ -222,7 +239,7 @@ void	Component_ChannelManager::Send_Leave_NOK_NOTINCHAN(Session *session, field_
   Packet_v1_Channel *packet_v1_channel = new Packet_v1_Channel(CHANNEL_LEAVE_NOK_NOTINCHAN);
 
   packet_v1_channel->setChannelId(channelId);
-
+  std::cout << ">>>>>>>>>>>> SEND [LEAVE_NOK_NOTINCHAN] Channel [" <<  channelId  <<"]<<<<<<<<<<<<" << std::endl;
   _serverManager->Send(packet_v1_channel, session);
 }
     
@@ -232,6 +249,8 @@ void	Component_ChannelManager::Send_Leaved(Session *session, field_t channelId, 
 
   packet_v1_channel->setChannelId(channelId);
   packet_v1_channel->setClientSessionId(clientSessionId);
+
+  std::cout << ">>>>>>>>>>>> SEND [LEAVED] Channel [" <<  channelId  <<"] User [" << clientSessionId  << "]<<<<<<<<<<<<" << std::endl;
 
   _serverManager->Send(packet_v1_channel, session);
 }

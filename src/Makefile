@@ -32,6 +32,8 @@ CLIENT_SRC	=		client/main_net.cpp\
 				client/Client.cpp\
 				client/ClientManager.cpp\
 				client/Component_Session.cpp\
+				client/Component_Channel.cpp\
+				server/Channel.cpp\
 				core/Manager.cpp\
 				core/Session.cpp\
 				core/Bind_recv.cpp\
