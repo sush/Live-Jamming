@@ -5,12 +5,13 @@ Packet::Packet(boost::asio::ip::udp::endpoint const * endpoint, buffer_t *buffer
 {}
 
 Packet::Packet(boost::asio::ip::udp::endpoint const * endpoint)
-  :_endpoint(endpoint)
+  :_len(BINARYTOBYTE_LEN(PROTO_PROTOVERSION_SIZE)), _endpoint(endpoint)
 {
   _buffer = new buffer_t;
 }
 
 Packet::Packet()
+  :_len(BINARYTOBYTE_LEN(PROTO_PROTOVERSION_SIZE)), _endpoint(0)
 {
   _buffer = new buffer_t;
 }
@@ -46,9 +47,24 @@ field_t				Packet::getProtoVersion() const
   return getField(PROTO_PROTOVERSION_OFF, PROTO_PROTOVERSION_SIZE);
 }
 
+std::size_t			Packet::getLen() const
+{
+  return _len;
+}
+
 void				Packet::setProtoVersion(field_t version)
 {
   setField(version, PROTO_PROTOVERSION_OFF, PROTO_PROTOVERSION_SIZE);
+}
+
+void				Packet::setLen(std::size_t len)
+{
+  _len = len;
+}
+
+void				Packet::addLen(std::size_t len)
+{
+  _len += len;
 }
 
 field_t					Packet::getField(unsigned int bin_offset, unsigned int bin_len) const
@@ -180,30 +196,64 @@ void					Packet::setField(field_t value, unsigned int bin_offset, unsigned int b
   //std::cout << "[0] " << (int)_buffer->at(0) << " [1] " << (int)_buffer->at(1) << std::endl;
 }
 
-byte_t						*Packet::getData(unsigned int start_of_data, unsigned int idx) const
+byte_t						*Packet::getStartOfData(unsigned int start_of_data, unsigned int idx) const
 {
+  unsigned int					i;
   byte_t					*res;
-  unsigned int					i, j;
-
-  for (i = start_of_data; i < PACKET_MAXSIZE && idx > 0; ++i)
-    if (_buffer->at(i) == '\0')
+  
+  res = &(_buffer->at(start_of_data));
+  for (i = 0; i < PACKET_MAXSIZE && idx > 0; ++i)
+    if (res[i] == '\0')
       {
 	--idx;
-	while (_buffer->at(i) == '\0' && i < PACKET_MAXSIZE)
+	while (res[i + 1] == '\0' && i < PACKET_MAXSIZE)
 	  ++i;
       }
   // test if got to idx nth str and that its not pointed to PACKET_MAXSIZE (cuz it would be null)
   if (idx > 0 || i == PACKET_MAXSIZE)
-    return 0;
-
- // test the end of idx nth str has end before maxsize
-  for (j = i; j < PACKET_MAXSIZE && _buffer->at(j) != '\0'; ++j);
-  if (j == PACKET_MAXSIZE)
-    return 0;
-  return &(_buffer->at(i));
+    throw ("getStartOfData(): bad data request");
+  return (res + i);
 }
 
-void						Packet::setData(unsigned int start_of_data, unsigned int idx, byte_t *value)
+byte_t						*Packet::getData(unsigned int start_of_data, unsigned int idx) const
 {
+  unsigned int					i;
+  byte_t					*res;
+
+  res = getStartOfData(start_of_data, idx);
+ // test the end of idx nth str has end before maxsize
+  for (i = 0; i < PACKET_MAXSIZE && res[i] != '\0'; ++i);
+  if (i == PACKET_MAXSIZE)
+    throw ("getData(): bad data request");
+  return res;
+}
+
+void						Packet::appendData(unsigned int start_of_data, unsigned int idx, byte_t const *value)
+{
+  byte_t					*res;
+  std::size_t					len, len2;
+  unsigned int					i, j;
+
+  ///// watch out for BOF ////////////////////////
+  len = strnlen((char *)value, PACKET_MAXSIZE);
+  ////////////////////////////////////////////////
+  if (idx == 0)
+    res = &(_buffer->at(start_of_data));
+  else
+    res = getStartOfData(start_of_data, idx - 1);
   
+  // no problem cuz already verified during set
+  if (idx > 0)
+    {
+      for (i = 0; res[i] != '\0'; ++i);
+      for (j = 0; value[j] != '\0'; ++j)
+	res[i + 1 + j] = value[j];
+      res[i + 1 + j] = '\0';    
+    }
+  else
+    {
+      for (i = 0; value[i] != '\0'; ++i)
+	res[i] = value[i];
+      res[i + 1] = '\0';
+    }
 }

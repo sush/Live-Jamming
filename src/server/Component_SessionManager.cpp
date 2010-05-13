@@ -79,8 +79,11 @@ void				Component_SessionManager::Recv_AuthRequest(Packet_v1 const*packet_v1, Se
   Packet_v1_Session	const *packet_v1_Session =
     static_cast<Packet_v1_Session const *>(packet_v1);
 
-  packet_v1_Session = packet_v1_Session;
+  char *login = (char *)packet_v1_Session->getLogin();
+  char *pass = (char *)packet_v1_Session->getPass();
   std::cout << "packet_auth_request received" << std::endl;
+  std::cout << "login = " << login << " pass = " << pass << std::endl;
+  DoAuth(packet_v1);
 }
 
 void		Component_SessionManager::Send_AuthResponse_OK(Session * session)

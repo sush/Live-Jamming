@@ -81,8 +81,7 @@ Session		*Component_Session::getSession()
 
 void		Component_Session::Connect(std::string const &login, std::string const& pass)
 {
-  if (login == login && pass == pass) // just to stop warnings
-    Send_AuthRequest();
+  Send_AuthRequest(login, pass);
 }
 
 void		Component_Session::Recv_AuthResponse(Packet_v1 const *packet_v1, Session *session)
@@ -123,12 +122,15 @@ void		Component_Session::Recv_Disconnected(Packet_v1 const *, Session *)
 
 }
 
-void		Component_Session::Send_AuthRequest()
+void		Component_Session::Send_AuthRequest(std::string const &login, std::string const &pass)
 {
   Packet_v1_Session	*packet_v1_Session = new Packet_v1_Session(SESSION_AUTHREQUEST);
   
-  packet_v1_Session->setLogin("login_not_used_yet");
-  packet_v1_Session->setPass("pass_not_used_yet");
+  packet_v1_Session->setLogin(login.c_str());
+  packet_v1_Session->setPass(pass.c_str());
+  
+  std::cout << "login = " << (char *)packet_v1_Session->getLogin() << std::endl;
+  std::cout << "pass = " << (char *)packet_v1_Session->getPass() << std::endl;
 
   _clientManager->Send(packet_v1_Session, _session);
 }

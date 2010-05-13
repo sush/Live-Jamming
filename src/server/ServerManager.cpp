@@ -48,7 +48,7 @@ void				ServerManager::Manage(Packet * packet)
 	std::cout << "UNREGISTERED COMPONENT ID" << std::endl;
     }
   else if (componentId == SESSION_COMPONENTID && requestId == SESSION_AUTHREQUEST)
-    _sessionManager->DoAuth(packet_v1);
+    _sessionManager->Recv_AuthRequest(packet_v1, 0);
   else
     {
       //_sessionManager->PrintSession(packet);

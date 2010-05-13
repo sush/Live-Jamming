@@ -29,7 +29,7 @@ public:
 
   Component_SessionManager(ServerManager *);
   virtual	~Component_SessionManager();
-
+  
   void		Manage(Packet *);
 
 private:

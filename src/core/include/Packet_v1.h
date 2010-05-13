@@ -22,7 +22,6 @@ public:
   void			setComponentId(field_t);
   void			setSessionId(field_t);
   void			setDataLen(field_t);
-  char *		getStartOfData();
 
 private:
   

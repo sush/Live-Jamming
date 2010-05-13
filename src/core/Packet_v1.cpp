@@ -8,6 +8,7 @@
 
 Packet_v1::Packet_v1(field_t componentId, field_t requestId)
 {
+  setLen(PROTOV1_START_OF_DATA);
   setComponentId(componentId);
   setRequestId(requestId);
 }
@@ -70,9 +71,4 @@ void		Packet_v1::setSessionId(field_t sessionId)
 void		Packet_v1::setDataLen(field_t dataLen)
 {
   setField(dataLen, PROTOV1_DATALEN_OFF, PROTOV1_DATALEN_SIZE);
-}
-
-char		*Packet_v1::getStartOfData()
-{
-  return (char *)_buffer->at(PROTOV1_START_OF_DATA);
 }

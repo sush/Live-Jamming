@@ -1,4 +1,6 @@
 # NETWORK CORE
--- multiple packet lost for same requestid => timestamp => one timer per request instead of per type
+-- multiple packet lost for same requestid => timestamp => one timer per request instead of per type 
+   check packet on packetid so multiple receive of same packet will not be duplicated on server or client
 -- packet memory free
 -- disconnect connexion on too much retries for the server
+-- implement more checks on setData fields or force use of methods with all fields so there are set in the right way for sure

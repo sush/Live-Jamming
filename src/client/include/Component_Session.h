@@ -35,7 +35,7 @@ private:
   void		Recv_TimeOutTest(Packet_v1 const *, Session *);
   void		Recv_KeepAlive(Packet_v1 const *, Session *);
   void		Recv_Disconnected(Packet_v1 const *, Session *);
-  void		Send_AuthRequest();
+  void		Send_AuthRequest(std::string const &, std::string const &);
   void		Send_TimeOutTestRequest();
   void		Send_Disconnect();
   void		Send_KeepAlive();
