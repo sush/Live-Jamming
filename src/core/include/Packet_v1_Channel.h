@@ -5,11 +5,13 @@
 #include <boost/asio.hpp>
 
 #include <Packet_v1.h>
+#include <Protocol.h>
+#include <Protocol_Channel.h>
 
 class Packet_v1_Channel : public Packet_v1
 {
 public:
-  Packet_v1_Channel(boost::asio::ip::udp::endpoint const *);
+  Packet_v1_Channel(field_t);
   virtual		~Packet_v1_Channel();
 
   void			Print() const;
@@ -19,6 +21,9 @@ public:
   field_t		getClientSessionId() const;
   void			setChannelId(field_t);
   void			setClientSessionId(field_t);
+
+  void			setMessage(char const *);
+  byte_t const		*getMessage() const;
 
 private:
   

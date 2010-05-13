@@ -10,24 +10,23 @@ Packet_v1_Session::~Packet_v1_Session()
 byte_t const	*Packet_v1_Session::getLogin() const
 {
   assert(getRequestId() == SESSION_AUTHREQUEST);
-  return getData(PROTOV1_START_OF_DATA, 0);
+  return getData(PROTOV1_SESSION_START_OF_DATA, PROTOV1_SESSION_DATA_LOGIN);
 }
 
 byte_t const	*Packet_v1_Session::getPass() const
 {
   assert(getRequestId() == SESSION_AUTHREQUEST);
-  return getData(PROTOV1_START_OF_DATA, 1);
+  return getData(PROTOV1_SESSION_START_OF_DATA, PROTOV1_SESSION_DATA_PASS);
 }
 
 void		Packet_v1_Session::setLogin(char const *login)
 {
   assert(getRequestId() == SESSION_AUTHREQUEST);
-  appendData(PROTOV1_START_OF_DATA, 0, reinterpret_cast<byte_t const *>(login));
+  appendData(PROTOV1_SESSION_START_OF_DATA, PROTOV1_SESSION_DATA_LOGIN, reinterpret_cast<byte_t const *>(login));
 }
 
 void		Packet_v1_Session::setPass(char const *pass)
 {
   assert(getRequestId() == SESSION_AUTHREQUEST);
-  appendData(PROTOV1_START_OF_DATA, 1, reinterpret_cast<byte_t const *>(pass));
+  appendData(PROTOV1_SESSION_START_OF_DATA, PROTOV1_SESSION_DATA_PASS, reinterpret_cast<byte_t const *>(pass));
 }
-

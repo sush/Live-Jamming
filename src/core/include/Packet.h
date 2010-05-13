@@ -8,8 +8,8 @@
 #include <boost/array.hpp>
 #include <Protocol.h>
 
-#define sizeof_bin(A)		sizeof(A) * 8
-#define BINARYTOBYTE_LEN(A)	A / 8 + ((A % 8 == 0) ? (0) : (1))
+#define PACKET_MAXSIZE 2048
+
 typedef unsigned char			      byte_t;
 
 class Packet

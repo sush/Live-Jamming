@@ -1,8 +1,10 @@
 #ifndef __PROTOCOL_H__
 #define __PROTOCOL_H__
 
+#define sizeof_bin(A)		sizeof(A) * 8
+#define BINARYTOBYTE_LEN(A)	A / 8 + ((A % 8 == 0) ? (0) : (1))
+
 typedef unsigned int field_t;
-#define PACKET_MAXSIZE 2048
 
 #define NOTARESPONSE	0
 
@@ -28,7 +30,7 @@ typedef unsigned int field_t;
 //////////////////////////////////////////////////////////////////
 #define PROTOV1		1
 
-// size of bit fields in packets
+// binary data contained in packet in order of placement in the binary fields
 #define PROTOV1_COMPONENTID_OFF (PROTO_PROTOVERSION_OFF + PROTO_PROTOVERSION_SIZE)
 #define PROTOV1_COMPONENTID_SIZE 10
 
@@ -41,9 +43,8 @@ typedef unsigned int field_t;
 #define PROTOV1_DATALEN_OFF (PROTOV1_SESSIONID_OFF + PROTOV1_SESSIONID_SIZE)
 #define PROTOV1_DATALEN_SIZE 12
 
-#define PROTOV1_START_OF_DATA (((PROTOV1_DATALEN_OFF + PROTOV1_DATALEN_SIZE) % 8 == 0)? \
-			       ((PROTOV1_DATALEN_OFF + PROTOV1_DATALEN_SIZE) / 8): \
-			       ((PROTOV1_DATALEN_OFF + PROTOV1_DATALEN_SIZE) / 8 + 1))
+// data contained in packet
+#define PROTOV1_START_OF_DATA BINARYTOBYTE_LEN(PROTOV1_DATALEN_OFF + PROTOV1_DATALEN_SIZE)
 
 ///// NOT WORKING runtime8 cuz MACRO ///
 

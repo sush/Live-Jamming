@@ -1,22 +1,20 @@
 #include <Packet_v1_Channel.h>
 
-Packet_v1::Packet_v1(boost::asio::ip::udp::endpoint const *endpoint)
-  : Packet(endpoint)
-{
-  setProtoVersion(PROTOV1);
-}
-
-Packet_v1::~Packet_v1()
+Packet_v1_Channel::Packet_v1_Channel(field_t requestId)
+  : Packet_v1(CHANNEL_COMPONENTID, requestId)
 {}
 
-void		Packet_v1::Print() const
+Packet_v1_Channel::~Packet_v1_Channel()
+{}
+
+void		Packet_v1_Channel::Print() const
 {
-  // problem with dynamic_cast from Packet* to Packet_v1*
+  // problem with dynamic_cast from Packet* to Packet_v1_Channel*
   // wrong function is called so Print_v1 was created
-  Print_v1();  
+  //  Print_v1();  
 }
 
-void		Packet_v1::Print_v1() const
+void		Packet_v1_Channel::Print_v1() const
 {
   std::cout << "[PROTO_VERSION: " << getProtoVersion() << " {" << PROTO_PROTOVERSION_SIZE << "}]"
 	    << "[COMPONENTID: " << getComponentId() << " {" << PROTOV1_COMPONENTID_SIZE << "}]"
@@ -27,27 +25,34 @@ void		Packet_v1::Print_v1() const
 }
 
 
-field_t		Packet_v1::getComponentId() const
+field_t		Packet_v1_Channel::getChannelId() const
 {
-  return getField(PROTOV1_COMPONENTID_OFF, PROTOV1_COMPONENTID_SIZE);
+  return getField(PROTOV1_CHANNEL_CHANNELID_OFF, PROTOV1_CHANNEL_CHANNELID_SIZE);
 }
 
-field_t		Packet_v1::getSessionId() const
+field_t		Packet_v1_Channel::getClientSessionId() const
 {
-  return getField(PROTOV1_SESSIONID_OFF, PROTOV1_SESSIONID_SIZE);
+  return getField(PROTOV1_CHANNEL_CLIENTSESSIONID_OFF, PROTOV1_CHANNEL_CLIENTSESSIONID_SIZE);
 }
 
-void		Packet_v1::setRequestId(field_t reqId)
+void		Packet_v1_Channel::setChannelId(field_t channelId)
 {
-  setField(reqId, PROTOV1_REQUESTID_OFF, PROTOV1_REQUESTID_SIZE);
+  setField(channelId, PROTOV1_CHANNEL_CHANNELID_OFF, PROTOV1_CHANNEL_CHANNELID_SIZE);
 }
 
-void		Packet_v1::setComponentId(field_t catId)
+void		Packet_v1_Channel::setClientSessionId(field_t clientSessionId)
 {
-  setField(catId, PROTOV1_COMPONENTID_OFF, PROTOV1_COMPONENTID_SIZE);
+  setField(clientSessionId, PROTOV1_CHANNEL_CLIENTSESSIONID_OFF, PROTOV1_CHANNEL_CLIENTSESSIONID_SIZE);
 }
 
-void		Packet_v1::setSessionId(field_t sessionId)
+void		Packet_v1_Channel::setMessage(char const * message)
 {
-  setField(sessionId, PROTOV1_SESSIONID_OFF, PROTOV1_SESSIONID_SIZE);
+  assert(getRequestId() == CHANNEL_MESSAGE || getRequestId() == CHANNEL_MESSAGE_RECV);
+  appendData(PROTOV1_CHANNEL_START_OF_DATA, PROTOV1_CHANNEL_DATA_MESSAGE, reinterpret_cast<byte_t const *>(message));
+}
+
+byte_t const	*Packet_v1_Channel::getMessage() const
+{
+  assert(getRequestId() == CHANNEL_MESSAGE || getRequestId() == CHANNEL_MESSAGE_RECV);
+  return getData(PROTOV1_CHANNEL_START_OF_DATA, PROTOV1_CHANNEL_DATA_MESSAGE);
 }

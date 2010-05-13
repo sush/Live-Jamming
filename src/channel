@@ -24,17 +24,17 @@ JOIN			[client -> serv]	CHANNELID
 JOIN_OK			[serv -> client]	CHANNELID
 JOIN_NOK_ALREADYINCHAN	[serv -> client]	
 JOINED			[serv -> client]	CHANNELID	SESSIONID
-JOINED_ACK		[client -> serv]	CHANNELID	SESSIONID
+JOINED_ACK		[client -> serv]	
 
-MESSAGE			[client -> serv]	CHANNELID								STRING1 STRING2 getData(PROTOV1_START_OF_DATA + CHANNEL_ID_SIZE ROUNDED UP 8 / 8, 2)
-MESSAGE_ACK		[serv -> client]	CHANNELID
-MESSAGE_RECV		[serv -> client]	CHANNELID	SESSIONID
-MESSAGE_RECV_ACK	[client -> serv]	CHANNELID	SESSIONID
+MESSAGE			[client -> serv]	CHANNELID								MESSAGE
+MESSAGE_ACK		[serv -> client]	
+MESSAGE_RECV		[serv -> client]	CHANNELID	SESSIONID						MESSAGE
+MESSAGE_RECV_ACK	[client -> serv]	
 
 LEAVE			[client -> serv]	CHANNELID
 LEAVE_OK		[serv -> client]	CHANNELID
 LEAVE_NOK_NOTINCHAN	[serv -> client]	CHANNELID
 LEAVED			[serv -> client]	CHANNELID	SESSIONID
-LEAVED_ACK		[client -> serv]	CHANNELID	SESSIONID
+LEAVED_ACK		[client -> serv]	
 
 
