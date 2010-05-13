@@ -51,8 +51,8 @@ void		Packet_v1_Channel::setMessage(char const * message)
   appendData(PROTOV1_CHANNEL_START_OF_DATA, PROTOV1_CHANNEL_DATA_MESSAGE, reinterpret_cast<byte_t const *>(message));
 }
 
-byte_t const	*Packet_v1_Channel::getMessage() const
+char const	*Packet_v1_Channel::getMessage() const
 {
   assert(getRequestId() == CHANNEL_MESSAGE || getRequestId() == CHANNEL_MESSAGE_RECV);
-  return getData(PROTOV1_CHANNEL_START_OF_DATA, PROTOV1_CHANNEL_DATA_MESSAGE);
+  return reinterpret_cast<char const *>(getData(PROTOV1_CHANNEL_START_OF_DATA, PROTOV1_CHANNEL_DATA_MESSAGE));
 }

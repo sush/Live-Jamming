@@ -23,7 +23,7 @@ public:
   void			setClientSessionId(field_t);
 
   void			setMessage(char const *);
-  byte_t const		*getMessage() const;
+  char const		*getMessage() const;
 
 private:
   

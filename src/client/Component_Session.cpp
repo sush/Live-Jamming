@@ -129,8 +129,8 @@ void		Component_Session::Send_AuthRequest(std::string const &login, std::string 
   packet_v1_Session->setLogin(login.c_str());
   packet_v1_Session->setPass(pass.c_str());
   
-  std::cout << "login = " << (char *)packet_v1_Session->getLogin() << std::endl;
-  std::cout << "pass = " << (char *)packet_v1_Session->getPass() << std::endl;
+  std::cout << "login = " << packet_v1_Session->getLogin() << std::endl;
+  std::cout << "pass = " << packet_v1_Session->getPass() << std::endl;
 
   _clientManager->Send(packet_v1_Session, _session);
 }

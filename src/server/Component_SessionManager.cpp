@@ -60,8 +60,8 @@ Session 	*Component_SessionManager::DoAuth(Packet_v1_Session const * packet_v1_S
   Session	*new_session;
   assert(packet_v1_Session->getRequestId() == SESSION_AUTHREQUEST);
 
-  char *login = (char *)packet_v1_Session->getLogin();
-  char *pass = (char *)packet_v1_Session->getPass();
+  char const *login = packet_v1_Session->getLogin();
+  char const *pass = packet_v1_Session->getPass();
   
   // THIS HAS TO BE OPTIMIZED
   // convert to string remove

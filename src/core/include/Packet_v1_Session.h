@@ -14,8 +14,8 @@ public:
   Packet_v1_Session(field_t);
   virtual ~Packet_v1_Session();
 
-  byte_t const	*getLogin() const;
-  byte_t const	*getPass() const;
+  char const	*getLogin() const;
+  char const	*getPass() const;
   void		setLogin(char const *);
   void		setPass(char const *);
 };

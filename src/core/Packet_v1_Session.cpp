@@ -7,16 +7,16 @@ Packet_v1_Session::Packet_v1_Session(field_t requestId)
 Packet_v1_Session::~Packet_v1_Session()
 {}
 
-byte_t const	*Packet_v1_Session::getLogin() const
+char const	*Packet_v1_Session::getLogin() const
 {
   assert(getRequestId() == SESSION_AUTHREQUEST);
-  return getData(PROTOV1_SESSION_START_OF_DATA, PROTOV1_SESSION_DATA_LOGIN);
+  return reinterpret_cast<char const *>(getData(PROTOV1_SESSION_START_OF_DATA, PROTOV1_SESSION_DATA_LOGIN));
 }
 
-byte_t const	*Packet_v1_Session::getPass() const
+char const	*Packet_v1_Session::getPass() const
 {
   assert(getRequestId() == SESSION_AUTHREQUEST);
-  return getData(PROTOV1_SESSION_START_OF_DATA, PROTOV1_SESSION_DATA_PASS);
+  return reinterpret_cast<char const *>(getData(PROTOV1_SESSION_START_OF_DATA, PROTOV1_SESSION_DATA_PASS));
 }
 
 void		Packet_v1_Session::setLogin(char const *login)
