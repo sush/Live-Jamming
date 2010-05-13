@@ -4,3 +4,6 @@
 -- packet memory free
 -- disconnect connexion on too much retries for the server
 -- implement more checks on setData fields or force use of methods with all fields so there are set in the right way for sure
+-- send only real size of packet and not always maxsize
+
+-- implement different levels of output.
