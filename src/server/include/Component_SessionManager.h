@@ -19,6 +19,7 @@ class Component_SessionManager;
 #include <Protocol_Session.h>
 #include <IComponent.h>
 #include <ServerManager.h>
+#include <UserModule_mysql.h>
 
 class Component_SessionManager :public IComponent
 {
@@ -42,7 +43,7 @@ private:
 
   Session				*FindSession(Packet_v1 const *);
   unsigned int				CountActiveSessions() const;
-  Session				*DoAuth(Packet_v1 const *);
+  Session				*DoAuth(Packet_v1_Session const *);
   bool					IsUniqId(unsigned int) const;
   unsigned int				GenSessionId();
   void					PrintSession(Session const *) const;
@@ -64,6 +65,7 @@ private:
 
   boost::rand48				_rng;
   m_Session				*_sessionMap;
+  UserModule_mysql			*_userModule_mysql;
 };
 
 #endif // ! __COMPONENT_SESSIONMANAGER_H__

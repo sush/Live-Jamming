@@ -12,8 +12,7 @@ ClientManager::ClientManager(boost::asio::io_service & io_service, boost::thread
   _retryDelay = 1;
   _timeOutTestDelay = 10;
   _timeOutOccurredDelay = 5;
-  _session->Connect("o-conn_g", "o-conn_g");
-  _session->Connect("o-conn_g2", "o-conn_g2");
+  _session->Connect("dude", "12345678");
 }
 
 ClientManager::~ClientManager()

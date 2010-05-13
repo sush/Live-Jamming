@@ -5,6 +5,7 @@ Component_SessionManager::Component_SessionManager(ServerManager * serverManager
 {
   _sessionMap = new m_Session;
   _rng.seed((int32_t)std::clock());
+  _userModule_mysql = UserModule_mysql::getInstance();
 }
 
 Component_SessionManager::~Component_SessionManager()
@@ -54,15 +55,32 @@ unsigned int	Component_SessionManager::CountActiveSessions() const
   return _sessionMap->size();
 }
 
-Session 	*Component_SessionManager::DoAuth(Packet_v1 const * packet_v1)
+Session 	*Component_SessionManager::DoAuth(Packet_v1_Session const * packet_v1_Session)
 {
-  // if packet is auth request type
-  // extract auth information from
-  
-  Session	*new_session = new Session(_serverManager, _serverManager->getIO(), packet_v1, GenSessionId());
+  Session	*new_session;
+  assert(packet_v1_Session->getRequestId() == SESSION_AUTHREQUEST);
 
-  (*_sessionMap)[new_session->getSessionId()] = new_session;
-  Send_AuthResponse_OK(new_session);
+  char *login = (char *)packet_v1_Session->getLogin();
+  char *pass = (char *)packet_v1_Session->getPass();
+  
+  // THIS HAS TO BE OPTIMIZED
+  // convert to string remove
+  std::string login_str(login);
+  std::string pass_str(pass);
+  ///////////////////////////
+
+  std::cout << "packet_auth_request received" << std::endl;
+  std::cout << "login = " << login << " pass = " << pass << std::endl;
+  if (_userModule_mysql->Authentification(login_str, pass_str))
+    {
+      new_session = new Session(_serverManager, _serverManager->getIO(), packet_v1_Session, GenSessionId());
+
+      (*_sessionMap)[new_session->getSessionId()] = new_session;
+      Send_AuthResponse_OK(new_session);
+      std::cout << "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< AUTH OK >>>>>>>>>>>>>>>>>>>>>>>>>" << std::endl;
+    }
+  else 
+    std::cout << "!!!!!!!!!!!!!!!!!!!!!!! AUTH NOK !!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
   return new_session;
 }
 
@@ -79,11 +97,7 @@ void				Component_SessionManager::Recv_AuthRequest(Packet_v1 const*packet_v1, Se
   Packet_v1_Session	const *packet_v1_Session =
     static_cast<Packet_v1_Session const *>(packet_v1);
 
-  char *login = (char *)packet_v1_Session->getLogin();
-  char *pass = (char *)packet_v1_Session->getPass();
-  std::cout << "packet_auth_request received" << std::endl;
-  std::cout << "login = " << login << " pass = " << pass << std::endl;
-  DoAuth(packet_v1);
+  DoAuth(packet_v1_Session);
 }
 
 void		Component_SessionManager::Send_AuthResponse_OK(Session * session)

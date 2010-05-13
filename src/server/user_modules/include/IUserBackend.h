@@ -14,9 +14,9 @@ class IUserBackend : public Singleton<T> {
   typedef m_userinfo::const_iterator m_userinfo_cit;
   typedef std::pair<std::string, std::string> m_userinfo_pair;
 
-  virtual int Authentification(std::string const &, std::string const &) = 0;
-  virtual m_userinfo const *getProfil(int) = 0;
-  virtual m_userinfo const *getFriendList(int) = 0;
+  virtual bool			 Authentification(std::string const &, std::string const &) = 0;
+  virtual m_userinfo const	*getProfil(int) = 0;
+  virtual m_userinfo const	*getFriendList(int) = 0;
 };
 
 #endif
