@@ -57,7 +57,7 @@ void		Manager::Send(Packet_v1 *packet_v1, Session * session) const
 			boost::bind(&Manager::CallBack_handle_send, this, packet_v1));
 }
 
-void		Manager::Send(Packet_v1 *packet_v1, boost::asio::ip::udp::endpoint &endpoint) const
+void		Manager::Send(Packet_v1 *packet_v1, boost::asio::ip::udp::endpoint const &endpoint) const
 {
 #ifdef _DEBUG
   std::cout << "<..... SEND .....> ";
@@ -75,6 +75,16 @@ void		Manager::Send(field_t componentId, field_t requestId, Session * session) c
   packet_v1->setRequestId(requestId);
   Send(packet_v1, session);
 }
+
+void		Manager::Send(field_t componentId, field_t requestId, boost::asio::ip::udp::endpoint const &endpoint) const
+{
+  Packet_v1	*packet_v1 = new Packet_v1(componentId, requestId);
+
+  packet_v1->setComponentId(componentId);
+  packet_v1->setRequestId(requestId);
+  Send(packet_v1, endpoint);
+}
+
 
 void		Manager::CallBack_TimeOutTest(Session * session, boost::system::error_code const & error_code)
 {

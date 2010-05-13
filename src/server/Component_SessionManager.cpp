@@ -80,7 +80,10 @@ Session 	*Component_SessionManager::DoAuth(Packet_v1_Session const * packet_v1_S
       std::cout << "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< AUTH OK >>>>>>>>>>>>>>>>>>>>>>>>>" << std::endl;
     }
   else 
-    std::cout << "!!!!!!!!!!!!!!!!!!!!!!! AUTH NOK !!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
+    {
+      _serverManager->Send(_componentId, SESSION_AUTHRESPONSE_NOK_BADAUTH, packet_v1_Session->getEndpoint());
+      std::cout << "!!!!!!!!!!!!!!!!!!!!!!! AUTH NOK !!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
+    }
   return new_session;
 }
 
