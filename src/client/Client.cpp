@@ -13,6 +13,8 @@ void		Client::Run()
 {
   std::cout << "Client started..." << std::endl;
  
+  // schedule the UI window to be created
+  _pool->schedule(boost::bind(&MainWindow::run, argc, argv));
   start_receive();
   _io_service->run();
 }
@@ -113,5 +115,4 @@ void		Client::Init(int argc, char *argv[])
   _pool = new boost::threadpool::pool(_poolSize);
   //  _clientManager = new ClientManager(*_io_service, *_pool, *_socket, *_remote_endpoint);
   _clientManager = new MainWindow(*_io_service, *_pool, *_socket, *_remote_endpoint);
-  _pool->schedule(boost::bind(&MainWindow::run));
 }
