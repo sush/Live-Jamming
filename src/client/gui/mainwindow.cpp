@@ -13,10 +13,12 @@
 #include "accountconnection.h"
 #include "configuration_dialog.h"
 #include "roomdialog.h"
+#include "boost/asio.hpp"
+#include "boost/threadpool.hpp"
 
 void    MainWindow::populate_chans()
 {
-    QTreeWidgetItem* root = new QTreeWidgetItem(ui->ChansList, QStringList() << "General" << "The General Chan");
+    /*QTreeWidgetItem* root =*/ new QTreeWidgetItem(ui->ChansList, QStringList() << "General" << "The General Chan");
     QTreeWidgetItem* custom = new QTreeWidgetItem(ui->ChansList, QStringList() << "Custom" << "Custom created Chans");
 
     ui->ChansList->insertTopLevelItems(1, QList<QTreeWidgetItem*>()
@@ -33,23 +35,35 @@ void    MainWindow::populate_friends()
                                       << new QTreeWidgetItem(QStringList("Greg")));
 }
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
+MainWindow::MainWindow(boost::asio::io_service& service, boost::threadpool::pool& pool,
+                       boost::asio::ip::udp::socket& socket, boost::asio::ip::udp::endpoint& endpoint) :
+    QMainWindow(0),
+    ClientManager(service, pool, socket, endpoint),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    network = new Network();
     params = new Parameters();
 
     populate_chans();
     populate_friends();
-
 }
 
 MainWindow::~MainWindow()
+
 {
-    delete network;
     delete ui;
+}
+
+int MainWindow::main(boost::asio::io_service& service, boost::threadpool::pool& pool,
+                     boost::asio::ip::udp::socket& socket, boost::asio::ip::udp::endpoint& endpoint)
+{
+    QString* name = new QString("LiveJaming");
+    char* charname= name->toAscii().data();
+    int argc = 1;
+    QApplication a(argc, &charname);
+    MainWindow w(service, pool, socket, endpoint);
+    w.show();
+    return a.exec();
 }
 
 void MainWindow::changeEvent(QEvent *e)
@@ -72,14 +86,14 @@ void MainWindow::connected()
 
 void MainWindow::on_actionConnect_triggered()
 {
-    if (network->isConnected())
+    if (isConnected)
         return ;
 
     if (params->haveId() == false)
        AccountConnection::run(params->login, params->password);
 
     if (params->haveId() == true) // n'est pas le contraire de la ligne au dessus.
-        network->connect(params->login, params->password);
+        _session->connect(params->login, params->password);
 }
 
 void MainWindow::on_actionPreferences_triggered()

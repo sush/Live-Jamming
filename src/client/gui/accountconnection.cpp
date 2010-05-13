@@ -37,5 +37,6 @@ bool  AccountConnection::run(QString& login, QString & password)
        return false;
     login = ac.ui->loginLineEdit->text();
     password = ac.ui->passwordLineEdit->text();
+
     return true;
 }

@@ -4,34 +4,36 @@
 QT += network
 TARGET = LiveJaming
 TEMPLATE = app
-SOURCES += main.cpp \
-    mainwindow.cpp \
+SOURCES += mainwindow.cpp \
     accountconnection.cpp \
     configuration_dialog.cpp \
     roomdialog.cpp \
     network.cpp \
-    parameters.cpp
+    parameters.cpp \
+    event.cpp
 HEADERS += mainwindow.h \
     accountconnection.h \
     configuration_dialog.h \
     roomdialog.h \
     network.h \
-    parameters.h
+    parameters.h \
+    IEvent.h \
+    event.h
 DEPENDPATH += ../../core
 INCLUDEPATH += ../../core/include
 SOURCES += Session.cpp \
     Manager.cpp \
     Packet.cpp \
     Packet_v1.cpp \
+    Packet_v1_Session.cpp \
     PacketQueue.cpp \
-    Packet_v1_Session_AuthRequest.cpp \
-    Bind_recv.cpp
+    Bind_recv.cpp \
+    Request.cpp
 HEADERS += Session.h \
     Manager.h \
     Packet.h \
     Packet_v1.h \
     PacketQueue.h \
-    Packet_v1_Session_AuthRequest.h \
     Bind_recv.h
 DEPENDPATH += ../../client
 INCLUDEPATH += ../../client/include
