@@ -231,7 +231,7 @@ byte_t						*Packet::getData(unsigned int start_of_data, unsigned int idx) const
 void						Packet::appendData(unsigned int start_of_data, unsigned int idx, byte_t const *value)
 {
   byte_t					*res;
-  std::size_t					len, len2;
+  std::size_t					len;
   unsigned int					i, j;
 
   ///// watch out for BOF ////////////////////////

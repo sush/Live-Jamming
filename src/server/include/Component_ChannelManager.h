@@ -23,26 +23,26 @@ public:
   Component_ChannelManager(ServerManager *);
   virtual       ~Component_ChannelManager();
 
-  virtual void  bindingsRecv();
+  virtual void  BindingsRecv();
   virtual void	RegisteredRequests();
   
 private:
   
-  void          Recv_Join(Packet_v1 *, Session const *);
-  void          Send_Join_OK(Session const *, field_t);
-  void          Send_Join_NOK_ALREADYINCHAN(Session const *, field_t);
+  void          Recv_Join(Packet_v1 const *, Session *);
+  void          Send_Join_OK(Session *, field_t);
+  void          Send_Join_NOK_ALREADYINCHAN(Session *, field_t);
 
-  void		Send_Joined(Session const *, field_t, field_t);
+  void		Send_Joined(Session *, field_t, field_t);
 
-  void          Recv_Message(Packet_v1 const *, Session const *);
-  void		Send_Message_ACK(Session const *);
-  void		Send_Message_RECV(Session const *, std::string const &, field_t);
+  void          Recv_Message(Packet_v1 const *, Session *);
+  void		Send_Message_ACK(Session *);
+  void		Send_Message_RECV(Session *, char const *, field_t, field_t);
 
-  void          Recv_Leave(Packet_v1 const *, Session const *);
-  void          Send_Leave_OK(Session const *, field_t);
-  void          Send_Leave_NOK_NOTINCHAN(Session const *, field_t);
+  void          Recv_Leave(Packet_v1 const *, Session *);
+  void          Send_Leave_OK(Session *, field_t);
+  void          Send_Leave_NOK_NOTINCHAN(Session *, field_t);
 
-  void		Send_Leaved(Session const *, field_t, field_t);
+  void		Send_Leaved(Session *, field_t, field_t);
 
   ServerManager                         *_serverManager;
   typedef std::map<field_t, Channel*>	m_channel;

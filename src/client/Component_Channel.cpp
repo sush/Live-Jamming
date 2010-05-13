@@ -100,7 +100,10 @@ void		Component_Channel::Recv_Join_OK(Packet_v1 const *packet_v1, Session const 
 
 void		Component_Channel::Recv_Join_NOK_ALREADYINCHAN(Packet_v1 const *packet_v1, Session const *session)
 {
-  field_t channelId = packet_v1->getChannelId();
+  Packet_v1_Channel const *packet_v1_channel = 
+    static_cast<Packet_v1_Channel const *>(packet_v1);
+
+  field_t channelId = packet_v1_channel->getChannelId();
   // in case of lost packet check if user not in chan if so add him to it
   Channel *chan = _channelMap.find(channelId)->second;
   chan->addConnected(session->getSessionId());
@@ -108,8 +111,11 @@ void		Component_Channel::Recv_Join_NOK_ALREADYINCHAN(Packet_v1 const *packet_v1,
 
 void		Component_Channel::Recv_Joined(Packet_v1 const *packet_v1, Session const *session)
 {
-  field_t clientSessionId = packet_v1->getClientSessionId();
-  field_t ChannelId = packet_v1->getChannelId();
+  Packet_v1_Channel const *packet_v1_channel = 
+    static_cast<Packet_v1_Channel const *>(packet_v1);
+
+  field_t clientSessionId = packet_v1_channel->getClientSessionId();
+  field_t ChannelId = packet_v1_channel->getChannelId();
   Channel *chan = _channelMap.find(channelId)->second;
 
   chan->addConnected(0, clientSessionId);
@@ -160,7 +166,10 @@ void		Component_Channel::Recv_Leave_OK(Packet_v1 const *packet_v1, Session const
 
 void		Component_Channel::Recv_Leave_NOK_NOTINCHAN(Packet_v1 const *packet_v1, Session const *session)
 {
-  field_t channelId = packet_v1->getChannelId();
+  Packet_v1_Channel const *packet_v1_channel = 
+    static_cast<Packet_v1_Channel const *>(packet_v1);
+
+  field_t channelId = packet_v1_channel->getChannelId();
   // in case of lost packet check if user still in chan, if so delete him
   Channel *chan = _channelMap.find(channelId)->second;
   chan->removeConnected(session->getSessionId());
@@ -168,8 +177,11 @@ void		Component_Channel::Recv_Leave_NOK_NOTINCHAN(Packet_v1 const *packet_v1, Se
 
 void		Component_Channel::Recv_Leaved(Packet_v1 const *packet_v1, Session const *session)
 {
-  field_t channelId = packet_v1->getChannelId();
-  field_t clientSessionId = packet_v1->getClientSessionId();
+  Packet_v1_Channel const *packet_v1_channel = 
+    static_cast<Packet_v1_Channel const *>(packet_v1);
+
+  field_t channelId = packet_v1_channel->getChannelId();
+  field_t clientSessionId = packet_v1_channel->getClientSessionId();
 
   Channel *chan = _channelMap.find(channelId)->second;
   chan->removeConnected(clientSessionId);

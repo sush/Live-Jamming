@@ -2,8 +2,6 @@
 #define __CHANNEL_H__
 
 #include <Session.h>
-#include <boost/thread.h>
-#include <boost/threadpool.h>
 #include <map>
 
 class Channel
@@ -11,7 +9,6 @@ class Channel
  public:
 
   Channel();
-  Channel(Session *, field_t);
   virtual ~Channel();
   
   std::map<field_t, Session *> const & getConnected() const;

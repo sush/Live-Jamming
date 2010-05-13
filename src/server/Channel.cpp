@@ -2,11 +2,6 @@
 
 Channel::Channel() {}
 
-Channel::Channel(Session *session, field_t sessionId)
-{
-  addConnected(session, sessionId);
-}
-
 Channel::~Channel() {}
 
 std::map<field_t, Session*> const & Channel::getConnected() const

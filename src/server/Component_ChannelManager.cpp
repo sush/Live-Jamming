@@ -3,30 +3,29 @@
 Component_ChannelManager::Component_ChannelManager(ServerManager *serverManager) 
  :IComponent(CHANNEL_COMPONENTID), _serverManager(serverManager) 
 {
-  _channelMap = new m_channel;
 }
 
 Component_ChannelManager::~Component_ChannelManager() {}
 
 void	Component_ChannelManager::BindingsRecv()
 {
-  _bindingsRecv[CHANNEL_JOIN] =
+  (*_bindingsRecv)[CHANNEL_JOIN] =
     new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_ChannelManager::Recv_Join));
 
-  _bindingsRecv[CHANNEL_JOINED_ACK] =
-    new Bind_recv(0, 0));
-
-  _bindingsRecv[CHANNEL_MESSAGE] =
+  (*_bindingsRecv)[CHANNEL_JOINED_ACK] =
+    new Bind_recv(0, 0);
+  
+  (*_bindingsRecv)[CHANNEL_MESSAGE] =
     new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_ChannelManager::Recv_Message));
 
-  _bindingsRecv[CHANNEL_MESSAGE_RECV_ACK] =
-    new Bind_recv(0, 0));
+  (*_bindingsRecv)[CHANNEL_MESSAGE_RECV_ACK] =
+    new Bind_recv(0, 0);
 
-  _bindingsRecv[CHANNEL_LEAVE] =
+  (*_bindingsRecv)[CHANNEL_LEAVE] =
     new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_ChannelManager::Recv_Leave));
 
-  _bindingsRecv[CHANNEL_LEAVED_ACK] =
-    new Bind_recv(0, 0));
+  (*_bindingsRecv)[CHANNEL_LEAVED_ACK] =
+    new Bind_recv(0, 0);
 }
 
 void	Component_ChannelManager::RegisteredRequests()
@@ -76,22 +75,29 @@ void	Component_ChannelManager::RegisteredRequests()
     new Request(CHANNEL_LEAVED_ACK, RECV, "Channel Leaved request ACK", CHANNEL_LEAVED);
 }
 
-void	Component_ChannelManager::Recv_Join(Packet_v1 const *packet_v1, Session const *session)
+void	Component_ChannelManager::Recv_Join(Packet_v1 const *packet_v1, Session *session)
 {
-  field_t channelId =  packet_v1->getChannelId();
-  fiel_t sessionId = session->getSessionId();
+  Packet_v1_Channel const *packet_v1_channel = 
+    static_cast<Packet_v1_Channel const *>(packet_v1);
+
+  field_t channelId =  packet_v1_channel->getChannelId();
+  field_t sessionId = session->getSessionId();
+  Channel *chan;
 
   if (!_channelMap[channelId])
-    _channelMap[channelId] =  new Channel(session, sessionId);
+    {
+      _channelMap[channelId] =  new Channel();
+      chan = _channelMap[channelId];
+    }
   else
-    Channel *chan = _channelMap.find(channelId)->second;
-  
+    chan = _channelMap.find(channelId)->second; 
+
   if (chan->addConnected(session, sessionId))
     {
-      Send_Join_OK(session, chan, channelId);
+      Send_Join_OK(session, channelId);
       std::map<field_t, Session*> connected = chan->getConnected();
 
-      std::map::const_iterator it, end = connected.end();
+      std::map<field_t, Session *>::iterator it, end = connected.end();
       for (it = connected.begin(); it != end ; ++it)
 	{
 	  if (it->first != sessionId)
@@ -105,7 +111,7 @@ void	Component_ChannelManager::Recv_Join(Packet_v1 const *packet_v1, Session con
     Send_Join_NOK_ALREADYINCHAN(session, channelId);
 }
 
-void	Component_ChannelManager::Send_Join_OK(Session const *session, field_t channelId)
+void	Component_ChannelManager::Send_Join_OK(Session *session, field_t channelId)
 {
   Packet_v1_Channel *packet_v1_channel = new Packet_v1_Channel(CHANNEL_JOIN_OK);
 
@@ -115,7 +121,7 @@ void	Component_ChannelManager::Send_Join_OK(Session const *session, field_t chan
   _serverManager->Send(packet_v1_channel, session);
 }
 
-void	Component_ChannelManager::Send_Join_NOK_ALREAYDINCHAN(Session const *session, field_t channelId)
+void	Component_ChannelManager::Send_Join_NOK_ALREADYINCHAN(Session *session, field_t channelId)
 {
   Packet_v1_Channel *packet_v1_channel = new Packet_v1_Channel(CHANNEL_JOIN_NOK_ALREADYINCHAN);
 
@@ -124,7 +130,7 @@ void	Component_ChannelManager::Send_Join_NOK_ALREAYDINCHAN(Session const *sessio
   _serverManager->Send(packet_v1_channel, session);
 }
 
-void	Component_ChannelManager::Send_Joined(Session const *session, field_t channelId, field_t clientSessionId)
+void	Component_ChannelManager::Send_Joined(Session *session, field_t channelId, field_t clientSessionId)
 {
   Packet_v1_Channel *packet_v1_channel = new Packet_v1_Channel(CHANNEL_JOINED);
   
@@ -134,33 +140,36 @@ void	Component_ChannelManager::Send_Joined(Session const *session, field_t chann
   _serverManager->Send(packet_v1_channel, session);
 }
 
-void	Component_ChannelManager::Recv_Message(Packet_v1 const *packet_v1, Session const *session)
+void	Component_ChannelManager::Recv_Message(Packet_v1 const *packet_v1, Session *session)
 {
-  field_t channelId = packet_v1->getChannelId();
-  field_t sessionId = packet_v1->getSessionId();
-  std::string message = packet_v1->getMessage();
+  Packet_v1_Channel const *packet_v1_channel = 
+    static_cast<Packet_v1_Channel const *>(packet_v1);
+
+  field_t channelId = packet_v1_channel->getChannelId();
+  field_t sessionId = packet_v1_channel->getSessionId();
+  char const *message = packet_v1_channel->getMessage();
 
   if (_channelMap[channelId])
     {
       Channel *chan = _channelMap.find(channelId)->second;
       std::map<field_t, Session*> connected = chan->getConnected();
 
-      std::map::const_iterator it, end = connected.end();
+      std::map<field_t, Session *>::iterator it, end = connected.end();
       for (it = connected.begin(); it != end ; ++it)
 	{
 	  if (it->first != sessionId)
-	    Send_Message_RECV(it->second, message, channelId, sessionId);
+	    Send_Message_RECV((*it).second, message, channelId, sessionId);
 	}
       Send_Message_ACK(session);
     }
 }
 
-void	Component_ChannelManager::Send_Message_ACK(Session const *session)
+void	Component_ChannelManager::Send_Message_ACK(Session *session)
 {
   _serverManager->Send(_componentId, CHANNEL_MESSAGE_ACK, session);
 }
 
-void	Component_ChannelManager::Send_Message_RECV(Session const *session, std::string const & message, field_t clientSessionId)
+void	Component_ChannelManager::Send_Message_RECV(Session *session, char const *message, field_t channelId, field_t clientSessionId)
 {
   Packet_v1_Channel *packet_v1_channel = new Packet_v1_Channel(CHANNEL_MESSAGE_RECV);
 
@@ -168,58 +177,61 @@ void	Component_ChannelManager::Send_Message_RECV(Session const *session, std::st
   packet_v1_channel->setMessage(message);
   packet_v1_channel->setClientSessionId(clientSessionId);
 
-  _serverManager->send(packet_v1_channel, session);
+  _serverManager->Send(packet_v1_channel, session);
 }
 
-void	Component_ChannelManager::Recv_Leave(Packet_v1 const *packet_v1, Session const *session)
+void	Component_ChannelManager::Recv_Leave(Packet_v1 const *packet_v1, Session *session)
 {
-  field_t channelId = packet_v1->getChannelId();
+  Packet_v1_Channel const *packet_v1_channel = 
+    static_cast<Packet_v1_Channel const *>(packet_v1);
+
+  field_t channelId = packet_v1_channel->getChannelId();
   field_t sessionId = session->getSessionId();
   
   if (_channelMap[channelId])
     {
       Channel *chan = _channelMap.find(channelId)->second;
 
-      if (chan->removeConnected(session, sessionId))
+      if (chan->removeConnected(sessionId))
 	{
 	  Send_Leave_OK(session, channelId);
 	  std::map<field_t, Session*> connected = chan->getConnected();
   
-	  std::map::const_iterator it, end = connected.end();
+	  std::map<field_t, Session *>::iterator it, end = connected.end();
 	  for (it = connected.begin(); it != end ; ++it)
 	    Send_Leaved(it->second, channelId, sessionId);
+	  if (connected.size() == 0)
+	    _channelMap.erase(channelId);
 	}
       else
 	Send_Leave_NOK_NOTINCHAN(session, channelId);
     }
-  if (connected.size() == 0)
-    _channelMap.remove(channelId);
 }
 
-void	Component_ChannelManager::Send_Leave_OK(Session const *session, field_t channelId)
+void	Component_ChannelManager::Send_Leave_OK(Session *session, field_t channelId)
 {
   Packet_v1_Channel *packet_v1_channel = new Packet_v1_Channel(CHANNEL_LEAVE_OK);
 
   packet_v1_channel->setChannelId(channelId);
 
-  _serverManager->send(packet_v1_channel, session);
+  _serverManager->Send(packet_v1_channel, session);
 }
 
-void	Component_ChannelManager::Send_Leave_NOK_NOTINCHAN(Session const *session, field_t channelId)
+void	Component_ChannelManager::Send_Leave_NOK_NOTINCHAN(Session *session, field_t channelId)
 {
   Packet_v1_Channel *packet_v1_channel = new Packet_v1_Channel(CHANNEL_LEAVE_NOK_NOTINCHAN);
 
   packet_v1_channel->setChannelId(channelId);
 
-  _serverManager->send(packet_v1_channel, session);
+  _serverManager->Send(packet_v1_channel, session);
 }
     
-void	Component_ChannelManager::Send_Leaved(Session const *session, field_t channelId, field_t clientSessionId)
+void	Component_ChannelManager::Send_Leaved(Session *session, field_t channelId, field_t clientSessionId)
 {
   Packet_v1_Channel *packet_v1_channel = new Packet_v1_Channel(CHANNEL_LEAVED);
 
   packet_v1_channel->setChannelId(channelId);
   packet_v1_channel->setClientSessionId(clientSessionId);
 
-  _serverManager->send(packet_v1_channel, session);
+  _serverManager->Send(packet_v1_channel, session);
 }
