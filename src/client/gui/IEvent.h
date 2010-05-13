@@ -7,9 +7,11 @@ class Session;
 class IEvent
 {
 public:
-    virtual         ~IEvent() {}
-    virtual void    sessionEvent(Packet_v1 const*, Session*);
-    virtual void    ChannelPacket(Packet_v1 const*, Session*);
+    virtual         ~IEvent() = 0;
+    virtual void    sessionEvent(Packet_v1 const*, Session*) = 0;
+    virtual void    channelEvent(Packet_v1 const*, Session*) = 0;
 };
+
+inline IEvent::~IEvent() {}
 
 #endif // IEVENT_H
