@@ -24,7 +24,11 @@ private:
     Network         *network;
     Parameters      *params;
 
+    void    populate_chans();
+    void    populate_friends();
 private slots:
+    void on_actionNew_Chan_triggered();
+    void on_actionAdd_Friend_triggered();
     void on_actionCreate_account_triggered();
     void on_actionNew_Room_triggered();
     void on_actionQuit_triggered();

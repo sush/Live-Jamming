@@ -22,7 +22,7 @@
       </property>
       <widget class="QTabWidget" name="tabWidget">
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="Chans">
         <attribute name="title">
@@ -30,10 +30,26 @@
         </attribute>
         <layout class="QVBoxLayout" name="verticalLayout">
          <item>
-          <widget class="QTreeWidget" name="ChanList">
+          <widget class="QTreeWidget" name="ChansList">
+           <property name="rootIsDecorated">
+            <bool>true</bool>
+           </property>
            <property name="headerHidden">
             <bool>true</bool>
            </property>
+           <property name="columnCount">
+            <number>2</number>
+           </property>
+           <column>
+            <property name="text">
+             <string notr="true">1</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string notr="true">2</string>
+            </property>
+           </column>
           </widget>
          </item>
         </layout>
@@ -44,7 +60,7 @@
         </attribute>
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>
-          <widget class="QTreeWidget" name="treeWidget_2">
+          <widget class="QTreeWidget" name="FriendsList">
            <attribute name="headerVisible">
             <bool>false</bool>
            </attribute>
@@ -59,22 +75,7 @@
           </widget>
          </item>
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_3">
-           <item>
-            <widget class="QPushButton" name="pushButton_2">
-             <property name="text">
-              <string>Add</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="pushButton">
-             <property name="text">
-              <string>Remove</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
+          <layout class="QHBoxLayout" name="horizontalLayout_3"/>
          </item>
         </layout>
        </widget>
@@ -82,20 +83,20 @@
       <widget class="QWidget" name="layoutWidget">
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Chan</string>
+         <widget class="QTabWidget" name="tabWidget_2">
+          <property name="currentIndex">
+           <number>0</number>
           </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPlainTextEdit" name="plainTextEdit">
-          <property name="undoRedoEnabled">
-           <bool>false</bool>
-          </property>
-          <property name="readOnly">
-           <bool>true</bool>
-          </property>
+          <widget class="QWidget" name="tab">
+           <attribute name="title">
+            <string>Tab 1</string>
+           </attribute>
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <item>
+             <widget class="QPlainTextEdit" name="plainTextEdit"/>
+            </item>
+           </layout>
+          </widget>
          </widget>
         </item>
         <item>
@@ -150,6 +151,8 @@
     <addaction name="separator"/>
     <addaction name="actionNew_Room"/>
     <addaction name="actionSearch_Room"/>
+    <addaction name="separator"/>
+    <addaction name="actionAdd_Friend"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuChans"/>
@@ -227,6 +230,11 @@
   <action name="actionDisconnect">
    <property name="text">
     <string>Disconnect</string>
+   </property>
+  </action>
+  <action name="actionAdd_Friend">
+   <property name="text">
+    <string>Add Friend</string>
    </property>
   </action>
  </widget>

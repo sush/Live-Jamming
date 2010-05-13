@@ -1,15 +1,37 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "ui_newchan.h"
 
 #include <QDesktopServices>
 #include <QUrl>
 #include <QTreeWidgetItem>
+#include <QInputDialog>
+#include <QString>
 
 #include "network.h"
 #include "parameters.h"
 #include "accountconnection.h"
 #include "configuration_dialog.h"
 #include "roomdialog.h"
+
+void    MainWindow::populate_chans()
+{
+    QTreeWidgetItem* root = new QTreeWidgetItem(ui->ChansList, QStringList() << "General" << "The General Chan");
+    QTreeWidgetItem* custom = new QTreeWidgetItem(ui->ChansList, QStringList() << "Custom" << "Custom created Chans");
+
+    ui->ChansList->insertTopLevelItems(1, QList<QTreeWidgetItem*>()
+                                        << new QTreeWidgetItem(custom, QStringList("Rock") << "Rock the world")
+                                        << new QTreeWidgetItem(custom, QStringList("Metal") << "Damn the earth"));
+}
+
+void    MainWindow::populate_friends()
+{
+    ui->FriendsList->insertTopLevelItems(0, QList<QTreeWidgetItem*>()
+                                      << new QTreeWidgetItem(QStringList("Pierre"))
+                                      << new QTreeWidgetItem(QStringList("Aylyc"))
+                                      << new QTreeWidgetItem(QStringList("Sush"))
+                                      << new QTreeWidgetItem(QStringList("Greg")));
+}
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -19,14 +41,9 @@ MainWindow::MainWindow(QWidget *parent) :
     network = new Network();
     params = new Parameters();
 
-    QTreeWidgetItem* root = new QTreeWidgetItem(ui->ChanList);
-    root->setText(0,"General");
-    QTreeWidgetItem* custom = new QTreeWidgetItem(ui->ChanList);
-    custom->setText(0, "Custom");
+    populate_chans();
+    populate_friends();
 
-    ui->ChanList->insertTopLevelItems(1, QList<QTreeWidgetItem*>()
-                                        << new QTreeWidgetItem(custom, QStringList("Rock"))
-                                        << new QTreeWidgetItem(custom, QStringList("Metal")));
 }
 
 MainWindow::~MainWindow()
@@ -83,4 +100,22 @@ void MainWindow::on_actionQuit_triggered()
 void MainWindow::on_actionCreate_account_triggered()
 {
     QDesktopServices::openUrl(QUrl("http://live-jamming.com/users/register"));
+}
+
+void MainWindow::on_actionAdd_Friend_triggered()
+{
+    QString friendName = QInputDialog::getText(this, tr("Add a friend"), tr("friend's name"));
+    if (!friendName.isEmpty())
+        ui->FriendsList->addTopLevelItem(new QTreeWidgetItem(QStringList(friendName)));
+}
+
+void MainWindow::on_actionNew_Chan_triggered()
+{
+    Ui::NewChan dialui;
+    QDialog dial;
+    dialui.setupUi(&dial);
+
+    dial.exec();
+    if (!dialui.nameLineEdit->text().isEmpty())
+        ui->ChansList->addTopLevelItem(new QTreeWidgetItem(QStringList() << dialui.nameLineEdit->text() << dialui.subjectLabel->text()));
 }
