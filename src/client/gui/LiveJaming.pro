@@ -9,26 +9,25 @@ SOURCES += mainwindow.cpp \
     configuration_dialog.cpp \
     roomdialog.cpp \
     network.cpp \
-    parameters.cpp \
-    event.cpp
+    parameters.cpp
 HEADERS += mainwindow.h \
     accountconnection.h \
     configuration_dialog.h \
     roomdialog.h \
     network.h \
-    parameters.h \
-    IEvent.h \
-    event.h
+    parameters.h
 DEPENDPATH += ../../core
 INCLUDEPATH += ../../core/include
-SOURCES += Session.cpp \
-    Manager.cpp \
+SOURCES += Manager.cpp \
+    Session.cpp \
+    Bind_recv.cpp \
+    Request.cpp \
+    PacketQueue.cpp \
     Packet.cpp \
     Packet_v1.cpp \
     Packet_v1_Session.cpp \
-    PacketQueue.cpp \
-    Bind_recv.cpp \
-    Request.cpp
+    Packet_v1_Channel.cpp \
+    Channel.cpp
 HEADERS += Session.h \
     Manager.h \
     Packet.h \
@@ -37,9 +36,11 @@ HEADERS += Session.h \
     Bind_recv.h
 DEPENDPATH += ../../client
 INCLUDEPATH += ../../client/include
-SOURCES += Client.cpp \
+SOURCES += main_net.cpp \
+    Client.cpp \
     ClientManager.cpp \
-    Component_Session.cpp
+    Component_Session.cpp \
+    Component_Channel.cpp
 HEADERS += Audio.h \
     Client.h \
     ClientManager.h \

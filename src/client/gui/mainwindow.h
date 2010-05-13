@@ -9,9 +9,9 @@ namespace Ui {
     class MainWindow;
 }
 
-class Network;
 class Parameters;
 class Session;
+class Packet;
 
 class MainWindow : public QMainWindow, public ClientManager {
     Q_OBJECT
@@ -19,8 +19,11 @@ public:
     MainWindow(boost::asio::io_service &, boost::threadpool::pool &,
                boost::asio::ip::udp::socket &, boost::asio::ip::udp::endpoint &);
     ~MainWindow();
-    int main(boost::asio::io_service& service, boost::threadpool::pool& pool,
-             boost::asio::ip::udp::socket& socket, boost::asio::ip::udp::endpoint& endpoint);
+    static int run(int argc, char* argv[]);
+    void    auth_session_ok(Packet_v1 const*, Session* );
+    void    auth_session_pasok(Packet_v1 const*, Session*);
+
+    typedef void    (MainWindow::*pMethod)(Packet_v1 const*, Session*);
 
 protected:
     void changeEvent(QEvent *e);

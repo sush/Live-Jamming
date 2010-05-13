@@ -8,13 +8,16 @@
 #include <QInputDialog>
 #include <QString>
 
-#include "network.h"
 #include "parameters.h"
 #include "accountconnection.h"
 #include "configuration_dialog.h"
 #include "roomdialog.h"
+
 #include "boost/asio.hpp"
 #include "boost/threadpool.hpp"
+
+#include <Session.h>
+#include <Packet_v1.h>
 
 void    MainWindow::populate_chans()
 {
@@ -54,15 +57,12 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-int MainWindow::main(boost::asio::io_service& service, boost::threadpool::pool& pool,
-                     boost::asio::ip::udp::socket& socket, boost::asio::ip::udp::endpoint& endpoint)
+int MainWindow::run(int argc, char* argv[])
 {
-    QString* name = new QString("LiveJaming");
-    char* charname= name->toAscii().data();
-    int argc = 1;
-    QApplication a(argc, &charname);
-    MainWindow w(service, pool, socket, endpoint);
-    w.show();
+    //QString* name = new QString("LiveJaming");
+    //char* charname= name->toAscii().data();
+    //int argc = 1;
+    QApplication a(argc, argv);//&charname);
     return a.exec();
 }
 
@@ -93,7 +93,7 @@ void MainWindow::on_actionConnect_triggered()
        AccountConnection::run(params->login, params->password);
 
     if (params->haveId() == true) // n'est pas le contraire de la ligne au dessus.
-        _session->connect(params->login, params->password);
+        _session->Connect(params->login.toStdString(), params->password.toStdString());
 }
 
 void MainWindow::on_actionPreferences_triggered()
@@ -132,4 +132,9 @@ void MainWindow::on_actionNew_Chan_triggered()
     dial.exec();
     if (!dialui.nameLineEdit->text().isEmpty())
         ui->ChansList->addTopLevelItem(new QTreeWidgetItem(QStringList() << dialui.nameLineEdit->text() << dialui.subjectLabel->text()));
+}
+
+void    MainWindow::auth_session_ok(const Packet_v1 *, Session *)
+{
+
 }
