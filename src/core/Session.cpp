@@ -21,6 +21,7 @@ Session::Session(Manager * manager, boost::asio::io_service & io_service, boost:
 
 void	Session::Authentificated(Packet_v1 const * packet_v1)
 {
+  _isLogged = true;
   _sessionId = packet_v1->getSessionId();
   _ip = packet_v1->getEndpoint().address();
   _port  = packet_v1->getEndpoint().port();

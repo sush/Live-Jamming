@@ -24,11 +24,14 @@ private:
   virtual void				Init_Components();
   virtual void				Disconnect(Session *);
 
-private:
+
+protected:
   // core components
-  boost::asio::ip::udp::endpoint	&_remote_endpoint;
   Component_Session			*_session;
   // list of additional optional components
+
+private:
+  boost::asio::ip::udp::endpoint	&_remote_endpoint;
 };
 
 #endif // ! __CLIENTMANAGER_H__

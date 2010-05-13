@@ -12,7 +12,7 @@ ClientManager::ClientManager(boost::asio::io_service & io_service, boost::thread
   _retryDelay = 1;
   _timeOutTestDelay = 10;
   _timeOutOccurredDelay = 5;
-  _session->Connect("dudee", "12345678");
+  _session->Connect("dude", "12345678");
 }
 
 ClientManager::~ClientManager()
@@ -23,7 +23,7 @@ void				ClientManager::Manage(Packet * packet)
   // send packet to appropriate zone
   Packet_v1			*packet_v1;
   Session 			*session;
-
+  static bool			exec_on_logged = 0;			
 
   packet_v1 = static_cast<Packet_v1 *>(packet);
   session = _session->getSession();

@@ -111,5 +111,7 @@ void		Client::Init(int argc, char *argv[])
   _timer = new boost::asio::deadline_timer(*_io_service, boost::posix_time::seconds(updateTime));
   _timer->async_wait(boost::bind(&Client::CallBack_Debug_Print, this));
   _pool = new boost::threadpool::pool(_poolSize);
-  _clientManager = new ClientManager(*_io_service, *_pool, *_socket, *_remote_endpoint);
+  //  _clientManager = new ClientManager(*_io_service, *_pool, *_socket, *_remote_endpoint);
+  _clientManager = new MainWindow(*_io_service, *_pool, *_socket, *_remote_endpoint);
+  _pool->schedule(boost::bind(&MainWindow::run));
 }

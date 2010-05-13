@@ -16,6 +16,7 @@ class Client;
 #include <Singleton.h>
 #include <Config.h>
 #include <ClientManager.h>
+#include <MainWindow.h>
 
 class Client : public Singleton<Client>
 {
@@ -52,6 +53,7 @@ private:
   Packet::buffer_t			*_recv_buffer;
   PacketQueue				*_packetQueue;
   Config				*_config;
+  //  ClientManager				*_clientManager;
   ClientManager				*_clientManager;
 };
 
