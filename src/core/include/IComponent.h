@@ -55,7 +55,5 @@ protected:
   m_request		*_registeredRequests;
 };
 
-#include <Bind_recv.h>
-
 #endif // ! __ICOMPONENT_H__
 

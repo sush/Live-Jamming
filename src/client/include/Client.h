@@ -15,8 +15,8 @@ class Client;
 #include <PacketQueue.h>
 #include <Singleton.h>
 #include <Config.h>
-#include <ClientManager.h>
 #include <mainwindow.h>
+#include <ClientManager.h>
 
 class Client : public Singleton<Client>
 {

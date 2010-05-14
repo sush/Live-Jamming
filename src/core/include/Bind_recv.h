@@ -2,14 +2,15 @@
 #define __BIND_RECV_H__
 
 class Bind_recv;
+class MainWindow;
 
-#include <mainwindow.h>
 #include <boost/asio.hpp>
 #include <boost/threadpool.hpp>
 #include <IComponent.h>
 #include <Protocol.h>
 #include <Session.h>
 #include <Packet_v1.h>
+#include <mainwindow.h>
 
 // template this class too
 // to get bind_recv for servermanager and bind_recv for clientmanager

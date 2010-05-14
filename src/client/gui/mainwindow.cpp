@@ -7,6 +7,7 @@
 #include <QTreeWidgetItem>
 #include <QInputDialog>
 #include <QString>
+#include <QModelIndex>
 
 #include "parameters.h"
 #include "accountconnection.h"
@@ -17,6 +18,7 @@
 #include "boost/asio.hpp"
 #include "boost/threadpool.hpp"
 
+#include <Component_Session.h>
 #include <Session.h>
 #include <Packet_v1.h>
 
@@ -140,7 +142,7 @@ void    MainWindow::auth_session_ok(const Packet_v1 *, Session *)
     connected();
 }
 
-void MainWindow::on_ChansList_activated(QModelIndex index)
+void MainWindow::on_ChansList_activated(QModelIndex &index)
 {
 
 }

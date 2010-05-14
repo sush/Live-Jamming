@@ -1,8 +1,10 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+class MainWindow;
+
 #include <QMainWindow>
-#include "ClientManager.h"
+#include <ClientManager.h>
 
 namespace Ui {
     class MainWindow;
@@ -40,7 +42,7 @@ private:
     void    populate_friends();
 
 private slots:
-    void on_ChansList_activated(QModelIndex index);
+    void on_ChansList_activated(QModelIndex& index);
     void on_actionNew_Chan_triggered();
     void on_actionAdd_Friend_triggered();
     void on_actionCreate_account_triggered();

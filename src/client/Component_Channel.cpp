@@ -1,4 +1,5 @@
 #include <Component_Channel.h>
+#include <Bind_recv.h>
 
 Component_Channel::Component_Channel(ClientManager *clientManager)
   : IComponent(CHANNEL_COMPONENTID), _clientManager(clientManager)

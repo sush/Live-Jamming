@@ -1,4 +1,5 @@
 #include <Component_Session.h>
+#include <Bind_recv.h>
 
 Component_Session::Component_Session(ClientManager *clientManager)
   :IComponent(SESSION_COMPONENTID), _clientManager(clientManager), _logged(false), _session(0)

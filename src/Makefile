@@ -17,7 +17,7 @@ SERVER_SRC	=		server/main.cpp\
 				server/Option.cpp\
 				server/Argument.cpp\
 				server/Component_ChannelManager.cpp\
-				server/Channel.cpp\
+				core/Channel.cpp\
 				core/Bind_recv.cpp\
 				core/Request.cpp\
 				core/Session.cpp\
@@ -33,6 +33,7 @@ CLIENT_SRC	=		client/main_net.cpp\
 				client/ClientManager.cpp\
 				client/Component_Session.cpp\
 				client/Component_Channel.cpp\
+				core/Channel.cpp\
 				core/Manager.cpp\
 				core/Session.cpp\
 				core/Bind_recv.cpp\

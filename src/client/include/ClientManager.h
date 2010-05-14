@@ -2,13 +2,13 @@
 #define __CLIENTMANAGER_H__
 
 class ClientManager;
+class Component_Session;
+class Session;
 
 #include <iostream>
 #include <boost/asio.hpp>
 
 #include <Manager.h>
-#include <Session.h>
-#include <Component_Session.h>
 
 class ClientManager : public Manager
 {

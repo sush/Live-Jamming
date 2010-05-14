@@ -56,7 +56,8 @@ LIBS += -lboost_system \
     -lboost_thread-mt \
     -lboost_program_options \
     -lyaml-cpp \
-    -lmysqlpp
+    -lmysqlpp \
+    -L../../libs
 FORMS += mainwindow.ui \
     accountconnection.ui \
     configuration_dialog.ui \

@@ -1,4 +1,7 @@
 #include <ClientManager.h>
+#include <Component_Session.h>
+#include <Session.h>
+#include <Bind_recv.h>
 
 ClientManager::ClientManager(boost::asio::io_service & io_service, boost::threadpool::pool & pool,
 			     boost::asio::ip::udp::socket & socket, boost::asio::ip::udp::endpoint & remote_endpoint)
