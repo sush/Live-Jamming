@@ -117,6 +117,7 @@ void		Client::Init(int argc, char *argv[])
   MainWindow::gui_init(argc, argv);
   MainWindow tmp(*_io_service, *_pool, *_socket, *_remote_endpoint);
   _clientManager = &tmp;
-  _pool->schedule(boost::bind(&Client::Run, this));
+
+  boost::thread		t(boost::bind(&Client::Run, this));
   MainWindow::run();
 }

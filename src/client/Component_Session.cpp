@@ -95,7 +95,7 @@ void		Component_Session::Recv_AuthResponse(Packet_v1 const *packet_v1, Session *
       std::cout << "recv_authresponse_ok" << std::endl;
     }
   else
-    {}	// auth errors
+    {std::cout << "auth failed" << std::endl;}	// auth errors
 }
 
 void		Component_Session::Disconnect()
