@@ -64,3 +64,9 @@ FORMS += mainwindow.ui \
     roomdialog.ui \
     newchan.ui
 QMAKE_CXXFLAGS += -D_GUI
+debug {
+QMAKE_CXXFLAGS += -D_DEBUG -g3 -pg
+}
+else {
+QMAKE_CXXFLAGS += -D_NDEBUG
+}
