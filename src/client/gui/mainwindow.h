@@ -6,6 +6,7 @@ class MainWindow;
 #include <QMainWindow>
 #include <ClientManager.h>
 #include <QModelIndex>
+#include <parameters.h>
 
 namespace Ui {
     class MainWindow;
@@ -37,7 +38,7 @@ protected:
 
 private:
     Ui::MainWindow  *ui;
-    Parameters      *params;
+    Parameters      params;
     bool            isConnected;
 
     void    populate_chans();

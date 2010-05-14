@@ -51,7 +51,7 @@ MainWindow::MainWindow(boost::asio::io_service& service, boost::threadpool::pool
 {
     ui->setupUi(this);
     setVisible(true);
-    //params = new Parameters();
+    isConnected = false;
 
     //populate_chans();
     //populate_friends();
@@ -95,11 +95,11 @@ void MainWindow::on_actionConnect_triggered()
     if (isConnected)
         return ;
 
-    if (params->haveId() == false)
-       AccountConnection::run(params->login, params->password);
+    if (params.haveId() == false)
+       AccountConnection::run(params.login, params.password);
 
-    //if (params->haveId() == true) // n'est pas le contraire de la ligne au dessus.
-        //_session->Connect(params->login.toStdString(), params->password.toStdString());
+    if (params.haveId() == true) // n'est pas le contraire de la ligne au dessus.
+        _session->Connect(params.login.toStdString(), params.password.toStdString());
 }
 
 void MainWindow::on_actionPreferences_triggered()
@@ -159,4 +159,9 @@ void MainWindow::add_chan(const QString &name)
 void MainWindow::on_FriendsList_activated(QModelIndex index)
 {
 
+}
+
+void MainWindow::auth_session_pasok(const Packet_v1 *, Session *)
+{
+    //static_cast<>()
 }
