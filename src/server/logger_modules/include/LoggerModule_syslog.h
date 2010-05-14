@@ -5,14 +5,21 @@
 #include <syslog.h>
 #include <ILoggerModule.h>
 
-class LoggerModule_syslog : public ILoggerModule<LoggerModule_syslog> {
+//! SERVER: It is used to logg each events on the server.
 
+class LoggerModule_syslog : public ILoggerModule<LoggerModule_syslog> 
+{
   friend class Singleton<LoggerModule_syslog>;
 
  public :
+
+  //! Default constructor.
   LoggerModule_syslog();
-  virtual ~LoggerModule_syslog();
-  void AddLine(int, std::string const &) const;
+  //! Default destructor.
+  virtual	~LoggerModule_syslog();
+
+  //! Add line of events in syslog.
+  void		AddLine(int, std::string const &) const;
 };
 
 #endif

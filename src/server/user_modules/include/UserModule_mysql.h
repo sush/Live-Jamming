@@ -7,6 +7,8 @@
 #include <IDatabase.h>
 #include <mysql++/mysql++.h>
 
+//! SERVER: It is use to manage all user module methods with Mysql.
+
 class UserModule_mysql : public IUserBackend<UserModule_mysql>, public IDatabase
 {
   friend class Singleton<UserModule_mysql>;

@@ -1,10 +1,13 @@
 #ifndef __IDATABASE_H__
 #define __IDATABASE_H__
 
-class IDatabase {
+//! SERVER: Interface defines all mandatory method for each database module
 
+class IDatabase 
+{
  private :
-  // All inherent database methods
+
+  //! Connection to the database.
   virtual void Connection() = 0;
 };
 

@@ -13,7 +13,7 @@ class Component_ChannelManager;
 #include <Channel.h>
 #include <Session.h>
 
-//! SERVER:  It is used to manage all the text base channels
+//! SERVER:  It is used to manage all the text base channels.
 
 class Component_ChannelManager : public IComponent
 {

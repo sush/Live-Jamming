@@ -1,0 +1,40 @@
+JOIN			// MOI join un chan j'envoie JOIN
+			      	   MOI reenvoie tant que pas de reponse JOIN_OK/ JOIN_NOK_*
+			// CLIENT join un chan je recois JOINED
+			      	   SERV re-envoie JOINED tant qu'il ne recoit pas JOINED_ACK 
+MESSAGE
+			// MOI envoie un message j'envoie MESSAGE
+			       	    MOI reenvoie tant que pas de MESSAGE_ACK du serveur
+		       // CLIENT envoie un message au chan je recois MESSAGE_RECV
+		       	     	   SERV re-envoie MESSAGE_RECV tant qu'il ne recoit pas MESSAGE_RECV_ACK
+LEAVE
+			// MOI leave un channel j'envoie LEAVE
+			       	     MOI reenvoie LEAVE tant que je ne recois pas LEAVE_OK / LEAVE_NOK_*
+			// CLIENT Leave un chan je recois LEAVED
+			   	  SERV re-envoie LEAVED tant qu'il ne recoit pas de LEAVED_ACK
+client				serv
+JOIN>
+				>JOIN
+				<treat>
+				<JOIN_OK
+
+
+						[-------------------------- BINARY FIELDS --------------------------] [---------------------------- DATA ---------------------------]
+JOIN			[client -> serv]	CHANNELID
+JOIN_OK			[serv -> client]	CHANNELID
+JOIN_NOK_ALREADYINCHAN	[serv -> client]	
+JOINED			[serv -> client]	CHANNELID	SESSIONID
+JOINED_ACK		[client -> serv]	
+
+MESSAGE			[client -> serv]	CHANNELID								MESSAGE
+MESSAGE_ACK		[serv -> client]	
+MESSAGE_RECV		[serv -> client]	CHANNELID	SESSIONID						MESSAGE
+MESSAGE_RECV_ACK	[client -> serv]	
+
+LEAVE			[client -> serv]	CHANNELID
+LEAVE_OK		[serv -> client]	CHANNELID
+LEAVE_NOK_NOTINCHAN	[serv -> client]	CHANNELID
+LEAVED			[serv -> client]	CHANNELID	SESSIONID
+LEAVED_ACK		[client -> serv]	
+
+
