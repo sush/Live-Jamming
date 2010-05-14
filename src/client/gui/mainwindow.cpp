@@ -24,6 +24,8 @@
 
 #include <QDebug>
 
+l_eventQueue						eventQueue;
+
 void    MainWindow::populate_chans()
 {
     /*QTreeWidgetItem* root =*/ new QTreeWidgetItem(ui->ChansList, QStringList() << "General" << "The General Chan");
@@ -141,10 +143,13 @@ void MainWindow::on_actionNew_Chan_triggered()
         ui->ChansList->addTopLevelItem(new QTreeWidgetItem(QStringList() << dialui.nameLineEdit->text() << dialui.subjectLabel->text()));
 }
 
-void    MainWindow::auth_session_ok(const Packet_v1 *, Session *)
+void    MainWindow::auth_session_ok(const Packet_v1 *packet_v1, Session *session)
 {
-    qDebug() << "TOTO";
-    connected();
+  queueElem	a(packet_v1, session);
+  
+  eventQueue.push(a);
+  qDebug() << "TOTO";
+  connected();
 }
 
 void MainWindow::auth_session_pasok(const Packet_v1 *, Session *)

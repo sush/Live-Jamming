@@ -12,6 +12,11 @@ namespace Ui {
     class MainWindow;
 }
 
+typedef std::pair<Packet_v1 const *, Session *>		queueElem;
+typedef std::queue<queueElem>				l_eventQueue;
+
+extern	l_eventQueue					eventQueue;
+
 class Parameters;
 class Session;
 class Packet;
