@@ -6,4 +6,6 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent) :
     ui(new Ui::ConfigurationDialog)
 {
     ui->setupUi(this);
+    ui->comboBox->addItems(QStringList() << "toto" << "tata" << "titi");
+
 }

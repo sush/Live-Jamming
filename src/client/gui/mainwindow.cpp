@@ -60,13 +60,14 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-int MainWindow::run(int argc, char* argv[])
+int MainWindow::gui_init(int argc, char* argv[])
 {
-    //QString* name = new QString("LiveJaming");
-    //char* charname= name->toAscii().data();
-    //int argc = 1;
-    QApplication a(argc, argv);//&charname);
-    return a.exec();
+    QApplication a(argc, argv);
+}
+
+void    MainWindow::run()
+{
+return a.exec();
 }
 
 void MainWindow::changeEvent(QEvent *e)

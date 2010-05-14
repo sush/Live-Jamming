@@ -13,6 +13,7 @@ Q_OBJECT
 public:
     ConfigurationDialog(QWidget *parent = 0);
 
+
 private:
     Ui::ConfigurationDialog*	ui;
 

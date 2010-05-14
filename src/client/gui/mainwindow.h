@@ -21,7 +21,8 @@ public:
     MainWindow(boost::asio::io_service &, boost::threadpool::pool &,
                boost::asio::ip::udp::socket &, boost::asio::ip::udp::endpoint &);
     ~MainWindow();
-    static int run(int argc, char* argv[]);
+    static int gui_init(int argc, char* argv[]);
+    static void run();
     void    auth_session_ok(Packet_v1 const*, Session* );
     void    auth_session_pasok(Packet_v1 const*, Session*);
     void    chan_msg_receveid(Packet_v1 const*, Session*);
