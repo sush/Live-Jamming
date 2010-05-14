@@ -3,7 +3,6 @@
 
 #include <QMainWindow>
 #include "ClientManager.h"
-#include "event.h"
 
 namespace Ui {
     class MainWindow;
@@ -12,6 +11,7 @@ namespace Ui {
 class Parameters;
 class Session;
 class Packet;
+class QModelIndex;
 
 class MainWindow : public QMainWindow, public ClientManager {
     Q_OBJECT
@@ -22,6 +22,9 @@ public:
     static int run(int argc, char* argv[]);
     void    auth_session_ok(Packet_v1 const*, Session* );
     void    auth_session_pasok(Packet_v1 const*, Session*);
+    void    chan_msg_receveid(Packet_v1 const*, Session*);
+
+    void    add_chan(QString const& name);
 
     typedef void    (MainWindow::*pMethod)(Packet_v1 const*, Session*);
 
@@ -31,13 +34,13 @@ protected:
 private:
     Ui::MainWindow  *ui;
     Parameters      *params;
-    Event           event;
     bool            isConnected;
 
     void    populate_chans();
     void    populate_friends();
 
 private slots:
+    void on_ChansList_activated(QModelIndex index);
     void on_actionNew_Chan_triggered();
     void on_actionAdd_Friend_triggered();
     void on_actionCreate_account_triggered();

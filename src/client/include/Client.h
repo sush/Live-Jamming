@@ -16,7 +16,7 @@ class Client;
 #include <Singleton.h>
 #include <Config.h>
 #include <ClientManager.h>
-#include <MainWindow.h>
+#include <mainwindow.h>
 
 class Client : public Singleton<Client>
 {

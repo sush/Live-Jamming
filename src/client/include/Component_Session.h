@@ -13,7 +13,9 @@ class Component_Session;
 #include <Packet_v1_Session.h>
 #include <ClientManager.h>
 #include <Session.h>
-#include <IEvent.h>
+#include <mainwindow.h>
+
+class ClientManager;
 
 class Component_Session : public IComponent
 {
@@ -43,7 +45,6 @@ private:
   void		CallBack_AuthRequest_timeout(boost::system::error_code const &);
   
   ClientManager				*_clientManager;
-  IEvent				*_gui;
   bool					_logged;
   Session				*_session;
 };

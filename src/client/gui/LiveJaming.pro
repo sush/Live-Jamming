@@ -15,7 +15,8 @@ HEADERS += mainwindow.h \
     configuration_dialog.h \
     roomdialog.h \
     network.h \
-    parameters.h
+    parameters.h \
+    convset.h
 DEPENDPATH += ../../core
 INCLUDEPATH += ../../core/include
 SOURCES += Manager.cpp \
@@ -61,5 +62,3 @@ FORMS += mainwindow.ui \
     configuration_dialog.ui \
     roomdialog.ui \
     newchan.ui
-CONFIG += link_pkgconfig
-PKGCONFIG += yaml-cpp

@@ -1,7 +1,7 @@
 #include <Component_Session.h>
 
-Component_Session::Component_Session(ClientManager *clientManager, IEvent * gui)
-  :IComponent(SESSION_COMPONENTID), _clientManager(clientManager), _logged(false), _session(0), _gui(gui)
+Component_Session::Component_Session(ClientManager *clientManager)
+  :IComponent(SESSION_COMPONENTID), _clientManager(clientManager), _logged(false), _session(0)
 {
   _session = new Session(_clientManager, _clientManager->getIO(), _clientManager->getEndpoint());
 }
@@ -15,7 +15,7 @@ void	Component_Session::BindingsRecv()
 {
   (*_bindingsRecv)[SESSION_AUTHRESPONSE_OK] =
     new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Session::Recv_AuthResponse),
-		  gui, static_cast<IEvent::pMethod>(&IEvent::sessionEvent));
+                  static_cast<MainWindow*>(_clientManager), static_cast<MainWindow::pMethod>(&MainWindow::auth_session_ok));
 
   (*_bindingsRecv)[SESSION_AUTHRESPONSE_NOK_BADAUTH] =
     new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Session::Recv_AuthResponse));

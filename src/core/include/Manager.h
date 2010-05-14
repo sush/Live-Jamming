@@ -2,7 +2,6 @@
 #define __MANAGER_H__
 
 class Manager;
-class Session;
 
 #include <iostream>
 #include <list>

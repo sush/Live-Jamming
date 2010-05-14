@@ -8,7 +8,7 @@
 ////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////
 
-Bind_recv::Bind_recv(IComponent *instance, IComponent::pMethod method, IEvent *guiInstance, IEvent::pMethod guiMethod)
+Bind_recv::Bind_recv(IComponent *instance, IComponent::pMethod method, MainWindow *guiInstance, MainWindow::pMethod guiMethod)
   :_instance(instance), _method(method), _guiInstance(guiInstance), _guiMethod(guiMethod), _needsAuth(true)
 {}
 
@@ -36,7 +36,7 @@ void					Bind_recv::Receive(Packet_v1 const * packet_v1, Session * session) cons
       if (_instance != 0 && _method != 0)
 	(_instance->*_method)(packet_v1, session);
       if (_guiInstance != 0 && _guiMethod != 0)
-	(_guiInstance->*_guiMethod)(packet_v1, session)
+        (_guiInstance->*_guiMethod)(packet_v1, session);
     }
     // send a need_auth_request to clients if in   !   S E R V E R   !!   S E R V E R   !
     // pop a error message in client requesting auth in   !   C L I E N T   !!   C L I E N T   !

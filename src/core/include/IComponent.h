@@ -4,7 +4,7 @@
 class IComponent;
 class Bind_recv;
 class Session;
-class Manager;
+//class Manager;
 class Packet_v1;
 
 #include <iostream>

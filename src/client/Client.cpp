@@ -14,7 +14,7 @@ void		Client::Run()
   std::cout << "Client started..." << std::endl;
  
   // schedule the UI window to be created
-  _pool->schedule(boost::bind(&MainWindow::run, argc, argv));
+  _pool->schedule(boost::bind(MainWindow::run, _argc, _argv));
   start_receive();
   _io_service->run();
 }

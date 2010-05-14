@@ -12,6 +12,7 @@
 #include "accountconnection.h"
 #include "configuration_dialog.h"
 #include "roomdialog.h"
+#include "convset.h"
 
 #include "boost/asio.hpp"
 #include "boost/threadpool.hpp"
@@ -136,5 +137,16 @@ void MainWindow::on_actionNew_Chan_triggered()
 
 void    MainWindow::auth_session_ok(const Packet_v1 *, Session *)
 {
+    connected();
+}
 
+void MainWindow::on_ChansList_activated(QModelIndex index)
+{
+
+}
+
+void MainWindow::add_chan(const QString &name)
+{
+    convSet*    convset = new convSet(ui->convsTab);
+    ui->convsTab->addTab(convset, name);
 }

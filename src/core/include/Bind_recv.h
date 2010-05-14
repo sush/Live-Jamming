@@ -3,13 +3,13 @@
 
 class Bind_recv;
 
+#include <mainwindow.h>
 #include <boost/asio.hpp>
 #include <boost/threadpool.hpp>
 #include <IComponent.h>
 #include <Protocol.h>
 #include <Session.h>
 #include <Packet_v1.h>
-#include <IEvent.h>
 
 // template this class too
 // to get bind_recv for servermanager and bind_recv for clientmanager
@@ -19,7 +19,7 @@ class Bind_recv
 {
 public:
   friend class Manager;
-  Bind_recv(IComponent *, IComponent::pMethod, IEvent * = 0, IEvent::pMethod = 0);
+  Bind_recv(IComponent *, IComponent::pMethod, MainWindow* = 0, MainWindow::pMethod = 0);
   virtual				~Bind_recv();
 
   void					Receive(Packet_v1 const *, Session *) const;
@@ -27,8 +27,8 @@ public:
 private:
   IComponent *				_instance;
   IComponent::pMethod			_method;
-  IEvent *				_guiInstance;
-  IEvent::pMethod			_guiMethod;
+  MainWindow *				_guiInstance;
+  MainWindow::pMethod			_guiMethod;
   bool					_needsAuth;
 };
 
