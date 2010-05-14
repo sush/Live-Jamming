@@ -60,14 +60,14 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-int MainWindow::gui_init(int argc, char* argv[])
+void MainWindow::gui_init(int argc, char* argv[])
 {
-    QApplication a(argc, argv);
+    new QApplication(argc, argv);
 }
 
-void    MainWindow::run()
+int    MainWindow::run()
 {
-return a.exec();
+    return QCoreApplication::instance()->exec();
 }
 
 void MainWindow::changeEvent(QEvent *e)

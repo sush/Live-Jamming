@@ -63,3 +63,4 @@ FORMS += mainwindow.ui \
     configuration_dialog.ui \
     roomdialog.ui \
     newchan.ui
+QMAKE_CXXFLAGS += -D_GUI
