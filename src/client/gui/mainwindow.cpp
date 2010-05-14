@@ -22,7 +22,7 @@
 #include <Session.h>
 #include <Packet_v1.h>
 
-#include <qdebug.h>
+#include <QDebug>
 
 void    MainWindow::populate_chans()
 {
@@ -86,6 +86,7 @@ void MainWindow::changeEvent(QEvent *e)
 
 void MainWindow::connected()
 {
+    isConnected = true;
     ui->menuBar->removeAction(ui->actionConnect);
     ui->menuBar->insertAction(NULL, ui->actionDisconnect);
 }
@@ -142,7 +143,13 @@ void MainWindow::on_actionNew_Chan_triggered()
 
 void    MainWindow::auth_session_ok(const Packet_v1 *, Session *)
 {
+    qDebug() << "TOTO";
     connected();
+}
+
+void MainWindow::auth_session_pasok(const Packet_v1 *, Session *)
+{
+    //static_cast<>()
 }
 
 void MainWindow::on_ChansList_activated(QModelIndex index)
@@ -159,9 +166,4 @@ void MainWindow::add_chan(const QString &name)
 void MainWindow::on_FriendsList_activated(QModelIndex index)
 {
 
-}
-
-void MainWindow::auth_session_pasok(const Packet_v1 *, Session *)
-{
-    //static_cast<>()
 }

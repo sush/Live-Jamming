@@ -1,20 +1,17 @@
 # -------------------------------------------------
 # Project created by QtCreator 2010-03-18T13:38:22
 # -------------------------------------------------
-QT += network
-TARGET = LiveJaming
+TARGET = livejammin_client
 TEMPLATE = app
 SOURCES += mainwindow.cpp \
     accountconnection.cpp \
     configuration_dialog.cpp \
     roomdialog.cpp \
-    network.cpp \
     parameters.cpp
 HEADERS += mainwindow.h \
     accountconnection.h \
     configuration_dialog.h \
     roomdialog.h \
-    network.h \
     parameters.h \
     convset.h
 DEPENDPATH += ../../core
