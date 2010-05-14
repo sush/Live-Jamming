@@ -5,6 +5,7 @@ class MainWindow;
 
 #include <QMainWindow>
 #include <ClientManager.h>
+#include <QModelIndex>
 
 namespace Ui {
     class MainWindow;
@@ -13,7 +14,6 @@ namespace Ui {
 class Parameters;
 class Session;
 class Packet;
-class QModelIndex;
 
 class MainWindow : public QMainWindow, public ClientManager
 {
@@ -44,7 +44,8 @@ private:
     void    populate_friends();
 
 private slots:
-    void on_ChansList_activated(QModelIndex& index);
+    void on_FriendsList_activated(QModelIndex index);
+    void on_ChansList_activated(QModelIndex index);
     void on_actionNew_Chan_triggered();
     void on_actionAdd_Friend_triggered();
     void on_actionCreate_account_triggered();

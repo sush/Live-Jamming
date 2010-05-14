@@ -145,7 +145,7 @@ void    MainWindow::auth_session_ok(const Packet_v1 *, Session *)
     connected();
 }
 
-void MainWindow::on_ChansList_activated(QModelIndex &index)
+void MainWindow::on_ChansList_activated(QModelIndex index)
 {
 
 }
@@ -154,4 +154,9 @@ void MainWindow::add_chan(const QString &name)
 {
     convSet*    convset = new convSet(ui->convsTab);
     ui->convsTab->addTab(convset, name);
+}
+
+void MainWindow::on_FriendsList_activated(QModelIndex index)
+{
+
 }
