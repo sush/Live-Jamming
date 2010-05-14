@@ -8,21 +8,41 @@
 #include <Protocol.h>
 #include <Protocol_Channel.h>
 
+//! COMMON:  Defines methods to get datas from packet_v1 Channel type.
+
 class Packet_v1_Channel : public Packet_v1
 {
 public:
+
+  //! Constructor.
+  /*! \param 1 field_t componentId */
   Packet_v1_Channel(field_t);
+  //! Default destructor.
   virtual		~Packet_v1_Channel();
 
+  //! Print packet.
   void			Print() const;
+  //! Print packet_v1.
   void			Print_v1() const;
 
+  //! Get channelId in the packet.
+  /*! \return field_t channelId */
   field_t		getChannelId() const;
+  //! Get clientSEssionId in the packet.
+  /*! \return field_t clientSessionId */
   field_t		getClientSessionId() const;
+  //! Set channelId in the packet.
+  /*! \param 1 field_t channelId */
   void			setChannelId(field_t);
+  //! Set clientSessionId in the packet.
+  /*! \param 1 field_t clientSessionId */
   void			setClientSessionId(field_t);
 
+  //! Set message in the packet.
+  /*! \param 1 char * const  message */
   void			setMessage(char const *);
+  //! Get message in the packet.
+  /*! \return const char * message */
   char const		*getMessage() const;
 
 private:

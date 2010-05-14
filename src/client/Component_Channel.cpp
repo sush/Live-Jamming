@@ -101,7 +101,7 @@ void		Component_Channel::Recv_Join_OK(Packet_v1 const *packet_v1, Session *sessi
   std::cout << ">>>>>>>>>>>> RECV [JOIN_OK] Channel [" <<  channelId  <<"]<<<<<<<<<<<<" << std::endl;
 
   if (!_channelMap[channelId])
-      _channelMap[channelId] = new Channel();
+    _channelMap[channelId] = new Channel();
 }
 
 void		Component_Channel::Recv_Join_NOK_ALREADYINCHAN(Packet_v1 const *packet_v1, Session *session)

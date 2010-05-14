@@ -18,6 +18,7 @@ class Packet_v1;
 class IComponent
 {
  public:
+
   typedef void	(IComponent::*pMethod)(Packet_v1 const *, Session *);
 
   typedef std::map<field_t, Request *>			m_request;

@@ -1,6 +1,8 @@
 #ifndef __SINGLETON_H__
 #define __SINGLETON_H__
 
+//! COMMON:  Singleton template class.
+
 template <typename T>
 class Singleton
 {
