@@ -1,6 +1,6 @@
 #include <Client.h>
 
-const char		connect_address[] = "127.0.0.1";
+const char		connect_address[] = "192.168.0.18";//"127.0.0.1";
 //const char		connect_address[] = "88.191.94.150";
 
 const int		Client::_connect_port	= 5042;
@@ -115,7 +115,8 @@ void		Client::Init(int argc, char *argv[])
   ///////////  ///////////  ///////////  ///////////  ///////////  ///////////  ///////////
   //  _clientManager = new ClientManager(*_io_service, *_pool, *_socket, *_remote_endpoint);
   MainWindow::gui_init(argc, argv);
-  _clientManager = new MainWindow(*_io_service, *_pool, *_socket, *_remote_endpoint);
+  MainWindow tmp(*_io_service, *_pool, *_socket, *_remote_endpoint);
+  _clientManager = &tmp;
   _pool->schedule(boost::bind(&Client::Run, this));
   MainWindow::run();
 }
