@@ -92,7 +92,7 @@ void		Component_Channel::Send_Join(Session *session, field_t channelId)
   _clientManager->Send(packet_v1_channel, session);
 }
 
-void		Component_Channel::Recv_Join_OK(Packet_v1 const *packet_v1, Session *session)
+void		Component_Channel::Recv_Join_OK(Packet_v1 const *packet_v1, Session *)
 {
   Packet_v1_Channel const *packet_v1_channel = 
     static_cast<Packet_v1_Channel const *>(packet_v1);
@@ -101,7 +101,7 @@ void		Component_Channel::Recv_Join_OK(Packet_v1 const *packet_v1, Session *sessi
 
   std::cout << ">>>>>>>>>>>> RECV [JOIN_OK] Channel [" <<  channelId  <<"]<<<<<<<<<<<<" << std::endl;
 
-  if (!_channelMap[channelId])
+  if (_channelMap.find(channelId) == _channelMap.end())
     _channelMap[channelId] = new Channel();
 }
 
@@ -112,8 +112,11 @@ void		Component_Channel::Recv_Join_NOK_ALREADYINCHAN(Packet_v1 const *packet_v1,
 
   field_t channelId = packet_v1_channel->getChannelId();
   // in case of lost packet check if user not in chan if so add him to it
-  Channel *chan = _channelMap.find(channelId)->second;
-  chan->addConnected(session, session->getSessionId());
+  if (_channelMap.find(channelId) != _channelMap.end())
+    {
+      Channel *chan = _channelMap.find(channelId)->second;
+      chan->addConnected(session, session->getSessionId());
+    }
   std::cout << ">>>>>>>>>>>> RECV [JOIN_NOK_ALREADYINCHAN] Channel [" << channelId  << "]<<<<<<<<<<<<" << std::endl;
 }
 
@@ -177,7 +180,7 @@ void		Component_Channel::Send_Leave(Session *session, field_t channelId)
   _clientManager->Send(packet_v1_channel, session);
 }
 
-void		Component_Channel::Recv_Leave_OK(Packet_v1 const *packet_v1, Session *session)
+void		Component_Channel::Recv_Leave_OK(Packet_v1 const *packet_v1, Session *)
 {
   Packet_v1_Channel const *packet_v1_channel = 
     static_cast<Packet_v1_Channel const *>(packet_v1);
@@ -195,8 +198,12 @@ void		Component_Channel::Recv_Leave_NOK_NOTINCHAN(Packet_v1 const *packet_v1, Se
 
   field_t channelId = packet_v1_channel->getChannelId();
   // in case of lost packet check if user still in chan, if so delete him
-  Channel *chan = _channelMap.find(channelId)->second;
-  chan->removeConnected(session->getSessionId());
+  if (_channelMap.find(channelId) != _channelMap.end())
+    {
+      Channel *chan = _channelMap.find(channelId)->second;
+      chan->removeConnected(session->getSessionId());
+      _channelMap.erase(channelId);
+    }
   std::cout << ">>>>>>>>>>>> RECV [LEAVE_NOK_NOTINCHAN] Channel [" << channelId << "]<<<<<<<<<<<<" << std::endl;
 }
 

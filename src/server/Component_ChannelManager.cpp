@@ -87,7 +87,7 @@ void	Component_ChannelManager::Recv_Join(Packet_v1 const *packet_v1, Session *se
 
   std::cout << ">>>>>>>>>>>> RECV [JOIN] Channel [" << channelId << "]<<<<<<<<<<<<" << std::endl;
 
-  if (!_channelMap[channelId])
+  if (_channelMap.find(channelId) == _channelMap.end())
     {
       std::cout << ">>>>>>>>>>>> Channel [" << channelId << "]<<<<<<<<<<<< NOT EXIST -> CREATED" << std::endl;
       _channelMap[channelId] =  new Channel();
@@ -160,7 +160,7 @@ void	Component_ChannelManager::Recv_Message(Packet_v1 const *packet_v1, Session 
 
   std::cout << ">>>>>>>>>>>> RECV [MESSAGE] Channel [" <<  channelId  <<"] Message [" << message  << "<<<<<<<<<<<<" << std::endl;
 
-  if (_channelMap[channelId])
+  if (_channelMap.find(channelId) != _channelMap.end())
     {
       Channel *chan = _channelMap.find(channelId)->second;
       std::map<field_t, Session*> connected = chan->getConnected();
@@ -169,7 +169,7 @@ void	Component_ChannelManager::Recv_Message(Packet_v1 const *packet_v1, Session 
       for (it = connected.begin(); it != end ; ++it)
 	{
 	  if (it->first != sessionId)
-	    Send_Message_RECV((*it).second, message, channelId, sessionId);
+	    Send_Message_RECV(it->second, message, channelId, sessionId);
 	}
       Send_Message_ACK(session);
     }
@@ -204,7 +204,7 @@ void	Component_ChannelManager::Recv_Leave(Packet_v1 const *packet_v1, Session *s
   
   std::cout << ">>>>>>>>>>>> RECV [LEAVE] Channel [" <<  channelId  <<"] User [" << sessionId  << "]<<<<<<<<<<<<" << std::endl;
 
-  if (_channelMap[channelId])
+  if (_channelMap.find(channelId) != _channelMap.end())
     {
       Channel *chan = _channelMap.find(channelId)->second;
 
