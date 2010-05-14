@@ -1,4 +1,5 @@
 #include <ServerManager.h>
+#include <Bind_recv.h>
 
 ServerManager::ServerManager(boost::asio::io_service & io_service, boost::threadpool::pool & pool, boost::asio::ip::udp::socket & socket)
   :Manager(io_service, pool, socket)

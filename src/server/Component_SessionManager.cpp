@@ -1,4 +1,5 @@
 #include <Component_SessionManager.h>
+#include <Bind_recv.h>
 
 Component_SessionManager::Component_SessionManager(ServerManager * serverManager)
   :IComponent(SESSION_COMPONENTID), _serverManager(serverManager)
