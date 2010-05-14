@@ -22,6 +22,8 @@
 #include <Session.h>
 #include <Packet_v1.h>
 
+#include <qdebug.h>
+
 void    MainWindow::populate_chans()
 {
     /*QTreeWidgetItem* root =*/ new QTreeWidgetItem(ui->ChansList, QStringList() << "General" << "The General Chan");
@@ -48,14 +50,14 @@ MainWindow::MainWindow(boost::asio::io_service& service, boost::threadpool::pool
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    params = new Parameters();
+    setVisible(true);
+    //params = new Parameters();
 
-    populate_chans();
-    populate_friends();
+    //populate_chans();
+    //populate_friends();
 }
 
 MainWindow::~MainWindow()
-
 {
     delete ui;
 }
@@ -67,7 +69,7 @@ void MainWindow::gui_init(int argc, char* argv[])
 
 int    MainWindow::run()
 {
-    return QCoreApplication::instance()->exec();
+    return QApplication::exec();
 }
 
 void MainWindow::changeEvent(QEvent *e)
@@ -96,8 +98,8 @@ void MainWindow::on_actionConnect_triggered()
     if (params->haveId() == false)
        AccountConnection::run(params->login, params->password);
 
-    if (params->haveId() == true) // n'est pas le contraire de la ligne au dessus.
-        _session->Connect(params->login.toStdString(), params->password.toStdString());
+    //if (params->haveId() == true) // n'est pas le contraire de la ligne au dessus.
+        //_session->Connect(params->login.toStdString(), params->password.toStdString());
 }
 
 void MainWindow::on_actionPreferences_triggered()

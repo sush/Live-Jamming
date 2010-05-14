@@ -15,7 +15,8 @@ class Session;
 class Packet;
 class QModelIndex;
 
-class MainWindow : public QMainWindow, public ClientManager {
+class MainWindow : public QMainWindow, public ClientManager
+{
     Q_OBJECT
 public:
     MainWindow(boost::asio::io_service &, boost::threadpool::pool &,
