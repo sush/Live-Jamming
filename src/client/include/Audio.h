@@ -6,6 +6,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <cstring>
+
 /*
 METHOD TO IMPLEMENT
 + Read from conf
@@ -20,16 +21,22 @@ class Audio
 
   Audio();
   virtual ~Audio();
-  void			PlayOutput(FMOD::Sound *);
-  FMOD::Sound *		RecordInput();
   void			ERRCHECK(FMOD_RESULT);
+  void			Run();
+  void			Init();
+  void			Stop();
 
  private:
-
+  
   FMOD::System		*_system;
   FMOD::Sound		*_sound;
-  FMOD::Channel		*_channel;
+  static FMOD::Channel	*_channel;
+  FMOD_CREATESOUNDEXINFO _exinfo;
   FMOD_RESULT		_result;
+  
+  FMOD_MODE		_mode;
+  int			_recorddriver,_playbackdriver;
+  static bool		_state;
 };
 
 #endif // ! __AUDIO_H__

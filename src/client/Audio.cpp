@@ -1,12 +1,26 @@
 #include "Audio.h"
 
-Audio::Audio()
-{
-  FMOD_MODE			mode = 
-    FMOD_2D | FMOD_OPENUSER | FMOD_LOOP_NORMAL | FMOD_HARDWARE;
-  FMOD_CREATESOUNDEXINFO	createsoundexinfo;
-  int				numdrivers, count;
-  int				channels = 2;
+FMOD::Channel  *Audio::_channel = 0;
+bool Audio::_state = true;
+
+Audio::Audio(){
+
+}
+
+Audio::~Audio(){}
+
+void		Audio::ERRCHECK(FMOD_RESULT result){
+  if (result != FMOD_OK){
+    std::cout << "ERROR (" << result << ") : " << FMOD_ErrorString(result) << std::endl;
+    exit(-1);
+  }
+}
+
+void		Audio::Init(){
+  /*It's a mess but read/write from configuration doesn't exist yet*/
+  _recorddriver = 0;
+  _playbackdriver = 0;
+  _mode = FMOD_2D | FMOD_HARDWARE | FMOD_OPENUSER;
 
   _result = FMOD::System_Create(&_system);
   ERRCHECK(_result);
@@ -14,59 +28,49 @@ Audio::Audio()
   _result = _system->setOutput(FMOD_OUTPUTTYPE_ALSA);
   ERRCHECK(_result);
 
-  //  result = _system->setDriver(0);
-  _result = _system->init(32, FMOD_INIT_NORMAL, 0);
+  _result = _system->setDriver(0);
+  ERRCHECK(_result);
 
-  memset(&createsoundexinfo, 0, sizeof(FMOD_CREATESOUNDEXINFO));
-  createsoundexinfo.cbsize = sizeof(FMOD_CREATESOUNDEXINFO);              
-  /* required. */
-  createsoundexinfo.decodebuffersize  = 44100;                                /* Chunk size of stream update in samples. */
-  /* This will be the amount of data passed to the user callback. */
-  createsoundexinfo.length = 44100 * channels * sizeof(signed short) * 5;     /* Length of PCM data in bytes of whole song (for Sound::getLength) */
-  createsoundexinfo.numchannels       = channels;                             /* Number of channels in the sound. */
-  createsoundexinfo.defaultfrequency  = 44100;                                /* Default playback rate of sound. */
-  createsoundexinfo.format            = FMOD_SOUND_FORMAT_PCM16;              /* Data format of sound. */
+  _result = _system->init(32, FMOD_INIT_NORMAL,0);
+  ERRCHECK(_result);
+  
+  memset(&_exinfo, 0, sizeof(FMOD_CREATESOUNDEXINFO));  
+  _exinfo.cbsize           = sizeof(FMOD_CREATESOUNDEXINFO);
+  _exinfo.numchannels      = 2;
+  _exinfo.format           = FMOD_SOUND_FORMAT_PCM16;
+  _exinfo.defaultfrequency = 44100;
+  _exinfo.length           = 20000;
 
-  _result = _system->createSound(0, mode, &createsoundexinfo, &_sound);
+  _result = _system->createSound(0, _mode, &_exinfo, &_sound);
+  ERRCHECK(_result);
+  _result = _system->recordStart(_recorddriver, _sound, true);  
+  ERRCHECK(_result);
+  _sound->setMode(FMOD_LOOP_NORMAL);
+  _result = _system->playSound(FMOD_CHANNEL_REUSE, _sound, false, &_channel);
   ERRCHECK(_result);
 }
 
-Audio::~Audio(){}
 
-void		Audio::ERRCHECK(FMOD_RESULT result)
-{
-  if (result != FMOD_OK)
-    {
-      std::cout << "ERROR (" << result << ") : " << FMOD_ErrorString(result) << std::endl;
-      exit(-1);
-    }
+void	Audio::Run(){
+  this->Init();
+
+  do {
+    _system->update();
+  } while (_state);
+  
+  this->Stop();
 }
 
-void		Audio::PlayOutput(FMOD::Sound *sound)
-{
-  FMOD::Channel *channel = 0;
+void	Audio::Stop(){
+  
+  if (_channel){
+    _channel->stop();
+    _channel = 0;
+  }
 
-  _result = _system->playSound(FMOD_CHANNEL_REUSE, sound, false, &channel);
+  _result = _sound->release();
   ERRCHECK(_result);
-  int i = 400000;
-  while(i > 0)
-    {
-      i--;
-      _system->update();
-    }
-}
-
-FMOD::Sound *		Audio::RecordInput()
-{
-  int driver = 0;
-
-  _result = _system->recordStart(driver, _sound, false);
-  ERRCHECK(_result);
-  int i = 400000;
-  while(i > 0)
-    {
-      i--;
-      _system->update();
-    }
-  return _sound;
+  
+  _result = _system->release();
+  ERRCHECK(_result);  
 }
