@@ -9,6 +9,8 @@ class Component_Jam;
 #include <Session.h>
 #include <Audio.h>
 
+//! CLIENT: It is used to manage client interaction with Jam.
+
 class Component_Jam : public IComponent
 {
  public:

@@ -7,6 +7,8 @@
 #include <Packet_v1.h>
 #include <ServerManager.h>
 
+//! SERVER:  It is used to manage all rooms.
+
 class Component_RoomManager : public IComponent
 {
 public:
