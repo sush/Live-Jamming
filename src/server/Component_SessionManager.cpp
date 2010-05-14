@@ -71,7 +71,7 @@ Session 	*Component_SessionManager::DoAuth(Packet_v1_Session const * packet_v1_S
   ///////////////////////////
 
   std::cout << "packet_auth_request received" << std::endl;
-  std::cout << "login = " << login << " pass = " << pass << std::endl;
+  std::cout << "login = [" << login << "] pass = " << pass << std::endl;
   if (_userModule_mysql->Authentification(login_str, pass_str))
     {
       new_session = new Session(_serverManager, _serverManager->getIO(), packet_v1_Session, GenSessionId());

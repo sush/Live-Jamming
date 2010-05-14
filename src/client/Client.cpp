@@ -12,6 +12,7 @@ const int		treat_delay = 0; //micro seconds
 void		Client::Run()
 {
   std::cout << "Client started..." << std::endl;
+  std::cout << "client manager = " << (int)_clientManager << std::endl;
  
   // schedule the UI window to be created
   start_receive();
@@ -115,9 +116,8 @@ void		Client::Init(int argc, char *argv[])
   ///////////  ///////////  ///////////  ///////////  ///////////  ///////////  ///////////
   //  _clientManager = new ClientManager(*_io_service, *_pool, *_socket, *_remote_endpoint);
   MainWindow::gui_init(argc, argv);
-  MainWindow tmp(*_io_service, *_pool, *_socket, *_remote_endpoint);
-  _clientManager = &tmp;
-
+  MainWindow guiInstance(*_io_service, *_pool, *_socket, *_remote_endpoint);
+  _clientManager = &guiInstance;
   boost::thread		t(boost::bind(&Client::Run, this));
   MainWindow::run();
 }

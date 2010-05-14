@@ -148,7 +148,6 @@ bool					Manager::IsRegisteredComponent(field_t componentId) const
   return _componentBindings.find(componentId) != _componentBindings.end();
 }
 
-
 bool					Manager::IsRegisteredRequest(field_t componentId, field_t requestId) const
 {
   assert(IsRegisteredComponent(componentId));

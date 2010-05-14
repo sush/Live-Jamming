@@ -2,18 +2,25 @@
 
 Packet::Packet(boost::asio::ip::udp::endpoint const * endpoint, buffer_t *buffer, std::size_t len)
   :_buffer(buffer), _len(len), _endpoint(endpoint)
-{}
+{
+  for (std::size_t i = len; i < PACKET_MAXSIZE; ++i)
+    _buffer->at(i) = '\0';
+}
 
 Packet::Packet(boost::asio::ip::udp::endpoint const * endpoint)
   :_len(BINARYTOBYTE_LEN(PROTO_PROTOVERSION_SIZE)), _endpoint(endpoint)
 {
   _buffer = new buffer_t;
+  for (std::size_t i = 0; i < PACKET_MAXSIZE; ++i)
+    _buffer->at(i) = '\0';
 }
 
 Packet::Packet()
   :_len(BINARYTOBYTE_LEN(PROTO_PROTOVERSION_SIZE)), _endpoint(0)
 {
   _buffer = new buffer_t;
+  for (std::size_t i = 0; i < PACKET_MAXSIZE; ++i)
+    _buffer->at(i) = '\0';
 }
 
 Packet::~Packet()

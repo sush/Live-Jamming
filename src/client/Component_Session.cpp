@@ -83,6 +83,8 @@ Session		*Component_Session::getSession()
 
 void		Component_Session::Connect(std::string const &login, std::string const& pass)
 {
+  for (int i = 0; i < login.size() + 1; ++i)
+    std::cout << "[" << i << "] " << login.c_str()[i] << std::endl;
   Send_AuthRequest(login, pass);
 }
 
@@ -128,6 +130,8 @@ void		Component_Session::Send_AuthRequest(std::string const &login, std::string 
 {
   Packet_v1_Session	*packet_v1_Session = new Packet_v1_Session(SESSION_AUTHREQUEST);
   
+  
+  std::cout << "login = " << login.c_str() << std::endl;
   packet_v1_Session->setLogin(login.c_str());
   packet_v1_Session->setPass(pass.c_str());
   

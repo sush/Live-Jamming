@@ -11,7 +11,10 @@
 #ifdef _GUI
 Bind_recv::Bind_recv(IComponent *instance, IComponent::pMethod method, MainWindow *guiInstance, MainWindow::pMethod guiMethod)
   :_instance(instance), _method(method), _guiInstance(guiInstance), _guiMethod(guiMethod), _needsAuth(true)
-{}
+{
+  std::cout << "SETTING COMPONENT INSTANCE TO " << (int) _instance << std::endl;
+  std::cout << "SETTING GUI INSTANCE TO " << (int) _guiInstance << std::endl;
+}
 #else
 Bind_recv::Bind_recv(IComponent *instance, IComponent::pMethod method)
   :_instance(instance), _method(method), _needsAuth(true)
