@@ -14,7 +14,6 @@ void		Client::Run()
   std::cout << "Client started..." << std::endl;
  
   // schedule the UI window to be created
-  _pool->schedule(boost::bind(MainWindow::run));
   start_receive();
   _io_service->run();
 }
@@ -113,7 +112,10 @@ void		Client::Init(int argc, char *argv[])
   _timer = new boost::asio::deadline_timer(*_io_service, boost::posix_time::seconds(updateTime));
   _timer->async_wait(boost::bind(&Client::CallBack_Debug_Print, this));
   _pool = new boost::threadpool::pool(_poolSize);
+  ///////////  ///////////  ///////////  ///////////  ///////////  ///////////  ///////////
   //  _clientManager = new ClientManager(*_io_service, *_pool, *_socket, *_remote_endpoint);
   MainWindow::gui_init(argc, argv);
   _clientManager = new MainWindow(*_io_service, *_pool, *_socket, *_remote_endpoint);
+  _pool->schedule(boost::bind(&Client::Run, this));
+  MainWindow::run();
 }
