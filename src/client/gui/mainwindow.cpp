@@ -8,6 +8,8 @@
 #include <QInputDialog>
 #include <QString>
 #include <QModelIndex>
+#include <QErrorMessage>
+#include <QTimer>
 
 #include "parameters.h"
 #include "accountconnection.h"
@@ -17,6 +19,7 @@
 
 #include "boost/asio.hpp"
 #include "boost/threadpool.hpp"
+#include <Protocol_Session.h>
 
 #include <Component_Session.h>
 #include <Session.h>
@@ -55,6 +58,11 @@ MainWindow::MainWindow(boost::asio::io_service& service, boost::threadpool::pool
     setVisible(true);
     isConnected = false;
 
+    QTimer* timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(poll()));
+    timer->start(10);
+
+    //connect(this, SIGNAL(toto()), this, SLOT(connected()), Qt::QueuedConnection);
     //populate_chans();
     //populate_friends();
 }
@@ -143,18 +151,19 @@ void MainWindow::on_actionNew_Chan_triggered()
         ui->ChansList->addTopLevelItem(new QTreeWidgetItem(QStringList() << dialui.nameLineEdit->text() << dialui.subjectLabel->text()));
 }
 
-void    MainWindow::auth_session_ok(const Packet_v1 *packet_v1, Session *session)
+void    MainWindow::authresponse_ok(const Packet_v1 *packet_v1, Session *session)
 {
   queueElem	a(packet_v1, session);
-  
+
   eventQueue.push(a);
   qDebug() << "TOTO";
-  connected();
+  //connected();
 }
 
-void MainWindow::auth_session_pasok(const Packet_v1 *, Session *)
+void MainWindow::authresponse_nok_badauth(const Packet_v1 *, Session *)
 {
-    //static_cast<>()
+  //moveToThread(QApplication::instance()->thread());
+  //QErrorMessage().showMessage("Connexion Failed");
 }
 
 void MainWindow::on_ChansList_activated(QModelIndex index)
@@ -171,4 +180,28 @@ void MainWindow::add_chan(const QString &name)
 void MainWindow::on_FriendsList_activated(QModelIndex index)
 {
 
+}
+
+void MainWindow::poll()
+{
+  if (eventQueue.size() != 0) {
+    queueElem elem = eventQueue.front();
+    eventQueue.pop();
+
+    Packet_v1 const* pack = elem.first;
+    Session* ses = elem.second;
+
+    if (pack->getRequestId() == SESSION_AUTHRESPONSE_OK &&
+	pack->getComponentId() == SESSION_COMPONENTID)
+      {
+	connected();
+      }
+
+    if (pack->getRequestId() == SESSION_AUTHRESPONSE_NOK_BADAUTH &&
+	pack->getComponentId() == SESSION_COMPONENTID)
+      {
+	
+      }
+
+  }
 }

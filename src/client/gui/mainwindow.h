@@ -30,8 +30,9 @@ public:
     ~MainWindow();
     static void gui_init(int argc, char* argv[]);
     static int run();
-    void    auth_session_ok(Packet_v1 const*, Session* );
-    void    auth_session_pasok(Packet_v1 const*, Session*);
+    void    authresponse_ok(Packet_v1 const*, Session* );
+    void    authresponse_nok_badauth(Packet_v1 const*, Session* );
+
     void    chan_msg_receveid(Packet_v1 const*, Session*);
 
     void    add_chan(QString const& name);
@@ -49,6 +50,9 @@ private:
     void    populate_chans();
     void    populate_friends();
 
+signals:
+    void    toto();
+
 private slots:
     void on_FriendsList_activated(QModelIndex index);
     void on_ChansList_activated(QModelIndex index);
@@ -60,6 +64,7 @@ private slots:
     void on_actionPreferences_triggered();
     void on_actionConnect_triggered();
     void connected();
+  void poll();
 };
 
 #endif // MAINWINDOW_H
