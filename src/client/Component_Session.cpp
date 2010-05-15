@@ -16,10 +16,11 @@ void	Component_Session::BindingsRecv()
 {
   (*_bindingsRecv)[SESSION_AUTHRESPONSE_OK] =
     new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Session::Recv_AuthResponse),
-                  static_cast<MainWindow*>(_clientManager), static_cast<MainWindow::pMethod>(&MainWindow::auth_session_ok));
+                  static_cast<MainWindow*>(_clientManager), static_cast<MainWindow::pMethod>(&MainWindow::authresponse_ok));
 
   (*_bindingsRecv)[SESSION_AUTHRESPONSE_NOK_BADAUTH] =
-    new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Session::Recv_AuthResponse));
+    new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Session::Recv_AuthResponse),
+                  static_cast<MainWindow*>(_clientManager), static_cast<MainWindow::pMethod>(&MainWindow::authresponse_nok_badauth));
 
   (*_bindingsRecv)[SESSION_AUTHRESPONSE_NOK_DUPLICATE] =
     new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Session::Recv_AuthResponse));
@@ -83,7 +84,7 @@ Session		*Component_Session::getSession()
 
 void		Component_Session::Connect(std::string const &login, std::string const& pass)
 {
-  for (int i = 0; i < login.size() + 1; ++i)
+  for (unsigned int i = 0; i < login.size() + 1; ++i)
     std::cout << "[" << i << "] " << login.c_str()[i] << std::endl;
   Send_AuthRequest(login, pass);
 }
