@@ -8,8 +8,9 @@
 #include <QInputDialog>
 #include <QString>
 #include <QModelIndex>
-#include <QErrorMessage>
 #include <QTimer>
+#include <QMessageBox>
+#include <QThread>
 
 #include "parameters.h"
 #include "accountconnection.h"
@@ -97,8 +98,16 @@ void MainWindow::changeEvent(QEvent *e)
 void MainWindow::connected()
 {
     isConnected = true;
-    ui->menuBar->removeAction(ui->actionConnect);
-    ui->menuBar->insertAction(NULL, ui->actionDisconnect);
+    ui->menuFile->removeAction(ui->actionConnect);
+    ui->menuFile->insertAction(ui->actionCreate_account, ui->actionDisconnect);
+}
+
+void MainWindow::disconnected()
+{
+    isConnected = false;
+    ui->menuFile->removeAction(ui->actionDisconnect);
+    ui->menuFile->insertAction(ui->actionCreate_account, ui->actionConnect);
+
 }
 
 void MainWindow::on_actionConnect_triggered()
@@ -111,6 +120,12 @@ void MainWindow::on_actionConnect_triggered()
 
     if (params.haveId() == true) // n'est pas le contraire de la ligne au dessus.
         _session->Connect(params.login.toStdString(), params.password.toStdString());
+}
+
+void MainWindow::on_actionDisconnect_triggered()
+{
+    _session->Disconnect();
+    disconnected();
 }
 
 void MainWindow::on_actionPreferences_triggered()
@@ -153,10 +168,8 @@ void MainWindow::on_actionNew_Chan_triggered()
 
 void    MainWindow::authresponse_ok(const Packet_v1 *packet_v1, Session *session)
 {
-  queueElem	a(packet_v1, session);
-
-  eventQueue.push(a);
-  qDebug() << "TOTO";
+  //eventQueue.push(queueElem(packet_v1, session));
+    emit toto();
   //connected();
 }
 
@@ -198,10 +211,10 @@ void MainWindow::poll()
       }
 
     if (pack->getRequestId() == SESSION_AUTHRESPONSE_NOK_BADAUTH &&
-	pack->getComponentId() == SESSION_COMPONENTID)
+        pack->getComponentId() == SESSION_COMPONENTID)
       {
-	
+	qDebug() << "TOTO EST BEAU";
+	QMessageBox::information(this, "Error", "Connection failed");
       }
-
   }
 }

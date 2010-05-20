@@ -23,7 +23,8 @@ void	Component_Session::BindingsRecv()
                   static_cast<MainWindow*>(_clientManager), static_cast<MainWindow::pMethod>(&MainWindow::authresponse_nok_badauth));
 
   (*_bindingsRecv)[SESSION_AUTHRESPONSE_NOK_DUPLICATE] =
-    new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Session::Recv_AuthResponse));
+    new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Session::Recv_AuthResponse),
+                  static_cast<MainWindow*>(_clientManager), static_cast<MainWindow::pMethod>(&MainWindow::authresponse_nok_badauth));
 
   (*_bindingsRecv)[SESSION_TIMEOUT] =
     new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Session::Recv_TimeOutTest));

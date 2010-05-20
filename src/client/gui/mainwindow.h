@@ -54,6 +54,7 @@ signals:
     void    toto();
 
 private slots:
+    void on_actionDisconnect_triggered();
     void on_FriendsList_activated(QModelIndex index);
     void on_ChansList_activated(QModelIndex index);
     void on_actionNew_Chan_triggered();
@@ -64,6 +65,7 @@ private slots:
     void on_actionPreferences_triggered();
     void on_actionConnect_triggered();
     void connected();
+    void disconnected();
   void poll();
 };
 
