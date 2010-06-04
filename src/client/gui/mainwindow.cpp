@@ -28,8 +28,6 @@
 
 #include <QDebug>
 
-l_eventQueue						eventQueue;
-
 void    MainWindow::populate_chans()
 {
     /*QTreeWidgetItem* root =*/ new QTreeWidgetItem(ui->ChansList, QStringList() << "General" << "The General Chan");
@@ -57,15 +55,11 @@ MainWindow::MainWindow(boost::asio::io_service& service, boost::threadpool::pool
 {
     ui->setupUi(this);
     setVisible(true);
-    isConnected = false;
+    showMaximized();
 
-    QTimer* timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(poll()));
-    timer->start(10);
+    setConnected(false);
 
-    //connect(this, SIGNAL(toto()), this, SLOT(connected()), Qt::QueuedConnection);
-    //populate_chans();
-    //populate_friends();
+    connect(this, SIGNAL(sConnectionAnswer(bool)), this, SLOT(connectionAnswer(bool)), Qt::QueuedConnection);
 }
 
 MainWindow::~MainWindow()
@@ -95,20 +89,41 @@ void MainWindow::changeEvent(QEvent *e)
     }
 }
 
-void MainWindow::connected()
+void MainWindow::setConnected(bool state)
 {
-    isConnected = true;
-    ui->menuFile->removeAction(ui->actionConnect);
-    ui->menuFile->insertAction(ui->actionCreate_account, ui->actionDisconnect);
+    if (state != isConnected) {
+        isConnected = state;
+        ui->statusBar->showMessage(state ? "Connected" : "Disconnected");
+        ui->menuFile->removeAction(state ? ui->actionConnect : ui->actionDisconnect);
+        ui->menuFile->insertAction(ui->actionCreate_account,
+                               state ? ui->actionDisconnect : ui->actionConnect);
+    }
+
+    if (state) { // tricks for populating lists since the server is unfinished for now
+        populate_chans();
+        populate_friends();
+    }
 }
 
-void MainWindow::disconnected()
+void MainWindow::connectionAnswer(bool success)
 {
-    isConnected = false;
-    ui->menuFile->removeAction(ui->actionDisconnect);
-    ui->menuFile->insertAction(ui->actionCreate_account, ui->actionConnect);
+    if (success == true)
+        setConnected(true);
+    else
+        QMessageBox::critical(this, "Server Error", "Unable to connect to server");
 
 }
+
+void    MainWindow::authresponse_ok(const Packet_v1 *packet_v1, Session *session)
+{
+    emit sConnectionAnswer(true);
+}
+
+void MainWindow::authresponse_nok_badauth(const Packet_v1 *, Session *)
+{
+    emit sConnectionAnswer(false);
+}
+
 
 void MainWindow::on_actionConnect_triggered()
 {
@@ -125,7 +140,7 @@ void MainWindow::on_actionConnect_triggered()
 void MainWindow::on_actionDisconnect_triggered()
 {
     _session->Disconnect();
-    disconnected();
+    setConnected(false);
 }
 
 void MainWindow::on_actionPreferences_triggered()
@@ -166,18 +181,6 @@ void MainWindow::on_actionNew_Chan_triggered()
         ui->ChansList->addTopLevelItem(new QTreeWidgetItem(QStringList() << dialui.nameLineEdit->text() << dialui.subjectLabel->text()));
 }
 
-void    MainWindow::authresponse_ok(const Packet_v1 *packet_v1, Session *session)
-{
-  //eventQueue.push(queueElem(packet_v1, session));
-    emit toto();
-  //connected();
-}
-
-void MainWindow::authresponse_nok_badauth(const Packet_v1 *, Session *)
-{
-  //moveToThread(QApplication::instance()->thread());
-  //QErrorMessage().showMessage("Connexion Failed");
-}
 
 void MainWindow::on_ChansList_activated(QModelIndex index)
 {
@@ -193,28 +196,4 @@ void MainWindow::add_chan(const QString &name)
 void MainWindow::on_FriendsList_activated(QModelIndex index)
 {
 
-}
-
-void MainWindow::poll()
-{
-  if (eventQueue.size() != 0) {
-    queueElem elem = eventQueue.front();
-    eventQueue.pop();
-
-    Packet_v1 const* pack = elem.first;
-    Session* ses = elem.second;
-
-    if (pack->getRequestId() == SESSION_AUTHRESPONSE_OK &&
-	pack->getComponentId() == SESSION_COMPONENTID)
-      {
-	connected();
-      }
-
-    if (pack->getRequestId() == SESSION_AUTHRESPONSE_NOK_BADAUTH &&
-        pack->getComponentId() == SESSION_COMPONENTID)
-      {
-	qDebug() << "TOTO EST BEAU";
-	QMessageBox::information(this, "Error", "Connection failed");
-      }
-  }
 }

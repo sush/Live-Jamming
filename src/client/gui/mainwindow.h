@@ -12,11 +12,6 @@ namespace Ui {
     class MainWindow;
 }
 
-typedef std::pair<Packet_v1 const *, Session *>		queueElem;
-typedef std::queue<queueElem>				l_eventQueue;
-
-extern	l_eventQueue					eventQueue;
-
 class Parameters;
 class Session;
 class Packet;
@@ -51,7 +46,8 @@ private:
     void    populate_friends();
 
 signals:
-    void    toto();
+    void    sConnectionAnswer(bool success);
+    void    sDisconnected();
 
 private slots:
     void on_actionDisconnect_triggered();
@@ -64,9 +60,8 @@ private slots:
     void on_actionQuit_triggered();
     void on_actionPreferences_triggered();
     void on_actionConnect_triggered();
-    void connected();
-    void disconnected();
-  void poll();
+    void setConnected(bool connected);
+    void connectionAnswer(bool success);
 };
 
 #endif // MAINWINDOW_H

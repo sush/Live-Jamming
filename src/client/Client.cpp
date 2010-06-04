@@ -1,6 +1,6 @@
 #include <Client.h>
 
-const char		connect_address[] = "127.0.0.1";
+const char		connect_address[] = "192.168.0.15";  //"127.0.0.1";
 //const char		connect_address[] = "88.191.94.150";
 
 const int		Client::_connect_port	= 5042;

@@ -15,8 +15,9 @@ void		Component_Channel::BindingsRecv()
                   static_cast<MainWindow*>(_clientManager), static_cast<MainWindow::pMethod>(&MainWindow::authresponse_ok));
   
   (*_bindingsRecv)[CHANNEL_JOIN_NOK_ALREADYINCHAN] =
-    new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Channel::Recv_Join_NOK_ALREADYINCHAN));
-  
+    new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Channel::Recv_Join_NOK_ALREADYINCHAN),
+    static_cast<MainWindow*>(_clientManager), static_cast<MainWindow::pMethod>(&MainWindow::authresponse_nok_badauth));
+
   (*_bindingsRecv)[CHANNEL_JOINED] =
     new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Channel::Recv_Joined));
   
