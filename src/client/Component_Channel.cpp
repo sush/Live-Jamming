@@ -229,7 +229,7 @@ void		Component_Channel::Send_Leaved_ACK(Session *session)
   _clientManager->Send(_componentId, CHANNEL_LEAVED_ACK, session);
 }
 
-m_channel	Component_Channel::getAllChannel()
+m_channel const &	Component_Channel::getAllChannel() const
 {
   return _channelMap;
 }

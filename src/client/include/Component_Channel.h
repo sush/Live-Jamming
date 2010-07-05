@@ -28,7 +28,7 @@ public:
   //! Register requests with protocol definition of channels packets
   virtual void				RegisteredRequests();
 
-  m_channel				getAllChannel();
+  m_channel const &			getAllChannel() const;
 
 private:
 
