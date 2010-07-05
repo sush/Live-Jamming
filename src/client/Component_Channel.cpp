@@ -228,3 +228,8 @@ void		Component_Channel::Send_Leaved_ACK(Session *session)
   std::cout << ">>>>>>>>>>>> SEND [LEAVED_ACK] <<<<<<<<<<<<" << std::endl;
   _clientManager->Send(_componentId, CHANNEL_LEAVED_ACK, session);
 }
+
+m_channel	Component_Channel::getAllChannel()
+{
+  return _channelMap;
+}

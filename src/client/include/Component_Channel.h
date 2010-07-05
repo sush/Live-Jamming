@@ -28,6 +28,8 @@ public:
   //! Register requests with protocol definition of channels packets
   virtual void				RegisteredRequests();
 
+  m_channel				getAllChannel();
+
 private:
 
 
