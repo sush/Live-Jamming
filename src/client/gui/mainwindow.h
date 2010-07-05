@@ -8,6 +8,8 @@ class MainWindow;
 #include <QModelIndex>
 #include <parameters.h>
 
+#include <chan.h>
+
 namespace Ui {
     class MainWindow;
 }
@@ -15,6 +17,13 @@ namespace Ui {
 class Parameters;
 class Session;
 class Packet;
+class QTreeWidgetItem;
+
+class ChanManager
+{
+private:
+    QList<Chan> chanList;
+};
 
 class MainWindow : public QMainWindow, public ClientManager
 {
@@ -41,6 +50,7 @@ private:
     Ui::MainWindow  *ui;
     Parameters      params;
     bool            isConnected;
+    ChanManager     chan;
 
     void    populate_chans();
     void    populate_friends();
@@ -50,9 +60,8 @@ signals:
     void    sDisconnected();
 
 private slots:
+    void on_ChansList_itemActivated(QTreeWidgetItem* item, int column);
     void on_actionDisconnect_triggered();
-    void on_FriendsList_activated(QModelIndex index);
-    void on_ChansList_activated(QModelIndex index);
     void on_actionNew_Chan_triggered();
     void on_actionAdd_Friend_triggered();
     void on_actionCreate_account_triggered();
@@ -63,5 +72,6 @@ private slots:
     void setConnected(bool connected);
     void connectionAnswer(bool success);
 };
+
 
 #endif // MAINWINDOW_H

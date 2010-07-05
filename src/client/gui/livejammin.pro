@@ -7,13 +7,15 @@ SOURCES += mainwindow.cpp \
     accountconnection.cpp \
     configuration_dialog.cpp \
     roomdialog.cpp \
-    parameters.cpp
+    parameters.cpp \
+    chan.cpp
 HEADERS += mainwindow.h \
     accountconnection.h \
     configuration_dialog.h \
     roomdialog.h \
     parameters.h \
-    convset.h
+    convset.h \
+    chan.h
 DEPENDPATH += ../../core
 INCLUDEPATH += ../../core/include
 SOURCES += Manager.cpp \
@@ -42,7 +44,8 @@ SOURCES += main_net.cpp \
 HEADERS += Audio.h \
     Client.h \
     ClientManager.h \
-    Component_Session.h
+    Component_Session.h \
+    Component_Channel.h
 INCLUDEPATH += ../../include/boost
 HEADERS += threadpool.hpp
 INCLUDEPATH += ../../server/include
@@ -60,9 +63,7 @@ FORMS += mainwindow.ui \
     roomdialog.ui \
     newchan.ui
 QMAKE_CXXFLAGS += -D_GUI
-debug {
-QMAKE_CXXFLAGS += -D_DEBUG -g3 -pg
-}
-else {
-QMAKE_CXXFLAGS += -D_NDEBUG
-}
+debug:QMAKE_CXXFLAGS += -D_DEBUG \
+    -g3 \
+    -pg
+else:QMAKE_CXXFLAGS += -D_NDEBUG

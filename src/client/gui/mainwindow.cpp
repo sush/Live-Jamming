@@ -23,6 +23,7 @@
 #include <Protocol_Session.h>
 
 #include <Component_Session.h>
+#include <Component_Channel.h>
 #include <Session.h>
 #include <Packet_v1.h>
 
@@ -56,6 +57,11 @@ MainWindow::MainWindow(boost::asio::io_service& service, boost::threadpool::pool
     ui->setupUi(this);
     setVisible(true);
     showMaximized();
+
+    QPalette pal = palette();
+    pal.setColor(backgroundRole(), Qt::black);
+    setPalette(pal);
+    setStyleSheet("QMainWindow { background-color: black; } QToolBar {background-color: black; }");
 
     setConnected(false);
 
@@ -97,11 +103,20 @@ void MainWindow::setConnected(bool state)
         ui->menuFile->removeAction(state ? ui->actionConnect : ui->actionDisconnect);
         ui->menuFile->insertAction(ui->actionCreate_account,
                                state ? ui->actionDisconnect : ui->actionConnect);
+        _channel = new Component_Channel(this);
+        const Component_Channel::m_channel& list = _channel->getAllChannel();
+
+        ui->ChansList->insertTopLevelItems(1, QList<QTreeWidgetItem*>());
+        Component_Channel::m_channel::const_iterator it, end = list.end();
+        for (it = list.begin(); it != end; ++it)
+            ui->ChansList->insertTopLevelItem(0, new QTreeWidgetItem(ui->ChansList, QStringList(QString::number(it->first))));
+
+
     }
 
     if (state) { // tricks for populating lists since the server is unfinished for now
-        populate_chans();
-        populate_friends();
+        //populate_chans();
+        //populate_friends();
     }
 }
 
@@ -176,15 +191,17 @@ void MainWindow::on_actionNew_Chan_triggered()
     QDialog dial;
     dialui.setupUi(&dial);
 
+    static int id = 0;
+    _channel->Send_Join(_session->_session, id);
+    dialui.nameLineEdit->setText(QString::number(id));
     dial.exec();
-    if (!dialui.nameLineEdit->text().isEmpty())
-        ui->ChansList->addTopLevelItem(new QTreeWidgetItem(QStringList() << dialui.nameLineEdit->text() << dialui.subjectLabel->text()));
-}
+    if (!dialui.nameLineEdit->text().isEmpty()) {
+        //ui->ChansList->addTopLevelItem(new QTreeWidgetItem(QStringList() << dialui.nameLineEdit->text() << dialui.subjectLabel->text()));
+        ui->ChansList->addTopLevelItem(new QTreeWidgetItem(QStringList() << dialui.nameLineEdit->text()));
+        _channel->Send_Join(_session->_session, dialui.nameLineEdit->text().toLong());
 
-
-void MainWindow::on_ChansList_activated(QModelIndex index)
-{
-
+     id++;
+    }
 }
 
 void MainWindow::add_chan(const QString &name)
@@ -193,7 +210,7 @@ void MainWindow::add_chan(const QString &name)
     ui->convsTab->addTab(convset, name);
 }
 
-void MainWindow::on_FriendsList_activated(QModelIndex index)
+void MainWindow::on_ChansList_itemActivated(QTreeWidgetItem* item, int column)
 {
 
 }
