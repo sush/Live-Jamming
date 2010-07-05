@@ -28,6 +28,7 @@ public:
   //! Register requests with protocol definition of channels packets
   virtual void				RegisteredRequests();
 
+  typedef std::map<field_t, Channel *>	m_channel;
   m_channel const &			getAllChannel() const;
 
 private:
@@ -67,7 +68,6 @@ private:
   void					Send_Leaved_ACK(Session *);
   
   ClientManager				*_clientManager;
-  typedef std::map<field_t, Channel *>	m_channel;
   m_channel				_channelMap;
 };
 
