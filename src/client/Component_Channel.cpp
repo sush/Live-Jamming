@@ -60,10 +60,10 @@ void	Component_Channel::RegisteredRequests()
 
   // RECV requests
   (*_registeredRequests)[CHANNEL_JOIN_OK] = 
-    new Request(CHANNEL_JOIN_OK, RECV, "Channel Join request OK", RESPONSETONOTHING);
+    new Request(CHANNEL_JOIN_OK, RECV, "Channel Join request OK", CHANNEL_JOIN);
 
   (*_registeredRequests)[CHANNEL_JOIN_NOK_ALREADYINCHAN] = 
-    new Request(CHANNEL_JOIN_NOK_ALREADYINCHAN, RECV, "Channel Join request NOK user already in chan", RESPONSETONOTHING);
+    new Request(CHANNEL_JOIN_NOK_ALREADYINCHAN, RECV, "Channel Join request NOK user already in chan", CHANNEL_JOIN);
 
   (*_registeredRequests)[CHANNEL_JOINED] = 
     new Request(CHANNEL_JOIN_OK, RECV, "Channel Joined request", RESPONSETONOTHING);
