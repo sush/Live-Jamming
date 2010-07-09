@@ -45,6 +45,15 @@ public:
   /*! \return const char * message */
   char const		*getMessage() const;
 
+  //! Set name of the channel in the packet.
+  /*! \param 1 char * const  channel */
+  void			setChannelName(char const *);
+  //! Get channel name in the packet.
+  /*! \return const char * channel */
+  char const		*getChannelName() const;
+
+
+
 private:
   
 };

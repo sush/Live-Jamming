@@ -56,3 +56,15 @@ char const	*Packet_v1_Channel::getMessage() const
   assert(getRequestId() == CHANNEL_MESSAGE || getRequestId() == CHANNEL_MESSAGE_RECV);
   return reinterpret_cast<char const *>(getData(PROTOV1_CHANNEL_START_OF_DATA, PROTOV1_CHANNEL_DATA_MESSAGE));
 }
+
+void		Packet_v1_Channel::setChannelName(char const * name)
+{
+  assert(getRequestId() == CHANNEL_JOIN);
+  appendData(PROTOV1_CHANNEL_START_OF_DATA, PROTOV1_CHANNEL_DATA_CHANNEL_NAME, reinterpret_cast<byte_t const *>(name));
+}
+
+char const	*Packet_v1_Channel::getChannelName() const
+{
+  assert(getRequestId() == CHANNEL_JOIN);
+  return reinterpret_cast<char const *>(getData(PROTOV1_CHANNEL_START_OF_DATA, PROTOV1_CHANNEL_DATA_CHANNEL_NAME));
+}

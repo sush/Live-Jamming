@@ -83,6 +83,7 @@ void	Component_ChannelManager::Recv_Join(Packet_v1 const *packet_v1, Session *se
 
   field_t channelId =  packet_v1_channel->getChannelId();
   field_t sessionId = session->getSessionId();
+  char const *channelName = packet_v1_channel->getChannelName();
   Channel *chan;
 
   std::cout << ">>>>>>>>>>>> RECV [JOIN] Channel [" << channelId << "]<<<<<<<<<<<<" << std::endl;
@@ -90,7 +91,8 @@ void	Component_ChannelManager::Recv_Join(Packet_v1 const *packet_v1, Session *se
   if (_channelMap.find(channelId) == _channelMap.end())
     {
       std::cout << ">>>>>>>>>>>> Channel [" << channelId << "]<<<<<<<<<<<< NOT EXIST -> CREATED" << std::endl;
-      _channelMap[channelId] =  new Channel();
+      _channelMap[channelId] =  new Channel(channelName);
+      //      _channelMap[channelId] =  new Channel();
       chan = _channelMap[channelId];
     }
   else
@@ -133,7 +135,7 @@ void	Component_ChannelManager::Send_Join_NOK_ALREADYINCHAN(Session *session, fie
   Packet_v1_Channel *packet_v1_channel = new Packet_v1_Channel(CHANNEL_JOIN_NOK_ALREADYINCHAN);
 
   packet_v1_channel->setChannelId(channelId);
-    std::cout << ">>>>>>>>>>>> SEND [JOIN_NOK_ALREADYINCHAN] Channel [" <<  channelId  <<"]<<<<<<<<<<<<" << std::endl;
+  std::cout << ">>>>>>>>>>>> SEND [JOIN_NOK_ALREADYINCHAN] Channel [" <<  channelId  <<"]<<<<<<<<<<<<" << std::endl;
   _serverManager->Send(packet_v1_channel, session);
 }
 

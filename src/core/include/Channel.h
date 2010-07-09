@@ -11,7 +11,7 @@ class Channel
  public:
 
   //! Default constructor.
-  Channel();
+  Channel(char const *);
   //! Default destructor.
   virtual ~Channel();
   
@@ -27,11 +27,15 @@ class Channel
   /*! \param 1 sessionId of user */
   /*! \return true if user has been removed or false if not */
   bool				removeConnected(field_t);
+
+  void				setName(char const *);
+  char const			*getName() const;
   
 private:
   
   std::map<field_t, Session*>	_connected;
   boost::mutex			_channel_mutex;
+  char const *			_name;
 };
 
 #endif // ! __CHANNEL_H__

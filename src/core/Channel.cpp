@@ -1,6 +1,9 @@
 #include <Channel.h>
 
-Channel::Channel() {}
+Channel::Channel(char const * name)
+{
+  _name = name;
+}
 
 Channel::~Channel() {}
 
@@ -9,7 +12,7 @@ std::map<field_t, Session*> const & Channel::getConnected() const
   return _connected;
 }
 
-bool	Channel::addConnected(Session *session, field_t sessionId)
+bool			Channel::addConnected(Session *session, field_t sessionId)
 {
   if (_connected.find(sessionId) != _connected.end())
     {
@@ -21,7 +24,7 @@ bool	Channel::addConnected(Session *session, field_t sessionId)
   return false;
 }
 
-bool	Channel::removeConnected(field_t sessionId)
+bool			Channel::removeConnected(field_t sessionId)
 {
   if (_connected.find(sessionId) != _connected.end())
     {
@@ -31,4 +34,14 @@ bool	Channel::removeConnected(field_t sessionId)
       return true;
     }
   return false;
+}
+
+char const		*Channel::getName() const
+{
+  return _name;
+}
+
+void			Channel::setName(char const * name)
+{
+  _name = name;
 }
