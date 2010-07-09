@@ -57,7 +57,7 @@ MainWindow::MainWindow(boost::asio::io_service& service, boost::threadpool::pool
     ui->setupUi(this);
     setVisible(true);
     //setTitle("Livejammin");
-    showMaximized();
+    //showMaximized();
 
     QPalette pal = palette();
     pal.setColor(backgroundRole(), Qt::black);

@@ -71,6 +71,7 @@ void		Manager::Send(field_t componentId, field_t requestId, Session * session) c
 {
   Packet_v1	*packet_v1 = new Packet_v1(componentId, requestId);
 
+  packet_v1->setSessionId(session->getSessionId());
   packet_v1->setComponentId(componentId);
   packet_v1->setRequestId(requestId);
   Send(packet_v1, session);
