@@ -39,9 +39,9 @@ private:
   void          Recv_Join(Packet_v1 const *, Session *);
 
   //! Create a channel Join OK response to the client.
-  void          Send_Join_OK(Session *, field_t);
+  void          Send_Join_OK(Session *, field_t, char const *);
   //! Create a channel Join NOK response to the client because already in channel.
-  void          Send_Join_NOK_ALREADYINCHAN(Session *, field_t);
+  void          Send_Join_NOK_ALREADYINCHAN(Session *, field_t, char const *);
   //! Create a channel Joined response to the client, notification that a new user has joined the channel.
   void		Send_Joined(Session *, field_t, field_t);
 

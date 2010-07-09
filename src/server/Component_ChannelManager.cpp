@@ -118,7 +118,7 @@ void	Component_ChannelManager::Recv_Join(Packet_v1 const *packet_v1, Session *se
 
   if (chan->addConnected(session, sessionId))
     {
-      Send_Join_OK(session, channelId);
+      Send_Join_OK(session, channelId, channelName);
       std::map<field_t, Session*> *connected = chan->getConnected();
 
       std::map<field_t, Session *>::iterator it, end = connected->end();
@@ -132,20 +132,21 @@ void	Component_ChannelManager::Recv_Join(Packet_v1 const *packet_v1, Session *se
 	}
     }
   else
-    Send_Join_NOK_ALREADYINCHAN(session, channelId);
+    Send_Join_NOK_ALREADYINCHAN(session, channelId, channelName);
 }
 
-void	Component_ChannelManager::Send_Join_OK(Session *session, field_t channelId)
+void	Component_ChannelManager::Send_Join_OK(Session *session, field_t channelId, char const * channelName)
 {
   Packet_v1_Channel *packet_v1_channel = new Packet_v1_Channel(CHANNEL_JOIN_OK);
 
   packet_v1_channel->setChannelId(channelId);
+  packet_v1_channel->setChannelName(channelName);
   // also send list of users actualy connected to chan
   std::cout << ">>>>>>>>>>>> SEND [JOIN_OK] Channel [" <<  channelId  <<"]<<<<<<<<<<<<" << std::endl;
   _serverManager->Send(packet_v1_channel, session);
 }
 
-void	Component_ChannelManager::Send_Join_NOK_ALREADYINCHAN(Session *session, field_t channelId)
+void	Component_ChannelManager::Send_Join_NOK_ALREADYINCHAN(Session *session, field_t channelId, char const *)
 {
   Packet_v1_Channel *packet_v1_channel = new Packet_v1_Channel(CHANNEL_JOIN_NOK_ALREADYINCHAN);
 
