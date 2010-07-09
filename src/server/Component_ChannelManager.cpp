@@ -5,6 +5,7 @@ Component_ChannelManager::Component_ChannelManager(ServerManager *serverManager)
  :IComponent(CHANNEL_COMPONENTID), _serverManager(serverManager) 
 {
   _rng.seed((int32_t)std::clock());
+  _channelMap = new m_channel();
 }
 
 Component_ChannelManager::~Component_ChannelManager() {}
@@ -83,29 +84,39 @@ void	Component_ChannelManager::Recv_Join(Packet_v1 const *packet_v1, Session *se
     static_cast<Packet_v1_Channel const *>(packet_v1);
 
   field_t channelId;
-  field_t sessionId		=  packet_v1_channel->getSessionId();
+  field_t sessionId		= packet_v1_channel->getSessionId();
   char const *channelName	= packet_v1_channel->getChannelName();
   Channel *chan;
 
   std::cout << ">>>>>>>>>>>> RECV [JOIN] Channel [" << channelName << "]<<<<<<<<<<<<" << std::endl;
+  std::cout << "CHANNELMAP=" <<  (int) (_channelMap) << std::endl;
 
-  std::map<field_t, Channel *>::iterator it, end = _channelMap.end();
-  for (it = _channelMap.begin(); it != end; ++it)
+
+  if (_channelMap->size() != 0)
     {
-      chan = it->second;
-      if (strcmp(chan->getName(), channelName) != 0)
+      m_channel::iterator it, end = _channelMap->end();
+      for (it = _channelMap->begin(); it != end; ++it)
 	{
-	  std::cout << ">>>>>>>>>>>> Channel [" << channelName << "]<<<<<<<<<<<< NOT EXIST -> CREATED" << std::endl;
-	  channelId =  GenChannelId();
-	  _channelMap[channelId] =  new Channel(channelName);
-	}
-      else
-	{
-	  std::cout << ">>>>>>>>>>>> Channel [" << channelName << "]<<<<<<<<<<<< EXISTS" << std::endl;
-	  channelId = it->first;
+	  chan = it->second;
+	  if (strcmp(chan->getName(), channelName) != 0)
+	    {
+	      std::cout << ">>>>>>>>>>>> Channel [" << channelName << "]<<<<<<<<<<<< NOT EXIST -> CREATED" << std::endl;
+	      channelId =  GenChannelId();
+	      _channelMap->insert(std::pair<field_t, Channel*>(channelId, new Channel(channelName)));
+	    }
+	  else
+	    {
+	      std::cout << ">>>>>>>>>>>> Channel [" << channelName << "]<<<<<<<<<<<< EXISTS" << std::endl;
+	      channelId = it->first;
+	    }
 	}
     }
-
+  else
+    {
+      channelId =  GenChannelId();
+      chan = new Channel(channelName);
+      _channelMap->insert(std::pair<field_t, Channel*>(channelId, chan));
+    }
 
 
   // if (_channelMap.find(channelId) == _channelMap.end())
@@ -181,9 +192,9 @@ void	Component_ChannelManager::Recv_Message(Packet_v1 const *packet_v1, Session 
 
   std::cout << ">>>>>>>>>>>> RECV [MESSAGE] Channel [" <<  channelId  <<"] Message [" << message  << "<<<<<<<<<<<<" << std::endl;
 
-  if (_channelMap.find(channelId) != _channelMap.end())
+  if (_channelMap->find(channelId) != _channelMap->end())
     {
-      Channel *chan = _channelMap.find(channelId)->second;
+      Channel *chan = _channelMap->find(channelId)->second;
       std::map<field_t, Session*> connected = chan->getConnected();
 
       std::map<field_t, Session *>::iterator it, end = connected.end();
@@ -225,9 +236,9 @@ void	Component_ChannelManager::Recv_Leave(Packet_v1 const *packet_v1, Session *s
   
   std::cout << ">>>>>>>>>>>> RECV [LEAVE] Channel [" <<  channelId  <<"] User [" << sessionId  << "]<<<<<<<<<<<<" << std::endl;
 
-  if (_channelMap.find(channelId) != _channelMap.end())
+  if (_channelMap->find(channelId) != _channelMap->end())
     {
-      Channel *chan = _channelMap.find(channelId)->second;
+      Channel *chan = _channelMap->find(channelId)->second;
 
       if (chan->removeConnected(sessionId))
 	{
@@ -238,7 +249,7 @@ void	Component_ChannelManager::Recv_Leave(Packet_v1 const *packet_v1, Session *s
 	  for (it = connected.begin(); it != end ; ++it)
 	    Send_Leaved(it->second, channelId, sessionId);
 	  if (connected.size() == 0)
-	    _channelMap.erase(channelId);
+	    _channelMap->erase(channelId);
 	}
       else
 	Send_Leave_NOK_NOTINCHAN(session, channelId);
@@ -289,5 +300,5 @@ field_t	Component_ChannelManager::GenChannelId()
 
 bool	Component_ChannelManager::IsUniqId(field_t channelId) const
 {
-  return (_channelMap.find(channelId) == _channelMap.end());
+  return (_channelMap->find(channelId) == _channelMap->end());
 }

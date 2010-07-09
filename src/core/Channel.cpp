@@ -3,21 +3,22 @@
 Channel::Channel(char const * name)
 {
   _name = name;
+  _connected = new m_session();
 }
 
 Channel::~Channel() {}
 
-std::map<field_t, Session*> const & Channel::getConnected() const
+Channel::m_session const * Channel::getConnected() const
 {
   return _connected;
 }
 
 bool			Channel::addConnected(Session *session, field_t sessionId)
 {
-  if (_connected.find(sessionId) != _connected.end())
+  if (_connected->find(sessionId) == _connected->end())
     {
       _channel_mutex.lock();
-      _connected.insert(std::pair<field_t, Session *>(sessionId, session));
+      _connected->insert(std::pair<field_t, Session *>(sessionId, session));
       _channel_mutex.unlock();
       return true;
     }
@@ -26,10 +27,10 @@ bool			Channel::addConnected(Session *session, field_t sessionId)
 
 bool			Channel::removeConnected(field_t sessionId)
 {
-  if (_connected.find(sessionId) != _connected.end())
+  if (_connected->find(sessionId) == _connected->end())
     {
       _channel_mutex.lock();
-      _connected.erase(sessionId);
+      _connected->erase(sessionId);
       _channel_mutex.unlock();
       return true;
     }

@@ -16,7 +16,7 @@ class Channel
   virtual ~Channel();
   
   //! Get map of all users connected to the channel indexed by sessionId.
-  std::map<field_t, Session *> const & getConnected() const;
+  std::map<field_t, Session *> const * getConnected() const;
   
   //! Add user to the channel.
   /*! \param 1 Session* of user */
@@ -32,8 +32,9 @@ class Channel
   char const			*getName() const;
   
 private:
-  
-  std::map<field_t, Session*>	_connected;
+
+  typedef std::map<field_t, Session*>	m_session;    
+  m_session			*_connected;
   boost::mutex			_channel_mutex;
   char const *			_name;
 };

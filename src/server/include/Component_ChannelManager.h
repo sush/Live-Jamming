@@ -67,7 +67,7 @@ private:
 
   ServerManager                         *_serverManager;
   typedef std::map<field_t, Channel*>	m_channel;
-  m_channel				_channelMap;
+  m_channel				*_channelMap;
   boost::rand48				_rng;
 };
 
