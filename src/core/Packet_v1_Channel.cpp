@@ -72,3 +72,41 @@ char const	*Packet_v1_Channel::getChannelName() const
 	 getRequestId() == CHANNEL_JOIN_NOK_ALREADYINCHAN);
   return reinterpret_cast<char const *>(getData(PROTOV1_CHANNEL_START_OF_DATA, PROTOV1_CHANNEL_DATA_CHANNEL_NAME));
 }
+
+void		Packet_v1_Channel::setChannelList(std::map<unsigned int, Channel*> *m_channel)
+{
+  Channel		*chan;
+  std::string		name;
+
+  std::map<unsigned int, Channel*>::iterator it, end = m_channel->end();
+  for (it = m_channel->begin(); it != end; ++it)
+    {
+      chan = it->second;
+      name += chan->getName();
+      name += "#";
+    }
+  appendData(PROTOV1_CHANNEL_START_OF_DATA, PROTOV1_CHANNEL_DATA_CHANNEL_LIST, reinterpret_cast<byte_t const *>(name.c_str()));
+}
+
+std::vector<std::string> 	*Packet_v1_Channel::getChannelList() const
+{
+  char const			*channelList = reinterpret_cast<char const *>(getData(PROTOV1_CHANNEL_START_OF_DATA, PROTOV1_CHANNEL_DATA_CHANNEL_LIST));
+  std::vector<std::string> 	*v_channel = new std::vector<std::string>();
+  std::string			name;
+
+  for (unsigned int i = 0; i < strlen(channelList); ++i)
+    {
+      if (channelList[i] == '\0')
+	break;
+      if (channelList[i] != '#')
+	{
+	  name += channelList[i];
+	}
+      else
+	{
+	  v_channel->push_back(name);
+	  name.clear();
+	}
+    }
+  return v_channel;
+}

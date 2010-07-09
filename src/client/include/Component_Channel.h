@@ -66,6 +66,11 @@ private:
   void					Recv_Leaved(Packet_v1 const *, Session *);
   //! Create a channel Leaved ACK request in order to inform server that leaved notification has been rceived.
   void					Send_Leaved_ACK(Session *);
+
+  //! Handle a channel Listed request from server to be aware of all existing channels.
+  void					Recv_Listed(Packet_v1 const *, Session *);
+  //! Create a channel List request in order to inform server that the list of all existing channels is requested.
+  void					Send_List(Session *);
   
   ClientManager				*_clientManager;
   m_channel				_channelMap;

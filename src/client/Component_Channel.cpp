@@ -35,6 +35,9 @@ void		Component_Channel::BindingsRecv()
   
   (*_bindingsRecv)[CHANNEL_LEAVED] =
     new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Channel::Recv_Leaved));
+
+  (*_bindingsRecv)[CHANNEL_LISTED] =
+    new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Channel::Recv_Listed));
 }
 
 void	Component_Channel::RegisteredRequests()
@@ -58,12 +61,15 @@ void	Component_Channel::RegisteredRequests()
   (*_registeredRequests)[CHANNEL_LEAVED_ACK] = 
     new Request(CHANNEL_LEAVED_ACK, SEND, "Channel Leaved response ACK", NORETRY);
 
+  (*_registeredRequests)[CHANNEL_LIST] = 
+    new Request(CHANNEL_LIST, SEND, "Channel Listed response RECV", RETRY);
+
   // RECV requests
   (*_registeredRequests)[CHANNEL_JOIN_OK] = 
-    new Request(CHANNEL_JOIN_OK, RECV, "Channel Join request OK", CHANNEL_JOIN);
+    new Request(CHANNEL_JOIN_OK, RECV, "Channel Join request OK", RESPONSETONOTHING);
 
   (*_registeredRequests)[CHANNEL_JOIN_NOK_ALREADYINCHAN] = 
-    new Request(CHANNEL_JOIN_NOK_ALREADYINCHAN, RECV, "Channel Join request NOK user already in chan", CHANNEL_JOIN);
+    new Request(CHANNEL_JOIN_NOK_ALREADYINCHAN, RECV, "Channel Join request NOK user already in chan", RESPONSETONOTHING);
 
   (*_registeredRequests)[CHANNEL_JOINED] = 
     new Request(CHANNEL_JOIN_OK, RECV, "Channel Joined request", RESPONSETONOTHING);
@@ -82,6 +88,9 @@ void	Component_Channel::RegisteredRequests()
 
   (*_registeredRequests)[CHANNEL_LEAVED] = 
     new Request(CHANNEL_LEAVED, RECV, "Channel Leaved request", RESPONSETONOTHING);
+
+  (*_registeredRequests)[CHANNEL_LISTED] = 
+    new Request(CHANNEL_LISTED, RECV, "Channel Listed request RECV", CHANNEL_LIST);
 }
 
 void		Component_Channel::Send_Join(Session *session, char * const name)
@@ -158,7 +167,7 @@ void		Component_Channel::Recv_Message_RECV(Packet_v1 const *packet_v1, Session *
   Packet_v1_Channel const *packet_v1_channel = 
     static_cast<Packet_v1_Channel const *>(packet_v1);
 
-  field_t clientSessionId = packet_v1_channel->getClientSessionId();
+  //  field_t clientSessionId = packet_v1_channel->getClientSessionId();
   field_t channelId = packet_v1_channel->getChannelId();
   char const * message = packet_v1_channel->getMessage();
 
@@ -233,4 +242,19 @@ void		Component_Channel::Send_Leaved_ACK(Session *session)
 Component_Channel::m_channel const &	Component_Channel::getAllChannel() const
 {
   return _channelMap;
+}
+
+void		Component_Channel::Send_List(Session *session)
+{
+  std::cout << ">>>>>>>>>>>> SEND [LIST] <<<<<<<<<<<<" << std::endl;
+  _clientManager->Send(_componentId, CHANNEL_LIST, session);
+}
+
+void		Component_Channel::Recv_Listed(Packet_v1 const *packet_v1, Session *session)
+{
+  Packet_v1_Channel const		*packet_v1_channel = 
+    static_cast<Packet_v1_Channel const *>(packet_v1);
+
+  // list of existing channels
+  std::vector<std::string>		*v_channel = packet_v1_channel->getChannelList();
 }

@@ -7,6 +7,7 @@
 #include <Packet_v1.h>
 #include <Protocol.h>
 #include <Protocol_Channel.h>
+#include <Channel.h>
 
 //! COMMON:  Defines methods to get datas from packet_v1 Channel type.
 
@@ -52,7 +53,12 @@ public:
   /*! \return const char * channel */
   char const		*getChannelName() const;
 
-
+  //! Set list of the channel in the packet.
+  /*! \param 1 std::map<unsigned int, Channel*> const * m_channel */
+  void			setChannelList(std::map<unsigned int, Channel*> *m_channel);
+  //! Get channel list in the packet.
+  /*! \return const char * channelList */
+  std::vector<std::string>	*getChannelList() const;
 
 private:
   
