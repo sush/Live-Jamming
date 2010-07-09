@@ -16,7 +16,7 @@ class Channel
   virtual ~Channel();
   
   //! Get map of all users connected to the channel indexed by sessionId.
-  std::map<field_t, Session *> const * getConnected() const;
+  std::map<field_t, Session *> *getConnected();
   
   //! Add user to the channel.
   /*! \param 1 Session* of user */

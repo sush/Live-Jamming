@@ -8,7 +8,7 @@ Channel::Channel(char const * name)
 
 Channel::~Channel() {}
 
-Channel::m_session const * Channel::getConnected() const
+Channel::m_session	*Channel::getConnected()
 {
   return _connected;
 }

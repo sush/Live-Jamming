@@ -89,8 +89,6 @@ void	Component_ChannelManager::Recv_Join(Packet_v1 const *packet_v1, Session *se
   Channel *chan;
 
   std::cout << ">>>>>>>>>>>> RECV [JOIN] Channel [" << channelName << "]<<<<<<<<<<<<" << std::endl;
-  std::cout << "CHANNELMAP=" <<  (int) (_channelMap) << std::endl;
-
 
   if (_channelMap->size() != 0)
     {
@@ -118,26 +116,13 @@ void	Component_ChannelManager::Recv_Join(Packet_v1 const *packet_v1, Session *se
       _channelMap->insert(std::pair<field_t, Channel*>(channelId, chan));
     }
 
-
-  // if (_channelMap.find(channelId) == _channelMap.end())
-  //   {
-  //     std::cout << ">>>>>>>>>>>> Channel [" << channelName << "]<<<<<<<<<<<< NOT EXIST -> CREATED" << std::endl;
-  //     _channelMap[channelId] =  new Channel(channelName);
-  //     chan = _channelMap[channelId];
-  //   }
-  // else
-  //   {
-  //     std::cout << ">>>>>>>>>>>> Channel [" << channelName << "]<<<<<<<<<<<< EXISTS" << std::endl;
-  //     chan = _channelMap.find(channelId)->second; 
-  //   }
-  
   if (chan->addConnected(session, sessionId))
     {
       Send_Join_OK(session, channelId);
-      std::map<field_t, Session*> connected = chan->getConnected();
+      std::map<field_t, Session*> *connected = chan->getConnected();
 
-      std::map<field_t, Session *>::iterator it, end = connected.end();
-      for (it = connected.begin(); it != end ; ++it)
+      std::map<field_t, Session *>::iterator it, end = connected->end();
+      for (it = connected->begin(); it != end ; ++it)
 	{
 	  if (it->first != sessionId)
 	    {
@@ -195,10 +180,10 @@ void	Component_ChannelManager::Recv_Message(Packet_v1 const *packet_v1, Session 
   if (_channelMap->find(channelId) != _channelMap->end())
     {
       Channel *chan = _channelMap->find(channelId)->second;
-      std::map<field_t, Session*> connected = chan->getConnected();
+      std::map<field_t, Session*> *connected = chan->getConnected();
 
-      std::map<field_t, Session *>::iterator it, end = connected.end();
-      for (it = connected.begin(); it != end ; ++it)
+      std::map<field_t, Session *>::iterator it, end = connected->end();
+      for (it = connected->begin(); it != end ; ++it)
 	{
 	  if (it->first != sessionId)
 	    Send_Message_RECV(it->second, message, channelId, sessionId);
@@ -243,12 +228,12 @@ void	Component_ChannelManager::Recv_Leave(Packet_v1 const *packet_v1, Session *s
       if (chan->removeConnected(sessionId))
 	{
 	  Send_Leave_OK(session, channelId);
-	  std::map<field_t, Session*> connected = chan->getConnected();
+	  std::map<field_t, Session*> *connected = chan->getConnected();
   
-	  std::map<field_t, Session *>::iterator it, end = connected.end();
-	  for (it = connected.begin(); it != end ; ++it)
+	  std::map<field_t, Session *>::iterator it, end = connected->end();
+	  for (it = connected->begin(); it != end ; ++it)
 	    Send_Leaved(it->second, channelId, sessionId);
-	  if (connected.size() == 0)
+	  if (connected->size() == 0)
 	    _channelMap->erase(channelId);
 	}
       else
