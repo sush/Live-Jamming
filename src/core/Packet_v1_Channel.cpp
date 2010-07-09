@@ -59,12 +59,16 @@ char const	*Packet_v1_Channel::getMessage() const
 
 void		Packet_v1_Channel::setChannelName(char const * name)
 {
-  assert(getRequestId() == CHANNEL_JOIN);
+  assert(getRequestId() == CHANNEL_JOIN ||
+	 getRequestId() == CHANNEL_JOIN_OK ||
+	 getRequestId() == CHANNEL_JOIN_NOK_ALREADY_IN_CHAN);
   appendData(PROTOV1_CHANNEL_START_OF_DATA, PROTOV1_CHANNEL_DATA_CHANNEL_NAME, reinterpret_cast<byte_t const *>(name));
 }
 
 char const	*Packet_v1_Channel::getChannelName() const
 {
-  assert(getRequestId() == CHANNEL_JOIN_OK);
+  assert(getRequestId() == CHANNEL_JOIN ||
+	 getRequestId() == CHANNEL_JOIN_OK ||
+	 getRequestId() == CHANNEL_JOIN_NOK_ALREADY_IN_CHAN);
   return reinterpret_cast<char const *>(getData(PROTOV1_CHANNEL_START_OF_DATA, PROTOV1_CHANNEL_DATA_CHANNEL_NAME));
 }
