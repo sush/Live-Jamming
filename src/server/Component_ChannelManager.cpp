@@ -92,7 +92,6 @@ void	Component_ChannelManager::Recv_Join(Packet_v1 const *packet_v1, Session *se
     {
       std::cout << ">>>>>>>>>>>> Channel [" << channelId << "]<<<<<<<<<<<< NOT EXIST -> CREATED" << std::endl;
       _channelMap[channelId] =  new Channel(channelName);
-      //      _channelMap[channelId] =  new Channel();
       chan = _channelMap[channelId];
     }
   else

@@ -35,7 +35,7 @@ private:
 
 
   //! Create a channel Join request to the server.
-  void					Send_Join(Session *, field_t);
+  void					Send_Join(Session *, field_t, char * const);
   //! Handle a channel Join OK request from the server to inform that the channel has been joined.
   void					Recv_Join_OK(Packet_v1 const *, Session *);
 

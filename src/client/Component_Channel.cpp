@@ -84,10 +84,11 @@ void	Component_Channel::RegisteredRequests()
     new Request(CHANNEL_LEAVED, RECV, "Channel Leaved request", RESPONSETONOTHING);
 }
 
-void		Component_Channel::Send_Join(Session *session, field_t channelId)
+void		Component_Channel::Send_Join(Session *session, field_t channelId, char * const name)
 {
   Packet_v1_Channel *packet_v1_channel = new Packet_v1_Channel(CHANNEL_JOIN);
   packet_v1_channel->setChannelId(channelId);
+  packet_v1_channel->setChannelName(name);
 
   std::cout << ">>>>>>>>>>>> SEND [JOIN] Channel [" << channelId  << "]<<<<<<<<<<<<" << std::endl;
 
@@ -100,11 +101,12 @@ void		Component_Channel::Recv_Join_OK(Packet_v1 const *packet_v1, Session *)
     static_cast<Packet_v1_Channel const *>(packet_v1);
 
   field_t channelId = packet_v1_channel->getChannelId();
+  char const *channelName = packet_v1_channel->getChannelName();
 
   std::cout << ">>>>>>>>>>>> RECV [JOIN_OK] Channel [" <<  channelId  <<"]<<<<<<<<<<<<" << std::endl;
 
   if (_channelMap.find(channelId) == _channelMap.end())
-    _channelMap[channelId] = new Channel();
+    _channelMap[channelId] = new Channel(channelName);
 }
 
 void		Component_Channel::Recv_Join_NOK_ALREADYINCHAN(Packet_v1 const *packet_v1, Session *session)
