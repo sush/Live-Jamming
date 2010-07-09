@@ -61,7 +61,9 @@ void				ServerManager::Manage(Packet * packet)
 void		ServerManager::Init_Components()
 {
   _sessionManager = new Component_SessionManager(this);
+  _channelManager = new Component_ChannelManager(this);
   RegisterComponent(_sessionManager);
+  RegisterComponent(_channelManager);
 }
 
 unsigned int	ServerManager::CountActiveSessions() const

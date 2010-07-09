@@ -82,24 +82,43 @@ void	Component_ChannelManager::Recv_Join(Packet_v1 const *packet_v1, Session *se
   Packet_v1_Channel const *packet_v1_channel = 
     static_cast<Packet_v1_Channel const *>(packet_v1);
 
-  field_t channelId =  GenChannelId();
-  field_t sessionId =  packet_v1_channel->getSessionId();
-  char const *channelName = packet_v1_channel->getChannelName();
+  field_t channelId;
+  field_t sessionId		=  packet_v1_channel->getSessionId();
+  char const *channelName	= packet_v1_channel->getChannelName();
   Channel *chan;
 
-  std::cout << ">>>>>>>>>>>> RECV [JOIN] Channel [" << channelId << "]<<<<<<<<<<<<" << std::endl;
+  std::cout << ">>>>>>>>>>>> RECV [JOIN] Channel [" << channelName << "]<<<<<<<<<<<<" << std::endl;
 
-  if (_channelMap.find(channelId) == _channelMap.end())
+  std::map<field_t, Channel *>::iterator it, end = _channelMap.end();
+  for (it = _channelMap.begin(); it != end; ++it)
     {
-      std::cout << ">>>>>>>>>>>> Channel [" << channelId << "]<<<<<<<<<<<< NOT EXIST -> CREATED" << std::endl;
-      _channelMap[channelId] =  new Channel(channelName);
-      chan = _channelMap[channelId];
+      chan = it->second;
+      if (strcmp(chan->getName(), channelName) != 0)
+	{
+	  std::cout << ">>>>>>>>>>>> Channel [" << channelName << "]<<<<<<<<<<<< NOT EXIST -> CREATED" << std::endl;
+	  channelId =  GenChannelId();
+	  _channelMap[channelId] =  new Channel(channelName);
+	}
+      else
+	{
+	  std::cout << ">>>>>>>>>>>> Channel [" << channelName << "]<<<<<<<<<<<< EXISTS" << std::endl;
+	  channelId = it->first;
+	}
     }
-  else
-    {
-      std::cout << ">>>>>>>>>>>> Channel [" << channelId << "]<<<<<<<<<<<< EXISTS" << std::endl;
-      chan = _channelMap.find(channelId)->second; 
-    }
+
+
+
+  // if (_channelMap.find(channelId) == _channelMap.end())
+  //   {
+  //     std::cout << ">>>>>>>>>>>> Channel [" << channelName << "]<<<<<<<<<<<< NOT EXIST -> CREATED" << std::endl;
+  //     _channelMap[channelId] =  new Channel(channelName);
+  //     chan = _channelMap[channelId];
+  //   }
+  // else
+  //   {
+  //     std::cout << ">>>>>>>>>>>> Channel [" << channelName << "]<<<<<<<<<<<< EXISTS" << std::endl;
+  //     chan = _channelMap.find(channelId)->second; 
+  //   }
   
   if (chan->addConnected(session, sessionId))
     {
