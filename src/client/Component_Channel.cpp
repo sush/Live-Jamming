@@ -84,13 +84,12 @@ void	Component_Channel::RegisteredRequests()
     new Request(CHANNEL_LEAVED, RECV, "Channel Leaved request", RESPONSETONOTHING);
 }
 
-void		Component_Channel::Send_Join(Session *session, field_t channelId, char * const name)
+void		Component_Channel::Send_Join(Session *session, char * const name)
 {
   Packet_v1_Channel *packet_v1_channel = new Packet_v1_Channel(CHANNEL_JOIN);
-  packet_v1_channel->setChannelId(channelId);
   packet_v1_channel->setChannelName(name);
 
-  std::cout << ">>>>>>>>>>>> SEND [JOIN] Channel [" << channelId  << "]<<<<<<<<<<<<" << std::endl;
+  std::cout << ">>>>>>>>>>>> SEND [JOIN] Channel [" << name  << "]<<<<<<<<<<<<" << std::endl;
 
   _clientManager->Send(packet_v1_channel, session);
 }

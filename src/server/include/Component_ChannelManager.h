@@ -62,9 +62,13 @@ private:
   //! Create a channel Leaved response to the client to inform it that another client has leaved the channel.
   void		Send_Leaved(Session *, field_t, field_t);
 
+  field_t	GenChannelId();
+  bool		IsUniqId(field_t) const;
+
   ServerManager                         *_serverManager;
   typedef std::map<field_t, Channel*>	m_channel;
   m_channel				_channelMap;
+  boost::rand48				_rng;
 };
 
 #endif // ! __COMPONENT_CHANNELMANAGER_H__

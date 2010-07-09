@@ -4,6 +4,7 @@
 Component_ChannelManager::Component_ChannelManager(ServerManager *serverManager) 
  :IComponent(CHANNEL_COMPONENTID), _serverManager(serverManager) 
 {
+  _rng.seed((int32_t)std::clock());
 }
 
 Component_ChannelManager::~Component_ChannelManager() {}
@@ -81,8 +82,8 @@ void	Component_ChannelManager::Recv_Join(Packet_v1 const *packet_v1, Session *se
   Packet_v1_Channel const *packet_v1_channel = 
     static_cast<Packet_v1_Channel const *>(packet_v1);
 
-  field_t channelId =  packet_v1_channel->getChannelId();
-  field_t sessionId = session->getSessionId();
+  field_t channelId =  GenChannelId();
+  field_t sessionId =  packet_v1_channel->getSessionId();
   char const *channelName = packet_v1_channel->getChannelName();
   Channel *chan;
 
@@ -255,4 +256,19 @@ void	Component_ChannelManager::Send_Leaved(Session *session, field_t channelId, 
   std::cout << ">>>>>>>>>>>> SEND [LEAVED] Channel [" <<  channelId  <<"] User [" << clientSessionId  << "]<<<<<<<<<<<<" << std::endl;
 
   _serverManager->Send(packet_v1_channel, session);
+}
+
+field_t	Component_ChannelManager::GenChannelId()
+{
+  field_t	channelId;
+
+  do {
+    channelId = _rng();
+  } while (! IsUniqId(channelId));
+ return channelId;
+}
+
+bool	Component_ChannelManager::IsUniqId(field_t channelId) const
+{
+  return (_channelMap.find(channelId) == _channelMap.end());
 }
