@@ -1,5 +1,6 @@
 #include <ClientManager.h>
 #include <Component_Session.h>
+#include <Component_Channel.h>
 #include <Session.h>
 #include <Bind_recv.h>
 

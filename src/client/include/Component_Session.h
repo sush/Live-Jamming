@@ -46,7 +46,9 @@ private:
   
   ClientManager				*_clientManager;
   bool					_logged;
+public:
   Session				*_session;
+
 };
 
 #endif // ! __COMPONENT_SESSION_H__

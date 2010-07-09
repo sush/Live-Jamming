@@ -56,6 +56,7 @@ MainWindow::MainWindow(boost::asio::io_service& service, boost::threadpool::pool
 {
     ui->setupUi(this);
     setVisible(true);
+    //setTitle("Livejammin");
     showMaximized();
 
     QPalette pal = palette();
@@ -191,16 +192,13 @@ void MainWindow::on_actionNew_Chan_triggered()
     QDialog dial;
     dialui.setupUi(&dial);
 
-    static int id = 0;
-    _channel->Send_Join(_session->_session, id);
-    dialui.nameLineEdit->setText(QString::number(id));
     dial.exec();
     if (!dialui.nameLineEdit->text().isEmpty()) {
         //ui->ChansList->addTopLevelItem(new QTreeWidgetItem(QStringList() << dialui.nameLineEdit->text() << dialui.subjectLabel->text()));
         ui->ChansList->addTopLevelItem(new QTreeWidgetItem(QStringList() << dialui.nameLineEdit->text()));
-        _channel->Send_Join(_session->_session, dialui.nameLineEdit->text().toLong());
+        _channel->Send_Join(_session->_session, dialui.nameLineEdit->text().toLocal8Bit().data());
 
-     id++;
+
     }
 }
 
@@ -212,5 +210,6 @@ void MainWindow::add_chan(const QString &name)
 
 void MainWindow::on_ChansList_itemActivated(QTreeWidgetItem* item, int column)
 {
-
+(void)item;
+(void)column;
 }
