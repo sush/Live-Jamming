@@ -63,7 +63,10 @@ void				ClientManager::Manage(Packet * packet)
 void			ClientManager::Init_Components()
 {
   _session = new Component_Session(this);
+  _channel = new Component_Channel(this);
   RegisterComponent(_session);
+  RegisterComponent(_channel);
+
 }
 	   
 void			ClientManager::Disconnect(Session *)

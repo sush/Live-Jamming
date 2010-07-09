@@ -3,6 +3,7 @@
 
 class ClientManager;
 class Component_Session;
+class Component_Channel;
 class Session;
 
 #include <iostream>
@@ -28,6 +29,7 @@ private:
 protected:
   // core components
   Component_Session			*_session;
+  Component_Channel			*_channel;
   // list of additional optional components
 
 private:
