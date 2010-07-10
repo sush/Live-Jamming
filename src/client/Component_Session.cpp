@@ -132,7 +132,7 @@ void		Component_Session::Send_AuthRequest(std::string const &login, std::string 
 {
   Packet_v1_Session	*packet_v1_Session = new Packet_v1_Session(SESSION_AUTHREQUEST);
   
-  
+  _session->setLogin(login);
   std::cout << "login = " << login.c_str() << std::endl;
   packet_v1_Session->setLogin(login.c_str());
   packet_v1_Session->setPass(pass.c_str());

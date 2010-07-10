@@ -26,6 +26,7 @@ void	Session::Authentificated(Packet_v1 const * packet_v1)
   std::cout << ">>>>>>>>>>> sessionid = " << _sessionId << std::endl;
   _ip = packet_v1->getEndpoint().address();
   _port  = packet_v1->getEndpoint().port();
+  _login = pac
   setTimeOutTest();
 }
 
@@ -156,4 +157,14 @@ bool				Session::IsLogged() const
 void				Session::Print() const
 {
   std::cout << "[" << _ip << ":" << _port << "]" << " {" << _sessionId << "}";
+}
+
+void				Session::setLogin(std::string const &login)
+{
+  _login = login;
+}
+
+std::string const &				Session::getLogin() const
+{
+  return _login;
 }

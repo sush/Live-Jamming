@@ -47,6 +47,9 @@ public:
   void						setAutoRetry(Packet_v1 *);
   void						CancelAutoRetry(field_t, field_t);
 
+  std::string const &				getLogin() const;
+  void						setLogin(std::string const &);
+
 private:
   typedef std::map<field_t, boost::asio::deadline_timer *>		m_timer;
   typedef m_timer::iterator						m_timer_it;
@@ -66,6 +69,7 @@ private:
   unsigned int				_timeOutTestCount;
   m_m_timer				_timerMapMap;
   bool					_isLogged;
+  std::string				_login;
 };
 
 #endif // ! __SESSION_H__

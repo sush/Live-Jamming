@@ -75,6 +75,7 @@ Session 	*Component_SessionManager::DoAuth(Packet_v1_Session const * packet_v1_S
   if (_userModule_mysql->Authentification(login_str, pass_str))
     {
       new_session = new Session(_serverManager, _serverManager->getIO(), packet_v1_Session, GenSessionId());
+      new_session->setLogin(login_str);
 
       (*_sessionMap)[new_session->getSessionId()] = new_session;
       Send_AuthResponse_OK(new_session);
