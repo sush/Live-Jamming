@@ -163,7 +163,7 @@ void				Session::setLogin(std::string const &login)
   _login = login;
 }
 
-std::string const &				Session::getLogin() const
+std::string const &		Session::getLogin() const
 {
   return _login;
 }
