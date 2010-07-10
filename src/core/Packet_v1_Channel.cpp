@@ -110,12 +110,12 @@ std::vector<std::string> 	*Packet_v1_Channel::getChannelList() const
 
 void		Packet_v1_Channel::setClientLogin(char const *login)
 {
-  assert(getRequestId() == CHANNEL_JOIN);
+  assert(getRequestId() == CHANNEL_JOIN || CHANNEL_LEAVED);
   appendData(PROTOV1_CHANNEL_START_OF_DATA, PROTOV1_CHANNEL_DATA_LOGIN, reinterpret_cast<byte_t const *>(login));
 }
 
 char const	*Packet_v1_Channel::getClientLogin() const
 {
-  assert(getRequestId() == CHANNEL_JOIN || CHANNEL_JOINED);
+  assert(getRequestId() == CHANNEL_JOIN || CHANNEL_JOINED || CHANNEL_LEAVED);
   return reinterpret_cast<char const *>(getData(PROTOV1_CHANNEL_START_OF_DATA, PROTOV1_CHANNEL_DATA_LOGIN));
 }

@@ -123,13 +123,11 @@ void	Component_ChannelManager::Recv_Join(Packet_v1 const *packet_v1, Session *se
 
       std::map<field_t, Session *>::iterator it, end = connected->end();
 
-      Session *user;
       for (it = connected->begin(); it != end ; ++it)
 	{
 	  if (it->first != sessionId)
 	    {
-	      user = it->second;
-	      Send_Joined(session, channelId, it->first, user->getLogin().c_str());
+	      Send_Joined(session, channelId, it->first, it->second->getLogin().c_str());
 	      Send_Joined(it->second, channelId, sessionId, session->getLogin().c_str());
 	    }
 	}
@@ -157,13 +155,13 @@ void	Component_ChannelManager::Send_Join_NOK_ALREADYINCHAN(Session *session, fie
   _serverManager->Send(packet_v1_channel, session);
 }
 
-void	Component_ChannelManager::Send_Joined(Session *session, field_t channelId, field_t clientSessionId, char const * login)
+void	Component_ChannelManager::Send_Joined(Session *session, field_t channelId, field_t clientSessionId, char const * clientLogin)
 {
   Packet_v1_Channel *packet_v1_channel = new Packet_v1_Channel(CHANNEL_JOINED);
   
   packet_v1_channel->setChannelId(channelId);
   packet_v1_channel->setClientSessionId(clientSessionId);
-  packet_v1_channel->setClientLogin(login);
+  packet_v1_channel->setClientLogin(clientLogin);
 
   std::cout << ">>>>>>>>>>>> SEND [JOINED] Channel [" <<  channelId  <<"] User [" << clientSessionId  << "]<<<<<<<<<<<<" << std::endl;
 
@@ -236,7 +234,7 @@ void	Component_ChannelManager::Recv_Leave(Packet_v1 const *packet_v1, Session *s
   
 	  std::map<field_t, Session *>::iterator it, end = connected->end();
 	  for (it = connected->begin(); it != end ; ++it)
-	    Send_Leaved(it->second, channelId, sessionId);
+	    Send_Leaved(it->second, channelId, sessionId, it->second->getLogin().c_str());
 	  if (connected->size() == 0)
 	    _channelMap->erase(channelId);
 	}
@@ -265,12 +263,13 @@ void	Component_ChannelManager::Send_Leave_NOK_NOTINCHAN(Session *session, field_
   _serverManager->Send(packet_v1_channel, session);
 }
     
-void	Component_ChannelManager::Send_Leaved(Session *session, field_t channelId, field_t clientSessionId)
+void	Component_ChannelManager::Send_Leaved(Session *session, field_t channelId, field_t clientSessionId, char const * clientLogin)
 {
   Packet_v1_Channel *packet_v1_channel = new Packet_v1_Channel(CHANNEL_LEAVED);
 
   packet_v1_channel->setChannelId(channelId);
   packet_v1_channel->setClientSessionId(clientSessionId);
+  packet_v1_channel->setClientLogin(clientLogin);
 
   std::cout << ">>>>>>>>>>>> SEND [LEAVED] Channel [" <<  channelId  <<"] User [" << clientSessionId  << "]<<<<<<<<<<<<" << std::endl;
 

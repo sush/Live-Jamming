@@ -60,7 +60,7 @@ private:
   void          Send_Leave_NOK_NOTINCHAN(Session *, field_t);
 
   //! Create a channel Leaved response to the client to inform it that another client has leaved the channel.
-  void		Send_Leaved(Session *, field_t, field_t);
+  void		Send_Leaved(Session *, field_t, field_t, char const *);
 
   field_t	GenChannelId();
   bool		IsUniqId(field_t) const;

@@ -225,12 +225,13 @@ void		Component_Channel::Recv_Leaved(Packet_v1 const *packet_v1, Session *sessio
   Packet_v1_Channel const *packet_v1_channel = 
     static_cast<Packet_v1_Channel const *>(packet_v1);
 
-  field_t channelId = packet_v1_channel->getChannelId();
-  field_t clientSessionId = packet_v1_channel->getClientSessionId();
+  field_t	channelId = packet_v1_channel->getChannelId();
+  field_t	clientSessionId = packet_v1_channel->getClientSessionId();
+  char const *	clientLogin = packet_v1_channel->getClientLogin();
 
   Channel *chan = _channelMap.find(channelId)->second;
   chan->removeConnected(clientSessionId);
-  std::cout << ">>>>>>>>>>>> RECV [LEAVED] Channel [" << channelId << "]<<<<<<<<<<<<" << std::endl;
+  std::cout << ">>>>>>>>>>>> RECV [LEAVED] Channel [" << channelId << "] USER " << clientLogin  << "<<<<<<<<<<<<" << std::endl;
   Send_Leaved_ACK(session);
 }
 
