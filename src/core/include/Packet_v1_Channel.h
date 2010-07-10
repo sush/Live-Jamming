@@ -60,6 +60,15 @@ public:
   /*! \return const char * channelList */
   std::vector<std::string>	*getChannelList() const;
 
+  //! Set login of the client who has joined the chan.
+  /*! \param 1 char const * login */
+  void				setClientLogin(char const *);
+
+  //! Get client login of the user who has joined the channel in the packet.
+  /*! \return const char * login */
+  char const			*getClientLogin() const;
+
+
 private:
   
 };

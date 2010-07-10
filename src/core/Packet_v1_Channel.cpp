@@ -24,7 +24,6 @@ void		Packet_v1_Channel::Print_v1() const
 	    << std::endl;
 }
 
-
 field_t		Packet_v1_Channel::getChannelId() const
 {
   return getField(PROTOV1_CHANNEL_CHANNELID_OFF, PROTOV1_CHANNEL_CHANNELID_SIZE);
@@ -99,9 +98,7 @@ std::vector<std::string> 	*Packet_v1_Channel::getChannelList() const
       if (channelList[i] == '\0')
 	break;
       if (channelList[i] != '#')
-	{
-	  name += channelList[i];
-	}
+	name += channelList[i];
       else
 	{
 	  v_channel->push_back(name);
@@ -109,4 +106,16 @@ std::vector<std::string> 	*Packet_v1_Channel::getChannelList() const
 	}
     }
   return v_channel;
+}
+
+void		Packet_v1_Channel::setClientLogin(char const *login)
+{
+  assert(getRequestId() == CHANNEL_JOIN);
+  appendData(PROTOV1_CHANNEL_START_OF_DATA, PROTOV1_CHANNEL_DATA_LOGIN, reinterpret_cast<byte_t const *>(login));
+}
+
+char const	*Packet_v1_Channel::getClientLogin() const
+{
+  assert(getRequestId() == CHANNEL_JOIN || CHANNEL_JOINED);
+  return reinterpret_cast<char const *>(getData(PROTOV1_CHANNEL_START_OF_DATA, PROTOV1_CHANNEL_DATA_LOGIN));
 }

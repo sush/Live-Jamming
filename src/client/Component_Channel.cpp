@@ -137,12 +137,13 @@ void		Component_Channel::Recv_Joined(Packet_v1 const *packet_v1, Session *sessio
   Packet_v1_Channel const *packet_v1_channel = 
     static_cast<Packet_v1_Channel const *>(packet_v1);
 
-  field_t clientSessionId = packet_v1_channel->getClientSessionId();
-  field_t channelId = packet_v1_channel->getChannelId();
-  Channel *chan = _channelMap.find(channelId)->second;
+  field_t	clientSessionId = packet_v1_channel->getClientSessionId();
+  char const *	clientLogin= packet_v1_channel->getClientLogin();
+  field_t	channelId = packet_v1_channel->getChannelId();
+  Channel	*chan = _channelMap.find(channelId)->second;
 
   chan->addConnected(0, clientSessionId);
-  std::cout << ">>>>>>>>>>>> RECV [JOINED] Channel [" << channelId  << "] User [" << clientSessionId  << "]<<<<<<<<<<<<" << std::endl;
+  std::cout << ">>>>>>>>>>>> RECV [JOINED] Channel [" << channelId  << "] User [" << clientLogin  << "]<<<<<<<<<<<<" << std::endl;
   Send_Joined_ACK(session);
 }
 
