@@ -159,6 +159,26 @@ void		Component_Session::Send_KeepAlive()
   _clientManager->Send(_componentId, SESSION_KEEPALIVE, _session);
 }
 
+void		Component_Session::Recv_Friend_Joined(Packet_v1 const *packet_v1, Session *session)
+{
+  Packet_v1_Session const *packet_v1_session =
+    static_cast<Packet_v1_Session const *>(packet_v1);
+
+  char const *friendLogin = packet_v1_session->getFriendLogin();
+
+  std::cout << "FRIEND [" << friendLogin << "] has JOINED the application" << std::endl;
+}
+
+void		Component_Session::Recv_Friend_Leaved(Packet_v1 const *packet_v1, Session *session)
+{
+  Packet_v1_Session const *packet_v1_session =
+    static_cast<Packet_v1_Session const *>(packet_v1);
+
+  char const *friendLogin = packet_v1_session->getFriendLogin();
+
+  std::cout << "FRIEND [" << friendLogin << "] has LEAVED the application" << std::endl;
+}
+
 bool		Component_Session::IsLogged() const
 {
   return _logged;

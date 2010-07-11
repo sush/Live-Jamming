@@ -15,12 +15,12 @@ class UserModule_mysql : public IUserBackend<UserModule_mysql>, public IDatabase
 
  public :
 
-  bool			 Authentification(std::string const &, std::string const &);
-  m_userinfo const	*getProfil(int);
-  m_userinfo const	*getFriendList(int);
+  bool					Authentification(std::string const &, std::string const &);
+  m_userinfo const			*getProfil(int);
+  std::vector<std::string> const &	getFriendList(std::string const &);
 
  private :
-			UserModule_mysql();
+  UserModule_mysql();
   virtual		 ~UserModule_mysql();
   void			Connection();
 

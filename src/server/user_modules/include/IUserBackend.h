@@ -3,6 +3,7 @@
 
 #include <Singleton.h>
 #include <string>
+#include <vector>
 
 //! SERVER:  Interface defines all mandatory method to get info from module.
 
@@ -27,7 +28,7 @@ class IUserBackend : public Singleton<T>
   //! Get user friend list from module.
   /*! \param 1 int sessionId*/
   /*! \return m_userinfo with friend list */
-  virtual m_userinfo const			*getFriendList(int) = 0;
+  virtual std::vector<std::string> const &	getFriendList(std::string const &) = 0;
 };
 
 #endif

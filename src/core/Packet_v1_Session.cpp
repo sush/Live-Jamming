@@ -30,3 +30,15 @@ void		Packet_v1_Session::setPass(char const *pass)
   assert(getRequestId() == SESSION_AUTHREQUEST);
   appendData(PROTOV1_SESSION_START_OF_DATA, PROTOV1_SESSION_DATA_PASS, reinterpret_cast<byte_t const *>(pass));
 }
+
+void		Packet_v1_Session::setFriendLogin(char const * friendLogin)
+{
+  assert(getRequestId() == SESSION_AUTHREQUEST);
+  appendData(PROTOV1_SESSION_START_OF_DATA, PROTOV1_SESSION_DATA_FRIEND, reinterpret_cast<byte_t const *>(friendLogin));
+}
+
+char const	*Packet_v1_Session::getFriendLogin() const
+{
+  assert(getRequestId() == SESSION_FRIEND_JOINED || SESSION_FRIEND_LEAVED);
+  return reinterpret_cast<char const *>(getData(PROTOV1_SESSION_START_OF_DATA, PROTOV1_SESSION_DATA_FRIEND));
+}

@@ -42,6 +42,9 @@ private:
   void		Send_TimeOutTestRequest();
   void		Send_Disconnect();
   void		Send_KeepAlive();
+  void		Recv_Friend_Leaved(Packet_v1 const *, Session *);
+  void		Recv_Friend_Joined(Packet_v1 const *, Session *);
+
   void		CallBack_AuthRequest_timeout(boost::system::error_code const &);
   
   ClientManager				*_clientManager;

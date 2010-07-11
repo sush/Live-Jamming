@@ -74,11 +74,29 @@ Session 	*Component_SessionManager::DoAuth(Packet_v1_Session const * packet_v1_S
   std::cout << "login = [" << login << "] pass = " << pass << std::endl;
   if (_userModule_mysql->Authentification(login_str, pass_str))
     {
-      new_session = new Session(_serverManager, _serverManager->getIO(), packet_v1_Session, GenSessionId());
+      field_t			sessionId	= GenSessionId();
+      std::vector<std::string> const friendList	= _userModule_mysql->getFriendList(login_str);
+
+      new_session = new Session(_serverManager, _serverManager->getIO(), packet_v1_Session, sessionId);
       new_session->setLogin(login_str);
+      new_session->setFriendList(friendList);
 
       (*_sessionMap)[new_session->getSessionId()] = new_session;
       Send_AuthResponse_OK(new_session);
+
+      m_Session::iterator it, end = _sessionMap->end();
+      for (it = _sessionMap->begin(); it != end; ++it)
+	{
+	  for (unsigned int i = 0; i < friendList.size(); ++i)
+	    {
+	      if (it->second->getLogin() == friendList[i])
+		{
+		  Send_Friend_Joined(new_session, it->second->getLogin().c_str());
+		  Send_Friend_Joined(it->second, login_str.c_str());
+		}
+	    }
+	}
+
       std::cout << "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< AUTH OK >>>>>>>>>>>>>>>>>>>>>>>>>" << std::endl;
     }
   else 
@@ -93,6 +111,18 @@ void		Component_SessionManager::Disconnect(Session * session)
 {
   PrintSession(session);
   std::cout << " Disconnected" << std::endl;
+
+  m_Session::iterator it, end		= _sessionMap->end();
+  std::vector<std::string> friendList	= session->getFriendList();
+
+  for (it = _sessionMap->begin(); it != end; ++it)
+    {
+      for (unsigned int i = 0; i < friendList.size(); ++i)
+	{
+	  if (it->second->getLogin() == friendList[i])
+	    Send_Friend_Joined(it->second, session->getLogin().c_str());
+	}
+    }
   _sessionMap->erase(session->getSessionId());
 }
 
@@ -143,6 +173,22 @@ void		Component_SessionManager::Recv_Disconnect(Packet_v1 const *, Session *)
   std::cout << " recv_Disconnected" << std::endl;
 }
 
+void		Component_SessionManager::Send_Friend_Joined(Session *session, const char *clientLogin)
+{
+  Packet_v1_Session *packet_v1_session = new Packet_v1_Session(SESSION_FRIEND_JOINED);
+
+  packet_v1_session->setFriendLogin(clientLogin);
+  _serverManager->Send(packet_v1_session, session);
+}
+
+void		Component_SessionManager::Send_Friend_Leaved(Session *session, const char *clientLogin)
+{
+  Packet_v1_Session *packet_v1_session = new Packet_v1_Session(SESSION_FRIEND_LEAVED);
+
+  packet_v1_session->setFriendLogin(clientLogin);
+  _serverManager->Send(packet_v1_session, session);
+}
+
 void		Component_SessionManager::BindingsRecv()
 {
   (*_bindingsRecv)[SESSION_AUTHREQUEST] =
@@ -166,10 +212,16 @@ void	Component_SessionManager::RegisteredRequests()
     new Request(SESSION_AUTHRESPONSE_OK, SEND, "Session Authentification response OK", NORETRY);
 
   (*_registeredRequests)[SESSION_AUTHRESPONSE_NOK_BADAUTH] = 
-    new Request(SESSION_AUTHRESPONSE_NOK_BADAUTH, RECV, "Session Authentification response Bad Login information", NORETRY);
+    new Request(SESSION_AUTHRESPONSE_NOK_BADAUTH, SEND, "Session Authentification response Bad Login information", NORETRY);
 
   (*_registeredRequests)[SESSION_AUTHRESPONSE_NOK_DUPLICATE] = 
-    new Request(SESSION_AUTHRESPONSE_NOK_DUPLICATE, RECV, "Session Authentification response Duplicate Login", NORETRY);
+    new Request(SESSION_AUTHRESPONSE_NOK_DUPLICATE, SEND, "Session Authentification response Duplicate Login", NORETRY);
+
+  (*_registeredRequests)[SESSION_FRIEND_JOINED] = 
+    new Request(SESSION_FRIEND_JOINED, SEND, "Session friend joined notification", NORETRY);
+
+  (*_registeredRequests)[SESSION_FRIEND_LEAVED] = 
+    new Request(SESSION_FRIEND_LEAVED, SEND, "Session friend leaved notification", NORETRY);
   
   // RECV requests
   (*_registeredRequests)[SESSION_AUTHREQUEST] = 

@@ -10,14 +10,14 @@ UserModule_mysql::UserModule_mysql()
 UserModule_mysql::~UserModule_mysql()
 {}
 
-void		UserModule_mysql::Connection()
+void					UserModule_mysql::Connection()
 {
   const char* db = "live-jamming_db", *server = "192.168.0.12", *user = "root", *pass = "MAgoun12$";
   
   _dbLink.connect(db, server, user, pass);
 }
 
-bool	UserModule_mysql::Authentification(std::string const &login, std::string const &password)
+bool					UserModule_mysql::Authentification(std::string const &login, std::string const &password)
 {
   std::string request = "SELECT * FROM users WHERE login = '"
     +login+"' AND password = SHA1('" + salt + password + "');";
@@ -33,7 +33,7 @@ bool	UserModule_mysql::Authentification(std::string const &login, std::string co
   return false;
 }
 
-UserModule_mysql::m_userinfo const * UserModule_mysql::getProfil(int sessionId)
+UserModule_mysql::m_userinfo const	*UserModule_mysql::getProfil(int sessionId)
 {
   m_userinfo *profil = new m_userinfo;
 
@@ -55,11 +55,13 @@ UserModule_mysql::m_userinfo const * UserModule_mysql::getProfil(int sessionId)
   return profil;
 }
 
-UserModule_mysql::m_userinfo const * UserModule_mysql::getFriendList(int sessionId)
+std::vector<std::string> const &	UserModule_mysql::getFriendList(std::string const &login)
 {
-  m_userinfo *friendList = new m_userinfo;
-  friendList = 0;
-  sessionId = 0;
+  std::vector<std::string> *friendList = new std::vector<std::string>();
 
-  return friendList;
+  friendList = 0;
+
+  return *friendList;
 }
+
+//implement update friend list

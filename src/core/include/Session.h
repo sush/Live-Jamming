@@ -50,6 +50,9 @@ public:
   std::string const &				getLogin() const;
   void						setLogin(std::string const &);
 
+  std::vector<std::string> const &		getFriendList() const;
+  void						setFriendList(std::vector<std::string> const &);
+
 private:
   typedef std::map<field_t, boost::asio::deadline_timer *>		m_timer;
   typedef m_timer::iterator						m_timer_it;
@@ -70,6 +73,7 @@ private:
   m_m_timer				_timerMapMap;
   bool					_isLogged;
   std::string				_login;
+  std::vector<std::string>		_friendList;
 };
 
 #endif // ! __SESSION_H__

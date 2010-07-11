@@ -16,8 +16,12 @@ public:
 
   char const	*getLogin() const;
   char const	*getPass() const;
+  char const	*getFriendLogin() const;
+
   void		setLogin(char const *);
   void		setPass(char const *);
+  void		setFriendLogin(char const *);
+
 };
 
 #endif // ! __PACKET_V1_SESSION_H__

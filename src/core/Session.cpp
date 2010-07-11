@@ -167,3 +167,13 @@ std::string const &		Session::getLogin() const
 {
   return _login;
 }
+
+std::vector<std::string> const	& Session::getFriendList() const
+{
+  return _friendList;
+}
+
+void				Session::setFriendList(std::vector<std::string> const &friendList)
+{
+  _friendList = friendList;
+}

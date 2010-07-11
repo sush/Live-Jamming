@@ -61,6 +61,9 @@ private:
   void					Send_AuthResponse_NOK_DUPLICATE(Session *);
   void					Send_KeepAlive(Session *);
 
+  void					Send_Friend_Joined(Session *, const char *);
+  void					Send_Friend_Leaved(Session *, const char *);
+
   ServerManager				*_serverManager;
 
   boost::rand48				_rng;
