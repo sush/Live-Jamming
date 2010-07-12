@@ -41,13 +41,13 @@ IUserBackend<UserModule_mysql>::m_userinfo const *	UserModule_mysql::Authentific
 	      profil->insert(m_userinfo_pair(res.field_name(i), it->c_str()));
 	      std::cout << "[" << res.field_name(i) << "] " << it->c_str() << std::endl;
 	    }
+	  query.store_next();
 	  return profil;
 	}
       return 0;
     }
   else
     throw std::string("SQL server error: Unable to process SQL statement.");
-
   return 0;
 }
 
