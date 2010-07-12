@@ -17,6 +17,9 @@ public :
 
 void    authResponse(Packet_v1 const*, Session*);
 void    chanResponse(Packet_v1 const*, Session*);
+void    disconnect();
+
+field_t getChannelId(const QString&);
 
 typedef void    (Proxy::*pMethod)(Packet_v1 const*, Session*);
 

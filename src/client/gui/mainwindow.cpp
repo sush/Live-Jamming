@@ -18,9 +18,7 @@
 #include "roomdialog.h"
 #include "convset.h"
 
-//#include "boost/asio.hpp"
-//#include "boost/threadpool.hpp"
-#include <Protocol_Session.h>
+//#include <Protocol_Session.h>
 
 #include <Component_Session.h>
 #include <Component_Channel.h>
@@ -37,6 +35,7 @@ MainWindow::MainWindow() :
     ui->setupUi(this);
     setVisible(true);
     qRegisterMetaType<authEventsType>("MainWindow::authEventsType");
+    qRegisterMetaType<chanEventsType>("MainWindow::chanEventsType");
 
     setConnected(false);
     connect(QCoreApplication::instance(), SIGNAL(aboutToQuit()), this, SLOT(on_actionDisconnect_triggered()));
@@ -86,7 +85,6 @@ void MainWindow::setConnected(bool connected)
                                    connected ? ui->actionDisconnect : ui->actionConnect);
         ui->textEdit->setEnabled(connected);
     }
-
 }
 
 void MainWindow::authEvents(authEventsType event)
@@ -111,16 +109,36 @@ void MainWindow::authEvents(authEventsType event)
 void    MainWindow::chanEvents(chanEventsType event, const Packet_v1_Channel* packet)
 {
     switch(event) {
-        case JOIN_OK:
-            qDebug() << packet->getChannelName();
+    case JOIN_OK:
+        qDebug() << "JOIN_OK" << packet->getChannelName();
+        joinChannel(packet->getChannelName());
         break;
+    case LEAVE_OK:
+        qDebug() << "LEAVE_OK" << packet->getChannelName();
+        leaveChannel(packet->getChannelName());
+        break;
+    case ALREADYINCHAN:
+        // coller le focus sur le chan
+        break;
+    case LISTED:
+        //generateChannels(packet->getChannelList());
+    ;
 
     }
 }
 
-void    MainWindow::chanJoinOk(const char *)
+void    MainWindow::joinChannel(const QString &name)
 {
+    QTreeWidgetItem* top = new QTreeWidgetItem(QStringList(name));
+    ui->channelList->addTopLevelItem(top);
 
+    //ui->channelList
+}
+
+void    MainWindow::leaveChannel(const QString &name)
+{
+    QList<QTreeWidgetItem *> l = ui->channelList->findItems(name, Qt::MatchExactly);
+    ui->channelList->removeItemWidget(l[0], 0);
 }
 
 void MainWindow::on_actionConnect_triggered()
@@ -133,6 +151,7 @@ void MainWindow::on_actionConnect_triggered()
             proxy->session()->Connect(params.login.toStdString(), params.password.toStdString());
     }
 }
+
 
 void MainWindow::on_actionDisconnect_triggered()
 {
@@ -174,4 +193,14 @@ void MainWindow::on_actionCreate_Channel_triggered()
     if ( !dialui.nameLineEdit->text().isEmpty()) {
         proxy->channel()->Send_Join(proxy->session()->_session, dialui.nameLineEdit->text().toLocal8Bit().data());
     }
+}
+
+void MainWindow::on_channelList_customContextMenuRequested(QPoint pos)
+{
+    QTreeWidgetItem* item = ui->channelList->itemAt(pos);
+    QAction leave(QString("leave"), 0);
+    QAction* action = QMenu::exec(QList<QAction*>() << &leave, mapToGlobal(pos));
+
+    if (action == &leave)
+        proxy->channel()->Send_Leave(proxy->session()->_session, proxy->getChannelId(item->text(0)));
 }
