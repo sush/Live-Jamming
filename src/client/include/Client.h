@@ -16,6 +16,7 @@ class Client;
 #include <Singleton.h>
 #include <Config.h>
 #include <mainwindow.h>
+#include <proxy.h>
 #include <ClientManager.h>
 
 class Client : public Singleton<Client>

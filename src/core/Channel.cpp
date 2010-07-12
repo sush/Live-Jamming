@@ -19,7 +19,7 @@ bool			Channel::addConnected(Session *session, field_t sessionId)
     {
       _channel_mutex.lock();
       _connected->insert(std::pair<field_t, Session *>(sessionId, session));
-      _channel_mutex.unlock();
+  _channel_mutex.unlock();
       return true;
     }
   return false;

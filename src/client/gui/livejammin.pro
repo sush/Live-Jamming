@@ -8,14 +8,19 @@ SOURCES += mainwindow.cpp \
     configuration_dialog.cpp \
     roomdialog.cpp \
     parameters.cpp \
-    chan.cpp
+    chan.cpp \
+    convset.cpp \
+    proxy.cpp \
+    chanlist.cpp
 HEADERS += mainwindow.h \
     accountconnection.h \
     configuration_dialog.h \
     roomdialog.h \
     parameters.h \
+    chan.h \
     convset.h \
-    chan.h
+    proxy.h \
+    chanlist.h
 DEPENDPATH += ../../core
 INCLUDEPATH += ../../core/include
 SOURCES += Manager.cpp \
@@ -33,7 +38,9 @@ HEADERS += Session.h \
     Packet.h \
     Packet_v1.h \
     PacketQueue.h \
-    Bind_recv.h
+    Bind_recv.h \
+    Packet_v1_Session.h \
+    Packet_v1_Channel.h
 DEPENDPATH += ../../client
 INCLUDEPATH += ../../client/include
 SOURCES += main_net.cpp \
@@ -61,8 +68,10 @@ FORMS += mainwindow.ui \
     accountconnection.ui \
     configuration_dialog.ui \
     roomdialog.ui \
-    newchan.ui
-QMAKE_CXXFLAGS += -D_GUI
+    newchan.ui \
+    convset.ui \
+    chanlist.ui
+DEFINES += _GUI
 debug:QMAKE_CXXFLAGS += -D_DEBUG \
     -g3 \
     -pg

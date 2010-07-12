@@ -9,7 +9,7 @@
 ////////////////////////////////////////////////////////////
 
 #ifdef _GUI
-Bind_recv::Bind_recv(IComponent *instance, IComponent::pMethod method, MainWindow *guiInstance, MainWindow::pMethod guiMethod)
+Bind_recv::Bind_recv(IComponent *instance, IComponent::pMethod method, Proxy *guiInstance, Proxy::pMethod guiMethod)
   :_instance(instance), _method(method), _guiInstance(guiInstance), _guiMethod(guiMethod), _needsAuth(true)
 {
   std::cout << "SETTING COMPONENT INSTANCE TO " << (int) _instance << std::endl;

@@ -10,17 +10,18 @@ Component_Channel::~Component_Channel() {}
 
 void		Component_Channel::BindingsRecv()
 {
-  (*_bindingsRecv)[CHANNEL_JOIN_OK] =
-    new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Channel::Recv_Join_OK),
-                  static_cast<MainWindow*>(_clientManager), static_cast<MainWindow::pMethod>(&MainWindow::authresponse_ok));
-  
-  (*_bindingsRecv)[CHANNEL_JOIN_NOK_ALREADYINCHAN] =
-    new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Channel::Recv_Join_NOK_ALREADYINCHAN),
-    static_cast<MainWindow*>(_clientManager), static_cast<MainWindow::pMethod>(&MainWindow::authresponse_nok_badauth));
+    (*_bindingsRecv)[CHANNEL_JOIN_OK] =
+            new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Channel::Recv_Join_OK),
+                          static_cast<Proxy*>(_clientManager), static_cast<Proxy::pMethod>(&Proxy::chanResponse));
 
-  (*_bindingsRecv)[CHANNEL_JOINED] =
-    new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Channel::Recv_Joined));
-  
+    (*_bindingsRecv)[CHANNEL_JOIN_NOK_ALREADYINCHAN] =
+            new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Channel::Recv_Join_NOK_ALREADYINCHAN),
+                          static_cast<Proxy*>(_clientManager), static_cast<Proxy::pMethod>(&Proxy::chanResponse));
+
+    (*_bindingsRecv)[CHANNEL_JOINED] =
+            new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Channel::Recv_Joined),
+            static_cast<Proxy*>(_clientManager), static_cast<Proxy::pMethod>(&Proxy::chanResponse));
+
   (*_bindingsRecv)[CHANNEL_MESSAGE_ACK] =
     new Bind_recv(0, 0);
 
@@ -66,10 +67,10 @@ void	Component_Channel::RegisteredRequests()
 
   // RECV requests
   (*_registeredRequests)[CHANNEL_JOIN_OK] = 
-    new Request(CHANNEL_JOIN_OK, RECV, "Channel Join request OK", RESPONSETONOTHING);
+    new Request(CHANNEL_JOIN_OK, RECV, "Channel Join request OK", CHANNEL_JOIN);
 
   (*_registeredRequests)[CHANNEL_JOIN_NOK_ALREADYINCHAN] = 
-    new Request(CHANNEL_JOIN_NOK_ALREADYINCHAN, RECV, "Channel Join request NOK user already in chan", RESPONSETONOTHING);
+    new Request(CHANNEL_JOIN_NOK_ALREADYINCHAN, RECV, "Channel Join request NOK user already in chan", CHANNEL_JOIN);
 
   (*_registeredRequests)[CHANNEL_JOINED] = 
     new Request(CHANNEL_JOIN_OK, RECV, "Channel Joined request", RESPONSETONOTHING);

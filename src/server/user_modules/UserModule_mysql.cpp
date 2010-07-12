@@ -55,8 +55,6 @@ std::vector<std::string> const &	UserModule_mysql::getFriendList(std::string con
 {
   std::vector<std::string> *friendList = new std::vector<std::string>();
 
-  friendList = 0;
-
   return *friendList;
 }
 

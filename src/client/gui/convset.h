@@ -1,20 +1,23 @@
 #ifndef CONVSET_H
 #define CONVSET_H
 
-#include "QWidget"
-#include "QPlainTextEdit"
-#include "QLineEdit"
+#include <QWidget>
 
-class   convSet : public QWidget
-{
+namespace Ui {
+    class convSet;
+}
+
+class convSet : public QWidget {
+    Q_OBJECT
 public:
-    convSet(QWidget* parent) : QWidget(parent),
-        plainText(new QPlainTextEdit(this)),
-        lineEdit(new QLineEdit(this))
-    {
-    }
-    QPlainTextEdit* plainText;
-    QLineEdit*  lineEdit;
+    convSet(QWidget *parent = 0);
+    ~convSet();
+
+protected:
+    void changeEvent(QEvent *e);
+
+private:
+    Ui::convSet *ui;
 };
 
 #endif // CONVSET_H

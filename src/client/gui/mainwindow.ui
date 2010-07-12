@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>550</width>
-    <height>510</height>
+    <width>791</width>
+    <height>745</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>LiveJammin</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
@@ -20,80 +20,100 @@
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
-      <widget class="QTabWidget" name="listsTab">
-       <property name="currentIndex">
-        <number>0</number>
+      <widget class="QTabWidget" name="tabWidget">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Maximum" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
        </property>
-       <widget class="QWidget" name="Chans">
+       <property name="currentIndex">
+        <number>1</number>
+       </property>
+       <widget class="QWidget" name="tab">
         <attribute name="title">
-         <string>Chans</string>
+         <string>Channels</string>
         </attribute>
-        <layout class="QVBoxLayout" name="verticalLayout">
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
-          <widget class="QTreeWidget" name="ChansList">
-           <property name="rootIsDecorated">
-            <bool>true</bool>
+          <widget class="QTreeWidget" name="treeWidget">
+           <property name="contextMenuPolicy">
+            <enum>Qt::ActionsContextMenu</enum>
+           </property>
+           <property name="selectionMode">
+            <enum>QAbstractItemView::MultiSelection</enum>
            </property>
            <property name="headerHidden">
             <bool>true</bool>
            </property>
-           <property name="columnCount">
-            <number>2</number>
-           </property>
+           <attribute name="headerVisible">
+            <bool>false</bool>
+           </attribute>
+           <attribute name="headerVisible">
+            <bool>false</bool>
+           </attribute>
            <column>
             <property name="text">
-             <string notr="true">1</string>
+             <string notr="true">Channels</string>
+            </property>
+            <property name="textAlignment">
+             <set>AlignHCenter|AlignVCenter|AlignCenter</set>
             </property>
            </column>
-           <column>
+           <item>
             <property name="text">
-             <string notr="true">2</string>
+             <string>rock</string>
             </property>
-           </column>
+            <item>
+             <property name="text">
+              <string>such</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>greg</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>mathieu</string>
+             </property>
+            </item>
+           </item>
+           <item>
+            <property name="text">
+             <string>rap</string>
+            </property>
+            <item>
+             <property name="text">
+              <string>loulou</string>
+             </property>
+            </item>
+           </item>
           </widget>
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="Friends">
+       <widget class="QWidget" name="tab_2">
         <attribute name="title">
          <string>Friends</string>
         </attribute>
-        <layout class="QVBoxLayout" name="verticalLayout_2">
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
-          <widget class="QTreeWidget" name="FriendsList">
-           <attribute name="headerVisible">
-            <bool>false</bool>
-           </attribute>
-           <attribute name="headerVisible">
-            <bool>false</bool>
-           </attribute>
-           <column>
-            <property name="text">
-             <string notr="true">1</string>
-            </property>
-           </column>
-          </widget>
+          <widget class="QListWidget" name="listWidget"/>
          </item>
         </layout>
        </widget>
       </widget>
-      <widget class="QTabWidget" name="convsTab">
-       <property name="currentIndex">
-        <number>0</number>
-       </property>
-       <widget class="QWidget" name="Convs">
-        <attribute name="title">
-         <string>General</string>
-        </attribute>
-        <layout class="QVBoxLayout" name="verticalLayout_4">
-         <item>
-          <widget class="QPlainTextEdit" name="plainTextEdit"/>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="lineEdit"/>
-         </item>
-        </layout>
-       </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QPlainTextEdit" name="textEdit"/>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lineEdit"/>
+        </item>
+       </layout>
       </widget>
      </widget>
     </item>
@@ -104,7 +124,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>550</width>
+     <width>791</width>
      <height>27</height>
     </rect>
    </property>
@@ -135,13 +155,13 @@
    </widget>
    <widget class="QMenu" name="menuChans">
     <property name="title">
-     <string>Conversation</string>
+     <string>Channels</string>
     </property>
-    <addaction name="actionNew_Chan"/>
-    <addaction name="actionSearch_Chan"/>
+    <addaction name="actionCreate_Channel"/>
+    <addaction name="actionList_channels"/>
     <addaction name="separator"/>
-    <addaction name="actionNew_Room"/>
-    <addaction name="actionSearch_Room"/>
+    <addaction name="actionCreate_room"/>
+    <addaction name="actionList_rooms"/>
     <addaction name="separator"/>
     <addaction name="actionAdd_Friend"/>
    </widget>
@@ -157,6 +177,7 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="separator"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionConnect">
@@ -164,7 +185,7 @@
     <string>Connect</string>
    </property>
    <property name="shortcut">
-    <string>Alt+F</string>
+    <string>Alt+C</string>
    </property>
   </action>
   <action name="actionCreate_account">
@@ -198,29 +219,6 @@
     <string>About LiveJaming</string>
    </property>
   </action>
-  <action name="actionSearch_Chan">
-   <property name="text">
-    <string>Search Chan</string>
-   </property>
-  </action>
-  <action name="actionNew_Chan">
-   <property name="text">
-    <string>New Chan</string>
-   </property>
-  </action>
-  <action name="actionNew_Room">
-   <property name="text">
-    <string>New Room</string>
-   </property>
-  </action>
-  <action name="actionSearch_Room">
-   <property name="text">
-    <string>Search Room</string>
-   </property>
-   <property name="toolTip">
-    <string>Search Room</string>
-   </property>
-  </action>
   <action name="actionDisconnect">
    <property name="text">
     <string>Disconnect</string>
@@ -229,6 +227,26 @@
   <action name="actionAdd_Friend">
    <property name="text">
     <string>Add Friend</string>
+   </property>
+  </action>
+  <action name="actionCreate_room">
+   <property name="text">
+    <string>Create room</string>
+   </property>
+  </action>
+  <action name="actionList_rooms">
+   <property name="text">
+    <string>List rooms</string>
+   </property>
+  </action>
+  <action name="actionCreate_Channel">
+   <property name="text">
+    <string>Create Channel</string>
+   </property>
+  </action>
+  <action name="actionList_channels">
+   <property name="text">
+    <string>List channels</string>
    </property>
   </action>
  </widget>

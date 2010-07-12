@@ -1,5 +1,6 @@
 #include <Component_Session.h>
 #include <Bind_recv.h>
+#include <proxy.h>
 
 Component_Session::Component_Session(ClientManager *clientManager)
   :IComponent(SESSION_COMPONENTID), _clientManager(clientManager), _logged(false), _session(0)
@@ -16,15 +17,15 @@ void	Component_Session::BindingsRecv()
 {
   (*_bindingsRecv)[SESSION_AUTHRESPONSE_OK] =
     new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Session::Recv_AuthResponse),
-                  static_cast<MainWindow*>(_clientManager), static_cast<MainWindow::pMethod>(&MainWindow::authresponse_ok));
+                  static_cast<Proxy*>(_clientManager), static_cast<Proxy::pMethod>(&Proxy::authResponse));
 
   (*_bindingsRecv)[SESSION_AUTHRESPONSE_NOK_BADAUTH] =
     new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Session::Recv_AuthResponse),
-                  static_cast<MainWindow*>(_clientManager), static_cast<MainWindow::pMethod>(&MainWindow::authresponse_nok_badauth));
+                  static_cast<Proxy*>(_clientManager), static_cast<Proxy::pMethod>(&Proxy::authResponse));
 
   (*_bindingsRecv)[SESSION_AUTHRESPONSE_NOK_DUPLICATE] =
     new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Session::Recv_AuthResponse),
-                  static_cast<MainWindow*>(_clientManager), static_cast<MainWindow::pMethod>(&MainWindow::authresponse_nok_badauth));
+                  static_cast<Proxy*>(_clientManager), static_cast<Proxy::pMethod>(&Proxy::authResponse));
 
   (*_bindingsRecv)[SESSION_TIMEOUT] =
     new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Session::Recv_TimeOutTest));

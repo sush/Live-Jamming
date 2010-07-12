@@ -11,7 +11,7 @@ class MainWindow;
 #include <Session.h>
 #include <Packet_v1.h>
 #ifdef _GUI
- #include <mainwindow.h>
+ #include <proxy.h>
 #endif
 // template this class too
 // to get bind_recv for servermanager and bind_recv for clientmanager
@@ -22,7 +22,7 @@ class Bind_recv
 public:
   friend class Manager;
 #ifdef _GUI
-  Bind_recv(IComponent *, IComponent::pMethod, MainWindow* = 0, MainWindow::pMethod = 0);
+  Bind_recv(IComponent *, IComponent::pMethod, Proxy* = 0, Proxy::pMethod = 0);
 #else
   Bind_recv(IComponent *, IComponent::pMethod);
 #endif
@@ -34,8 +34,8 @@ private:
   IComponent *				_instance;
   IComponent::pMethod			_method;
 #ifdef _GUI
-  MainWindow *				_guiInstance;
-  MainWindow::pMethod			_guiMethod;
+  Proxy *				_guiInstance;
+  Proxy::pMethod			_guiMethod;
 #endif
   bool					_needsAuth;
 };

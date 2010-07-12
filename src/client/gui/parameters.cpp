@@ -1,6 +1,6 @@
 #include "parameters.h"
 
-Parameters::Parameters()
+Parameters::Parameters() : login("dude"), password("12345678")
 {
 }
 
