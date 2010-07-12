@@ -120,7 +120,7 @@ void		Component_SessionManager::Disconnect(Session * session)
       for (unsigned int i = 0; i < friendList.size(); ++i)
 	{
 	  if (it->second->getLogin() == friendList[i])
-	    Send_Friend_Joined(it->second, session->getLogin().c_str());
+	    Send_Friend_Leaved(it->second, session->getLogin().c_str());
 	}
     }
   _sessionMap->erase(session->getSessionId());
@@ -189,6 +189,64 @@ void		Component_SessionManager::Send_Friend_Leaved(Session *session, const char 
   _serverManager->Send(packet_v1_session, session);
 }
 
+void		Component_SessionManager::Recv_Add_Friend(Packet_v1 const *packet_v1, Session *session)
+{
+  Packet_v1_Session	const *packet_v1_session =
+    static_cast<Packet_v1_Session const *>(packet_v1);
+
+  char const * friendLogin = packet_v1_session->getFriendLogin();
+  // call userModule->AddFriend(session->getLogin(), friendLogin);
+  // if ok 
+  // Send_Add_Friend_OK(session, friendLogin);
+  // else
+  // Send_Add_Friend_NOK(session, friendLogin);
+}
+
+void		Component_SessionManager::Recv_Del_Friend(Packet_v1 const *packet_v1, Session *session)
+{
+  Packet_v1_Session	const *packet_v1_session =
+    static_cast<Packet_v1_Session const *>(packet_v1);
+
+  char const * friendLogin = packet_v1_session->getFriendLogin();
+  // call userModule->DelFriend(session->getLogin(), friendLogin);
+  // if ok 
+  // Send_Del_Friend_OK(session, friendLogin);
+  // else
+  // Send_Del_Friend_NOK(session, friendLogin);
+}
+
+void		Component_SessionManager::Send_Add_Friend_OK(Session *session, char const *friendLogin)
+{
+  Packet_v1_Session *packet_v1_session = new Packet_v1_Session(SESSION_ADD_FRIEND_OK);
+
+  packet_v1_session->setFriendLogin(friendLogin);
+  _serverManager->Send(packet_v1_session, session);
+}
+
+void		Component_SessionManager::Send_Add_Friend_NOK(Session *session, char const *friendLogin)
+{
+  Packet_v1_Session *packet_v1_session = new Packet_v1_Session(SESSION_ADD_FRIEND_NOK);
+
+  packet_v1_session->setFriendLogin(friendLogin);
+  _serverManager->Send(packet_v1_session, session);
+}
+
+void		Component_SessionManager::Send_Del_Friend_OK(Session *session, char const *friendLogin)
+{
+  Packet_v1_Session *packet_v1_session = new Packet_v1_Session(SESSION_DEL_FRIEND_OK);
+
+  packet_v1_session->setFriendLogin(friendLogin);
+  _serverManager->Send(packet_v1_session, session);
+}
+
+void		Component_SessionManager::Send_Del_Friend_NOK(Session *session, char const *friendLogin)
+{
+  Packet_v1_Session *packet_v1_session = new Packet_v1_Session(SESSION_DEL_FRIEND_NOK);
+
+  packet_v1_session->setFriendLogin(friendLogin);
+  _serverManager->Send(packet_v1_session, session);
+}
+
 void		Component_SessionManager::BindingsRecv()
 {
   (*_bindingsRecv)[SESSION_AUTHREQUEST] =
@@ -202,6 +260,12 @@ void		Component_SessionManager::BindingsRecv()
 
   (*_bindingsRecv)[SESSION_TIMEOUT] =
     new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_SessionManager::Recv_TimeOutTest));
+
+  (*_bindingsRecv)[SESSION_ADD_FRIEND] =
+    new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_SessionManager::Recv_Add_Friend));
+
+  (*_bindingsRecv)[SESSION_DEL_FRIEND] =
+    new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_SessionManager::Recv_Del_Friend));
 }
 
 
@@ -222,6 +286,18 @@ void	Component_SessionManager::RegisteredRequests()
 
   (*_registeredRequests)[SESSION_FRIEND_LEAVED] = 
     new Request(SESSION_FRIEND_LEAVED, SEND, "Session friend leaved notification", NORETRY);
+
+  (*_registeredRequests)[SESSION_ADD_FRIEND_OK] = 
+    new Request(SESSION_ADD_FRIEND_OK, SEND, "Session friend add OK notification", NORETRY);
+
+  (*_registeredRequests)[SESSION_ADD_FRIEND_NOK] = 
+    new Request(SESSION_ADD_FRIEND_NOK, SEND, "Session friend add NOK notification", NORETRY);
+
+  (*_registeredRequests)[SESSION_DEL_FRIEND_OK] = 
+    new Request(SESSION_DEL_FRIEND_OK, SEND, "Session friend del OK notification", NORETRY);
+
+  (*_registeredRequests)[SESSION_DEL_FRIEND_NOK] = 
+    new Request(SESSION_DEL_FRIEND_NOK, SEND, "Session friend del NOK notification", NORETRY);
   
   // RECV requests
   (*_registeredRequests)[SESSION_AUTHREQUEST] = 
@@ -232,6 +308,12 @@ void	Component_SessionManager::RegisteredRequests()
 
   (*_registeredRequests)[SESSION_DISCONNECTED] = 
     new Request(SESSION_DISCONNECTED, RECV, "Session ended", RESPONSETONOTHING);
+
+  (*_registeredRequests)[SESSION_ADD_FRIEND] = 
+    new Request(SESSION_ADD_FRIEND, RECV, "Add friend request", RESPONSETONOTHING);
+
+  (*_registeredRequests)[SESSION_DEL_FRIEND] = 
+    new Request(SESSION_DEL_FRIEND, RECV, "Del friend request", RESPONSETONOTHING);
 
   // BIDIRECTIONNAL requests 
   (*_registeredRequests)[SESSION_TIMEOUT] = 

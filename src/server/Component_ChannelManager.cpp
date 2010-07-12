@@ -276,6 +276,16 @@ void	Component_ChannelManager::Send_Leaved(Session *session, field_t channelId, 
   _serverManager->Send(packet_v1_channel, session);
 }
 
+void	Component_ChannelManager::Disconnect(Session *session)
+{
+  m_channel::iterator it, end = _channelMap->end();
+  for (it = _channelMap->begin(); it != end; ++it)
+    {
+      if (it->second->getConnected()->find(session->getSessionId()) != it->second->getConnected()->end())
+	it->second->removeConnected(session->getSessionId());
+    }
+}
+
 field_t	Component_ChannelManager::GenChannelId()
 {
   field_t	channelId;

@@ -64,6 +64,15 @@ private:
   void					Send_Friend_Joined(Session *, const char *);
   void					Send_Friend_Leaved(Session *, const char *);
 
+  void		Recv_Add_Friend(Packet_v1 const *, Session *);
+  void		Recv_Del_Friend(Packet_v1 const *, Session *);
+
+  void		Send_Add_Friend_OK(Session *, char const *);
+  void		Send_Add_Friend_NOK(Session *, char const *);
+
+  void		Send_Del_Friend_OK(Session *, char const *);
+  void		Send_Del_Friend_NOK(Session *, char const *);
+
   ServerManager				*_serverManager;
 
   boost::rand48				_rng;
