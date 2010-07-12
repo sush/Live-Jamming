@@ -20,11 +20,8 @@ class IUserBackend : public Singleton<T>
   //! Authentification method.
   /*! \param 1 string login */
   /*! \param 2 string password */
-  virtual bool					Authentification(std::string const &, std::string const &) = 0;
-  //! Get user profile from module.
-  /*! \param 1 int sessionId*/
-  /*! \return m_userinfo with profil infos */
-  virtual m_userinfo const			*getProfil(int) = 0;
+  virtual IUserBackend<T>::m_userinfo const *			Authentification(std::string const &, std::string const &) = 0;
+
   //! Get user friend list from module.
   /*! \param 1 int sessionId*/
   /*! \return m_userinfo with friend list */

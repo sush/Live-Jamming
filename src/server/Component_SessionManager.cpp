@@ -168,9 +168,9 @@ void		Component_SessionManager::Recv_TimeOutTest(Packet_v1 const*, Session *sess
   Send_KeepAlive(session);
 }
 
-void		Component_SessionManager::Recv_Disconnect(Packet_v1 const *, Session *)
+void		Component_SessionManager::Recv_Disconnect(Packet_v1 const *, Session * session)
 {
-  std::cout << " recv_Disconnected" << std::endl;
+  _serverManager->Disconnect(session);
 }
 
 void		Component_SessionManager::Send_Friend_Joined(Session *session, const char *clientLogin)

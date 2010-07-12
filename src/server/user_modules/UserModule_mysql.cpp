@@ -14,45 +14,41 @@ void					UserModule_mysql::Connection()
 {
   const char* db = "live-jamming_db", *server = "192.168.0.12", *user = "root", *pass = "MAgoun12$";
   
+  _dbLink.set_option(new mysqlpp::MultiStatementsOption(true));
   _dbLink.connect(db, server, user, pass);
 }
 
-bool					UserModule_mysql::Authentification(std::string const &login, std::string const &password)
+IUserBackend<UserModule_mysql>::m_userinfo const *	UserModule_mysql::Authentification(std::string const &login, std::string const &password)
 {
-  std::string request = "SELECT * FROM users WHERE login = '"
-    +login+"' AND password = SHA1('" + salt + password + "');";
+
+  std::string request = "CALL PROC_GET_USERINFO("
+    "(SELECT id FROM users WHERE login = '" +login+"' AND password = SHA1('" + salt + password + "')),"
+   " 'fre');";
+  std::cout << "request = " << request << std::endl;
   
   mysqlpp::Query query = _dbLink.query(request);
   
   if (mysqlpp::StoreQueryResult res = query.store())
     {
       if (res.size() == 1)
-	return true;
+	{
+	  m_userinfo *				profil = new m_userinfo;
+	  mysqlpp::Row::const_iterator	it, end = res[0].end();
+	  int					i;
+
+	  for (i = 0, it = res[0].begin(); it != end; ++it, ++i)
+	    {
+	      profil->insert(m_userinfo_pair(res.field_name(i), it->c_str()));
+	      std::cout << "[" << res.field_name(i) << "] " << it->c_str() << std::endl;
+	    }
+	  return profil;
+	}
+      return 0;
     }
+  else
+    throw std::string("SQL server error: Unable to process SQL statement.");
 
-  return false;
-}
-
-UserModule_mysql::m_userinfo const	*UserModule_mysql::getProfil(int sessionId)
-{
-  m_userinfo *profil = new m_userinfo;
-
-  std::ostringstream oss;
-  oss << "SELECT * FROM users WHERE id = " << sessionId << ";";
-  std::string request = oss.str();
-
-  mysqlpp::Query query = _dbLink.query(request);
-  mysqlpp::StoreQueryResult res = query.store();
-  mysqlpp::StoreQueryResult::const_iterator it, end = res.end();
-
-  for (it = res.begin(); it != end; ++it)
-    {
-    mysqlpp::Row row = (*it);
-    profil->insert(m_userinfo_pair("id", (std::string)row["id"]));
-    std::cout << "RES: "<< row["id"] << std::endl;
-  }
-
-  return profil;
+  return 0;
 }
 
 std::vector<std::string> const &	UserModule_mysql::getFriendList(std::string const &login)

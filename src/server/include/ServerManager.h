@@ -19,10 +19,11 @@ public:
 
   virtual void		Manage(Packet *);
   unsigned int		CountActiveSessions() const;
+  virtual void		Disconnect(Session *);
+  
 
 private:
   virtual void		Init_Components();
-  virtual void		Disconnect(Session *);
 
   
 private:

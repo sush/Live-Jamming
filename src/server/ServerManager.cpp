@@ -74,4 +74,5 @@ unsigned int	ServerManager::CountActiveSessions() const
 void		ServerManager::Disconnect(Session *session)
 {
   _sessionManager->Disconnect(session);
+  _channelManager->Disconnect(session);
 }
