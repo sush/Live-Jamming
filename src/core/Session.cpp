@@ -23,7 +23,6 @@ void	Session::Authentificated(Packet_v1 const * packet_v1)
 {
   _isLogged = true;
   _sessionId = packet_v1->getSessionId();
-  std::cout << ">>>>>>>>>>> sessionid = " << _sessionId << std::endl;
   _ip = packet_v1->getEndpoint().address();
   _port  = packet_v1->getEndpoint().port();
   setTimeOutTest();
@@ -142,7 +141,6 @@ void				Session::CancelAutoRetry(field_t componentId, field_t requestId)
       if (timerMap->find(requestId) != timerMap->end())
 	{
 	  (*timerMap)[requestId]->cancel();
-	  std::cout << "[" << componentId << "] [" << requestId << "] cancelled" << std::endl;
 	}
     }
   // do we really want to throw an exception in case we try to cancel a non existing timer?

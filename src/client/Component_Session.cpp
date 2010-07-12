@@ -129,8 +129,6 @@ Session		*Component_Session::getSession()
 
 void		Component_Session::Connect(std::string const &login, std::string const& pass)
 {
-  for (unsigned int i = 0; i < login.size() + 1; ++i)
-    std::cout << "[" << i << "] " << login.c_str()[i] << std::endl;
   Send_AuthRequest(login, pass);
 }
 
@@ -140,7 +138,6 @@ void		Component_Session::Recv_AuthResponse(Packet_v1 const *packet_v1, Session *
     {
       _logged = true;
       session->Authentificated(packet_v1);
-      std::cout << "recv_authresponse_ok" << std::endl;
     }
   else
     {std::cout << "auth failed" << std::endl;}	// auth errors
@@ -155,21 +152,16 @@ void		Component_Session::Disconnect()
 
 void		Component_Session::Recv_TimeOutTest(Packet_v1 const *, Session *)
 {
-  std::cout << "recv_timeouttest" << std::endl;
   Send_KeepAlive();
 }
 
 void		Component_Session::Recv_KeepAlive(Packet_v1 const *, Session *)
 {
-  std::cout << "recv_keepalive" << std::endl;
-
 }
 
 void		Component_Session::Recv_Disconnected(Packet_v1 const *, Session *)
 {
   _logged = false;
-  std::cout << "recv_disconnected" << std::endl;
-
 }
 
 void		Component_Session::Send_AuthRequest(std::string const &login, std::string const &pass)
@@ -177,13 +169,9 @@ void		Component_Session::Send_AuthRequest(std::string const &login, std::string 
   Packet_v1_Session	*packet_v1_Session = new Packet_v1_Session(SESSION_AUTHREQUEST);
   
   _session->setLogin(login);
-  std::cout << "login = " << login.c_str() << std::endl;
   packet_v1_Session->setLogin(login.c_str());
   packet_v1_Session->setPass(pass.c_str());
   
-  std::cout << "login = " << packet_v1_Session->getLogin() << std::endl;
-  std::cout << "pass = " << packet_v1_Session->getPass() << std::endl;
-
   _clientManager->Send(packet_v1_Session, _session);
 }
 
@@ -199,7 +187,6 @@ void		Component_Session::Send_Disconnect()
 
 void		Component_Session::Send_KeepAlive()
 {
-  std::cout << "send_keep_alive" << std::endl;
   _clientManager->Send(_componentId, SESSION_KEEPALIVE, _session);
 }
 

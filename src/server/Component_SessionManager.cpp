@@ -70,8 +70,6 @@ Session 	*Component_SessionManager::DoAuth(Packet_v1_Session const * packet_v1_S
   std::string pass_str(pass);
   ///////////////////////////
 
-  std::cout << "packet_auth_request received" << std::endl;
-  std::cout << "login = [" << login << "] pass = " << pass << std::endl;
   if (_userModule_mysql->Authentification(login_str, pass_str))
     {
       field_t			sessionId	= GenSessionId();
@@ -96,14 +94,9 @@ Session 	*Component_SessionManager::DoAuth(Packet_v1_Session const * packet_v1_S
 		}
 	    }
 	}
-
-      std::cout << "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< AUTH OK >>>>>>>>>>>>>>>>>>>>>>>>>" << std::endl;
     }
   else 
-    {
-      _serverManager->Send(_componentId, SESSION_AUTHRESPONSE_NOK_BADAUTH, packet_v1_Session->getEndpoint());
-      std::cout << "!!!!!!!!!!!!!!!!!!!!!!! AUTH NOK !!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
-    }
+    _serverManager->Send(_componentId, SESSION_AUTHRESPONSE_NOK_BADAUTH, packet_v1_Session->getEndpoint());
   return new_session;
 }
 
@@ -153,18 +146,15 @@ void		Component_SessionManager::Send_AuthResponse_NOK_DUPLICATE(Session * sessio
 
 void		Component_SessionManager::Send_KeepAlive(Session *session)
 {
-  std::cout << "send_keepalive" << std::endl;
   _serverManager->Send(_componentId, SESSION_KEEPALIVE, session);
 }
 
 void		Component_SessionManager::Recv_KeepAlive(Packet_v1 const *, Session *)
 {
-  std::cout << "packet_keep_alive received" << std::endl;
 }
 
 void		Component_SessionManager::Recv_TimeOutTest(Packet_v1 const*, Session *session)
 {
-  std::cout << "packet_timeout received" << std::endl;
   Send_KeepAlive(session);
 }
 

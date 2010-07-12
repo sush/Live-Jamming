@@ -45,13 +45,13 @@ void		Manager::Send_bind(Packet_v1 *packet_v1, Session *session) const
 
 void		Manager::Send(Packet_v1 *packet_v1, Session * session) const
 {
+  packet_v1->setSessionId(session->getSessionId());
+  if (getRegisteredRequest(packet_v1->getComponentId(), packet_v1->getRequestId()).getRetry())
+    session->setAutoRetry(packet_v1);
 #ifdef _DEBUG
   std::cout << "<..... SEND .....> ";
   packet_v1->Print_v1();
 #endif
-  packet_v1->setSessionId(session->getSessionId());
-  if (getRegisteredRequest(packet_v1->getComponentId(), packet_v1->getRequestId()).getRetry())
-    session->setAutoRetry(packet_v1);
   // schedule a retry after a delay with no expected response for that send
   _socket.async_send_to(boost::asio::buffer(packet_v1->getRawData()), session->getEndpoint(),
 			boost::bind(&Manager::CallBack_handle_send, this, packet_v1));
@@ -108,8 +108,6 @@ void		Manager::CallBack_TimeOutOccurred(Session * session, boost::system::error_
 void		Manager::Send_TimeOutTest(Session * session)
 {
   Send(SESSION_COMPONENTID, SESSION_TIMEOUT, session);
-  session->Print();
-  std::cout << "-> sending timeout test" << std::endl;
   session->CancelTimeOutTest();
   session->setTimeOutOccurred();
 }

@@ -26,8 +26,10 @@ void				ServerManager::Manage(Packet * packet)
   field_t			componentId = packet_v1->getComponentId(), requestId = packet_v1->getRequestId();
   session = _sessionManager->FindSession(packet_v1);
 
-  std::cout << "==> ";
+#ifdef _DEBUG
+  std::cout << "<      RECV       > ";
   packet_v1->Print_v1();
+#endif
   if (session)
     {
       session->setTimeOutTest();

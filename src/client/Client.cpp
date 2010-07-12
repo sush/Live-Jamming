@@ -12,7 +12,6 @@ const int		treat_delay = 0; //micro seconds
 void		Client::Run()
 {
   std::cout << "Client started..." << std::endl;
-  std::cout << "client manager = " << (int)_clientManager << std::endl;
  
   // schedule the UI window to be created
   start_receive();

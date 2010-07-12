@@ -24,7 +24,6 @@ IUserBackend<UserModule_mysql>::m_userinfo const *	UserModule_mysql::Authentific
   std::string request = "CALL PROC_GET_USERINFO("
     "(SELECT id FROM users WHERE login = '" +login+"' AND password = SHA1('" + salt + password + "')),"
    " 'fre');";
-  std::cout << "request = " << request << std::endl;
   
   mysqlpp::Query query = _dbLink.query(request);
   
@@ -39,7 +38,6 @@ IUserBackend<UserModule_mysql>::m_userinfo const *	UserModule_mysql::Authentific
 	  for (i = 0, it = res[0].begin(); it != end; ++it, ++i)
 	    {
 	      profil->insert(m_userinfo_pair(res.field_name(i), it->c_str()));
-	      std::cout << "[" << res.field_name(i) << "] " << it->c_str() << std::endl;
 	    }
 	  query.store_next();
 	  return profil;
