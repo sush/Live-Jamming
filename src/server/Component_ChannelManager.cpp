@@ -220,6 +220,7 @@ void	Component_ChannelManager::Recv_Leave(Packet_v1 const *packet_v1, Session *s
 
   field_t channelId = packet_v1_channel->getChannelId();
   field_t sessionId = session->getSessionId();
+  char const *clientLogin = session->getLogin().c_str();
   
   std::cout << ">>>>>>>>>>>> RECV [LEAVE] Channel [" <<  channelId  <<"] User [" << sessionId  << "]<<<<<<<<<<<<" << std::endl;
 
@@ -234,7 +235,7 @@ void	Component_ChannelManager::Recv_Leave(Packet_v1 const *packet_v1, Session *s
   
 	  std::map<field_t, Session *>::iterator it, end = connected->end();
 	  for (it = connected->begin(); it != end ; ++it)
-	    Send_Leaved(it->second, channelId, sessionId, it->second->getLogin().c_str());
+	    Send_Leaved(it->second, channelId, sessionId, clientLogin);
 	  if (connected->size() == 0)
 	    _channelMap->erase(channelId);
 	}
@@ -281,8 +282,19 @@ void	Component_ChannelManager::Disconnect(Session *session)
   m_channel::iterator it, end = _channelMap->end();
   for (it = _channelMap->begin(); it != end; ++it)
     {
-      if (it->second->getConnected()->find(session->getSessionId()) != it->second->getConnected()->end())
-	it->second->removeConnected(session->getSessionId());
+      std::map<field_t, Session*> *connected = it->second->getConnected();
+      if (connected->find(session->getSessionId()) != connected->end())
+	{
+	  it->second->removeConnected(session->getSessionId());
+	  if (connected->size() == 0)
+	      _channelMap->erase(it->first);
+	  else
+	    {
+	      std::map<field_t, Session*>::iterator i, e = connected->end();
+	      for (i = connected->begin(); i != e; ++i)
+		Send_Leaved(i->second, it->first, session->getSessionId(), session->getLogin().c_str());
+	    }
+	}
     }
 }
 
