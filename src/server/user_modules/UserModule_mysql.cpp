@@ -42,6 +42,7 @@ IUserBackend<UserModule_mysql>::m_userinfo const *	UserModule_mysql::Authentific
 	  query.store_next();
 	  return profil;
 	}
+      while (query.store_next());
       return 0;
     }
   else

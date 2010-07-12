@@ -148,6 +148,7 @@ void		Component_Session::Disconnect()
   _logged = false;
   std::cout << "disconnecting..." << std::endl;
   Send_Disconnect();
+  _clientManager->disconnect();
 }
 
 void		Component_Session::Recv_TimeOutTest(Packet_v1 const *, Session *)
@@ -162,6 +163,8 @@ void		Component_Session::Recv_KeepAlive(Packet_v1 const *, Session *)
 void		Component_Session::Recv_Disconnected(Packet_v1 const *, Session *)
 {
   _logged = false;
+  
+
 }
 
 void		Component_Session::Send_AuthRequest(std::string const &login, std::string const &pass)
