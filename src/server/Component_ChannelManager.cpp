@@ -142,7 +142,7 @@ void	Component_ChannelManager::Send_Join_OK(Session *session, field_t channelId,
 
   packet_v1_channel->setChannelId(channelId);
   packet_v1_channel->setChannelName(channelName);
-  std::cout << ">>>>>>>>>>>> SEND [JOIN_OK] Channel [" <<  channelId  <<"]<<<<<<<<<<<<" << std::endl;
+  std::cout << ">>>>>>>>>>>> SEND [JOIN_OK] Channel [" <<  packet_v1_channel->getChannelId() <<"]<<<<<<<<<<<< " << channelId << std::endl;
   _serverManager->Send(packet_v1_channel, session);
 }
 
@@ -304,7 +304,7 @@ field_t	Component_ChannelManager::GenChannelId()
   field_t	channelId;
 
   do {
-    channelId = _rng() % 2 ^ PROTOV1_CHANNELID_SIZE;
+    channelId = _rng() % (2 ^ PROTOV1_CHANNEL_CHANNELID_SIZE);
   } while (! IsUniqId(channelId));
  return channelId;
 }
