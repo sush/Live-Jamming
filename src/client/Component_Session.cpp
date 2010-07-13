@@ -9,9 +9,7 @@ Component_Session::Component_Session(ClientManager *clientManager)
 }
 
 Component_Session::~Component_Session()
-{
-
-}
+{}
 
 void	Component_Session::BindingsRecv()
 {
@@ -35,25 +33,6 @@ void	Component_Session::BindingsRecv()
 
   (*_bindingsRecv)[SESSION_DISCONNECTED] =
     new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Session::Recv_Disconnected));
-
-  (*_bindingsRecv)[SESSION_FRIEND_JOINED] =
-    new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Session::Recv_Friend_Leaved));
-
-  (*_bindingsRecv)[SESSION_FRIEND_LEAVED] =
-    new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Session::Recv_Friend_Joined));
-
-  (*_bindingsRecv)[SESSION_ADD_FRIEND_OK] =
-    new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Session::Recv_Add_Friend_OK));
-
-  (*_bindingsRecv)[SESSION_ADD_FRIEND_NOK] =
-    new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Session::Recv_Add_Friend_NOK));
-
-  (*_bindingsRecv)[SESSION_DEL_FRIEND_OK] =
-    new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Session::Recv_Del_Friend_OK));
-
-  (*_bindingsRecv)[SESSION_DEL_FRIEND_NOK] =
-    new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Session::Recv_Del_Friend_NOK));
-
 }
 
 void	Component_Session::RegisteredRequests()
@@ -64,12 +43,6 @@ void	Component_Session::RegisteredRequests()
 
   (*_registeredRequests)[SESSION_DISCONNECT] = 
     new Request(SESSION_DISCONNECT, SEND, "Session Disconnect request", NORETRY);
-
-  (*_registeredRequests)[SESSION_ADD_FRIEND] = 
-    new Request(SESSION_ADD_FRIEND, SEND, "Add friend request", RETRY);
-
-  (*_registeredRequests)[SESSION_DEL_FRIEND] = 
-    new Request(SESSION_DEL_FRIEND, SEND, "Del friend request", RETRY);
 
   // RECV requests
   (*_registeredRequests)[SESSION_AUTHRESPONSE_OK] = 
@@ -83,24 +56,6 @@ void	Component_Session::RegisteredRequests()
 
   (*_registeredRequests)[SESSION_DISCONNECTED] = 
     new Request(SESSION_DISCONNECTED, RECV, "Session ended", RESPONSETONOTHING);
-
-  (*_registeredRequests)[SESSION_FRIEND_LEAVED] = 
-    new Request(SESSION_FRIEND_LEAVED, RECV, "Friend leaved", RESPONSETONOTHING);
-
-  (*_registeredRequests)[SESSION_FRIEND_JOINED] = 
-    new Request(SESSION_FRIEND_JOINED, RECV, "Friend Joined", RESPONSETONOTHING);
-
-  (*_registeredRequests)[SESSION_ADD_FRIEND_OK] = 
-    new Request(SESSION_ADD_FRIEND_OK, RECV, "Friend add request OK", SESSION_ADD_FRIEND);
-
-  (*_registeredRequests)[SESSION_ADD_FRIEND_NOK] = 
-    new Request(SESSION_ADD_FRIEND_NOK, RECV, "Friend add request NOK", SESSION_ADD_FRIEND);
-
-  (*_registeredRequests)[SESSION_DEL_FRIEND_OK] = 
-    new Request(SESSION_DEL_FRIEND_OK, RECV, "Friend del request OK", SESSION_DEL_FRIEND);
-
-  (*_registeredRequests)[SESSION_DEL_FRIEND_NOK] = 
-    new Request(SESSION_DEL_FRIEND_NOK, RECV, "Friend del request NOK", SESSION_DEL_FRIEND);
 
   // BIDIRECTIONAL requests 
   (*_registeredRequests)[SESSION_TIMEOUT] = 
@@ -165,8 +120,6 @@ void		Component_Session::Recv_KeepAlive(Packet_v1 const *, Session *)
 void		Component_Session::Recv_Disconnected(Packet_v1 const *, Session *)
 {
   _logged = false;
-  
-
 }
 
 void		Component_Session::Send_AuthRequest(std::string const &login, std::string const &pass)
@@ -193,88 +146,6 @@ void		Component_Session::Send_Disconnect()
 void		Component_Session::Send_KeepAlive()
 {
   _clientManager->Send(_componentId, SESSION_KEEPALIVE, _session);
-}
-
-void		Component_Session::Recv_Friend_Joined(Packet_v1 const *packet_v1, Session *session)
-{
-  Packet_v1_Session const *packet_v1_session =
-    static_cast<Packet_v1_Session const *>(packet_v1);
-
-  char const *friendLogin = packet_v1_session->getFriendLogin();
-
-  std::cout << "FRIEND [" << friendLogin << "] has JOINED the application" << std::endl;
-}
-
-void		Component_Session::Recv_Friend_Leaved(Packet_v1 const *packet_v1, Session *session)
-{
-  Packet_v1_Session const *packet_v1_session =
-    static_cast<Packet_v1_Session const *>(packet_v1);
-
-  char const *friendLogin = packet_v1_session->getFriendLogin();
-
-  std::cout << "FRIEND [" << friendLogin << "] has LEAVED the application" << std::endl;
-}
-
-void		Component_Session::Send_Add_Friend(char const *friendLogin)
-{
-  Packet_v1_Session	*packet_v1_session = new Packet_v1_Session(SESSION_ADD_FRIEND);
-
-  packet_v1_session->setFriendLogin(friendLogin);
-
-  std::cout << "SEND ADD FRIEND [" << friendLogin << "] " << std::endl;
-
-  _clientManager->Send(packet_v1_session, _session);
-}
-
-void		Component_Session::Send_Del_Friend(char const *friendLogin)
-{
-  Packet_v1_Session	*packet_v1_session = new Packet_v1_Session(SESSION_DEL_FRIEND);
-
-  packet_v1_session->setFriendLogin(friendLogin);
-
-  std::cout << "SEND DEL FRIEND [" << friendLogin << "] " << std::endl;
-
-  _clientManager->Send(packet_v1_session, _session);
-}
-
-void		Component_Session::Recv_Add_Friend_OK(Packet_v1 const *packet_v1, Session *session)
-{
- Packet_v1_Session const *packet_v1_session =
-    static_cast<Packet_v1_Session const *>(packet_v1);
-
-  char const *friendLogin = packet_v1_session->getFriendLogin();
-
-  std::cout << "FRIEND [" << friendLogin << "] has been ADDED" << std::endl;
-}
-
-void		Component_Session::Recv_Add_Friend_NOK(Packet_v1 const *packet_v1, Session *session)
-{
- Packet_v1_Session const *packet_v1_session =
-    static_cast<Packet_v1_Session const *>(packet_v1);
-
-  char const *friendLogin = packet_v1_session->getFriendLogin();
-
-  std::cout << "FRIEND [" << friendLogin << "] has NOT been ADDED" << std::endl;
-}
-
-void		Component_Session::Recv_Del_Friend_OK(Packet_v1 const *packet_v1, Session *session)
-{
- Packet_v1_Session const *packet_v1_session =
-    static_cast<Packet_v1_Session const *>(packet_v1);
-
-  char const *friendLogin = packet_v1_session->getFriendLogin();
-
-  std::cout << "FRIEND [" << friendLogin << "] has been DELETED" << std::endl;
-}
-
-void		Component_Session::Recv_Del_Friend_NOK(Packet_v1 const *packet_v1, Session *session)
-{
- Packet_v1_Session const *packet_v1_session =
-    static_cast<Packet_v1_Session const *>(packet_v1);
-
-  char const *friendLogin = packet_v1_session->getFriendLogin();
-
-  std::cout << "FRIEND [" << friendLogin << "] has NOT been DELETED" << std::endl;
 }
 
 bool		Component_Session::IsLogged() const

@@ -64,8 +64,10 @@ void		ServerManager::Init_Components()
 {
   _sessionManager = new Component_SessionManager(this);
   _channelManager = new Component_ChannelManager(this);
+  _friendManager  = new Component_FriendManager(this);
   RegisterComponent(_sessionManager);
   RegisterComponent(_channelManager);
+  RegisterComponent(_friendManager);
 }
 
 unsigned int	ServerManager::CountActiveSessions() const

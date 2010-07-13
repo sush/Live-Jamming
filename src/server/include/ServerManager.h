@@ -9,6 +9,7 @@ class ServerManager;
 #include <Session.h>
 #include <Component_SessionManager.h>
 #include <Component_ChannelManager.h>
+#include <Component_FriendManager.h>
 
 class ServerManager : public Manager
 {
@@ -30,6 +31,7 @@ private:
   // core components
   Component_SessionManager		*_sessionManager;
   Component_ChannelManager		*_channelManager;
+  Component_FriendManager		*_friendManager;
   // list of additional optional components
 };
 

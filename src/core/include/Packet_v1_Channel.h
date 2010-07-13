@@ -58,7 +58,7 @@ public:
   void			setChannelList(std::map<unsigned int, Channel*> *m_channel);
   //! Get channel list in the packet.
   /*! \return const char * channelList */
-  std::vector<std::string>	*getChannelList() const;
+  std::vector<std::string> 	*getChannelList() const;
 
   //! Set login of the client who has joined the chan.
   /*! \param 1 char const * login */

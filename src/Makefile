@@ -17,6 +17,7 @@ SERVER_SRC	=		server/main.cpp\
 				server/Option.cpp\
 				server/Argument.cpp\
 				server/Component_ChannelManager.cpp\
+				server/Component_FriendManager.cpp\
 				core/Channel.cpp\
 				core/Bind_recv.cpp\
 				core/Request.cpp\
@@ -27,6 +28,7 @@ SERVER_SRC	=		server/main.cpp\
 				core/Packet_v1.cpp\
 				core/Packet_v1_Session.cpp\
 				core/Packet_v1_Channel.cpp\
+				core/Packet_v1_Friend.cpp
 
 CLIENT_SRC	=		client/main_net.cpp\
 				client/Client.cpp\

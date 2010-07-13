@@ -35,10 +35,6 @@ public:
 
   //! Create a channel Join request to the server.
   void					Send_Join(Session *, char * const);
-  //! Create a channel List request in order to inform server that the list of all existing channels is requested.
-  void					Send_List(Session *);
-  //! Create a channel Leave request in order to leave the channel.
-  void					Send_Leave(Session *, field_t);
 private:
   //! Handle a channel Join OK request from the server to inform that the channel has been joined.
   void					Recv_Join_OK(Packet_v1 const *, Session *);
@@ -59,6 +55,8 @@ private:
   //! Create a channel Message ACK request informing the server that message has been received.
   void					Send_Message_RECV_ACK(Session *);
 
+  //! Create a channel Leave request in order to leave the channel.
+  void					Send_Leave(Session *, field_t);
   //! Handle a channel Leave OK request from server to inform that channel has been leaved.
   void					Recv_Leave_OK(Packet_v1 const *, Session *);
   //! Handle a channel Leave NOK request from server to inform that channel has NOT been leaved because not in chan anymore.
@@ -71,9 +69,11 @@ private:
 
   //! Handle a channel Listed request from server to be aware of all existing channels.
   void					Recv_Listed(Packet_v1 const *, Session *);
+  //! Create a channel List request in order to inform server that the list of all existing channels is requested.
+  void					Send_List(Session *);
   
   ClientManager				*_clientManager;
   m_channel				_channelMap;
 };
 
-#endif
+#endif // ! __COMPONENT_CHANNEL_H__

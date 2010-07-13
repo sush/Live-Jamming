@@ -42,17 +42,6 @@ private:
   void		Send_TimeOutTestRequest();
   void		Send_Disconnect();
   void		Send_KeepAlive();
-  void		Recv_Friend_Leaved(Packet_v1 const *, Session *);
-  void		Recv_Friend_Joined(Packet_v1 const *, Session *);
-
-  void		Send_Add_Friend(char const *);
-  void		Send_Del_Friend(char const *);
-
-  void		Recv_Add_Friend_OK(Packet_v1 const *, Session *);
-  void		Recv_Add_Friend_NOK(Packet_v1 const *, Session *);
-
-  void		Recv_Del_Friend_OK(Packet_v1 const *, Session *);
-  void		Recv_Del_Friend_NOK(Packet_v1 const *, Session *);
 
   void		CallBack_AuthRequest_timeout(boost::system::error_code const &);
   
@@ -60,7 +49,6 @@ private:
   bool					_logged;
 public:
   Session				*_session;
-
 };
 
 #endif // ! __COMPONENT_SESSION_H__

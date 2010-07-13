@@ -1,0 +1,25 @@
+#ifndef __PROTOCOL_FRIEND_H__
+#define __PROTOCOL_FRIEND_H__
+
+
+#define FRIEND_COMPONENTID		1
+
+#define FRIEND_JOINED			1
+#define FRIEND_LEAVED			2
+
+#define FRIEND_ADD			3
+#define FRIEND_DEL			4
+
+#define FRIEND_ADD_OK			5
+#define FRIEND_ADD_NOK			6
+
+#define FRIEND_DEL_OK			7
+#define FRIEND_DEL_NOK			8
+#define FRIEND_LIST			9
+
+#define PROTOV1_FRIEND_START_OF_DATA	PROTOV1_START_OF_DATA
+
+#define PROTOV1_FRIEND_DATA_LOGIN	0
+#define PROTOV1_FRIEND_DATA_LIST	0
+
+#endif // ! __PROTOCOL_FRIEND_H__

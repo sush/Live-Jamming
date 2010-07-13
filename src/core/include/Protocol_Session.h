@@ -11,14 +11,6 @@
 #define SESSION_DISCONNECTED			6
 #define SESSION_TIMEOUT				7
 #define	SESSION_KEEPALIVE			8
-#define SESSION_FRIEND_JOINED			9
-#define SESSION_FRIEND_LEAVED			10
-#define SESSION_ADD_FRIEND			11
-#define SESSION_DEL_FRIEND			12
-#define SESSION_ADD_FRIEND_OK			13
-#define SESSION_ADD_FRIEND_NOK			14
-#define SESSION_DEL_FRIEND_OK			15
-#define SESSION_DEL_FRIEND_NOK			16
 
 // binary data contained in packet in order of placement in the binary fields
 
@@ -28,7 +20,5 @@
 
 #define PROTOV1_SESSION_DATA_LOGIN			0
 #define PROTOV1_SESSION_DATA_PASS			1
-
-#define PROTOV1_SESSION_DATA_FRIEND			0
 
 #endif // ! __PROTOCOL_SESSION_H__

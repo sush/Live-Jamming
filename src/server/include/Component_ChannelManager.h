@@ -4,6 +4,7 @@
 class Component_ChannelManager;
 
 #include <map>
+#include <Server.h>
 #include <IComponent.h>
 #include <Protocol.h>
 #include <Protocol_Channel.h>
@@ -27,13 +28,12 @@ public:
   //! Default destructor.
   virtual       ~Component_ChannelManager();
 
+private:
+
   //! Bind received packet with associated method.
   virtual void  BindingsRecv();
-
   //! Register requests with protocol definition of channels packets
   virtual void	RegisteredRequests();
-  
-private:
   
   //! Handle a channel Join request from a client.
   void          Recv_Join(Packet_v1 const *, Session *);
