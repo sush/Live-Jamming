@@ -73,7 +73,7 @@ void	Component_Channel::RegisteredRequests()
     new Request(CHANNEL_JOIN_NOK_ALREADYINCHAN, RECV, "Channel Join request NOK user already in chan", CHANNEL_JOIN);
 
   (*_registeredRequests)[CHANNEL_JOINED] = 
-    new Request(CHANNEL_JOIN_OK, RECV, "Channel Joined request", RESPONSETONOTHING);
+    new Request(CHANNEL_JOINED, RECV, "Channel Joined request", RESPONSETONOTHING);
 
   (*_registeredRequests)[CHANNEL_MESSAGE_ACK] = 
     new Request(CHANNEL_MESSAGE_ACK, RECV, "Channel Message request ACK", CHANNEL_MESSAGE);
@@ -85,7 +85,7 @@ void	Component_Channel::RegisteredRequests()
     new Request(CHANNEL_LEAVE_OK, RECV, "Channel Leave request OK", CHANNEL_LEAVE);
 
   (*_registeredRequests)[CHANNEL_LEAVE_NOK_NOTINCHAN] = 
-    new Request(CHANNEL_LEAVE_NOK_NOTINCHAN, RECV, "Channel Leave request NOK user not in chan", RESPONSETONOTHING);
+    new Request(CHANNEL_LEAVE_NOK_NOTINCHAN, RECV, "Channel Leave request NOK user not in chan", CHANNEL_LEAVE);
 
   (*_registeredRequests)[CHANNEL_LEAVED] = 
     new Request(CHANNEL_LEAVED, RECV, "Channel Leaved request", RESPONSETONOTHING);

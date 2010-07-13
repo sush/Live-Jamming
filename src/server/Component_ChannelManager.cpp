@@ -227,7 +227,6 @@ void	Component_ChannelManager::Recv_Leave(Packet_v1 const *packet_v1, Session *s
   if (_channelMap->find(channelId) != _channelMap->end())
     {
       Channel *chan = _channelMap->find(channelId)->second;
-
       if (chan->removeConnected(sessionId))
 	{
 	  Send_Leave_OK(session, channelId);
@@ -242,6 +241,8 @@ void	Component_ChannelManager::Recv_Leave(Packet_v1 const *packet_v1, Session *s
       else
 	Send_Leave_NOK_NOTINCHAN(session, channelId);
     }
+  else
+    Send_Leave_NOK_NOTINCHAN(session, channelId);
 }
 
 void	Component_ChannelManager::Send_Leave_OK(Session *session, field_t channelId)
