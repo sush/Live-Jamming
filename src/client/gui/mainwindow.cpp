@@ -124,11 +124,9 @@ void    MainWindow::chanEvents(chanEventsType event, const Packet_v1_Channel* pa
         leaveChannel(packet->getChannelName());
         break;
     case JOINED:
-        qDebug() << packet->getClientLogin() << "HAS JOINED" << proxy->channel()->getAllChannel().size();
         addClientToChannel(packet->getChannelName(), packet->getClientLogin());
         break;
     case LEAVED:
-        qDebug() << packet->getClientLogin() << "HAS LEAVED" << proxy->channel()->getAllChannel().size();
         removeClientFromChannel(packet->getChannelName(), packet->getClientLogin());
         break;
     case MESSAGE_RECV:
@@ -149,27 +147,34 @@ void    MainWindow::leaveChannel(const QString &name)
 {
     qDebug() << "leaving" << name;
     delete channels[name].item;
+
+    channels.remove(name);
 }
 
-void    MainWindow::addClientToChannel(const QString &channel, const QString &login)
+void    MainWindow::addClientToChannel(const QString &channel, const QString &client)
 {
-    qDebug() << login << "HAS JOIN" << channel;
-    QMap<QString, UiChannel>::const_iterator it = channels.find(channel);
-    Q_ASSERT(it != channels.end());
+    qDebug() << client << "HAS JOIN" << channel;
+//    QMap<QString, UiChannel>::const_iterator it = channels.find(channel);
+//    Q_ASSERT(it != channels.end());
 
-    QTreeWidgetItem* client = new QTreeWidgetItem(QStringList(login));
-    it->item->addChild(client);
-    clients[login] = (UiClient){client};
+    Q_ASSERT(channels.find(channel) != channels.end());
+    QTreeWidgetItem* item = new QTreeWidgetItem(QStringList(client));
+    channels[channel].item->addChild(item);
+
+    clients[client] = (UiClient){item};
 }
 
-void    MainWindow::removeClientFromChannel(const QString &channel, const QString &login)
+void    MainWindow::removeClientFromChannel(const QString &channel, const QString &client)
 {
-    qDebug() << login << "HAS LEAVED" << channel;
-    QMap<QString, UiChannel>::const_iterator it = channels.find(channel);
-    Q_ASSERT(it != channels.end());
+    qDebug() << client << "HAS LEAVED" << channel;
+//    QMap<QString, UiChannel>::const_iterator it = channels.find(channel);
+//    Q_ASSERT(it != channels.end());
 
-    it->item->removeChild(clients[login].item);
-    clients.remove(login);
+    Q_ASSERT(channels.find(channel) != channels.end());
+    Q_ASSERT(clients.find(client) != clients.end());
+    delete clients[client].item;
+
+    clients.remove(client);
 }
 
 void MainWindow::on_actionConnect_triggered()
