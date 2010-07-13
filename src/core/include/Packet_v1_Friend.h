@@ -16,11 +16,7 @@ class Packet_v1_Friend : public Packet_v1
   void				Print_v1() const;
 
   char const			*getFriendLogin() const;
-  std::vector<std::string>	*getFriendList() const;
-
-
   void				setFriendLogin(char const *);
-  void				setFriendList(std::vector<std::string> const &);
 
  private :
 

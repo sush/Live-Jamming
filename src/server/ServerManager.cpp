@@ -89,6 +89,7 @@ void		ServerManager::Disconnect(Session *session)
 {
   _sessionManager->Disconnect(session);
   _channelManager->Disconnect(session);
+  _friendManager->Disconnect(session);
 }
 
 ServerManager::m_Session &	ServerManager::getSessionMap()

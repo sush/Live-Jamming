@@ -28,13 +28,13 @@ class Component_SessionManager :public IComponent
 public:
 
   Component_SessionManager(ServerManager *);
-  virtual	~Component_SessionManager();
+  virtual				~Component_SessionManager();
   
-  void		Manage(Packet *);
+  void					Manage(Packet *);
 
 private:
-  virtual void					BindingsRecv();
-  virtual void					RegisteredRequests();
+  virtual void				BindingsRecv();
+  virtual void				RegisteredRequests();
 
   Session				*FindSession(Packet_v1 const *);
   unsigned int				CountActiveSessions() const;

@@ -1,6 +1,7 @@
 #include <ClientManager.h>
 #include <Component_Session.h>
 #include <Component_Channel.h>
+#include <Component_Friend.h>
 #include <Session.h>
 #include <Bind_recv.h>
 
@@ -65,9 +66,10 @@ void			ClientManager::Init_Components()
 {
   _session = new Component_Session(this);
   _channel = new Component_Channel(this);
+  _friend  = new Component_Friend(this);
   RegisterComponent(_session);
   RegisterComponent(_channel);
-
+  RegisterComponent(_friend);
 }
 	   
 void			ClientManager::Disconnect(Session *)

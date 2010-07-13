@@ -28,6 +28,7 @@ class Component_FriendManager :public IComponent
   virtual void			BindingsRecv();
   virtual void			RegisteredRequests();
 
+  void				Connect(Session *session);
   void				Disconnect(Session *);
 
   void				Send_Friend_Joined(Session *, const char *);
@@ -42,9 +43,10 @@ class Component_FriendManager :public IComponent
   void				Send_Friend_Del_OK(Session *, char const *);
   void				Send_Friend_Del_NOK(Session *, char const *);
 
-  void				Send_Friend_List(Session *, std::vector<std::string> const &);
+ private:
 
   ServerManager			*_serverManager;
+  ServerManager::m_Session	&_sessionMap;
 };
 
 #endif // ! __COMPONENT_FRIENDMANAGER_H__

@@ -2,7 +2,7 @@
 #include <Bind_recv.h>
 
 Component_FriendManager::Component_FriendManager(ServerManager * serverManager)
-  :IComponent(FRIEND_COMPONENTID), _serverManager(serverManager)
+  :IComponent(FRIEND_COMPONENTID), _serverManager(serverManager), _sessionMap(serverManager->getSessionMap())
 {}
 
 Component_FriendManager::~Component_FriendManager()
@@ -82,28 +82,25 @@ void		Component_FriendManager::Send_Friend_Del_NOK(Session *session, char const 
   _serverManager->Send(packet_v1_friend, session);
 }
 
-void		Component_FriendManager::Send_Friend_List(Session *session, std::vector<std::string> const & friendList)
+void		Component_FriendManager::Connect(Session *session)
 {
-
-  Packet_v1_Friend *packet_v1_friend = new Packet_v1_Friend(FRIEND_LIST);
-
-  packet_v1_friend->setFriendList(friendList);
-  _serverManager->Send(packet_v1_friend, session);
+  // session->setFriendList(userModule->getFriendList);
 }
 
 void		Component_FriendManager::Disconnect(Session * session)
 {
-  // m_Session::iterator it, end		= _sessionMap->end();
-  // std::vector<std::string> friendList	= session->getFriendList();
+  ServerManager::m_Session::iterator it, end	= _sessionMap.end();
+  std::list<std::string> friendList		= session->getFriendList();
 
-  // for (it = _sessionMap->begin(); it != end; ++it)
-  //   {
-  //     for (unsigned int i = 0; i < friendList.size(); ++i)
-  // 	{
-  // 	  if (it->second->getLogin() == friendList[i])
-  // 	    Send_Friend_Leaved(it->second, session->getLogin().c_str());
-  // 	}
-  //   }
+  for (it = _sessionMap.begin(); it != end; ++it)
+    {
+      std::list<std::string>::iterator it2, end2 = friendList.end();
+      for (it2 = friendList.begin(); it2 != end2; ++it2)
+  	{
+  	  if (it->second->getLogin() == (*it2))
+  	    Send_Friend_Leaved(it->second, session->getLogin().c_str());
+  	}
+    }
 }
 
 void		Component_FriendManager::BindingsRecv()
@@ -148,5 +145,4 @@ void	Component_FriendManager::RegisteredRequests()
 
   (*_registeredRequests)[FRIEND_LEAVED_ACK] = 
     new Request(FRIEND_LEAVED_ACK, RECV, "Del friend request", FRIEND_LEAVED);
-
 }
