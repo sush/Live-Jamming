@@ -1,8 +1,8 @@
 #ifndef __PROTOCOL_H__
 #define __PROTOCOL_H__
 
-#define sizeof_bin(A)		sizeof(A) * 8
-#define BINARYTOBYTE_LEN(A)	A / 8 + ((A % 8 == 0) ? (0) : (1))
+#define sizeof_bin(A)		(sizeof(A) * 8)
+#define BINARYTOBYTE_LEN(A)	((A) / 8 + (((A) % 8 == 0) ? (0) : (1)))
 
 typedef unsigned int field_t;
 

@@ -112,7 +112,7 @@ void		Component_Channel::Recv_Join_OK(Packet_v1 const *packet_v1, Session *)
   field_t channelId = packet_v1_channel->getChannelId();
   char const *channelName = packet_v1_channel->getChannelName();
 
-  std::cout << ">>>>>>>>>>>> RECV [JOIN_OK] Channel [" <<  channelId  <<"]<<<<<<<<<<<<" << std::endl;
+  std::cout << ">>>>>>>>>>>> RECV [JOIN_OK] Channel [" <<  channelId  <<"][" << channelName<< "]<<<<<<<<<<<<" << std::endl;
 
   if (_channelMap.find(channelId) == _channelMap.end())
     _channelMap[channelId] = new Channel(channelName);

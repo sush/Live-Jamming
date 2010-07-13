@@ -1,5 +1,6 @@
 #include <Component_ChannelManager.h>
 #include <Bind_recv.h>
+#include <math.h>
 
 Component_ChannelManager::Component_ChannelManager(ServerManager *serverManager) 
  :IComponent(CHANNEL_COMPONENTID), _serverManager(serverManager) 
@@ -304,8 +305,9 @@ field_t	Component_ChannelManager::GenChannelId()
   field_t	channelId;
 
   do {
-    channelId = _rng() % (2 ^ PROTOV1_CHANNEL_CHANNELID_SIZE);
+    channelId = _rng() % ((int)pow(2, PROTOV1_CHANNEL_CHANNELID_SIZE));
   } while (! IsUniqId(channelId));
+  std::cout << "gen channelId=" << channelId << std::endl;
  return channelId;
 }
 

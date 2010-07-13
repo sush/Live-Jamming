@@ -1,6 +1,8 @@
 #ifndef __PROTOCOL_CHANNEL_H__
 #define __PROTOCOL_CHANNEL_H__
 
+#include <Protocol.h>
+
 #define CHANNEL_COMPONENTID			2
 
 #define CHANNEL_JOIN				1
@@ -27,7 +29,7 @@
 
 
 // binary data contained in packet in order of placement in the binary fields
-#define PROTOV1_CHANNEL_CHANNELID_OFF		sizeof_bin(PROTOV1_START_OF_DATA)
+#define PROTOV1_CHANNEL_CHANNELID_OFF		PROTOV1_START_OF_DATA * 8
 #define PROTOV1_CHANNEL_CHANNELID_SIZE		17
 
 #define PROTOV1_CHANNEL_CLIENTSESSIONID_OFF	PROTOV1_CHANNEL_CHANNELID_OFF + PROTOV1_CHANNEL_CHANNELID_SIZE
