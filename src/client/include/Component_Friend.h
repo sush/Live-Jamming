@@ -20,10 +20,10 @@ class Component_Friend :public IComponent
   virtual void		BindingsRecv();
   virtual void		RegisteredRequests();
 
-  void			Send_Friend_Add(char const *);
-  void			Send_Friend_Del(char const *);
+  void			Send_Friend_Add(Session *, char const *);
+  void			Send_Friend_Del(Session *, char const *);
 
-  bool			IsFriend(std::string const &) const;
+  bool			IsFriend(Session *, std::string const &) const;
 
  private :
   void			Recv_Friend_Leaved(Packet_v1 const *, Session *);
@@ -35,13 +35,11 @@ class Component_Friend :public IComponent
   void			Recv_Friend_Del_OK(Packet_v1 const *, Session *);
   void			Recv_Friend_Del_NOK(Packet_v1 const *, Session *);
 
-  void			Recv_Friend_List(Packet_v1 const *, Session *);
+  void			Send_Friend_Joined_ACK(Session *);
+  void			Send_Friend_Leaved_ACK(Session *);
 
  private :
-  ClientManager				*_clientManager;
-  typedef std::vector<std::string>	v_friend;
-  v_friend				*_friendList;
-
+  ClientManager		*_clientManager;
 };
 
 #endif // ! __COMPONENT_FRIEND_H__

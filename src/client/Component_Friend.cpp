@@ -2,10 +2,8 @@
 #include <Bind_recv.h>
 
 Component_Friend::Component_Friend(ClientManager *clientManager)
-:  :IComponent(FRIEND_COMPONENTID), _clientManager(clientManager)
-{
-  _friendList = new v_friend();
-}
+  :IComponent(FRIEND_COMPONENTID), _clientManager(clientManager)
+{}
 
 Component_Friend::~Component_Friend()
 {}
@@ -13,19 +11,22 @@ Component_Friend::~Component_Friend()
 void	Component_Friend::BindingsRecv()
 {
   (*_bindingsRecv)[FRIEND_JOINED] =
-    new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Session::Recv_Friend_Joined));
+    new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Friend::Recv_Friend_Joined));
+
   (*_bindingsRecv)[FRIEND_LEAVED] =
-    new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Session::Recv_Friend_Leaved));
+    new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Friend::Recv_Friend_Leaved));
+
   (*_bindingsRecv)[FRIEND_ADD_OK] =
-    new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Session::Recv_Friend_Add_OK));
+    new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Friend::Recv_Friend_Add_OK));
+
   (*_bindingsRecv)[FRIEND_ADD_NOK] =
-    new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Session::Recv_Friend_Add_NOK));
+    new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Friend::Recv_Friend_Add_NOK));
+
   (*_bindingsRecv)[FRIEND_DEL_OK] =
-    new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Session::Recv_Friend_Del_OK));
+    new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Friend::Recv_Friend_Del_OK));
+
   (*_bindingsRecv)[FRIEND_DEL_NOK] =
-    new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Session::Recv_Friend_Del_NOK));
-  (*_bindingsRecv)[FRIEND_LIST] =
-    new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Session::Recv_Friend_List));
+    new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Friend::Recv_Friend_Del_NOK));
 }
 
 void	Component_Friend::RegisteredRequests()
@@ -37,6 +38,12 @@ void	Component_Friend::RegisteredRequests()
   (*_registeredRequests)[FRIEND_DEL] = 
     new Request(FRIEND_DEL, SEND, "Del friend request", RETRY);
 
+  (*_registeredRequests)[FRIEND_JOINED_ACK] = 
+    new Request(FRIEND_JOINED_ACK, SEND, "Friend Joined ack request", NORETRY);
+
+  (*_registeredRequests)[FRIEND_LEAVED_ACK] = 
+    new Request(FRIEND_LEAVED_ACK, SEND, "Friend leaved ack request", NORETRY);
+
   // RECV requests
   (*_registeredRequests)[FRIEND_LEAVED] = 
     new Request(FRIEND_LEAVED, RECV, "Friend leaved", RESPONSETONOTHING);
@@ -45,16 +52,16 @@ void	Component_Friend::RegisteredRequests()
     new Request(FRIEND_JOINED, RECV, "Friend Joined", RESPONSETONOTHING);
 
   (*_registeredRequests)[FRIEND_ADD_OK] = 
-    new Request(FRIEND_ADD_OK, RECV, "Friend add request OK", SESSION_ADD_FRIEND);
+    new Request(FRIEND_ADD_OK, RECV, "Friend add request OK", FRIEND_ADD);
 
   (*_registeredRequests)[FRIEND_ADD_NOK] = 
-    new Request(FRIEND_ADD_NOK, RECV, "Friend add request NOK", SESSION_ADD_FRIEND);
+    new Request(FRIEND_ADD_NOK, RECV, "Friend add request NOK", FRIEND_ADD);
 
   (*_registeredRequests)[FRIEND_DEL_OK] = 
-    new Request(SESSION_DEL_FRIEND_OK, RECV, "Friend del request OK", SESSION_DEL_FRIEND);
+    new Request(FRIEND_DEL_OK, RECV, "Friend del request OK", FRIEND_DEL);
   
   (*_registeredRequests)[FRIEND_DEL_NOK] = 
-    new Request(SESSION_DEL_FRIEND_NOK, RECV, "Friend del request NOK", SESSION_DEL_FRIEND);
+    new Request(FRIEND_DEL_NOK, RECV, "Friend del request NOK", FRIEND_DEL);
 }
 
 void		Component_Friend::Recv_Friend_Joined(Packet_v1 const *packet_v1, Session *session)
@@ -65,6 +72,7 @@ void		Component_Friend::Recv_Friend_Joined(Packet_v1 const *packet_v1, Session *
   char const *friendLogin = packet_v1_friend->getFriendLogin();
 
   std::cout << "FRIEND [" << friendLogin << "] has JOINED the application" << std::endl;
+  Send_Friend_Joined_ACK(session);
 }
 
 void		Component_Friend::Recv_Friend_Leaved(Packet_v1 const *packet_v1, Session *session)
@@ -75,25 +83,26 @@ void		Component_Friend::Recv_Friend_Leaved(Packet_v1 const *packet_v1, Session *
   char const *friendLogin = packet_v1_friend->getFriendLogin();
 
   std::cout << "FRIEND [" << friendLogin << "] has LEAVED the application" << std::endl;
+  Send_Friend_Leaved_ACK(session);
 }
 
-void		Component_Friend::Send_Friend_Add(char const *friendLogin)
+void		Component_Friend::Send_Friend_Add(Session *session, char const *friendLogin)
 {
-  Packet_v1_Friend	*packet_v1_friend = new Packet_v1_Friend(SESSION_ADD_FRIEND);
+  Packet_v1_Friend	*packet_v1_friend = new Packet_v1_Friend(FRIEND_ADD);
 
   packet_v1_friend->setFriendLogin(friendLogin);
 
   std::cout << "SEND ADD FRIEND [" << friendLogin << "] " << std::endl;
-  _clientManager->Send(packet_v1_friend, _session);
+  _clientManager->Send(packet_v1_friend, session);
 }
-void		Component_Friend::Send_Friend_Del(char const *friendLogin)
+void		Component_Friend::Send_Friend_Del(Session* session, char const *friendLogin)
 {
-  Packet_v1_Friend	*packet_v1_session = new Packet_v1_Friend(SESSION_DEL_FRIEND);
+  Packet_v1_Friend	*packet_v1_friend = new Packet_v1_Friend(FRIEND_DEL);
 
   packet_v1_friend->setFriendLogin(friendLogin);
 
   std::cout << "SEND DEL FRIEND [" << friendLogin << "] " << std::endl;
-  _clientManager->Send(packet_v1_friend, _session);
+  _clientManager->Send(packet_v1_friend, session);
 }
 
 void		Component_Friend::Recv_Friend_Add_OK(Packet_v1 const *packet_v1, Session *session)
@@ -136,19 +145,26 @@ void		Component_Friend::Recv_Friend_Del_NOK(Packet_v1 const *packet_v1, Session 
   std::cout << "FRIEND [" << friendLogin << "] has NOT been DELETED" << std::endl;
 }
 
-void		Component_Friend::Recv_Friend_List(Packet_v1 const * packet_v1, Session *session)
+void		Component_Friend::Send_Friend_Joined_ACK(Session *session)
 {
- Packet_v1_Friend const *packet_v1_friend =
-    static_cast<Packet_v1_Friend const *>(packet_v1);
-
- _friendList = packet_v1_friend->getFriendList();
+  std::cout << ">>>>>>>>>>>> SEND [FRIEND_JOINED_ACK] <<<<<<<<<<<<" << std::endl;
+  _clientManager->Send(_componentId, FRIEND_JOINED_ACK, session);
 }
 
-bool		Component_Friend::IsFriend(std::string const &clientLogin) const
+void		Component_Friend::Send_Friend_Leaved_ACK(Session *session)
 {
-  for (unsigned int i = 0; i < _friendList->size(); ++i)
+  std::cout << ">>>>>>>>>>>> SEND [FRIEND LEAVED_ACK] <<<<<<<<<<<<" << std::endl;
+  _clientManager->Send(_componentId, FRIEND_LEAVED_ACK, session);
+}
+
+bool		Component_Friend::IsFriend(Session *session, std::string const &clientLogin) const
+{
+  std::list<std::string> const friendList = session->getFriendList();
+  std::list<std::string>::const_iterator it, end = friendList.end();
+
+  for (it = friendList.begin(); it != end; ++it)
     {
-      if (_friendList->at(i) == clientLogin)
+      if ((*it) == clientLogin)
 	return true;
     }
   return false;

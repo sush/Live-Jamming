@@ -304,7 +304,7 @@ field_t	Component_ChannelManager::GenChannelId()
   field_t	channelId;
 
   do {
-    channelId = _rng();
+    channelId = _rng() % 2 ^ PROTOV1_CHANNELID_SIZE;
   } while (! IsUniqId(channelId));
  return channelId;
 }

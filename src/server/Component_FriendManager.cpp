@@ -119,10 +119,10 @@ void	Component_FriendManager::RegisteredRequests()
 {
   // SEND requests 
   (*_registeredRequests)[FRIEND_JOINED] = 
-    new Request(FRIEND_JOINED, SEND, "Session friend joined notification", NORETRY);
+    new Request(FRIEND_JOINED, SEND, "Session friend joined notification", RETRY);
 
   (*_registeredRequests)[FRIEND_LEAVED] = 
-    new Request(FRIEND_LEAVED, SEND, "Session friend leaved notification", NORETRY);
+    new Request(FRIEND_LEAVED, SEND, "Session friend leaved notification", RETRY);
 
   (*_registeredRequests)[FRIEND_ADD_OK] = 
     new Request(FRIEND_ADD_OK, SEND, "Session friend add OK notification", NORETRY);
@@ -136,13 +136,17 @@ void	Component_FriendManager::RegisteredRequests()
   (*_registeredRequests)[FRIEND_DEL_NOK] = 
     new Request(FRIEND_DEL_NOK, SEND, "Session friend del NOK notification", NORETRY);
 
-  (*_registeredRequests)[FRIEND_LIST] = 
-    new Request(FRIEND_LIST, SEND, "Session friend list notification", NORETRY);
-
   // RECV requests
   (*_registeredRequests)[FRIEND_ADD] = 
     new Request(FRIEND_ADD, RECV, "Add friend request", RESPONSETONOTHING);
 
   (*_registeredRequests)[FRIEND_DEL] = 
     new Request(FRIEND_DEL, RECV, "Del friend request", RESPONSETONOTHING);
+
+  (*_registeredRequests)[FRIEND_JOINED_ACK] = 
+    new Request(FRIEND_JOINED_ACK, RECV, "Del friend request", FRIEND_JOINED);
+
+  (*_registeredRequests)[FRIEND_LEAVED_ACK] = 
+    new Request(FRIEND_LEAVED_ACK, RECV, "Del friend request", FRIEND_LEAVED);
+
 }
