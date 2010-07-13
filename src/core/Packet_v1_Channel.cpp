@@ -60,7 +60,8 @@ void		Packet_v1_Channel::setChannelName(char const * name)
 {
   assert(getRequestId() == CHANNEL_JOIN ||
 	 getRequestId() == CHANNEL_JOIN_OK ||
-	 getRequestId() == CHANNEL_JOIN_NOK_ALREADYINCHAN);
+	 getRequestId() == CHANNEL_JOIN_NOK_ALREADYINCHAN ||
+	 getRequestId() == CHANNEL_LEAVE_OK);
   appendData(PROTOV1_CHANNEL_START_OF_DATA, PROTOV1_CHANNEL_DATA_CHANNEL_NAME, reinterpret_cast<byte_t const *>(name));
 }
 

@@ -246,6 +246,7 @@ void	Component_ChannelManager::Send_Leave_OK(Session *session, field_t channelId
   Packet_v1_Channel *packet_v1_channel = new Packet_v1_Channel(CHANNEL_LEAVE_OK);
 
   packet_v1_channel->setChannelId(channelId);
+  packet_v1_channel->setChannelName(_channelMap->find(channelId)->second->getName());
 
   std::cout << ">>>>>>>>>>>> SEND [LEAVE_OK] Channel [" <<  channelId  <<"<<<<<<<<<<<<" << std::endl;
 
