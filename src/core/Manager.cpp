@@ -1,4 +1,5 @@
 #include <Manager.h>
+#include <stdexcept>
 #include <Packet_v1.h>
 #include <Protocol.h>
 #include <Protocol_Session.h>
@@ -136,7 +137,7 @@ void		Manager::RegisterComponent(IComponent *component)
   std::string	e = "already registered component: [componentId:";
   e += component->getComponentId() +"]";
   if (_componentBindings.find(component->getComponentId()) != _componentBindings.end())
-    throw e;
+    throw std::runtime_error(e);
 
   field_t	componentId = component->getComponentId();
   _componentBindings[componentId] = new component_binding;

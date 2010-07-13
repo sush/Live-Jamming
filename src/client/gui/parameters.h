@@ -7,7 +7,8 @@ class Parameters
 {
 public:
     Parameters();
-    bool    haveId();
+    bool    haveId() const;
+    void    clearId();
 
     QString login;
     QString password;

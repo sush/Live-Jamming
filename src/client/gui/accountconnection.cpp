@@ -30,6 +30,8 @@ void AccountConnection::changeEvent(QEvent *e)
 bool  AccountConnection::run(QString& login, QString & password)
 {
     AccountConnection ac;
+    ac.ui->loginLineEdit->setText(login);
+    ac.ui->passwordLineEdit->setText(password);
     //pas présent dans le ui
     connect(ac.ui->buttonBox, SIGNAL(accepted()), &ac, SLOT(accept()));
     connect(ac.ui->buttonBox, SIGNAL(rejected()), &ac, SLOT(reject()));

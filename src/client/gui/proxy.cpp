@@ -4,13 +4,12 @@
 #include <Component_Session.h>
 #include <proxy.h>
 
-
 Proxy::Proxy(MainWindow *mainwin, boost::asio::io_service &service,
              boost::threadpool::pool &pool, boost::asio::ip::udp::socket &socket, boost::asio::ip::udp::endpoint &endpoint)
                  : ClientManager(service, pool, socket, endpoint)
 {
-    connect(this, SIGNAL(sAuthResponse(MainWindow::authEventsType)), mainwin, SLOT(authEvents(MainWindow::authEventsType)));
-    connect(this, SIGNAL(sChanResponse(MainWindow::chanEventsType, const Packet_v1_Channel*)), mainwin, SLOT(chanEvents(MainWindow::chanEventsType, const Packet_v1_Channel*)));
+    connect(this, SIGNAL(sAuthResponse(MainWindow::authEventsType)), mainwin, SLOT(authEvents(MainWindow::authEventsType)), Qt::QueuedConnection);
+    connect(this, SIGNAL(sChanResponse(MainWindow::chanEventsType, const Packet_v1_Channel*)), mainwin, SLOT(chanEvents(MainWindow::chanEventsType, const Packet_v1_Channel*)),Qt::QueuedConnection);
 }
 
 void    Proxy::authResponse(Packet_v1 const* packet, Session* session)
@@ -44,15 +43,15 @@ void    Proxy::chanResponse(Packet_v1 const* packet_, Session* session)
     case CHANNEL_JOIN_NOK_ALREADYINCHAN:
         type = MainWindow::ALREADYINCHAN; break;
     case CHANNEL_LEAVE_OK:
-        type = MainWindow::LEAVE_OK;
+        type = MainWindow::LEAVE_OK; break;
     case CHANNEL_JOINED:
         type = MainWindow::JOINED; break;
     case CHANNEL_LEAVED:
         type = MainWindow::LEAVED; break;
     case CHANNEL_MESSAGE_RECV:
-        type = MainWindow::MESSAGE_RECV;
+        type = MainWindow::MESSAGE_RECV; break;
     case CHANNEL_LISTED:
-        type = MainWindow::LISTED;
+        type = MainWindow::LISTED; break;
     }
     emit sChanResponse(type, packet);
 }
@@ -60,14 +59,4 @@ void    Proxy::chanResponse(Packet_v1 const* packet_, Session* session)
 void    Proxy::disconnect()
 {
     emit sAuthResponse(MainWindow::DISCONNECTED);
-}
-
-field_t Proxy::getChannelId(const QString& name)
-{
-    const Component_Channel::m_channel& channels = _channel->getAllChannel();
-    Component_Channel::m_channel::const_iterator cur, end = channels.end();
-    for (cur = channels.begin(); cur != end; ++end)
-    if (cur->second->getName() == name)
-        break ;
-    return cur->first;
 }

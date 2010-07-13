@@ -69,7 +69,10 @@ char const	*Packet_v1_Channel::getChannelName() const
 {
   assert(getRequestId() == CHANNEL_JOIN ||
 	 getRequestId() == CHANNEL_JOIN_OK ||
-	 getRequestId() == CHANNEL_JOIN_NOK_ALREADYINCHAN);
+         getRequestId() == CHANNEL_JOIN_NOK_ALREADYINCHAN ||
+         getRequestId() == CHANNEL_JOINED ||
+         getRequestId() == CHANNEL_LEAVED ||
+         getRequestId() == CHANNEL_LEAVE_OK);
   return reinterpret_cast<char const *>(getData(PROTOV1_CHANNEL_START_OF_DATA, PROTOV1_CHANNEL_DATA_CHANNEL_NAME));
 }
 

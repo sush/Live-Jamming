@@ -37,6 +37,8 @@ public:
   void					Send_Join(Session *, char * const);
   //! Create a channel Leave request in order to leave the channel.
   void					Send_Leave(Session *, field_t);
+  void					Send_Message(Session *, char const *, field_t);
+  //! Handle a channel Joined request from server to inform that a new user has joined the channel
 private:
   //! Handle a channel Join OK request from the server to inform that the channel has been joined.
   void					Recv_Join_OK(Packet_v1 const *, Session *);
@@ -50,8 +52,6 @@ private:
   void					Send_Joined_ACK(Session *);
 
   //! Create a channel Message request to the server to send message to a chanel.
-  void					Send_Message(Session *, char const *, field_t);
-  //! Handle a channel Joined request from server to inform that a new user has joined the channel
   void					Recv_Message_RECV(Packet_v1 const *, Session *);
 
   //! Create a channel Message ACK request informing the server that message has been received.

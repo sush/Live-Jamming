@@ -26,16 +26,19 @@ void		Component_Channel::BindingsRecv()
     new Bind_recv(0, 0);
 
   (*_bindingsRecv)[CHANNEL_MESSAGE_RECV] =
-    new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Channel::Recv_Message_RECV));
+    new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Channel::Recv_Message_RECV),
+    static_cast<Proxy*>(_clientManager), static_cast<Proxy::pMethod>(&Proxy::chanResponse));;
   
   (*_bindingsRecv)[CHANNEL_LEAVE_OK] =
-    new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Channel::Recv_Leave_OK));
+    new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Channel::Recv_Leave_OK),
+    static_cast<Proxy*>(_clientManager), static_cast<Proxy::pMethod>(&Proxy::chanResponse));
   
   (*_bindingsRecv)[CHANNEL_LEAVE_NOK_NOTINCHAN] =
     new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Channel::Recv_Leave_NOK_NOTINCHAN));
   
   (*_bindingsRecv)[CHANNEL_LEAVED] =
-    new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Channel::Recv_Leaved));
+    new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Channel::Recv_Leaved),
+    static_cast<Proxy*>(_clientManager), static_cast<Proxy::pMethod>(&Proxy::chanResponse));
 
   (*_bindingsRecv)[CHANNEL_LISTED] =
     new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Channel::Recv_Listed));

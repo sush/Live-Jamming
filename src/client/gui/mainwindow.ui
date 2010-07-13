@@ -63,36 +63,6 @@
              <set>AlignHCenter|AlignVCenter|AlignCenter</set>
             </property>
            </column>
-           <item>
-            <property name="text">
-             <string>LJ</string>
-            </property>
-            <item>
-             <property name="text">
-              <string>such</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>pierre</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>greg</string>
-             </property>
-            </item>
-           </item>
-           <item>
-            <property name="text">
-             <string>toto</string>
-            </property>
-            <item>
-             <property name="text">
-              <string>test</string>
-             </property>
-            </item>
-           </item>
           </widget>
          </item>
         </layout>
@@ -108,8 +78,15 @@
         </layout>
        </widget>
       </widget>
-      <widget class="QWidget" name="layoutWidget">
-       <layout class="QVBoxLayout" name="verticalLayout">
+     </widget>
+    </item>
+    <item>
+     <widget class="QStackedWidget" name="stackedWidget">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="page_5">
+       <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
          <widget class="QPlainTextEdit" name="textEdit"/>
         </item>
