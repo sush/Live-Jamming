@@ -88,29 +88,23 @@ void	Component_ChannelManager::Recv_Join(Packet_v1 const *packet_v1, Session *se
   field_t sessionId		= packet_v1_channel->getSessionId();
   char const *channelName	= packet_v1_channel->getChannelName();
   Channel *chan;
+  bool existing			= false;
 
   std::cout << ">>>>>>>>>>>> RECV [JOIN] Channel [" << channelName << "]<<<<<<<<<<<<" << std::endl;
 
-  if (_channelMap->size() != 0)
+  m_channel::iterator it, end = _channelMap->end();
+  for (it = _channelMap->begin(); it != end; ++it)
     {
-      m_channel::iterator it, end = _channelMap->end();
-      for (it = _channelMap->begin(); it != end; ++it)
+      chan = it->second;
+      if (strcmp(chan->getName(), channelName) == 0)
 	{
-	  chan = it->second;
-	  if (strcmp(chan->getName(), channelName) != 0)
-	    {
-	      std::cout << ">>>>>>>>>>>> Channel [" << channelName << "]<<<<<<<<<<<< NOT EXIST -> CREATED" << std::endl;
-	      channelId =  GenChannelId();
-	      _channelMap->insert(std::pair<field_t, Channel*>(channelId, new Channel(channelName)));
-	    }
-	  else
-	    {
-	      std::cout << ">>>>>>>>>>>> Channel [" << channelName << "]<<<<<<<<<<<< EXISTS" << std::endl;
-	      channelId = it->first;
-	    }
+	  channelId = it->first;
+	  existing = true;
+	  break;
 	}
     }
-  else
+
+  if (!existing)
     {
       channelId =  GenChannelId();
       chan = new Channel(channelName);
@@ -120,8 +114,8 @@ void	Component_ChannelManager::Recv_Join(Packet_v1 const *packet_v1, Session *se
   if (chan->addConnected(session, sessionId))
     {
       Send_Join_OK(session, channelId, channelName);
-      std::map<field_t, Session*> *connected = chan->getConnected();
 
+      std::map<field_t, Session*> *connected = chan->getConnected();
       std::map<field_t, Session *>::iterator it, end = connected->end();
 
       for (it = connected->begin(); it != end ; ++it)
