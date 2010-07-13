@@ -1,8 +1,6 @@
 #ifndef __PROTOCOL_CHANNEL_H__
 #define __PROTOCOL_CHANNEL_H__
 
-#include <Protocol.h>
-
 #define CHANNEL_COMPONENTID			2
 
 #define CHANNEL_JOIN				1
