@@ -1,4 +1,7 @@
 #include <Manager.h>
+#include <Packet_v1.h>
+#include <Protocol.h>
+#include <Protocol_Session.h>
 
 unsigned int		timeOutTest_maxRetry = 3;
 

@@ -2,6 +2,8 @@
 #define __MANAGER_H__
 
 class Manager;
+class Packet;
+class Packet_v1;
 
 #include <iostream>
 #include <list>
@@ -12,9 +14,8 @@ class Manager;
 #include <boost/shared_ptr.hpp>
 #include <boost/random.hpp>
 
-#include <Packet_v1.h>
-#include <Protocol.h>
 #include <IComponent.h>
+#include <Protocol.h>
 
 class Manager
 {

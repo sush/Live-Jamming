@@ -1,6 +1,9 @@
 #ifndef __CHANNEL_H__
 #define __CHANNEL_H__
 
+#include <boost/threadpool.hpp>
+#include <boost/shared_ptr.hpp>
+#include <boost/asio.hpp>
 #include <Session.h>
 #include <map>
 

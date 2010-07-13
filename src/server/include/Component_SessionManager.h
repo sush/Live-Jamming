@@ -2,6 +2,12 @@
 #define __COMPONENT_SESSIONMANAGER_H__
 
 class Component_SessionManager;
+class Session;
+class UserModule_mysql;
+class Packet_v1;
+class Packet;
+class Packet_v1_Session;
+class ServerManager;
 
 #include <iostream>
 #include <list>
@@ -11,15 +17,8 @@ class Component_SessionManager;
 #include <boost/shared_ptr.hpp>
 #include <boost/random.hpp>
 
-#include <Server.h>
-#include <Packet_v1.h>
-#include <Packet_v1_Session.h>
-#include <Session.h>
-#include <Protocol.h>
-#include <Protocol_Session.h>
 #include <IComponent.h>
 #include <ServerManager.h>
-#include <UserModule_mysql.h>
 
 class Component_SessionManager :public IComponent
 {
@@ -34,10 +33,6 @@ public:
   void		Manage(Packet *);
 
 private:
-  typedef std::map<field_t, Session *>			m_Session;
-  typedef m_Session::iterator				m_Session_it;
-  typedef m_Session::const_iterator			m_Session_cit;
-
   virtual void					BindingsRecv();
   virtual void					RegisteredRequests();
 
@@ -64,8 +59,8 @@ private:
   ServerManager				*_serverManager;
 
   boost::rand48				_rng;
-  m_Session				*_sessionMap;
-  UserModule_mysql			*_userModule_mysql;
+  ServerManager::m_Session		&_sessionMap;
+  UserModule_mysql			*_userModule;
 };
 
 #endif // ! __COMPONENT_SESSIONMANAGER_H__

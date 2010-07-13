@@ -1,12 +1,19 @@
 #include <Component_SessionManager.h>
 #include <Bind_recv.h>
 
+#include <Server.h>
+#include <Packet_v1.h>
+#include <Packet_v1_Session.h>
+#include <Session.h>
+#include <Protocol.h>
+#include <Protocol_Session.h>
+#include <UserModule_mysql.h>
+
 Component_SessionManager::Component_SessionManager(ServerManager * serverManager)
-  :IComponent(SESSION_COMPONENTID), _serverManager(serverManager)
+  :IComponent(SESSION_COMPONENTID), _serverManager(serverManager), _sessionMap(serverManager->getSessionMap())
 {
-  _sessionMap = new m_Session;
   _rng.seed((int32_t)std::clock());
-  _userModule_mysql = UserModule_mysql::getInstance();
+  _userModule = UserModule_mysql::getInstance();
 }
 
 Component_SessionManager::~Component_SessionManager()
@@ -24,7 +31,7 @@ unsigned int		Component_SessionManager::GenSessionId()
 
 bool		Component_SessionManager::IsUniqId(unsigned int sessionId) const
 {
-  return (_sessionMap->find(sessionId) == _sessionMap->end());
+  return (_sessionMap.find(sessionId) == _sessionMap.end());
 }
 
 void		Component_SessionManager::PrintSession(Session const * session) const
@@ -39,21 +46,21 @@ void		Component_SessionManager::PrintSession(Packet const * packet) const
     "{}";
 }
 
-Session		*Component_SessionManager::FindSession(Packet_v1 const * packet_v1)
+Session				*Component_SessionManager::FindSession(Packet_v1 const * packet_v1)
 {
-  m_Session_it	it;
-  Session	*session;
+  ServerManager::m_Session_it	it;
+  Session			*session;
 
-  it = _sessionMap->find(packet_v1->getSessionId());
+  it = _sessionMap.find(packet_v1->getSessionId());
   session = it->second;
-  if (it == _sessionMap->end() || *session != *packet_v1)
+  if (it == _sessionMap.end() || *session != *packet_v1)
     return 0;
   return it->second;
 }
 
 unsigned int	Component_SessionManager::CountActiveSessions() const
 {
-  return _sessionMap->size();
+  return _sessionMap.size();
 }
 
 Session 	*Component_SessionManager::DoAuth(Packet_v1_Session const * packet_v1_Session)
@@ -70,20 +77,20 @@ Session 	*Component_SessionManager::DoAuth(Packet_v1_Session const * packet_v1_S
   std::string pass_str(pass);
   ///////////////////////////
 
-  if (_userModule_mysql->Authentification(login_str, pass_str))
+  if (_userModule->Authentification(login_str, pass_str))
     {
       field_t			sessionId	= GenSessionId();
-      //std::vector<std::string> const friendList	= _userModule_mysql->getFriendList(login_str);
+      //std::vector<std::string> const friendList	= _userModule->getFriendList(login_str);
 
       new_session = new Session(_serverManager, _serverManager->getIO(), packet_v1_Session, sessionId);
       new_session->setLogin(login_str);
       //      new_session->setFriendList(friendList);
 
-      (*_sessionMap)[new_session->getSessionId()] = new_session;
+      _sessionMap[new_session->getSessionId()] = new_session;
       Send_AuthResponse_OK(new_session);
 
-      // m_Session::iterator it, end = _sessionMap->end();
-      // for (it = _sessionMap->begin(); it != end; ++it)
+      // m_Session::iterator it, end = _sessionMap.end();
+      // for (it = _sessionMap.begin(); it != end; ++it)
       // 	{
       // 	  for (unsigned int i = 0; i < friendList.size(); ++i)
       // 	    {
@@ -106,7 +113,7 @@ void		Component_SessionManager::Disconnect(Session * session)
 {
   PrintSession(session);
   std::cout << " Disconnected" << std::endl;
-  _sessionMap->erase(session->getSessionId());
+  _sessionMap.erase(session->getSessionId());
   session->DeAuthentificated();
 }
 

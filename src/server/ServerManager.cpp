@@ -1,5 +1,10 @@
 #include <ServerManager.h>
+#include <Session.h>
+#include <Component_SessionManager.h>
+#include <Component_ChannelManager.h>
+#include <Component_FriendManager.h>
 #include <Bind_recv.h>
+#include <Protocol_Session.h>
 
 ServerManager::ServerManager(boost::asio::io_service & io_service, boost::threadpool::pool & pool, boost::asio::ip::udp::socket & socket)
   :Manager(io_service, pool, socket)
@@ -75,8 +80,18 @@ unsigned int	ServerManager::CountActiveSessions() const
   return _sessionManager->CountActiveSessions();
 }
 
+void		ServerManager::Connect(Session *session)
+{
+
+}
+
 void		ServerManager::Disconnect(Session *session)
 {
   _sessionManager->Disconnect(session);
   _channelManager->Disconnect(session);
+}
+
+ServerManager::m_Session &	ServerManager::getSessionMap()
+{
+  return _sessionMap;
 }

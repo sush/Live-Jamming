@@ -1,5 +1,9 @@
 #include <Session.h>
 
+#include <Packet_v1.h>
+#include <Manager.h>
+#include <Protocol_Session.h>
+
 Session::Session(Manager * manager, boost::asio::io_service & io_service, Packet_v1 const * packet_v1, unsigned int sessionId)
   :_manager(manager), _io_service(io_service), _sessionId(sessionId), _remote_endpoint(packet_v1->getEndpoint()), _timeOutTestCount(0), _isLogged(true)
 {
@@ -174,12 +178,12 @@ std::string const &		Session::getLogin() const
   return _login;
 }
 
-std::vector<std::string> const	& Session::getFriendList() const
+Session::l_Friend const	&	Session::getFriendList() const
 {
   return _friendList;
 }
 
-void				Session::setFriendList(std::vector<std::string> const &friendList)
+void				Session::setFriendList(Session::l_Friend const &friendList)
 {
   _friendList = friendList;
 }

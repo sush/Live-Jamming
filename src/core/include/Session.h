@@ -2,20 +2,24 @@
 #define __SESSION_H__
 
 class Session;
+class Packet;
+class Packet_v1;
+class Manager;
 
 #include <iostream>
+#include <list>
 #include <map>
 #include <boost/asio.hpp>
-#include <Packet_v1.h>
 #include <boost/shared_ptr.hpp>
 #include <boost/bind.hpp>
+
 #include <Protocol.h>
-#include <Manager.h>
-#include <Protocol_Session.h>
 
 class Session
 {
 public:
+  typedef std::list<std::string>	l_Friend;
+
   // [SERVER] session for client in server once connected
 		Session(Manager *, boost::asio::io_service &, Packet_v1 const *, unsigned int);
 
@@ -51,8 +55,8 @@ public:
   std::string const &				getLogin() const;
   void						setLogin(std::string const &);
 
-  std::vector<std::string> const &		getFriendList() const;
-  void						setFriendList(std::vector<std::string> const &);
+  l_Friend const &				getFriendList() const;
+  void						setFriendList(l_Friend const &);
 
 private:
   typedef std::map<field_t, boost::asio::deadline_timer *>		m_timer;
@@ -74,7 +78,7 @@ private:
   m_m_timer				_timerMapMap;
   bool					_isLogged;
   std::string				_login;
-  std::vector<std::string>		_friendList;
+  l_Friend				_friendList;
 };
 
 #endif // ! __SESSION_H__
