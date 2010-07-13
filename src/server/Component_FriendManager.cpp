@@ -91,11 +91,6 @@ void		Component_FriendManager::Send_Friend_List(Session *session, std::vector<st
   _serverManager->Send(packet_v1_friend, session);
 }
 
-void		Component_FriendManager::Connect()
-{
-
-}
-
 void		Component_FriendManager::Disconnect(Session * session)
 {
   // m_Session::iterator it, end		= _sessionMap->end();
