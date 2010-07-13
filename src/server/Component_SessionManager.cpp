@@ -117,6 +117,7 @@ void		Component_SessionManager::Disconnect(Session * session)
 	}
     }
   _sessionMap->erase(session->getSessionId());
+  session->DeAuthentificated();
 }
 
 

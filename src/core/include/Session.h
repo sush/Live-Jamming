@@ -23,6 +23,7 @@ public:
   Session(Manager * manager, boost::asio::io_service &, boost::asio::ip::udp::endpoint &);
   
   void		Authentificated(Packet_v1 const *);
+  void		DeAuthentificated();
 
   virtual				~Session();
   bool					operator == (Session const &) const;

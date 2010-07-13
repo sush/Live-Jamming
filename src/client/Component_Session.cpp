@@ -138,6 +138,7 @@ void		Component_Session::Recv_AuthResponse(Packet_v1 const *packet_v1, Session *
     {
       _logged = true;
       session->Authentificated(packet_v1);
+      std::cout << "authentificated" << std::endl;
     }
   else
     {std::cout << "auth failed" << std::endl;}	// auth errors
@@ -148,7 +149,8 @@ void		Component_Session::Disconnect()
   _logged = false;
   std::cout << "disconnecting..." << std::endl;
   Send_Disconnect();
-  _clientManager->disconnect();
+  _session->DeAuthentificated();
+  static_cast<Proxy*>(_clientManager)->disconnect();
 }
 
 void		Component_Session::Recv_TimeOutTest(Packet_v1 const *, Session *)

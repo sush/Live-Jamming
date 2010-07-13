@@ -46,6 +46,7 @@ void		Manager::Send_bind(Packet_v1 *packet_v1, Session *session) const
 void		Manager::Send(Packet_v1 *packet_v1, Session * session) const
 {
   packet_v1->setSessionId(session->getSessionId());
+  std::cout << "sessionId(2) = " << session->getSessionId() << std::endl;
   if (getRegisteredRequest(packet_v1->getComponentId(), packet_v1->getRequestId()).getRetry())
     session->setAutoRetry(packet_v1);
 #ifdef _DEBUG
