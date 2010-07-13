@@ -82,7 +82,7 @@ void	Component_Channel::RegisteredRequests()
     new Request(CHANNEL_MESSAGE_RECV, RECV, "Channel Message request RECV", RESPONSETONOTHING);
 
   (*_registeredRequests)[CHANNEL_LEAVE_OK] = 
-    new Request(CHANNEL_LEAVE_OK, RECV, "Channel Leave request OK", RESPONSETONOTHING);
+    new Request(CHANNEL_LEAVE_OK, RECV, "Channel Leave request OK", CHANNEL_LEAVE);
 
   (*_registeredRequests)[CHANNEL_LEAVE_NOK_NOTINCHAN] = 
     new Request(CHANNEL_LEAVE_NOK_NOTINCHAN, RECV, "Channel Leave request NOK user not in chan", RESPONSETONOTHING);
