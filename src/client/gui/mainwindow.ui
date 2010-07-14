@@ -21,12 +21,6 @@
        <enum>Qt::Horizontal</enum>
       </property>
       <widget class="QTabWidget" name="listsTab">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Maximum" vsizetype="Expanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
        <property name="currentIndex">
         <number>0</number>
        </property>
@@ -85,18 +79,16 @@
       <property name="currentIndex">
        <number>0</number>
       </property>
-      <widget class="QWidget" name="page_5">
+      <widget class="QWidget" name="page">
        <layout class="QVBoxLayout" name="verticalLayout_2">
+        <property name="spacing">
+         <number>0</number>
+        </property>
         <item>
-         <widget class="ConversationSet" name="widget" native="true">
-          <layout class="QVBoxLayout" name="verticalLayout">
-           <item>
-            <widget class="QPlainTextEdit" name="textEdit"/>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="lineEdit"/>
-           </item>
-          </layout>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>LiveJamming</string>
+          </property>
          </widget>
         </item>
        </layout>
@@ -242,12 +234,6 @@
    <class>ChannelList</class>
    <extends>QTreeWidget</extends>
    <header location="global">channellist.h</header>
-  </customwidget>
-  <customwidget>
-   <class>ConversationSet</class>
-   <extends>QWidget</extends>
-   <header location="global">conversationset.h</header>
-   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

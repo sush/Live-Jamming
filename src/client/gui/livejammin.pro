@@ -74,7 +74,8 @@ FORMS += mainwindow.ui \
     roomdialog.ui \
     newchan.ui \
     convset.ui \
-    chanlist.ui
+    chanlist.ui \
+    conversationset.ui
 DEFINES += _GUI
 debug:QMAKE_CXXFLAGS += -D_DEBUG \
     -g3 \

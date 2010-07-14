@@ -17,11 +17,13 @@ class Proxy;
 class Packet_v1_Channel;
 class QModelIndex;
 class QTreeWidgetItem;
+class ConversationSet;
 
 struct UiChannel
 {
     QTreeWidgetItem* item;
-    unsigned int field;
+    ConversationSet*    convSet;
+    //unsigned int field;
 };
 
 struct UiClient
@@ -62,7 +64,7 @@ private:
     void leaveChannel(const QString& name);
     void addClientToChannel(const QString& channel, const QString& login);
     void removeClientFromChannel(const QString& channel, const QString& login);
-    void msgRecv();
+    void addMessage(const QString& channel, const QString& client, const QString& msg);
 
 public slots:
     void authEvents(MainWindow::authEventsType event);

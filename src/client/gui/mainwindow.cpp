@@ -22,6 +22,7 @@
 #include <Session.h>
 #include <Packet_v1.h>
 #include <proxy.h>
+#include <conversationset.h>
 
 #include <QDebug>
 
@@ -82,7 +83,7 @@ void MainWindow::setConnected(bool connected)
         ui->menuFile->removeAction(connected ? ui->actionConnect : ui->actionDisconnect);
         ui->menuFile->insertAction(ui->actionCreate_account,
                                    connected ? ui->actionDisconnect : ui->actionConnect);
-        ui->textEdit->setEnabled(connected);
+        ui->menuChans->setEnabled(connected);
     }
 }
 
@@ -111,20 +112,22 @@ void    MainWindow::chanEvents(chanEventsType event, const Packet_v1_Channel* pa
 {
     switch(event) {
     case JOIN_OK:
-        proxy->trans[packet->getChannelName()] = packet->getChannelId();
+        proxy->channelNameToId[packet->getChannelName()] = packet->getChannelId();
         joinChannel(packet->getChannelName());
         break;
     case LEAVE_OK:
-        proxy->trans.remove(packet->getChannelName());
+        proxy->channelNameToId.remove(packet->getChannelName());
         leaveChannel(packet->getChannelName());
         break;
     case JOINED:
+
         addClientToChannel(packet->getChannelName(), packet->getClientLogin());
         break;
     case LEAVED:
         removeClientFromChannel(packet->getChannelName(), packet->getClientLogin());
         break;
     case MESSAGE_RECV:
+        addMessage(proxy->channelIdToName(packet->getChannelId()), "toto", packet->getMessage());
         break;
     }
 }
@@ -134,7 +137,13 @@ void    MainWindow::joinChannel(const QString &name)
     QTreeWidgetItem* item = new QTreeWidgetItem(QStringList(name));
     ui->channelList->addTopLevelItem(item);
 
-    channels[name] = (UiChannel){item, 0};
+    ConversationSet* convSet = new ConversationSet;
+    connect(convSet->input, SIGNAL(returnPressed()), this, SLOT(on_lineEdit_returnPressed()));
+    ui->stackedWidget->addWidget(convSet);
+    ui->stackedWidget->setCurrentWidget(convSet);
+    currentChannel = name;
+
+    channels[name] = (UiChannel){item, convSet};
     addClientToChannel(name, params.login);
 }
 
@@ -143,7 +152,6 @@ void    MainWindow::leaveChannel(const QString &name)
     delete channels[name].item;
 
     channels.remove(name);
-    removeClientFromChannel(name, params.login);
 }
 
 void    MainWindow::addClientToChannel(const QString &channel, const QString &client)
@@ -162,12 +170,21 @@ void    MainWindow::removeClientFromChannel(const QString &channel, const QStrin
 {
 //    QMap<QString, UiChannel>::const_iterator it = channels.find(channel);
 //    Q_ASSERT(it != channels.end());
-
+qDebug() << channel << client << channels.size();
     Q_ASSERT(channels.find(channel) != channels.end());
     Q_ASSERT(clients.find(client) != clients.end());
     delete clients[client].item;
 
     clients.remove(client);
+}
+
+void    MainWindow::addMessage(const QString &channel, const QString &client, const QString &msg)
+{
+    Q_ASSERT(channels.contains(channel));
+    //Q_ASSERT(clients.contains(client));
+
+    ConversationSet* convSet = static_cast<ConversationSet*>(ui->stackedWidget->currentWidget());
+    convSet->display->setPlainText(convSet->display->toPlainText() + "\n" + client + ": " + msg);
 }
 
 void MainWindow::on_actionConnect_triggered()
@@ -228,19 +245,28 @@ void MainWindow::on_channelList_customContextMenuRequested(QPoint pos)
 {
     if (ui->channelList->indexAt(pos).isValid()) {
         QTreeWidgetItem* item = ui->channelList->itemAt(pos);
-        QAction leave(QString("leave"), 0);
-        QAction* action = QMenu::exec(QList<QAction*>() << &leave, ui->channelList->mapToGlobal(pos));
-        if (action == &leave)
-            proxy->channel()->Send_Leave(proxy->session()->_session, proxy->trans[item->text(0)]);
+qDebug() << "toto" << ui->channelList->itemAt(pos)->text(0);
+        if (channels.contains(item->text(0))) {
+            QAction leave(QString("leave"), 0);
+            QAction* action = QMenu::exec(QList<QAction*>() << &leave, ui->channelList->mapToGlobal(pos));
+            qDebug() << "SEDING LEAVE ON:" << proxy->channelNameToId[item->text(0)];
+            if (action == &leave)
+                proxy->channel()->Send_Leave(proxy->session()->_session, proxy->channelNameToId[item->text(0)]);
+        }
     }
 }
 
 void MainWindow::on_lineEdit_returnPressed()
 {
-    proxy->channel()->Send_Message(proxy->session()->_session, ui->lineEdit->text().toLocal8Bit().data(), proxy->trans[currentChannel]);
+    QString msg = channels.value(currentChannel).convSet->input->text();
+    qDebug() << "SENDING MSG" << msg << "FROM" << currentChannel;
+
+    proxy->channel()->Send_Message(proxy->session()->_session, msg.toLocal8Bit().data(), proxy->channelNameToId[currentChannel]);
+    channels.value(currentChannel).convSet->input->clear();
 }
 
 void MainWindow::on_channelList_activated(const QModelIndex& index)
 {
-        currentChannel = ui->channelList->itemFromIndex(index)->text(0);
+    currentChannel = ui->channelList->itemFromIndex(index)->text(0);
+    ui->stackedWidget->setCurrentWidget(channels[currentChannel].convSet);
 }

@@ -4,6 +4,8 @@
 #include <Component_Session.h>
 #include <proxy.h>
 
+#include <qdebug.h>
+
 Proxy::Proxy(MainWindow *mainwin, boost::asio::io_service &service,
              boost::threadpool::pool &pool, boost::asio::ip::udp::socket &socket, boost::asio::ip::udp::endpoint &endpoint)
                  : ClientManager(service, pool, socket, endpoint)
@@ -60,3 +62,12 @@ void    Proxy::disconnect()
 {
     emit sAuthResponse(MainWindow::DISCONNECTED);
 }
+
+const char*    Proxy::channelIdToName(field_t id)
+{
+    qDebug() << _channel->getAllChannel().size();
+
+    return _channel->getAllChannel().find(id)->second->getName();
+}
+
+

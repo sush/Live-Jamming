@@ -2,8 +2,9 @@
 #define CONVERSATIONSET_H
 
 #include <QWidget>
+#include <ui_conversationset.h>
 
-class ConversationSet : public QWidget
+class ConversationSet : public QWidget, public Ui::ConversationSet
 {
 Q_OBJECT
 public:

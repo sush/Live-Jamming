@@ -20,7 +20,10 @@ public :
 void    authResponse(Packet_v1 const*, Session*);
 void    chanResponse(Packet_v1 const*, Session*);
 void    disconnect();
-QMap<QString, unsigned long>    trans;
+
+QMap<QString, field_t>    channelNameToId;
+QMap<QString, field_t>    clientNameToId;
+const char* channelIdToName(field_t);
 
 typedef void    (Proxy::*pMethod)(Packet_v1 const*, Session*);
 
