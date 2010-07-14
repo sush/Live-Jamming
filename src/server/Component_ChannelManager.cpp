@@ -173,10 +173,11 @@ void	Component_ChannelManager::Recv_Message(Packet_v1 const *packet_v1, Session 
       Channel *chan = _channelMap->find(channelId)->second;
       std::map<field_t, Session*> *connected = chan->getConnected();
 
+      Send_Message_ACK(session);
+
       std::map<field_t, Session *>::iterator it, end = connected->end();
       for (it = connected->begin(); it != end ; ++it)
 	Send_Message_RECV(it->second, message, channelId, sessionId);
-      Send_Message_ACK(session);
     }
 }
 
