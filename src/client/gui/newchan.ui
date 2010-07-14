@@ -14,6 +14,9 @@
    <string>New Chan</string>
   </property>
   <layout class="QFormLayout" name="formLayout">
+   <property name="fieldGrowthPolicy">
+    <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+   </property>
    <item row="1" column="0">
     <widget class="QLabel" name="NameLabel">
      <property name="text">
@@ -24,17 +27,7 @@
    <item row="1" column="1">
     <widget class="QLineEdit" name="nameLineEdit"/>
    </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="subjectLabel">
-     <property name="text">
-      <string>Chan subject</string>
-     </property>
-    </widget>
-   </item>
    <item row="3" column="1">
-    <widget class="QLineEdit" name="subjectLineEdit"/>
-   </item>
-   <item row="4" column="1">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>

@@ -13,7 +13,7 @@ class AccountConnection : public QDialog
 public:
     AccountConnection(QWidget *parent = 0);
     ~AccountConnection();
-    static bool    run(QString& login, QString& password);
+    static bool    run(QWidget* parent, QString& login, QString& password);
 
 protected:
     void changeEvent(QEvent *e);

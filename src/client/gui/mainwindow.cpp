@@ -16,9 +16,6 @@
 #include "accountconnection.h"
 #include "configuration_dialog.h"
 #include "roomdialog.h"
-#include "convset.h"
-
-//#include <Protocol_Session.h>
 
 #include <Component_Session.h>
 #include <Component_Channel.h>
@@ -137,10 +134,11 @@ void    MainWindow::chanEvents(chanEventsType event, const Packet_v1_Channel* pa
 
 void    MainWindow::joinChannel(const QString &name)
 {
-    QTreeWidgetItem* top = new QTreeWidgetItem(QStringList(name));
-    ui->channelList->addTopLevelItem(top);
+    QTreeWidgetItem* item = new QTreeWidgetItem(QStringList(name));
+    ui->channelList->addTopLevelItem(item);
 
-    channels[name] = (UiChannel){top, 0};
+    channels[name] = (UiChannel){item, 0};
+    addClientToChannel(name, params.login);
 }
 
 void    MainWindow::leaveChannel(const QString &name)
@@ -149,6 +147,7 @@ void    MainWindow::leaveChannel(const QString &name)
     delete channels[name].item;
 
     channels.remove(name);
+    removeClientFromChannel(name, params.login);
 }
 
 void    MainWindow::addClientToChannel(const QString &channel, const QString &client)
@@ -180,7 +179,7 @@ void    MainWindow::removeClientFromChannel(const QString &channel, const QStrin
 void MainWindow::on_actionConnect_triggered()
 {
     if (isConnected == false) {
-           AccountConnection::run(params.login, params.password);
+           AccountConnection::run(this, params.login, params.password);
 
            if (params.haveId() == true) {
             qDebug() << params.login << params.password;
@@ -246,12 +245,11 @@ void MainWindow::on_channelList_customContextMenuRequested(QPoint pos)
 
 void MainWindow::on_lineEdit_returnPressed()
 {
-    QString currentChannel = ui->channelList->currentItem()->text(0);
     qDebug() << "WRITING ON" << currentChannel;
     proxy->channel()->Send_Message(proxy->session()->_session, ui->lineEdit->text().toLocal8Bit().data(), proxy->trans[currentChannel]);
 }
 
 void MainWindow::on_channelList_activated(const QModelIndex& index)
 {
-
+        currentChannel = ui->channelList->itemFromIndex(index)->text(0);
 }

@@ -8,19 +8,19 @@ SOURCES += mainwindow.cpp \
     configuration_dialog.cpp \
     roomdialog.cpp \
     parameters.cpp \
-    chan.cpp \
-    convset.cpp \
     proxy.cpp \
-    chanlist.cpp
+    chanlist.cpp \
+    channellist.cpp \
+    conversationset.cpp
 HEADERS += mainwindow.h \
     accountconnection.h \
     configuration_dialog.h \
     roomdialog.h \
     parameters.h \
-    chan.h \
-    convset.h \
     proxy.h \
-    chanlist.h
+    chanlist.h \
+    channellist.h \
+    conversationset.h
 DEPENDPATH += ../../core
 INCLUDEPATH += ../../core/include
 SOURCES += Manager.cpp \

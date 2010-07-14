@@ -39,7 +39,7 @@
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
-          <widget class="QTreeWidget" name="channelList">
+          <widget class="ChannelList" name="channelList">
            <property name="contextMenuPolicy">
             <enum>Qt::CustomContextMenu</enum>
            </property>
@@ -88,10 +88,16 @@
       <widget class="QWidget" name="page_5">
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
-         <widget class="QPlainTextEdit" name="textEdit"/>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="lineEdit"/>
+         <widget class="ConversationSet" name="widget" native="true">
+          <layout class="QVBoxLayout" name="verticalLayout">
+           <item>
+            <widget class="QPlainTextEdit" name="textEdit"/>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEdit"/>
+           </item>
+          </layout>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -231,6 +237,19 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>ChannelList</class>
+   <extends>QTreeWidget</extends>
+   <header location="global">channellist.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ConversationSet</class>
+   <extends>QWidget</extends>
+   <header location="global">conversationset.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

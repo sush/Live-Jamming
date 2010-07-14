@@ -27,9 +27,9 @@ void AccountConnection::changeEvent(QEvent *e)
     }
 }
 
-bool  AccountConnection::run(QString& login, QString & password)
+bool  AccountConnection::run(QWidget* parent, QString& login, QString & password)
 {
-    AccountConnection ac;
+    AccountConnection ac(parent);
     ac.ui->loginLineEdit->setText(login);
     ac.ui->passwordLineEdit->setText(password);
     //pas présent dans le ui

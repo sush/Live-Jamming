@@ -9,8 +9,6 @@ class MainWindow;
 #include <parameters.h>
 #include <QMap>
 
-#include <chan.h>
-
 namespace Ui {
     class MainWindow;
 }
@@ -56,14 +54,15 @@ private:
     bool            isConnected;
     QMap<QString, UiChannel>   channels;
     QMap<QString, UiClient>    clients;
+    QString         currentChannel;
 
 
 private:
     void joinChannel(const QString& name);
     void leaveChannel(const QString& name);
-    void generateChannels(const Component_Channel::m_channel&);
     void addClientToChannel(const QString& channel, const QString& login);
     void removeClientFromChannel(const QString& channel, const QString& login);
+    void msgRecv();
 
 public slots:
     void authEvents(MainWindow::authEventsType event);
