@@ -1,7 +1,6 @@
 #ifndef __PROTOCOL_FRIEND_H__
 #define __PROTOCOL_FRIEND_H__
 
-
 #define FRIEND_COMPONENTID		3
 
 #define FRIEND_JOINED			1

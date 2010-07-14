@@ -3,6 +3,7 @@
 #include <Component_SessionManager.h>
 #include <Component_ChannelManager.h>
 #include <Component_FriendManager.h>
+#include <Component_RoomManager.h>
 #include <Bind_recv.h>
 #include <Protocol_Session.h>
 
@@ -71,9 +72,11 @@ void		ServerManager::Init_Components()
   _sessionManager = new Component_SessionManager(this);
   _channelManager = new Component_ChannelManager(this);
   _friendManager  = new Component_FriendManager(this);
+  _roomManager  = new Component_RoomManager(this);
   RegisterComponent(_sessionManager);
   RegisterComponent(_channelManager);
   RegisterComponent(_friendManager);
+  RegisterComponent(_roomManager);
 }
 
 unsigned int	ServerManager::CountActiveSessions() const
@@ -91,6 +94,7 @@ void		ServerManager::Disconnect(Session *session)
   _sessionManager->Disconnect(session);
   _channelManager->Disconnect(session);
   _friendManager->Disconnect(session);
+  _roomManager->Disconnect(session);
 }
 
 ServerManager::m_Session &	ServerManager::getSessionMap()

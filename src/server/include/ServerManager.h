@@ -7,6 +7,7 @@ class Session;
 class Component_SessionManager;
 class Component_ChannelManager;
 class Component_FriendManager;
+class Component_RoomManager;
 
 #include <iostream>
 #include <map>
@@ -38,6 +39,7 @@ private:
   Component_SessionManager		*_sessionManager;
   Component_ChannelManager		*_channelManager;
   Component_FriendManager		*_friendManager;
+  Component_RoomManager			*_roomManager;
   // list of additional optional components
   m_Session				_sessionMap;
 };

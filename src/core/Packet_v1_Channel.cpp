@@ -1,10 +1,8 @@
 #include <Packet_v1_Channel.h>
 
-
 Packet_v1_Channel::Packet_v1_Channel(boost::asio::ip::udp::endpoint const *endpoint, buffer_t *buffer, std::size_t len)
   :Packet_v1::Packet_v1(endpoint, buffer, len)
 {}
-
 
 Packet_v1_Channel::Packet_v1_Channel(field_t requestId)
   : Packet_v1(CHANNEL_COMPONENTID, requestId)
