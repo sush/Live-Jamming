@@ -30,11 +30,25 @@ void		Component_FriendManager::Recv_Friend_Add(Packet_v1 const *packet_v1, Sessi
     static_cast<Packet_v1_Friend const *>(packet_v1);
 
   char const * friendLogin = packet_v1_friend->getFriendLogin();
-  // call userModule->AddFriend(session->getLogin(), friendLogin);
-  // if ok 
-  // Send_Add_Friend_OK(session, friendLogin);
-  // else
-  // Send_Add_Friend_NOK(session, friendLogin);
+  bool existing		   = false;
+
+  std::list<std::string>::iterator it, end = session->getFriendList().end();
+  for (it = session->getFriendList().begin(); it != end; ++it)
+    {
+      if ((*it) == friendLogin)
+	{
+	  existing = true;
+	  Send_Friend_Add_NOK(session, friendLogin);
+	  break;
+	}
+    }
+
+  if (!existing)
+    {
+      // call userModule->AddFriend(session->getLogin(), friendLogin);
+      session->getFriendList().push_back(friendLogin);
+      Send_Friend_Add_OK(session, friendLogin);
+    }
 }
 
 void		Component_FriendManager::Recv_Friend_Del(Packet_v1 const *packet_v1, Session *session)
@@ -43,11 +57,23 @@ void		Component_FriendManager::Recv_Friend_Del(Packet_v1 const *packet_v1, Sessi
     static_cast<Packet_v1_Friend const *>(packet_v1);
 
   char const * friendLogin = packet_v1_friend->getFriendLogin();
-  // call userModule->DelFriend(session->getLogin(), friendLogin);
-  // if ok 
-  // Send_Del_Friend_OK(session, friendLogin);
-  // else
-  // Send_Del_Friend_NOK(session, friendLogin);
+  bool existing		   = false;
+
+  std::list<std::string>::iterator it, end = session->getFriendList().end();
+  for (it = session->getFriendList().begin(); it != end; ++it)
+    {
+      if ((*it) == friendLogin)
+	{
+	  existing = true;
+	  // call userModule->DelFriend(session->getLogin(), friendLogin);
+	  session->getFriendList().erase(it);
+	  Send_Friend_Del_OK(session, friendLogin);
+	  break;
+	}
+    }
+
+  if (!existing)
+    Send_Friend_Del_NOK(session, friendLogin);
 }
 
 void		Component_FriendManager::Send_Friend_Add_OK(Session *session, char const *friendLogin)

@@ -178,12 +178,12 @@ std::string const &		Session::getLogin() const
   return _login;
 }
 
-Session::l_Friend const	&	Session::getFriendList() const
+Session::l_Friend 		&Session::getFriendList()
 {
   return _friendList;
 }
 
-void				Session::setFriendList(Session::l_Friend const &friendList)
+void				Session::setFriendList(Session::l_Friend &friendList)
 {
   _friendList = friendList;
 }

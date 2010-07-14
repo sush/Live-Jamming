@@ -159,8 +159,8 @@ void		Component_Friend::Send_Friend_Leaved_ACK(Session *session)
 
 bool		Component_Friend::IsFriend(Session *session, std::string const &clientLogin) const
 {
-  std::list<std::string> const friendList = session->getFriendList();
-  std::list<std::string>::const_iterator it, end = friendList.end();
+  std::list<std::string> friendList = session->getFriendList();
+  std::list<std::string>::iterator it, end = friendList.end();
 
   for (it = friendList.begin(); it != end; ++it)
     {

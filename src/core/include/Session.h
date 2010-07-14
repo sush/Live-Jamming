@@ -55,8 +55,8 @@ public:
   std::string const &				getLogin() const;
   void						setLogin(std::string const &);
 
-  l_Friend const &				getFriendList() const;
-  void						setFriendList(l_Friend const &);
+  l_Friend					&getFriendList();
+  void						setFriendList(l_Friend &);
 
 private:
   typedef std::map<field_t, boost::asio::deadline_timer *>		m_timer;
