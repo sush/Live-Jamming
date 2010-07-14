@@ -2,6 +2,8 @@
 #define CONFIGURATION_DIALOG_H
 
 #include <QDialog>
+#include "nespaudio.h"
+#include "qdebug.h"
 
 namespace Ui {
     class ConfigurationDialog;
@@ -16,7 +18,10 @@ public:
 
 private:
     Ui::ConfigurationDialog*	ui;
+    NespAudio                   audio;
 
+private slots:
+    void on_pushButton_clicked();
 };
 
 #endif // CONFIGURATION_DIALOG_H

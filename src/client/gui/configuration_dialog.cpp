@@ -6,6 +6,11 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent) :
     ui(new Ui::ConfigurationDialog)
 {
     ui->setupUi(this);
-    ui->comboBox->addItems(QStringList() << "toto" << "tata" << "titi");
+    ui->inputComboBox->addItems(audio.getIDevices());
+    ui->outputComboBox->addItems(audio.getODevices());
+}
 
+void ConfigurationDialog::on_pushButton_clicked()
+{
+audio.testAudio();
 }

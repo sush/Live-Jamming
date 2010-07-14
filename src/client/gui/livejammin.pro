@@ -9,7 +9,7 @@ SOURCES += mainwindow.cpp \
     roomdialog.cpp \
     parameters.cpp \
     proxy.cpp \
-    chanlist.cpp \
+    nespaudio.cpp \
     channellist.cpp \
     conversationset.cpp
 HEADERS += mainwindow.h \
@@ -18,7 +18,7 @@ HEADERS += mainwindow.h \
     roomdialog.h \
     parameters.h \
     proxy.h \
-    chanlist.h \
+    nespaudio.h \
     channellist.h \
     conversationset.h
 DEPENDPATH += ../../core
@@ -80,3 +80,4 @@ debug:QMAKE_CXXFLAGS += -D_DEBUG \
     -g3 \
     -pg
 else:QMAKE_CXXFLAGS += -D_NDEBUG
+QT += multimedia
