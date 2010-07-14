@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>420</width>
-    <height>283</height>
+    <width>428</width>
+    <height>453</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,11 +17,11 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
-       <string>Hardware</string>
+       <string>Audio</string>
       </attribute>
       <layout class="QFormLayout" name="formLayout_2">
        <property name="fieldGrowthPolicy">
@@ -29,28 +29,38 @@
        </property>
        <item row="0" column="0">
         <widget class="QLabel" name="label_5">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
+           <underline>false</underline>
+          </font>
+         </property>
          <property name="text">
           <string>Input</string>
          </property>
         </widget>
        </item>
-       <item row="0" column="1">
-        <widget class="QComboBox" name="inputComboBox"/>
-       </item>
-       <item row="1" column="0">
+       <item row="2" column="0">
         <widget class="QLabel" name="outputLabel">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
          <property name="text">
           <string>Output</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="1">
-        <widget class="QComboBox" name="outputComboBox"/>
-       </item>
-       <item row="2" column="0">
+       <item row="4" column="1">
         <widget class="QPushButton" name="pushButton">
          <property name="text">
-          <string>Test</string>
+          <string>Start</string>
          </property>
          <property name="checkable">
           <bool>true</bool>
@@ -66,7 +76,57 @@
          </property>
         </widget>
        </item>
+       <item row="1" column="1">
+        <widget class="QComboBox" name="inputComboBox"/>
+       </item>
+       <item row="3" column="1">
+        <widget class="QComboBox" name="outputComboBox"/>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Device</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Device</string>
+         </property>
+        </widget>
+       </item>
       </layout>
+     </widget>
+     <widget class="QWidget" name="tab_2">
+      <attribute name="title">
+       <string>Network</string>
+      </attribute>
+      <widget class="QLabel" name="label_3">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>30</y>
+         <width>62</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Server</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="tab_3">
+      <attribute name="title">
+       <string>Page</string>
+      </attribute>
      </widget>
     </widget>
    </item>

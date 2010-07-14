@@ -17,7 +17,7 @@ void ConfigurationDialog::on_pushButton_clicked(bool checked)
     audio.startIO();
 }
     else {
-        ui->pushButton->setText("Stop");
+        ui->pushButton->setText("Start");
         audio.stopIO();
     }
 }
