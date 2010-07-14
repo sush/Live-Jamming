@@ -2,7 +2,6 @@
 #define __MANAGER_H__
 
 class Manager;
-class Packet;
 class Packet_v1;
 
 #include <iostream>
@@ -16,6 +15,10 @@ class Packet_v1;
 
 #include <IComponent.h>
 #include <Protocol.h>
+#include <Packet.h>
+
+Packet_v1	*Cond_new_Packet(boost::asio::ip::udp::endpoint &, Packet::buffer_t &, int);
+Packet_v1	*Cond_new_Packet(int, int);
 
 class Manager
 {
@@ -56,6 +59,9 @@ public:
   void		CallBack_TimeOutTest(Session *, boost::system::error_code const &);
   void		CallBack_TimeOutOccurred(Session *, boost::system::error_code const &);
 
+  // a simple method to return string name of a request
+  std::string const &			getRegisteredRequestName(field_t, field_t) const;
+
 protected:
   virtual void		Init_Components() = 0;
   virtual void		Disconnect(Session *) = 0;
@@ -76,7 +82,7 @@ protected:
   bool					IsBindRecv(field_t, field_t) const;
   Bind_recv const			&getBindRecv(field_t, field_t) const;
   Request const				&getRegisteredRequest(field_t, field_t) const;
-    
+
 protected:
   // these should be made part of options
   unsigned int				_retryDelay;

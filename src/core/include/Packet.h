@@ -1,6 +1,7 @@
-
 #ifndef __PACKET_H__
 #define __PACKET_H__
+
+class Manager;
 
 #include <iostream>
 #include <string.h>
@@ -8,6 +9,7 @@
 #include <boost/array.hpp>
 #include <Protocol.h>
 
+#define PACKET_STRING "==================================="
 #define PACKET_MAXSIZE 2048
 
 typedef unsigned char			      byte_t;
@@ -24,7 +26,7 @@ public:
   int						getMaxSize() const;
   boost::asio::ip::udp::endpoint const &	getEndpoint() const;
 
-  void						Print() const;
+  virtual void					Print(std::string const &, Manager const *) const;
   buffer_t const &				getRawData() const;
   field_t					getProtoVersion() const;
   void						setProtoVersion(field_t);
@@ -39,6 +41,9 @@ protected:
   void						appendData(unsigned int, unsigned int, byte_t const *);
   void						setLen(std::size_t);
   void						addLen(std::size_t);
+
+protected:
+  void						Print_base() const;
 
 private:
   byte_t					*getStartOfData(unsigned int, unsigned int) const;

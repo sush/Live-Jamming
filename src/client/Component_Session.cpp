@@ -39,30 +39,30 @@ void	Component_Session::RegisteredRequests()
 {
   // SEND requests
   (*_registeredRequests)[SESSION_AUTHREQUEST] = 
-    new Request(SESSION_AUTHREQUEST, SEND, "Session Authentification request", RETRY);
+    new Request(SESSION_AUTHREQUEST, SEND, "AUTHREQUEST", RETRY);
 
   (*_registeredRequests)[SESSION_DISCONNECT] = 
-    new Request(SESSION_DISCONNECT, SEND, "Session Disconnect request", NORETRY);
+    new Request(SESSION_DISCONNECT, SEND, "DISCONNECT", NORETRY);
 
   // RECV requests
   (*_registeredRequests)[SESSION_AUTHRESPONSE_OK] = 
-    new Request(SESSION_AUTHRESPONSE_OK, RECV, "Session Authentification response OK", SESSION_AUTHREQUEST);
+    new Request(SESSION_AUTHRESPONSE_OK, RECV, "AUTHRESPONSE_OK", SESSION_AUTHREQUEST);
 
   (*_registeredRequests)[SESSION_AUTHRESPONSE_NOK_BADAUTH] = 
-    new Request(SESSION_AUTHRESPONSE_NOK_BADAUTH, RECV, "Session Authentification response Bad Login information", SESSION_AUTHREQUEST);
+    new Request(SESSION_AUTHRESPONSE_NOK_BADAUTH, RECV, "AUTHRESPONSE_NOK_BADAUTH", SESSION_AUTHREQUEST);
 
   (*_registeredRequests)[SESSION_AUTHRESPONSE_NOK_DUPLICATE] = 
-    new Request(SESSION_AUTHRESPONSE_NOK_DUPLICATE, RECV, "Session Authentification response Duplicate Login", SESSION_AUTHREQUEST);
+    new Request(SESSION_AUTHRESPONSE_NOK_DUPLICATE, RECV, "AUTHRESPONSE_NOK_DUPLICATE", SESSION_AUTHREQUEST);
 
   (*_registeredRequests)[SESSION_DISCONNECTED] = 
-    new Request(SESSION_DISCONNECTED, RECV, "Session ended", RESPONSETONOTHING);
+    new Request(SESSION_DISCONNECTED, RECV, "DISCONNECTED", RESPONSETONOTHING);
 
   // BIDIRECTIONAL requests 
   (*_registeredRequests)[SESSION_TIMEOUT] = 
-    new Request(SESSION_TIMEOUT, BIDIRECTIONNAL, "Session timeout request", NORETRY, RESPONSETONOTHING);
+    new Request(SESSION_TIMEOUT, BIDIRECTIONNAL, "TIMEOUT_TEST", NORETRY, RESPONSETONOTHING);
 
   (*_registeredRequests)[SESSION_KEEPALIVE] =   // keepalive is a response actually but its managed on its own
-    new Request(SESSION_TIMEOUT, BIDIRECTIONNAL, "Session keepalive response", NORETRY, RESPONSETONOTHING);
+    new Request(SESSION_TIMEOUT, BIDIRECTIONNAL, "KEEPALIVE", NORETRY, RESPONSETONOTHING);
 }
 
 field_t		Component_Session::getSessionId() const
@@ -93,16 +93,14 @@ void		Component_Session::Recv_AuthResponse(Packet_v1 const *packet_v1, Session *
     {
       _logged = true;
       session->Authentificated(packet_v1);
-      std::cout << "authentificated" << std::endl;
     }
   else
-    {std::cout << "auth failed" << std::endl;}	// auth errors
+    {}	// auth errors
 }
 
 void		Component_Session::Disconnect()
 {
   _logged = false;
-  std::cout << "disconnecting..." << std::endl;
   Send_Disconnect();
   _session->DeAuthentificated();
   static_cast<Proxy*>(_clientManager)->disconnect();

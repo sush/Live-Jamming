@@ -29,7 +29,15 @@ Packet::~Packet()
   delete _buffer;
 }
 
-void	Packet::Print() const
+void	Packet::Print(std::string const &, Manager const *) const
+{
+  std::cout << PACKET_STRING << " [Packet] " << PACKET_STRING << std::endl;
+  Print_base();
+  std::cout << PACKET_STRING << PACKET_STRING << PACKET_STRING << std::endl;
+}
+
+
+void	Packet::Print_base() const
 {
   std::cout << "[PROTO_VERSION: " << getProtoVersion() << " {" << PROTO_PROTOVERSION_SIZE << "}]" << std::endl;
 }

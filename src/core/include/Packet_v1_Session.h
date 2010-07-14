@@ -11,6 +11,7 @@
 class Packet_v1_Session : public Packet_v1
 {
 public:
+  Packet_v1_Session(boost::asio::ip::udp::endpoint const *, buffer_t *, std::size_t);
   Packet_v1_Session(field_t);
   virtual ~Packet_v1_Session();
 
@@ -19,6 +20,10 @@ public:
 
   void		setLogin(char const *);
   void		setPass(char const *);
+  virtual void					Print(std::string const &, Manager const *) const;
+
+protected:
+  void		Print_v1_Session(std::string const &, Manager const *) const;
 };
 
 #endif // ! __PACKET_V1_SESSION_H__

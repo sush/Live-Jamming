@@ -1,5 +1,10 @@
 #include <Packet_v1_Friend.h>
 
+Packet_v1_Friend::Packet_v1_Friend(boost::asio::ip::udp::endpoint const *endpoint, buffer_t *buffer, std::size_t len)
+  :Packet_v1::Packet_v1(endpoint, buffer, len)
+{}
+
+
 Packet_v1_Friend::Packet_v1_Friend(field_t requestId)
   : Packet_v1(FRIEND_COMPONENTID, requestId)
 {}
@@ -7,14 +12,16 @@ Packet_v1_Friend::Packet_v1_Friend(field_t requestId)
 Packet_v1_Friend::~Packet_v1_Friend()
 {}
 
-void		Packet_v1_Friend::Print_v1() const
+void	Packet_v1_Friend::Print(std::string const &componentName, Manager const * manager) const
 {
-  std::cout << "[PROTO_VERSION: " << getProtoVersion() << " {" << PROTO_PROTOVERSION_SIZE << "}]"
-	    << "[COMPONENTID: " << getComponentId() << " {" << PROTOV1_COMPONENTID_SIZE << "}]"
-	    << "[REQUESTID: " << getRequestId() << " {" << PROTOV1_REQUESTID_SIZE << "}]"
-	    << "[SESSIONID: " << getSessionId() << " {" << PROTOV1_SESSIONID_SIZE << "}]"
-	    << "[DATALEN: " << getDataLen() << " {" << PROTOV1_DATALEN_SIZE << "}]"
-	    << std::endl;
+  std::cout << PACKET_STRING << " [Packet_v1_Friend] " << PACKET_STRING << std::endl;
+  Print_v1_Friend(componentName, manager);
+  std::cout << PACKET_STRING << PACKET_STRING << PACKET_STRING << std::endl;
+}
+
+void		Packet_v1_Friend::Print_v1_Friend(std::string const &componentName, Manager const * manager) const
+{
+  Print_v1(componentName, manager);
 }
 
 void		Packet_v1_Friend::setFriendLogin(char const * friendLogin)

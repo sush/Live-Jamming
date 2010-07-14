@@ -3,9 +3,44 @@
 #include <Packet_v1.h>
 #include <Protocol.h>
 #include <Protocol_Session.h>
+
+
+#include <Packet_v1_Session.h>
 #include <Packet_v1_Channel.h>
+#include <Packet_v1_Friend.h>
 
 unsigned int		timeOutTest_maxRetry = 3;
+
+Packet_v1	*Cond_new_Packet(boost::asio::ip::udp::endpoint & endpoint, Packet::buffer_t & buffer, int len)
+{
+  // modify this to avoid allocation of temporary packet at each recv
+  // create a static method in Packet_v1 to distinguish packet type based on component id
+
+  int		id = Packet_v1::peekComponentId(buffer);
+  
+  if (id == SESSION_COMPONENTID)
+    return new Packet_v1_Session(&endpoint, &buffer, len);
+  else if (id == CHANNEL_COMPONENTID)
+    return new Packet_v1_Channel(&endpoint, &buffer, len);
+  else if (id == FRIEND_COMPONENTID)
+    return new Packet_v1_Friend(&endpoint, &buffer, len);
+
+  throw std::string("recv an packet with unimplemented componentid");
+}
+
+Packet_v1	*Cond_new_Packet(int componentId, int requestId)
+{
+  if (componentId == SESSION_COMPONENTID)
+    return new Packet_v1_Session(requestId);
+  else if (componentId == CHANNEL_COMPONENTID)
+    return new Packet_v1_Channel(requestId);
+  else if (componentId == FRIEND_COMPONENTID)
+    return new Packet_v1_Friend(requestId);
+
+  throw std::string("recv an packet with unimplemented componentid");
+  
+
+}
 
 Manager::Manager(boost::asio::io_service & io_service, boost::threadpool::pool & pool, boost::asio::ip::udp::socket & socket)
   :_io_service(io_service), _pool(pool), _socket(socket)
@@ -54,8 +89,9 @@ void		Manager::Send(Packet_v1 *packet_v1, Session * session) const
   if (getRegisteredRequest(packet_v1->getComponentId(), packet_v1->getRequestId()).getRetry())
     session->setAutoRetry(packet_v1);
 #ifdef _DEBUG
+  std::cout << std::endl;
   std::cout << "<..... SEND .....> ";
-  packet_v1->Print_v1();
+  packet_v1->Print("", this);
 #endif
   // schedule a retry after a delay with no expected response for that send
   _socket.async_send_to(boost::asio::buffer(packet_v1->getRawData()), session->getEndpoint(),
@@ -65,8 +101,9 @@ void		Manager::Send(Packet_v1 *packet_v1, Session * session) const
 void		Manager::Send(Packet_v1 *packet_v1, boost::asio::ip::udp::endpoint const &endpoint) const
 {
 #ifdef _DEBUG
+  std::cout << std::endl;
   std::cout << "<..... SEND .....> ";
-  packet_v1->Print_v1();
+  packet_v1->Print("", this);
 #endif
   _socket.async_send_to(boost::asio::buffer(packet_v1->getRawData()), endpoint,
 			boost::bind(&Manager::CallBack_handle_send, this, packet_v1));
@@ -74,20 +111,16 @@ void		Manager::Send(Packet_v1 *packet_v1, boost::asio::ip::udp::endpoint const &
 
 void		Manager::Send(field_t componentId, field_t requestId, Session * session) const
 {
-  Packet_v1	*packet_v1 = new Packet_v1(componentId, requestId);
+  Packet_v1	*packet_v1 = Cond_new_Packet(componentId, requestId);
 
   packet_v1->setSessionId(session->getSessionId());
-  packet_v1->setComponentId(componentId);
-  packet_v1->setRequestId(requestId);
   Send(packet_v1, session);
 }
 
 void		Manager::Send(field_t componentId, field_t requestId, boost::asio::ip::udp::endpoint const &endpoint) const
 {
-  Packet_v1	*packet_v1 = new Packet_v1(componentId, requestId);
+  Packet_v1	*packet_v1 = Cond_new_Packet(componentId, requestId);
 
-  packet_v1->setComponentId(componentId);
-  packet_v1->setRequestId(requestId);
   Send(packet_v1, endpoint);
 }
 
@@ -168,6 +201,11 @@ Bind_recv const		&Manager::getBindRecv(field_t componentId, field_t requestId) c
 {
   assert(IsBindRecv(componentId, requestId));
   return *(_componentBindings.find(componentId)->second->_bindingsRecv.find(requestId)->second);
+}
+
+std::string const &	Manager::getRegisteredRequestName(field_t componentId, field_t requestId) const
+{
+  return getRegisteredRequest(componentId, requestId).getName();
 }
 
 Request const		&Manager::getRegisteredRequest(field_t componentId, field_t requestId) const

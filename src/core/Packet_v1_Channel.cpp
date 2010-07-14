@@ -1,5 +1,11 @@
 #include <Packet_v1_Channel.h>
 
+
+Packet_v1_Channel::Packet_v1_Channel(boost::asio::ip::udp::endpoint const *endpoint, buffer_t *buffer, std::size_t len)
+  :Packet_v1::Packet_v1(endpoint, buffer, len)
+{}
+
+
 Packet_v1_Channel::Packet_v1_Channel(field_t requestId)
   : Packet_v1(CHANNEL_COMPONENTID, requestId)
 {}
@@ -7,21 +13,24 @@ Packet_v1_Channel::Packet_v1_Channel(field_t requestId)
 Packet_v1_Channel::~Packet_v1_Channel()
 {}
 
-void		Packet_v1_Channel::Print() const
+void		Packet_v1_Channel::Print(std::string const &componentName, Manager const * manager) const
 {
-  // problem with dynamic_cast from Packet* to Packet_v1_Channel*
-  // wrong function is called so Print_v1 was created
-  //  Print_v1();  
+  std::cout << PACKET_STRING << " [Packet_v1_Channel] " << PACKET_STRING << std::endl;
+  Print_v1_Channel(componentName, manager);
+  std::cout << PACKET_STRING << PACKET_STRING << PACKET_STRING << std::endl;
 }
 
-void		Packet_v1_Channel::Print_v1() const
+void		Packet_v1_Channel::Print_v1_Channel(std::string const &componentName, Manager const * manager) const
 {
-  std::cout << "[PROTO_VERSION: " << getProtoVersion() << " {" << PROTO_PROTOVERSION_SIZE << "}]"
-	    << "[COMPONENTID: " << getComponentId() << " {" << PROTOV1_COMPONENTID_SIZE << "}]"
-	    << "[REQUESTID: " << getRequestId() << " {" << PROTOV1_REQUESTID_SIZE << "}]"
-	    << "[SESSIONID: " << getSessionId() << " {" << PROTOV1_SESSIONID_SIZE << "}]"
-	    << "[DATALEN: " << getDataLen() << " {" << PROTOV1_DATALEN_SIZE << "}]"
+  Print_v1(componentName, manager);
+  std::cout << "[CHANNELID: " << getChannelId() << " {" << PROTOV1_CHANNEL_CHANNELID_SIZE << "}]"
+	    << "[CLIENTSESSIONID: " << getClientSessionId() << "{" << PROTOV1_CHANNEL_CLIENTSESSIONID_SIZE << "}]"
 	    << std::endl;
+  int id = getRequestId();
+  if (id == CHANNEL_JOIN || id == CHANNEL_JOIN_OK || id == CHANNEL_JOINED || id == CHANNEL_LEAVE_OK || id == CHANNEL_LEAVED)
+    std::cout << "# ChannelName: '" << getChannelName() << std::endl;
+  if (id == CHANNEL_JOINED || id == CHANNEL_LEAVED)
+    std::cout << "# Login: '" << getClientLogin() << "'" << std::endl;
 }
 
 field_t		Packet_v1_Channel::getChannelId() const
@@ -116,12 +125,14 @@ std::vector<std::string> 	*Packet_v1_Channel::getChannelList() const
 
 void		Packet_v1_Channel::setClientLogin(char const *login)
 {
-  assert(getRequestId() == CHANNEL_JOIN || CHANNEL_LEAVED);
+  assert(getRequestId() == CHANNEL_JOINED ||
+	 getRequestId() == CHANNEL_LEAVED);
   appendData(PROTOV1_CHANNEL_START_OF_DATA, PROTOV1_CHANNEL_DATA_LOGIN, reinterpret_cast<byte_t const *>(login));
 }
 
 char const	*Packet_v1_Channel::getClientLogin() const
 {
-  assert(getRequestId() == CHANNEL_JOIN || CHANNEL_JOINED || CHANNEL_LEAVED);
+  assert(getRequestId() == CHANNEL_JOINED ||
+	 getRequestId() == CHANNEL_LEAVED);
   return reinterpret_cast<char const *>(getData(PROTOV1_CHANNEL_START_OF_DATA, PROTOV1_CHANNEL_DATA_LOGIN));
 }

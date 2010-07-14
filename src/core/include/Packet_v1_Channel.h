@@ -1,6 +1,8 @@
 #ifndef __PACKET_V1_CHANNEL_H__
 #define __PACKET_V1_CHANNEL_H__
 
+class Manager;
+
 #include <iostream>
 #include <boost/asio.hpp>
 
@@ -15,6 +17,8 @@ class Packet_v1_Channel : public Packet_v1
 {
 public:
 
+  Packet_v1_Channel(boost::asio::ip::udp::endpoint const *, buffer_t *, std::size_t);
+
   //! Constructor.
   /*! \param 1 field_t componentId */
   Packet_v1_Channel(field_t);
@@ -22,9 +26,7 @@ public:
   virtual		~Packet_v1_Channel();
 
   //! Print packet.
-  void			Print() const;
-  //! Print packet_v1.
-  void			Print_v1() const;
+  virtual void			Print(std::string const &, Manager const *) const;
 
   //! Get channelId in the packet.
   /*! \return field_t channelId */
@@ -69,7 +71,9 @@ public:
   char const			*getClientLogin() const;
 
 
-private:
+protected:
+  //! Print packet_v1.
+  void			Print_v1_Channel(std::string const &, Manager const *) const;
   
 };
 

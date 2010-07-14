@@ -180,27 +180,27 @@ void	Component_SessionManager::RegisteredRequests()
 {
   // SEND requests 
   (*_registeredRequests)[SESSION_AUTHRESPONSE_OK] = 
-    new Request(SESSION_AUTHRESPONSE_OK, SEND, "Session Authentification response OK", NORETRY);
+    new Request(SESSION_AUTHRESPONSE_OK, SEND, "AUTHRESPONSE_OK", NORETRY);
 
   (*_registeredRequests)[SESSION_AUTHRESPONSE_NOK_BADAUTH] = 
-    new Request(SESSION_AUTHRESPONSE_NOK_BADAUTH, SEND, "Session Authentification response Bad Login information", NORETRY);
+    new Request(SESSION_AUTHRESPONSE_NOK_BADAUTH, SEND, "AUTHRESPONSE_NOK_BADAUTH", NORETRY);
 
   (*_registeredRequests)[SESSION_AUTHRESPONSE_NOK_DUPLICATE] = 
-    new Request(SESSION_AUTHRESPONSE_NOK_DUPLICATE, SEND, "Session Authentification response Duplicate Login", NORETRY);
+    new Request(SESSION_AUTHRESPONSE_NOK_DUPLICATE, SEND, "AUTHRESPONSE_NOK_DUPLICATE", NORETRY);
  
   // RECV requests
   (*_registeredRequests)[SESSION_AUTHREQUEST] = 
-    new Request(SESSION_AUTHREQUEST, RECV, "Session Authentification request", RESPONSETONOTHING);
+    new Request(SESSION_AUTHREQUEST, RECV, "AUTHREQUEST", RESPONSETONOTHING);
 
   (*_registeredRequests)[SESSION_DISCONNECT] = 
-    new Request(SESSION_DISCONNECT, RECV, "Session Disconnect request", RESPONSETONOTHING);
+    new Request(SESSION_DISCONNECT, RECV, "DISCONNECT", RESPONSETONOTHING);
 
   (*_registeredRequests)[SESSION_DISCONNECTED] = 
-    new Request(SESSION_DISCONNECTED, RECV, "Session ended", RESPONSETONOTHING);
+    new Request(SESSION_DISCONNECTED, RECV, "DISCONNECTED", RESPONSETONOTHING);
   // BIDIRECTIONNAL requests 
   (*_registeredRequests)[SESSION_TIMEOUT] = 
-    new Request(SESSION_TIMEOUT, BIDIRECTIONNAL, "Session timeout request", NORETRY, RESPONSETONOTHING);
+    new Request(SESSION_TIMEOUT, BIDIRECTIONNAL, "TIMEOUT_TEST", NORETRY, RESPONSETONOTHING);
 
   (*_registeredRequests)[SESSION_KEEPALIVE] =   // keepalive is a response actually but its managed on its own
-    new Request(SESSION_TIMEOUT, BIDIRECTIONNAL, "Session keepalive response", NORETRY, RESPONSETONOTHING);
+    new Request(SESSION_TIMEOUT, BIDIRECTIONNAL, "KEEPALIVE", NORETRY, RESPONSETONOTHING);
 }

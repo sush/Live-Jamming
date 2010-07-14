@@ -36,47 +36,47 @@ void	Component_ChannelManager::RegisteredRequests()
 {
   // SEND requests
   (*_registeredRequests)[CHANNEL_JOIN_OK] = 
-    new Request(CHANNEL_JOIN_OK, SEND, "Channel Join response OK", NORETRY);
+    new Request(CHANNEL_JOIN_OK, SEND, "JOIN_OK", NORETRY);
 
   (*_registeredRequests)[CHANNEL_JOIN_NOK_ALREADYINCHAN] = 
-    new Request(CHANNEL_JOIN_NOK_ALREADYINCHAN, SEND, "Channel Join response NOK user already in channel", NORETRY);
+    new Request(CHANNEL_JOIN_NOK_ALREADYINCHAN, SEND, "JOIN_NOK_ALREADYINCHAN", NORETRY);
 
   (*_registeredRequests)[CHANNEL_JOINED] = 
-    new Request(CHANNEL_JOINED, SEND, "Channel Joined response", RETRY);
+    new Request(CHANNEL_JOINED, SEND, "JOINED", RETRY);
 
   (*_registeredRequests)[CHANNEL_MESSAGE_ACK] = 
-    new Request(CHANNEL_MESSAGE_ACK, SEND, "Channel Message response ACK", NORETRY);
+    new Request(CHANNEL_MESSAGE_ACK, SEND, "MESSAGE_ACK", NORETRY);
 
   (*_registeredRequests)[CHANNEL_MESSAGE_RECV] = 
-    new Request(CHANNEL_MESSAGE_RECV, SEND, "Channel Message repsonse RECV", RETRY);
+    new Request(CHANNEL_MESSAGE_RECV, SEND, "MESSAGE_RECV", RETRY);
 
   (*_registeredRequests)[CHANNEL_LEAVE_OK] = 
-    new Request(CHANNEL_LEAVE_OK, SEND, "Channel Leave response OK", NORETRY);
+    new Request(CHANNEL_LEAVE_OK, SEND, "LEAVE_OK", NORETRY);
 
   (*_registeredRequests)[CHANNEL_LEAVE_NOK_NOTINCHAN] = 
-    new Request(CHANNEL_LEAVE_NOK_NOTINCHAN, SEND, "Channel Leave response NOK user not in channel", NORETRY);
+    new Request(CHANNEL_LEAVE_NOK_NOTINCHAN, SEND, "LEAVE_NOK_NOTINCHAN", NORETRY);
 
   (*_registeredRequests)[CHANNEL_LEAVED] = 
-    new Request(CHANNEL_LEAVED, SEND, "Channel Leaved response", RETRY);
+    new Request(CHANNEL_LEAVED, SEND, "LEAVED", RETRY);
 
   // RECV requests
   (*_registeredRequests)[CHANNEL_JOIN] = 
-    new Request(CHANNEL_JOIN, RECV, "Channel Join request", RESPONSETONOTHING);
+    new Request(CHANNEL_JOIN, RECV, "JOIN", RESPONSETONOTHING);
 
   (*_registeredRequests)[CHANNEL_JOINED_ACK] = 
-    new Request(CHANNEL_JOINED_ACK, RECV, "Channel Joined request ACK", CHANNEL_JOINED);
+    new Request(CHANNEL_JOINED_ACK, RECV, "JOINED_ACK", CHANNEL_JOINED);
 
   (*_registeredRequests)[CHANNEL_MESSAGE] = 
-    new Request(CHANNEL_MESSAGE, RECV, "Channel Message request", RESPONSETONOTHING);
+    new Request(CHANNEL_MESSAGE, RECV, "MESSAGE", RESPONSETONOTHING);
 
   (*_registeredRequests)[CHANNEL_MESSAGE_RECV_ACK] = 
-    new Request(CHANNEL_MESSAGE_RECV_ACK, RECV, "Channel Message request RECV ACK", CHANNEL_MESSAGE_RECV);
+    new Request(CHANNEL_MESSAGE_RECV_ACK, RECV, "MESSAGE_RECV_ACK", CHANNEL_MESSAGE_RECV);
 
   (*_registeredRequests)[CHANNEL_LEAVE] = 
-    new Request(CHANNEL_LEAVE, RECV, "Channel Leave request", RESPONSETONOTHING);
+    new Request(CHANNEL_LEAVE, RECV, "LEAVE", RESPONSETONOTHING);
 
   (*_registeredRequests)[CHANNEL_LEAVED_ACK] = 
-    new Request(CHANNEL_LEAVED_ACK, RECV, "Channel Leaved request ACK", CHANNEL_LEAVED);
+    new Request(CHANNEL_LEAVED_ACK, RECV, "LEAVED_ACK", CHANNEL_LEAVED);
 }
 
 void	Component_ChannelManager::Recv_Join(Packet_v1 const *packet_v1, Session *session)
@@ -89,8 +89,6 @@ void	Component_ChannelManager::Recv_Join(Packet_v1 const *packet_v1, Session *se
   char const *channelName	= packet_v1_channel->getChannelName();
   Channel *chan;
   bool existing			= false;
-
-  std::cout << ">>>>>>>>>>>> RECV [JOIN] Channel [" << channelName << "]<<<<<<<<<<<<" << std::endl;
 
   m_channel::iterator it, end = _channelMap->end();
   for (it = _channelMap->begin(); it != end; ++it)
@@ -137,16 +135,15 @@ void	Component_ChannelManager::Send_Join_OK(Session *session, field_t channelId,
 
   packet_v1_channel->setChannelId(channelId);
   packet_v1_channel->setChannelName(channelName);
-  std::cout << ">>>>>>>>>>>> SEND [JOIN_OK] Channel [" <<  packet_v1_channel->getChannelId() <<"]<<<<<<<<<<<< " << channelId << std::endl;
   _serverManager->Send(packet_v1_channel, session);
 }
 
-void	Component_ChannelManager::Send_Join_NOK_ALREADYINCHAN(Session *session, field_t channelId, char const *)
+void	Component_ChannelManager::Send_Join_NOK_ALREADYINCHAN(Session *session, field_t channelId, char const *channelName)
 {
   Packet_v1_Channel *packet_v1_channel = new Packet_v1_Channel(CHANNEL_JOIN_NOK_ALREADYINCHAN);
 
   packet_v1_channel->setChannelId(channelId);
-  std::cout << ">>>>>>>>>>>> SEND [JOIN_NOK_ALREADYINCHAN] Channel [" <<  channelId  <<"]<<<<<<<<<<<<" << std::endl;
+  packet_v1_channel->setChannelName(channelName);
   _serverManager->Send(packet_v1_channel, session);
 }
 
@@ -159,8 +156,6 @@ void	Component_ChannelManager::Send_Joined(Session *session, field_t channelId, 
   packet_v1_channel->setChannelName(_channelMap->find(channelId)->second->getName());
   packet_v1_channel->setClientLogin(clientLogin);
 
-  std::cout << ">>>>>>>>>>>> SEND [JOINED] Channel [" <<  channelId  <<"] User [" << packet_v1_channel->getClientLogin()  << "]<<<<<<<<<<<<" << std::endl;
-
   _serverManager->Send(packet_v1_channel, session);
 }
 
@@ -172,8 +167,6 @@ void	Component_ChannelManager::Recv_Message(Packet_v1 const *packet_v1, Session 
   field_t channelId = packet_v1_channel->getChannelId();
   field_t sessionId = packet_v1_channel->getSessionId();
   char const *message = packet_v1_channel->getMessage();
-
-  std::cout << ">>>>>>>>>>>> RECV [MESSAGE] Channel [" <<  channelId  <<"] Message [" << message  << "<<<<<<<<<<<<" << std::endl;
 
   if (_channelMap->find(channelId) != _channelMap->end())
     {
@@ -192,7 +185,6 @@ void	Component_ChannelManager::Recv_Message(Packet_v1 const *packet_v1, Session 
 
 void	Component_ChannelManager::Send_Message_ACK(Session *session)
 {
-    std::cout << ">>>>>>>>>>>> SEND [MESSAGE_ACK]<<<<<<<<<<<<" << std::endl;
   _serverManager->Send(_componentId, CHANNEL_MESSAGE_ACK, session);
 }
 
@@ -204,7 +196,6 @@ void	Component_ChannelManager::Send_Message_RECV(Session *session, char const *m
   packet_v1_channel->setMessage(message);
   packet_v1_channel->setClientSessionId(clientSessionId);
 
-  std::cout << ">>>>>>>>>>>> SEND [MESSAGE_RECV] Channel [" <<  channelId  <<"] User [" << clientSessionId  << "] Message [" << message  << "<<<<<<<<<<<<" << std::endl;
 
   _serverManager->Send(packet_v1_channel, session);
 }
@@ -218,7 +209,6 @@ void	Component_ChannelManager::Recv_Leave(Packet_v1 const *packet_v1, Session *s
   field_t sessionId = session->getSessionId();
   char const *clientLogin = session->getLogin().c_str();
   
-  std::cout << ">>>>>>>>>>>> RECV [LEAVE] Channel [" <<  channelId  <<"] User [" << sessionId  << "]<<<<<<<<<<<<" << std::endl;
 
   if (_channelMap->find(channelId) != _channelMap->end())
     {
@@ -248,7 +238,6 @@ void	Component_ChannelManager::Send_Leave_OK(Session *session, field_t channelId
   packet_v1_channel->setChannelId(channelId);
   packet_v1_channel->setChannelName(_channelMap->find(channelId)->second->getName());
 
-  std::cout << ">>>>>>>>>>>> SEND [LEAVE_OK] Channel [" <<  channelId  <<"<<<<<<<<<<<<" << std::endl;
 
   _serverManager->Send(packet_v1_channel, session);
 }
@@ -258,7 +247,6 @@ void	Component_ChannelManager::Send_Leave_NOK_NOTINCHAN(Session *session, field_
   Packet_v1_Channel *packet_v1_channel = new Packet_v1_Channel(CHANNEL_LEAVE_NOK_NOTINCHAN);
 
   packet_v1_channel->setChannelId(channelId);
-  std::cout << ">>>>>>>>>>>> SEND [LEAVE_NOK_NOTINCHAN] Channel [" <<  channelId  <<"]<<<<<<<<<<<<" << std::endl;
   _serverManager->Send(packet_v1_channel, session);
 }
     
@@ -271,7 +259,6 @@ void	Component_ChannelManager::Send_Leaved(Session *session, field_t channelId, 
   packet_v1_channel->setChannelName(_channelMap->find(channelId)->second->getName());
   packet_v1_channel->setClientLogin(clientLogin);
 
-  std::cout << ">>>>>>>>>>>> SEND [LEAVED] Channel [" <<  channelId  <<"] User [" << clientSessionId  << "]<<<<<<<<<<<<" << std::endl;
 
   _serverManager->Send(packet_v1_channel, session);
 }
@@ -304,7 +291,6 @@ field_t	Component_ChannelManager::GenChannelId()
   do {
     channelId = _rng() % ((int)pow(2, PROTOV1_CHANNEL_CHANNELID_SIZE));
   } while (! IsUniqId(channelId));
-  std::cout << "gen channelId=" << channelId << std::endl;
  return channelId;
 }
 

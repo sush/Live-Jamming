@@ -15,11 +15,8 @@ ClientManager::ClientManager(boost::asio::io_service & io_service, boost::thread
   // same as in server !!!!
   // !!!!!!!!!!!!!!!!!!!!!!!!
   _retryDelay = 1;
-  _timeOutTestDelay = 10;
+  _timeOutTestDelay = 40;
   _timeOutOccurredDelay = 5;
-  #ifndef _GUI
-  _session->Connect("dude", "12345678");
-  #endif
 }
 
 ClientManager::~ClientManager()
@@ -36,8 +33,9 @@ void				ClientManager::Manage(Packet * packet)
   session = _session->getSession();
   
 #ifdef _DEBUG
+  std::cout << std::endl;
   std::cout << "<      RECV       > ";
-  packet_v1->Print_v1();
+  packet_v1->Print("", this);
 #endif
   if (session)
     {

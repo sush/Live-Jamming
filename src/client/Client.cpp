@@ -41,7 +41,7 @@ void	Client::CallBack_handle_receive(boost::system::error_code const & error, st
       ///////////////////////////////////////////////////////
 
       _packetQueue_mutex.lock();
-      _packetQueue->PushPacket(new Packet(_remote_endpoint, _recv_buffer, recv_count));
+      _packetQueue->PushPacket(reinterpret_cast<Packet *>(Cond_new_Packet(*_remote_endpoint, *_recv_buffer, recv_count)));
       _packetQueue_mutex.unlock();
 
       ////////////////////////////////////////////

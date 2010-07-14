@@ -12,7 +12,7 @@ ServerManager::ServerManager(boost::asio::io_service & io_service, boost::thread
   // manual set but should be in options
   // remove when linked with option
   _retryDelay = 3;
-  _timeOutTestDelay = 5;
+  _timeOutTestDelay = 20;
   _timeOutOccurredDelay = 3;
   //
 
@@ -32,8 +32,9 @@ void				ServerManager::Manage(Packet * packet)
   session = _sessionManager->FindSession(packet_v1);
 
 #ifdef _DEBUG
+  std::cout << std::endl;
   std::cout << "<      RECV       > ";
-  packet_v1->Print_v1();
+  packet_v1->Print("", this);
 #endif
   if (session)
     {
