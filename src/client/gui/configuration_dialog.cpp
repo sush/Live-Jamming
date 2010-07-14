@@ -10,7 +10,14 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent) :
     ui->outputComboBox->addItems(audio.getODevices());
 }
 
-void ConfigurationDialog::on_pushButton_clicked()
+void ConfigurationDialog::on_pushButton_clicked(bool checked)
 {
-audio.testAudio();
+    if (checked){
+    ui->pushButton->setText("Stop");
+    audio.startIO();
+}
+    else {
+        ui->pushButton->setText("Stop");
+        audio.stopIO();
+    }
 }

@@ -15,13 +15,12 @@ Q_OBJECT
 public:
     ConfigurationDialog(QWidget *parent = 0);
 
-
 private:
     Ui::ConfigurationDialog*	ui;
     NespAudio                   audio;
 
 private slots:
-    void on_pushButton_clicked();
+    void on_pushButton_clicked(bool);
 };
 
 #endif // CONFIGURATION_DIALOG_H
