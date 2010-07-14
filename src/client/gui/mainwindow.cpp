@@ -111,12 +111,10 @@ void    MainWindow::chanEvents(chanEventsType event, const Packet_v1_Channel* pa
 {
     switch(event) {
     case JOIN_OK:
-        qDebug() << "JOIN_OK" << packet->getChannelId() << ":" << packet->getChannelName();
         proxy->trans[packet->getChannelName()] = packet->getChannelId();
         joinChannel(packet->getChannelName());
         break;
     case LEAVE_OK:
-        qDebug() << "LEAVE_OK" << packet->getChannelName();
         proxy->trans.remove(packet->getChannelName());
         leaveChannel(packet->getChannelName());
         break;
@@ -127,7 +125,6 @@ void    MainWindow::chanEvents(chanEventsType event, const Packet_v1_Channel* pa
         removeClientFromChannel(packet->getChannelName(), packet->getClientLogin());
         break;
     case MESSAGE_RECV:
-        qDebug() << "MESSAGE_RECV" << packet->getMessage();
         break;
     }
 }
@@ -143,7 +140,6 @@ void    MainWindow::joinChannel(const QString &name)
 
 void    MainWindow::leaveChannel(const QString &name)
 {
-    qDebug() << "leaving" << name;
     delete channels[name].item;
 
     channels.remove(name);
@@ -152,7 +148,6 @@ void    MainWindow::leaveChannel(const QString &name)
 
 void    MainWindow::addClientToChannel(const QString &channel, const QString &client)
 {
-    qDebug() << client << "HAS JOIN" << channel;
 //    QMap<QString, UiChannel>::const_iterator it = channels.find(channel);
 //    Q_ASSERT(it != channels.end());
 
@@ -165,7 +160,6 @@ void    MainWindow::addClientToChannel(const QString &channel, const QString &cl
 
 void    MainWindow::removeClientFromChannel(const QString &channel, const QString &client)
 {
-    qDebug() << client << "HAS LEAVED" << channel;
 //    QMap<QString, UiChannel>::const_iterator it = channels.find(channel);
 //    Q_ASSERT(it != channels.end());
 
@@ -182,7 +176,6 @@ void MainWindow::on_actionConnect_triggered()
            AccountConnection::run(this, params.login, params.password);
 
            if (params.haveId() == true) {
-            qDebug() << params.login << params.password;
             proxy->session()->Connect(params.login.toStdString(), params.password.toStdString());
         }
     }
@@ -237,7 +230,6 @@ void MainWindow::on_channelList_customContextMenuRequested(QPoint pos)
         QTreeWidgetItem* item = ui->channelList->itemAt(pos);
         QAction leave(QString("leave"), 0);
         QAction* action = QMenu::exec(QList<QAction*>() << &leave, ui->channelList->mapToGlobal(pos));
-        qDebug() << "SEDING LEAVE ON:" << proxy->trans[item->text(0)];
         if (action == &leave)
             proxy->channel()->Send_Leave(proxy->session()->_session, proxy->trans[item->text(0)]);
     }
@@ -245,7 +237,6 @@ void MainWindow::on_channelList_customContextMenuRequested(QPoint pos)
 
 void MainWindow::on_lineEdit_returnPressed()
 {
-    qDebug() << "WRITING ON" << currentChannel;
     proxy->channel()->Send_Message(proxy->session()->_session, ui->lineEdit->text().toLocal8Bit().data(), proxy->trans[currentChannel]);
 }
 

@@ -15,7 +15,8 @@ public:
   Packet_v1(field_t, field_t);
   virtual		~Packet_v1();
 
-  static field_t		peekComponentId(Packet::buffer_t);
+  static field_t	peekComponentId(Packet::buffer_t const &);
+  static field_t	peekRequestId(Packet::buffer_t const &);
 
   virtual void			Print(std::string const &, Manager const *) const;
   field_t		getRequestId() const;
@@ -29,6 +30,9 @@ public:
 
 protected:
   void			Print_v1(std::string const &, Manager const *) const;
+  static field_t	peekField(Packet::buffer_t const &buffer, unsigned int, unsigned int);
+
+
 };
 
 #endif // ! __PACKET_V1_H__

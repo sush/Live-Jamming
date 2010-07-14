@@ -1,4 +1,6 @@
 #include <Server.h>
+#include <stdexcept>
+#include <Packet_v1.h>
 
 const std::string	Server::_address = "127.0.0.1";
 const int		Server::_port	= 5042;
@@ -36,15 +38,20 @@ void	Server::CallBack_handle_receive(boost::system::error_code const & error, st
       // packets
       ///////////////////////////////////////////////////////
 
-      _packetQueue_mutex.lock();
-      Packet * p = reinterpret_cast<Packet *>(Cond_new_Packet(*_remote_endpoint, *_recv_buffer, recv_count));
-      _packetQueue->PushPacket(p);
-      _packetQueue_mutex.unlock();
-
+      try {
+	Packet * p = reinterpret_cast<Packet *>(_serverManager->Cond_new_Packet(*_remote_endpoint, *_recv_buffer, recv_count));
+	_packetQueue_mutex.lock();
+	_packetQueue->PushPacket(p);
+	_packetQueue_mutex.unlock();
+	_pool->schedule(boost::bind(&Server::Thread_TreatPacket, this));
+      }
+      catch (std::runtime_error &e)
+	{
+	  std::cout << e.what() << ":" << Packet_v1::peekComponentId(*_recv_buffer) << std::endl;
+	}
+	start_receive();
       ////////////////////////////////////////////
 
-      _pool->schedule(boost::bind(&Server::Thread_TreatPacket, this));
-      start_receive();
     }
 }
 

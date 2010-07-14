@@ -41,10 +41,19 @@ void		Packet_v1::Print_v1(std::string const & componentName, Manager const * man
 	    << std::endl;
 }
 
-field_t		Packet_v1::peekComponentId(Packet::buffer_t buffer)
+field_t		Packet_v1::peekComponentId(Packet::buffer_t const &buffer)
 {
-  unsigned int	bin_offset = PROTOV1_COMPONENTID_OFF, bin_len = PROTOV1_COMPONENTID_SIZE;
+  return peekField(buffer, PROTOV1_COMPONENTID_OFF, PROTOV1_COMPONENTID_SIZE);
+}
 
+field_t		Packet_v1::peekRequestId(Packet::buffer_t const &buffer)
+{
+  return peekField(buffer, PROTOV1_REQUESTID_OFF, PROTOV1_REQUESTID_SIZE);
+}
+
+
+field_t		Packet_v1::peekField(Packet::buffer_t const &buffer, unsigned int bin_offset, unsigned int bin_len)
+{
   field_t                               value = 0;
   unsigned int                          start_byte;
   unsigned int                          end_byte;

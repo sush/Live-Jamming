@@ -3,33 +3,46 @@
 #include <Packet_v1.h>
 #include <Protocol.h>
 #include <Protocol_Session.h>
-
+#include <stdexcept>
 
 #include <Packet_v1_Session.h>
 #include <Packet_v1_Channel.h>
 #include <Packet_v1_Friend.h>
+#include <Exception.h>
 
 unsigned int		timeOutTest_maxRetry = 3;
 
-Packet_v1	*Cond_new_Packet(boost::asio::ip::udp::endpoint & endpoint, Packet::buffer_t & buffer, int len)
+Packet_v1	*Manager::Cond_new_Packet(boost::asio::ip::udp::endpoint & endpoint, Packet::buffer_t & buffer, int len) const
 {
   // modify this to avoid allocation of temporary packet at each recv
   // create a static method in Packet_v1 to distinguish packet type based on component id
 
-  int		id = Packet_v1::peekComponentId(buffer);
+  field_t	componentId = Packet_v1::peekComponentId(buffer);
+  field_t	requestId = Packet_v1::peekRequestId(buffer);
   
-  if (id == SESSION_COMPONENTID)
+  if (!IsRegisteredComponent(componentId))
+    throw std::runtime_error(X_UNKNOWN_COMPONENTID);
+  if (!IsRegisteredRequest(componentId, requestId))
+    throw std::runtime_error(X_UNKNOWN_REQUESTID);
+
+  if (componentId == SESSION_COMPONENTID)
     return new Packet_v1_Session(&endpoint, &buffer, len);
-  else if (id == CHANNEL_COMPONENTID)
+  else if (componentId == CHANNEL_COMPONENTID)
     return new Packet_v1_Channel(&endpoint, &buffer, len);
-  else if (id == FRIEND_COMPONENTID)
+  else if (componentId == FRIEND_COMPONENTID)
     return new Packet_v1_Friend(&endpoint, &buffer, len);
 
-  throw std::string("recv an packet with unimplemented componentid");
+  assert(1);
+  return 0; // suppress compiler warning
 }
 
-Packet_v1	*Cond_new_Packet(int componentId, int requestId)
+Packet_v1	*Manager::Cond_new_Packet(int componentId, int requestId) const
 {
+  if (!IsRegisteredComponent(componentId))
+    throw std::runtime_error(X_UNKNOWN_COMPONENTID);
+  if (!IsRegisteredRequest(componentId, requestId))
+    throw std::runtime_error(X_UNKNOWN_REQUESTID);
+
   if (componentId == SESSION_COMPONENTID)
     return new Packet_v1_Session(requestId);
   else if (componentId == CHANNEL_COMPONENTID)
@@ -37,9 +50,7 @@ Packet_v1	*Cond_new_Packet(int componentId, int requestId)
   else if (componentId == FRIEND_COMPONENTID)
     return new Packet_v1_Friend(requestId);
 
-  throw std::string("recv an packet with unimplemented componentid");
-  
-
+  throw std::runtime_error(X_UNKNOWN_COMPONENTID);
 }
 
 Manager::Manager(boost::asio::io_service & io_service, boost::threadpool::pool & pool, boost::asio::ip::udp::socket & socket)
@@ -205,7 +216,7 @@ Bind_recv const		&Manager::getBindRecv(field_t componentId, field_t requestId) c
 
 std::string const &	Manager::getRegisteredRequestName(field_t componentId, field_t requestId) const
 {
-  return getRegisteredRequest(componentId, requestId).getName();
+  return (_componentBindings.find(componentId)->second->_registeredRequests.find(requestId)->second)->getName();
 }
 
 Request const		&Manager::getRegisteredRequest(field_t componentId, field_t requestId) const

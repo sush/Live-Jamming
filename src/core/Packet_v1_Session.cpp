@@ -48,6 +48,6 @@ void		Packet_v1_Session::Print_v1_Session(std::string const &componentName, Mana
   Print_v1(componentName, manager);
   if (this->getRequestId() == SESSION_AUTHREQUEST)
     std::cout << "#Login: '" << this->getLogin() << "'" << std::endl
-	      << "#Pass: '" << this->getPass() << "']" << std::endl;
+	      << "#Pass: '" << this->getPass() << "'" << std::endl;
 }
 

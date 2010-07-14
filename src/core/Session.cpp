@@ -27,7 +27,6 @@ void	Session::Authentificated(Packet_v1 const * packet_v1)
 {
   _isLogged = true;
   _sessionId = packet_v1->getSessionId();
-  std::cout << "session id = " << _sessionId << std::endl;
   _ip = packet_v1->getEndpoint().address();
   _port  = packet_v1->getEndpoint().port();
   setTimeOutTest();

@@ -102,7 +102,6 @@ Session 	*Component_SessionManager::DoAuth(Packet_v1_Session const * packet_v1_S
       // 	    }
       // 	}
       // Send_Friend_List(new_session, friendList);
-      std::cout << "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< AUTH OK >>>>>>>>>>>>>>>>>>>>>>>>>" << std::endl;
     }
   else 
     _serverManager->Send(_componentId, SESSION_AUTHRESPONSE_NOK_BADAUTH, packet_v1_Session->getEndpoint());
@@ -111,6 +110,7 @@ Session 	*Component_SessionManager::DoAuth(Packet_v1_Session const * packet_v1_S
 
 void		Component_SessionManager::Disconnect(Session * session)
 {
+  std::cout << "* ";
   PrintSession(session);
   std::cout << " Disconnected" << std::endl;
   _sessionMap.erase(session->getSessionId());

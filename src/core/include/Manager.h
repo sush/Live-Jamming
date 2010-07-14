@@ -17,9 +17,6 @@ class Packet_v1;
 #include <Protocol.h>
 #include <Packet.h>
 
-Packet_v1	*Cond_new_Packet(boost::asio::ip::udp::endpoint &, Packet::buffer_t &, int);
-Packet_v1	*Cond_new_Packet(int, int);
-
 class Manager
 {
 private:
@@ -61,6 +58,11 @@ public:
 
   // a simple method to return string name of a request
   std::string const &			getRegisteredRequestName(field_t, field_t) const;
+
+  Packet_v1	*Cond_new_Packet(boost::asio::ip::udp::endpoint &, Packet::buffer_t &, int) const;
+  Packet_v1	*Cond_new_Packet(int, int) const;
+
+
 
 protected:
   virtual void		Init_Components() = 0;

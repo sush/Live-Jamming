@@ -28,7 +28,7 @@ void		Packet_v1_Channel::Print_v1_Channel(std::string const &componentName, Mana
 	    << std::endl;
   int id = getRequestId();
   if (id == CHANNEL_JOIN || id == CHANNEL_JOIN_OK || id == CHANNEL_JOINED || id == CHANNEL_LEAVE_OK || id == CHANNEL_LEAVED)
-    std::cout << "# ChannelName: '" << getChannelName() << std::endl;
+    std::cout << "# ChannelName: '" << getChannelName() << "'" << std::endl;
   if (id == CHANNEL_JOINED || id == CHANNEL_LEAVED)
     std::cout << "# Login: '" << getClientLogin() << "'" << std::endl;
 }
