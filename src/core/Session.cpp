@@ -127,17 +127,16 @@ void				Session::setAutoRetry(Packet_v1 * packet_v1)
 {
   field_t			componentId = packet_v1->getComponentId(), requestId = packet_v1->getRequestId();
   m_timer			*timerMap;
-  boost::asio::deadline_timer	*timer;
+  PacketTimer			*packetTimer;
 
   if (_timerMapMap.find(componentId) == _timerMapMap.end())
     _timerMapMap[componentId] = new m_timer;
   timerMap = _timerMapMap.find(componentId)->second;
   
   if (timerMap->find(requestId) == timerMap->end())
-    (*timerMap)[requestId] = new boost::asio::deadline_timer(_io_service);
-  timer = timerMap->find(requestId)->second;
-  timer->expires_from_now(boost::posix_time::seconds(_manager->getRetryDelay()));
-  timer->async_wait(boost::bind(&Manager::CallBack_Send_TimeOut, _manager, this, packet_v1, boost::asio::placeholders::error));
+    (*timerMap)[requestId] = new PacketTimer(this, _manager, _io_service);
+  packetTimer = timerMap->find(requestId)->second;
+  packetTimer->setAutoRetry(packet_v1);
 }
 
 
@@ -164,7 +163,7 @@ void				Session::CancelAutoRetry(field_t componentId, field_t requestId)
       timerMap = _timerMapMap.find(componentId)->second;
       if (timerMap->find(requestId) != timerMap->end())
 	{
-	  (*timerMap)[requestId]->cancel();
+	  (*timerMap)[requestId]->CancelAutoRetry();
 	}
     }
   // do we really want to throw an exception in case we try to cancel a non existing timer?
@@ -198,4 +197,35 @@ Session::l_Friend 		&Session::getFriendList()
 void				Session::setFriendList(Session::l_Friend &friendList)
 {
   _friendList = friendList;
+}
+
+/////////////////////////////////// Session::PacketTimer ///////////////////////////////
+
+Session::PacketTimer::PacketTimer(Session * session, Manager * manager, boost::asio::io_service & io_service)
+  :_session(session), _manager(manager), _packet_v1(0)
+{
+  _timer = new boost::asio::deadline_timer(io_service);
+}
+
+Session::PacketTimer::~PacketTimer()
+{
+  delete _timer;
+  delete _packet_v1;
+}
+
+void	Session::PacketTimer::setAutoRetry(Packet_v1 *packet_v1)
+{
+  if (_packet_v1 &&
+      packet_v1 != _packet_v1)
+    delete _packet_v1;
+  _packet_v1 = packet_v1;
+  _timer->expires_from_now(boost::posix_time::seconds(_manager->getRetryDelay()));
+  _timer->async_wait(boost::bind(&Manager::CallBack_Send_TimeOut, _manager, _session, _packet_v1, boost::asio::placeholders::error));
+}
+
+void	Session::PacketTimer::CancelAutoRetry()
+{
+  _timer->cancel();
+  delete _packet_v1;
+  _packet_v1 = 0;
 }

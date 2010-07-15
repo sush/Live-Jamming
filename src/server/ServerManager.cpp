@@ -86,7 +86,7 @@ unsigned int	ServerManager::CountActiveSessions() const
 
 void		ServerManager::Connect(Session *session)
 {
-  _sessionManager->Connect(session);
+  _sessionManager->Connect(session);// should be called first
   _channelManager->Connect(session);
   _friendManager->Connect(session);
   _roomManager->Connect(session);
@@ -94,10 +94,10 @@ void		ServerManager::Connect(Session *session)
 
 void		ServerManager::Disconnect(Session *session)
 {
-  _sessionManager->Disconnect(session);
   _channelManager->Disconnect(session);
   _friendManager->Disconnect(session);
   _roomManager->Disconnect(session);
+  _sessionManager->Disconnect(session); // should be called last
   _sessionMap.erase(session->getSessionId());
 }
 

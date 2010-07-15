@@ -81,10 +81,10 @@ boost::asio::io_service		&Manager::getIO()
   return _io_service;
 }
 
-void		Manager::CallBack_handle_send(Packet_v1 *) const
+void		Manager::CallBack_handle_send(Packet_v1 *packet_v1) const
 {
-  // segfaults
-  //  delete packet_v1;
+  if (!getRegisteredRequest(packet_v1->getComponentId(), packet_v1->getRequestId()).getRetry())
+    delete packet_v1;
 }
 
 void		Manager::CallBack_Send_TimeOut(Session * session, Packet_v1 *packet_v1, boost::system::error_code error_code)

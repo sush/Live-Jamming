@@ -59,7 +59,23 @@ public:
   void						setFriendList(l_Friend &);
 
 private:
-  typedef std::map<field_t, boost::asio::deadline_timer *>		m_timer;
+  class PacketTimer
+  {
+  public:
+    PacketTimer(Session *, Manager *, boost::asio::io_service &);
+    ~PacketTimer();
+    void	setAutoRetry(Packet_v1 *);
+    void	CancelAutoRetry();
+
+  private:
+    Session				*_session;
+    Manager				*_manager;
+    boost::asio::deadline_timer		*_timer;
+    Packet_v1				*_packet_v1;
+
+  };
+
+  typedef std::map<field_t, PacketTimer *>				m_timer;
   typedef m_timer::iterator						m_timer_it;
   typedef m_timer::const_iterator					m_timer_cit;
   typedef std::map<field_t, m_timer *>					m_m_timer;
