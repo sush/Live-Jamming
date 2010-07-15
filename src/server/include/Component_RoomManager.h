@@ -30,23 +30,23 @@ private:
   virtual void		RegisteredRequests();
 
   void			Recv_Join(Packet_v1 const *, Session *);
-  void			Send_Join_OK(Session *, field_t, char const *);
+  void			Send_Join_OK(Session *, field_t);
   void			Send_Join_NOK_ALREADYINROOM(Session *, field_t, char const *);
   void			Send_Joined(Session *, field_t, field_t, char const *);
 
   void			Recv_Leave(Packet_v1 const *, Session *);
   void			Send_Leave_OK(Session *, field_t);
   void			Send_Leave_NOK_NOTINROOM(Session *, field_t);
-  void			Send_Leaved(Session *, field_t, field_t, char const *);
+  void			Send_Leaved(Session *, field_t);
 
   void			Recv_Message(Packet_v1 const *, Session *);
   void			Send_Message_RECV(Session *, char const *, field_t, field_t);
   void			Send_Message_ACK(Session *);
 
   void			Recv_Kick(Packet_v1 const *, Session *);
-  void			Send_Kicked(Session *, field_t, field_t);
-  void			Send_Kick_OK(Session *, field_t, field_t);
-  void			Send_Kick_NOK_NOTINROOM(Session *, field_t, field_t);
+  void			Send_Kicked(Session *, field_t);
+  void			Send_Kick_OK(Session *, field_t);
+  void			Send_Kick_NOK_NOTINROOM(Session *, field_t);
 
   void			Send_User_Kicked(Session *, field_t);
 
@@ -55,10 +55,12 @@ private:
   void			Send_Invited(Session *, char const *);
 
   void			Recv_Start_Jam(Packet_v1 const *, Session *);
-  void			Send_Start_Jam(Session *);
+  void			Send_Started_Jam(Session *);
+  void			Send_Start_Jam_ACK(Session *);
 
   void			Recv_Stop_Jam(Packet_v1 const *, Session *);
-  void			Send_Stop_Jam(Session *);
+  void			Send_Stoped_Jam(Session *);
+  void			Send_Stop_Jam_ACK(Session *);
 
   void			Disconnect(Session *);
 

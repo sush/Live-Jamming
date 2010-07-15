@@ -42,8 +42,14 @@
 #define ROOM_START_JAM				26
 #define ROOM_START_JAM_ACK			27
 
-#define ROOM_STOP_JAM				28
-#define ROOM_STOP_JAM_ACK			29
+#define ROOM_STARTED_JAM			28
+#define ROOM_STARTED_JAM_ACK			29
+
+#define ROOM_STOP_JAM				30
+#define ROOM_STOP_JAM_ACK			31
+
+#define ROOM_STOPED_JAM				32
+#define ROOM_STOPED_JAM_ACK			33
 
 // binary data contained in packet in order of placement in the binary fields
 #define PROTOV1_ROOM_ROOMID_OFF			PROTOV1_START_OF_DATA * 8

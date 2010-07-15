@@ -45,10 +45,16 @@ void	Component_RoomManager::BindingsRecv()
   (*_bindingsRecv)[ROOM_USER_KICKED_ACK] =
     new Bind_recv(0, 0);
 
-  (*_bindingsRecv)[ROOM_START_JAM_ACK] =
+  (*_bindingsRecv)[ROOM_START_JAM] =
+    new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_RoomManager::Recv_Start_Jam));    
+
+  (*_bindingsRecv)[ROOM_STOP_JAM] =
+    new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_RoomManager::Recv_Stop_Jam));
+
+  (*_bindingsRecv)[ROOM_STARTED_JAM_ACK] =
     new Bind_recv(0, 0);
 
-  (*_bindingsRecv)[ROOM_STOP_JAM_ACK] =
+  (*_bindingsRecv)[ROOM_STOPED_JAM_ACK] =
     new Bind_recv(0, 0);
   //implement Jam methods
 
@@ -85,7 +91,16 @@ void	Component_RoomManager::RegisteredRequests()
     new Request(ROOM_INVITE_ACK, SEND, "INVITE_ACK", NORETRY);
 
   (*_registeredRequests)[ROOM_INVITED] = 
-    new Request(ROOM_INVITED, SEND, "MESSAGE_ACK", RETRY);
+    new Request(ROOM_INVITED, SEND, "INVITED", RETRY);
+
+  (*_registeredRequests)[ROOM_START_JAM_ACK] = 
+    new Request(ROOM_START_JAM_ACK, SEND, "START_JAM_ACK", NORETRY);
+
+  (*_registeredRequests)[ROOM_STOP_JAM_ACK] = 
+    new Request(ROOM_STOP_JAM_ACK, SEND, "STOP_JAM_ACK", NORETRY);
+
+  (*_registeredRequests)[ROOM_KICKED] = 
+    new Request(ROOM_KICKED, SEND, "KICKED", RETRY);
 
   (*_registeredRequests)[ROOM_USER_KICKED] = 
     new Request(ROOM_USER_KICKED, SEND, "USER_KICKED", RETRY);
@@ -96,11 +111,17 @@ void	Component_RoomManager::RegisteredRequests()
   (*_registeredRequests)[ROOM_KICK_NOK_NOTINROOM] = 
     new Request(ROOM_KICK_NOK_NOTINROOM, SEND, "KICK_NON_NOTINROOM", NORETRY);
 
-  (*_registeredRequests)[ROOM_START_JAM] = 
-    new Request(ROOM_START_JAM, SEND, "START_JAM", RETRY);
+  (*_registeredRequests)[ROOM_STARTED_JAM] = 
+    new Request(ROOM_STARTED_JAM, SEND, "STARTED_JAM", RETRY);
 
-  (*_registeredRequests)[ROOM_STOP_JAM] = 
-    new Request(ROOM_STOP_JAM, SEND, "STOP_JAM", RETRY);
+  (*_registeredRequests)[ROOM_STOPED_JAM] = 
+    new Request(ROOM_STOPED_JAM, SEND, "STOPED_JAM", RETRY);
+
+  (*_registeredRequests)[ROOM_START_JAM_ACK] = 
+    new Request(ROOM_START_JAM_ACK, SEND, "START_JAM_ACK", NORETRY);
+
+  (*_registeredRequests)[ROOM_STOP_JAM_ACK] = 
+    new Request(ROOM_STOP_JAM_ACK, SEND, "STOP_JAM_ACK", NORETRY);
 
   // RECV request
   (*_registeredRequests)[ROOM_JOIN] = 
@@ -139,16 +160,14 @@ void	Component_RoomManager::RegisteredRequests()
   (*_registeredRequests)[ROOM_START_JAM] = 
     new Request(ROOM_START_JAM, RECV, "START_JAM", RESPONSETONOTHING);
 
-  (*_registeredRequests)[ROOM_START_JAM_ACK] = 
-    new Request(ROOM_START_JAM_ACK, RECV, "START_JAM_ACK", ROOM_START_JAM);
+  (*_registeredRequests)[ROOM_STARTED_JAM_ACK] = 
+    new Request(ROOM_STARTED_JAM_ACK, RECV, "STARTED_JAM", ROOM_STARTED_JAM);
 
   (*_registeredRequests)[ROOM_STOP_JAM] = 
     new Request(ROOM_STOP_JAM, RECV, "STOP_JAM", RESPONSETONOTHING);
 
-  (*_registeredRequests)[ROOM_STOP_JAM_ACK] = 
-    new Request(ROOM_STOP_JAM_ACK, RECV, "STOP_JAM_ACK", ROOM_STOP_JAM);
-  //implement Jam methods
-
+  (*_registeredRequests)[ROOM_STOPED_JAM] = 
+    new Request(ROOM_STOPED_JAM, RECV, "STOPED_JAM", ROOM_STOPED_JAM);
 }
 
 void	Component_RoomManager::Recv_Join(Packet_v1 const *packet_v1, Session *session)
@@ -183,7 +202,7 @@ void	Component_RoomManager::Recv_Join(Packet_v1 const *packet_v1, Session *sessi
 
   if (room->addConnected(session, sessionId))
     {
-      Send_Join_OK(session, roomId, roomName);
+      Send_Join_OK(session, roomId);
 
       std::map<field_t, Session*> *connected = room->getConnected();
       std::map<field_t, Session *>::iterator it, end = connected->end();
@@ -201,13 +220,13 @@ void	Component_RoomManager::Recv_Join(Packet_v1 const *packet_v1, Session *sessi
     Send_Join_NOK_ALREADYINROOM(session, roomId, roomName);
 }
 
-void	Component_RoomManager::Send_Join_OK(Session *session, field_t roomId, char const * roomName)
+void	Component_RoomManager::Send_Join_OK(Session *session, field_t roomId)
 {
-  Packet_v1_Room *packet_v1_room = new Packet_v1_Room(ROOM_JOIN_OK);
-  
+  Packet_v1_Room *packet_v1_room = new Packet_v1_Room(ROOM_LEAVE_OK);
+
   packet_v1_room->setRoomId(roomId);
-  packet_v1_room->setRoomName(roomName);
-  _serverManager->Send(packet_v1_room, session);
+
+  _serverManager->Send(_componentId, ROOM_JOIN_OK, session);
 }
 
 void	Component_RoomManager::Send_Join_NOK_ALREADYINROOM(Session *session, field_t roomId, char const *roomName)
@@ -251,7 +270,7 @@ void	Component_RoomManager::Recv_Leave(Packet_v1 const *packet_v1, Session *sess
 	  std::map<field_t, Session *>::iterator it, end = connected->end();
 
 	  for (it = connected->begin(); it != end ; ++it)
-	    Send_Leaved(it->second, roomId, sessionId, clientLogin);
+	    Send_Leaved(it->second, sessionId);
 	  if (connected->size() == 0)
 	    _roomMap->erase(roomId);
 	}
@@ -267,9 +286,8 @@ void	Component_RoomManager::Send_Leave_OK(Session *session, field_t roomId)
   Packet_v1_Room *packet_v1_room = new Packet_v1_Room(ROOM_LEAVE_OK);
 
   packet_v1_room->setRoomId(roomId);
-  packet_v1_room->setRoomName(_roomMap->find(roomId)->second->getName());
 
-  _serverManager->Send(packet_v1_room, session);
+  _serverManager->Send(_componentId, ROOM_LEAVE_OK, session);
 }
 
 void	Component_RoomManager::Send_Leave_NOK_NOTINROOM(Session *session, field_t roomId)
@@ -281,14 +299,11 @@ void	Component_RoomManager::Send_Leave_NOK_NOTINROOM(Session *session, field_t r
 }
 
 
-void	Component_RoomManager::Send_Leaved(Session *session, field_t roomId, field_t clientSessionId, char const *clientLogin)
+void	Component_RoomManager::Send_Leaved(Session *session, field_t clientSessionId)
 {
   Packet_v1_Room *packet_v1_room = new Packet_v1_Room(ROOM_LEAVED);
 
-  packet_v1_room->setRoomId(roomId);
   packet_v1_room->setClientSessionId(clientSessionId);
-  packet_v1_room->setRoomName(_roomMap->find(roomId)->second->getName());
-  packet_v1_room->setClientLogin(clientLogin);
 
   _serverManager->Send(packet_v1_room, session);
 }
@@ -348,60 +363,57 @@ void	Component_RoomManager::Recv_Kick(Packet_v1 const *packet_v1, Session *sessi
       Room *room = _roomMap->find(roomId)->second;
       if (room->removeConnected(clientSessionId))
 	{
-	  Send_Kick_OK(session, clientSessionId, roomId);
-	  Send_User_Kicked(_sessionMap.find(clientSessionId)->second, roomId);
+	  Send_Kick_OK(session, clientSessionId);
+	  Send_User_Kicked(_sessionMap.find(clientSessionId)->second, packet_v1_room->getSessionId());
 
 	  std::map<field_t, Session*> *connected = room->getConnected();
 	  std::map<field_t, Session *>::iterator it, end = connected->end();
 
 	  for (it = connected->begin(); it != end ; ++it)
-	    Send_Kicked(it->second, clientSessionId, roomId);
+	    Send_Kicked(it->second, clientSessionId);
 	  if (connected->size() == 0)
 	    _roomMap->erase(roomId);
 	}
       else
-	Send_Kick_NOK_NOTINROOM(session, clientSessionId, roomId);
+	Send_Kick_NOK_NOTINROOM(session, clientSessionId);
     }
   else
-    Send_Kick_NOK_NOTINROOM(session, clientSessionId, roomId);
+    Send_Kick_NOK_NOTINROOM(session, clientSessionId);
 
 }
 
-void	Component_RoomManager::Send_Kicked(Session *session, field_t clientSessionId, field_t roomId)
+void	Component_RoomManager::Send_Kicked(Session *session, field_t clientSessionId)
 {
   Packet_v1_Room *packet_v1_room = new Packet_v1_Room(ROOM_KICKED);
 
-  packet_v1_room->setRoomId(roomId);
   packet_v1_room->setClientSessionId(clientSessionId);
 
   _serverManager->Send(packet_v1_room, session);
 }
 
-void	Component_RoomManager::Send_Kick_OK(Session *session,field_t clientSessionId, field_t roomId)
+void	Component_RoomManager::Send_Kick_OK(Session *session,field_t clientSessionId)
 {
   Packet_v1_Room *packet_v1_room = new Packet_v1_Room(ROOM_KICK_OK);
 
-  packet_v1_room->setRoomId(roomId);
   packet_v1_room->setClientSessionId(clientSessionId);
 
   _serverManager->Send(packet_v1_room, session);
 }
 
-void	Component_RoomManager::Send_Kick_NOK_NOTINROOM(Session *session, field_t clientSessionId, field_t roomId)
+void	Component_RoomManager::Send_Kick_NOK_NOTINROOM(Session *session, field_t clientSessionId)
 {
   Packet_v1_Room *packet_v1_room = new Packet_v1_Room(ROOM_KICK_NOK_NOTINROOM);
 
-  packet_v1_room->setRoomId(roomId);
   packet_v1_room->setClientSessionId(clientSessionId);
 
   _serverManager->Send(packet_v1_room, session);
 }
 
-void	Component_RoomManager::Send_User_Kicked(Session *session, field_t roomId)
+void	Component_RoomManager::Send_User_Kicked(Session *session, field_t clientSessionId)
 {
   Packet_v1_Room *packet_v1_room = new Packet_v1_Room(ROOM_USER_KICKED);
 
-  packet_v1_room->setRoomId(roomId);
+  packet_v1_room->setClientSessionId(clientSessionId);
 
   _serverManager->Send(packet_v1_room, session);
 }
@@ -420,7 +432,7 @@ void	Component_RoomManager::Recv_Invite(Packet_v1 const *packet_v1, Session *ses
 
 void	Component_RoomManager::Send_Invite_ACK(Session *session)
 {
-  Packet_v1_Room *packet_v1_room = new Packet_v1_Room(ROOM_INVITED);
+  Packet_v1_Room *packet_v1_room = new Packet_v1_Room(ROOM_INVITE_ACK);
 
   _serverManager->Send(packet_v1_room, session);
 }
@@ -436,13 +448,20 @@ void	Component_RoomManager::Recv_Start_Jam(Packet_v1 const *packet_v1, Session *
   std::map<field_t, Session*> *connected = room->getConnected();
   std::map<field_t, Session *>::iterator it, end = connected->end();
   
+  Send_Start_Jam_ACK(session);
+
   for (it = connected->begin(); it != end ; ++it)
-    Send_Start_Jam(it->second);
+    Send_Started_Jam(it->second);
 }
 
-void	Component_RoomManager::Send_Start_Jam(Session *session)
+void	Component_RoomManager::Send_Start_Jam_ACK(Session *session)
 {
-  Packet_v1_Room *packet_v1_room = new Packet_v1_Room(ROOM_START_JAM);
+  _serverManager->Send(_componentId, ROOM_START_JAM_ACK, session);
+}
+
+void	Component_RoomManager::Send_Started_Jam(Session *session)
+{
+  Packet_v1_Room *packet_v1_room = new Packet_v1_Room(ROOM_STARTED_JAM);
 
   _serverManager->Send(packet_v1_room, session);
 }
@@ -458,13 +477,20 @@ void	Component_RoomManager::Recv_Stop_Jam(Packet_v1 const *packet_v1, Session *s
   std::map<field_t, Session*> *connected = room->getConnected();
   std::map<field_t, Session *>::iterator it, end = connected->end();
   
+  Send_Stop_Jam_ACK(session);
+
   for (it = connected->begin(); it != end ; ++it)
-    Send_Stop_Jam(it->second);
+    Send_Stoped_Jam(it->second);
 }
 
-void	Component_RoomManager::Send_Stop_Jam(Session *session)
+void	Component_RoomManager::Send_Stop_Jam_ACK(Session *session)
 {
-  Packet_v1_Room *packet_v1_room = new Packet_v1_Room(ROOM_STOP_JAM);
+  _serverManager->Send(_componentId, ROOM_STOP_JAM_ACK, session);
+}
+
+void	Component_RoomManager::Send_Stoped_Jam(Session *session)
+{
+  Packet_v1_Room *packet_v1_room = new Packet_v1_Room(ROOM_STOPED_JAM);
 
   _serverManager->Send(packet_v1_room, session);
 }
@@ -496,7 +522,7 @@ void	Component_RoomManager::Disconnect(Session *session)
 	      std::map<field_t, Session*>::iterator i, e = connected->end();
 	      
 	      for (i = connected->begin(); i != e; ++i)
-		Send_Leaved(i->second, it->first, session->getSessionId(), session->getLogin().c_str());
+		Send_Leaved(i->second, session->getSessionId());
 	    }
 	}
     }

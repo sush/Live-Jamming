@@ -33,7 +33,9 @@ SOURCES += Manager.cpp \
     Packet_v1_Session.cpp \
     Packet_v1_Channel.cpp \
     Packet_v1_Friend.cpp \
-    Channel.cpp
+    Packet_v1_Room.cpp \
+    Channel.cpp \
+    Room.cpp
 HEADERS += Session.h \
     Manager.h \
     Packet.h \
@@ -42,7 +44,7 @@ HEADERS += Session.h \
     Bind_recv.h \
     Packet_v1_Session.h \
     Packet_v1_Channel.h \
-    Packet_v1_Channel.h
+    Packet_v1_Friend.h
 DEPENDPATH += ../../client
 INCLUDEPATH += ../../client/include
 SOURCES += main_net.cpp \
@@ -50,7 +52,8 @@ SOURCES += main_net.cpp \
     ClientManager.cpp \
     Component_Session.cpp \
     Component_Friend.cpp \
-    Component_Channel.cpp
+    Component_Channel.cpp \
+    Component_Room.cpp
 HEADERS += Audio.h \
     Client.h \
     ClientManager.h \
