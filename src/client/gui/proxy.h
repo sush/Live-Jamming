@@ -19,6 +19,10 @@ public :
 
 void    authResponse(Packet_v1 const*, Session*);
 void    chanResponse(Packet_v1 const*, Session*);
+// New interface not used yet (be aware of new connections / disconnections
+ void	Connect(Session *){}
+ void	Disconnect(Session *){}
+   //////////////////////////////////////
 void    disconnect();
 
 QMap<QString, field_t>    channelNameToId;

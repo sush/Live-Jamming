@@ -426,5 +426,10 @@ void		Component_Room::Recv_Kicked(Packet_v1 const *packet_v1, Session *session)
   // clientSessionId has been kicked of the room
 
   Send_Kicked_ACK(session);
-
 }
+
+void		Component_Room::Connect(Session *)
+{}
+
+void		Component_Room::Disconnect(Session *)
+{}

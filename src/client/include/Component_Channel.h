@@ -71,6 +71,9 @@ private:
   void					Recv_Listed(Packet_v1 const *, Session *);
   //! Create a channel List request in order to inform server that the list of all existing channels is requested.
   void					Send_List(Session *);
+
+  void					Connect(Session *);
+  void					Disconnect(Session *);
   
   ClientManager				*_clientManager;
   m_channel				_channelMap;

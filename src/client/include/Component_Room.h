@@ -74,8 +74,10 @@ private:
   void					Recv_Started_Jam(Packet_v1 const *packet_v1, Session *);
   void					Recv_Stoped_Jam(Packet_v1 const *packet_v1, Session *);
 
-void					Recv_Kicked(Packet_v1 const *packet_v1, Session *);
-
+  void					Recv_Kicked(Packet_v1 const *packet_v1, Session *);
+ 
+  void					Connect(Session *);
+  void					Disconnect(Session *);
  private :
   
   ClientManager				*_clientManager;

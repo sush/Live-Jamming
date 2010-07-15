@@ -157,6 +157,12 @@ void		Component_Friend::Send_Friend_Leaved_ACK(Session *session)
   _clientManager->Send(_componentId, FRIEND_LEAVED_ACK, session);
 }
 
+void		Component_Friend::Connect(Session *)
+{}
+
+void		Component_Friend::Disconnect(Session *)
+{}
+
 bool		Component_Friend::IsFriend(Session *session, std::string const &clientLogin) const
 {
   std::list<std::string> friendList = session->getFriendList();

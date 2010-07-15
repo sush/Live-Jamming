@@ -8,6 +8,7 @@
 #include <Packet_v1_Session.h>
 #include <Packet_v1_Channel.h>
 #include <Packet_v1_Friend.h>
+#include <Packet_v1_Room.h>
 #include <Exception.h>
 
 unsigned int		timeOutTest_maxRetry = 3;
@@ -52,7 +53,7 @@ Packet_v1	*Manager::Cond_new_Packet(int componentId, int requestId) const
   else if (componentId == FRIEND_COMPONENTID)
     return new Packet_v1_Friend(requestId);
   else if (componentId == ROOM_COMPONENTID)
-    return new Packet_v1_Room(&endpoint, &buffer, len);
+    return new Packet_v1_Room(requestId);
 
   throw std::runtime_error(X_UNKNOWN_COMPONENTID);
   return 0;

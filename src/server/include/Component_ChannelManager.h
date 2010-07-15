@@ -62,6 +62,7 @@ private:
   //! Create a channel Leaved response to the client to inform it that another client has leaved the channel.
   void		Send_Leaved(Session *, field_t, field_t, char const *);
 
+  void		Connect(Session *);
   void		Disconnect(Session *);
 
   field_t	GenChannelId();

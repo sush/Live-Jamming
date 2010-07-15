@@ -150,3 +150,9 @@ bool		Component_Session::IsLogged() const
 {
   return _logged;
 }
+
+void		Component_Session::Connect(Session *)
+{}
+
+void		Component_Session::Disconnect(Session *)
+{}

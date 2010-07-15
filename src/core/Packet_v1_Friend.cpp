@@ -22,6 +22,9 @@ void	Packet_v1_Friend::Print(std::string const &componentName, Manager const * m
 void		Packet_v1_Friend::Print_v1_Friend(std::string const &componentName, Manager const * manager) const
 {
   Print_v1(componentName, manager);
+  int id = getRequestId();
+  if (id == FRIEND_JOINED || id == FRIEND_LEAVED || id == FRIEND_ADD || id == FRIEND_DEL)
+    std::cout << "# Login: '" << getFriendLogin() << "'" << std::endl;
 }
 
 void		Packet_v1_Friend::setFriendLogin(char const * friendLogin)
@@ -46,37 +49,3 @@ char const	*Packet_v1_Friend::getFriendLogin() const
 
   return reinterpret_cast<char const *>(getData(PROTOV1_FRIEND_START_OF_DATA, PROTOV1_FRIEND_DATA_LOGIN));
 }
-
-// void		Packet_v1_Friend::setFriendList(std::vector<std::string> const &friendList)
-// {
-//   std::string           friends;
-
-//   for (unsigned int i = 0; i < friendList.size(); ++i)
-//     {
-//       friends += friendList[i];
-//       friends += "#";
-//     }
-//   appendData(PROTOV1_FRIEND_START_OF_DATA, PROTOV1_FRIEND_DATA_LIST, reinterpret_cast<byte_t const *>(friends.c_str()));
-// }
-
-// std::vector<std::string>	*Packet_v1_Friend::getFriendList() const
-// {
-//   char const                    *friendList = reinterpret_cast<char const *>(getData(PROTOV1_FRIEND_START_OF_DATA, PROTOV1_FRIEND_DATA_LIST));
-
-//   std::vector<std::string>      *v_friend = new std::vector<std::string>();
-//   std::string                   name;
-
-//   for (unsigned int i = 0; i < strlen(friendList); ++i)
-//     {
-//       if (friendList[i] == '\0')
-//         break;
-//       if (friendList[i] != '#')
-//         name += friendList[i];
-//       else
-//         {
-//           v_friend->push_back(name);
-//           name.clear();
-//         }
-//     }
-//   return v_friend;
-// }

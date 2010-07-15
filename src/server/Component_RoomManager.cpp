@@ -504,6 +504,9 @@ void	Component_RoomManager::Send_Invited(Session *session, const char *clientLog
   _serverManager->Send(packet_v1_room, session);
 }
 
+void	Component_RoomManager::Connect(Session *)
+{}
+
 void	Component_RoomManager::Disconnect(Session *session)
 {
  m_room::iterator it, end = _roomMap->end();

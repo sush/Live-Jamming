@@ -13,13 +13,20 @@ Packet_v1_Room::~Packet_v1_Room()
 
 void            Packet_v1_Room::Print(std::string const &componentName, Manager const * manager) const
 {
-  // std::cout << PACKET_STRING << " [Packet_v1_Room] " << PACKET_STRING << std::endl;
-  // Print_v1_Room(componentName, manager);
-  // std::cout << PACKET_STRING << PACKET_STRING << PACKET_STRING << std::endl;
+  std::cout << PACKET_STRING << " [Packet_v1_Room] " << PACKET_STRING << std::endl;
+  Print_v1_Room(componentName, manager);
+  std::cout << PACKET_STRING << PACKET_STRING << PACKET_STRING << std::endl;
 }
 
 void            Packet_v1_Room::Print_v1_Room(std::string const &componentName, Manager const * manager) const
 {
+  Print_v1(componentName, manager);
+  std::cout << "[ROOMID: " << getRoomId() << " {" << PROTOV1_ROOM_ROOMID_SIZE << "}]"
+	    << "[CLIENTSESSIONID: " << getClientSessionId() << "{" << PROTOV1_ROOM_CLIENTSESSIONID_SIZE << "}]"
+	    << std::endl;
+  int id = getRequestId();
+  if (id == ROOM_JOINED || id == ROOM_LEAVED || id == ROOM_KICKED || ROOM_INVITE)
+    std::cout << "# Login: '" << getClientLogin() << "'" << std::endl;
 }
 
 field_t         Packet_v1_Room::getRoomId() const

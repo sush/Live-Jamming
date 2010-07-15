@@ -43,7 +43,6 @@ private:
   unsigned int				GenSessionId();
   void					PrintSession(Session const *) const;
   void					PrintSession(Packet const *) const;
-  void					Disconnect(Session *);
 
   //recv
   void					Recv_AuthRequest(Packet_v1 const *, Session *);
@@ -55,6 +54,9 @@ private:
   void					Send_AuthResponse_NOK_BADAUTH(Session *);
   void					Send_AuthResponse_NOK_DUPLICATE(Session *);
   void					Send_KeepAlive(Session *);
+
+  void                                  Connect(Session *);
+  void                                  Disconnect(Session *);
 
   ServerManager				*_serverManager;
 

@@ -248,3 +248,9 @@ void		Component_Channel::Recv_Listed(Packet_v1 const *packet_v1, Session *sessio
   // list of existing channels
   std::vector<std::string>		*v_channel = packet_v1_channel->getChannelList();
 }
+
+void		Component_Channel::Connect(Session *)
+{}
+
+void		Component_Channel::Disconnect(Session *)
+{}

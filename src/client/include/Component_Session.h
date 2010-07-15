@@ -44,6 +44,9 @@ private:
   void		Send_KeepAlive();
 
   void		CallBack_AuthRequest_timeout(boost::system::error_code const &);
+
+  void                                  Connect(Session *);
+  void                                  Disconnect(Session *);
   
   ClientManager				*_clientManager;
   bool					_logged;

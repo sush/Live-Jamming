@@ -38,6 +38,9 @@ class Component_Friend :public IComponent
   void			Send_Friend_Joined_ACK(Session *);
   void			Send_Friend_Leaved_ACK(Session *);
 
+  void			Connect(Session *);
+  void			Disconnect(Session *);
+
  private :
   ClientManager		*_clientManager;
 };

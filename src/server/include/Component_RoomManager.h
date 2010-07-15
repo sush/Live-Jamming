@@ -62,6 +62,7 @@ private:
   void			Send_Stoped_Jam(Session *);
   void			Send_Stop_Jam_ACK(Session *);
 
+  void			Connect(Session *);
   void			Disconnect(Session *);
 
   field_t		GenRoomId();

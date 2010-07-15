@@ -161,6 +161,9 @@ void		Component_SessionManager::Recv_Disconnect(Packet_v1 const *, Session * ses
   _serverManager->Disconnect(session);
 }
 
+void		Component_SessionManager::Connect(Session *)
+{}
+
 void		Component_SessionManager::BindingsRecv()
 {
   (*_bindingsRecv)[SESSION_AUTHREQUEST] =
