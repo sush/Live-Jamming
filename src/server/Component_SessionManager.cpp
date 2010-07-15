@@ -85,7 +85,8 @@ Session 	*Component_SessionManager::DoAuth(Packet_v1_Session const * packet_v1_S
       new_session = new Session(_serverManager, _serverManager->getIO(), packet_v1_Session, sessionId);
       new_session->setLogin(login_str);
       //      new_session->setFriendList(friendList);
-
+      
+      std::cout << "after auth id = " << new_session->getSessionId() << std::endl;
       _sessionMap[new_session->getSessionId()] = new_session;
       Send_AuthResponse_OK(new_session);
 
@@ -113,7 +114,6 @@ void		Component_SessionManager::Disconnect(Session * session)
   std::cout << "* ";
   PrintSession(session);
   std::cout << " Disconnected" << std::endl;
-  _sessionMap.erase(session->getSessionId());
   session->DeAuthentificated();
 }
 

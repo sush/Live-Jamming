@@ -1,4 +1,5 @@
 #include <Packet.h>
+#include <stdexcept>
 
 Packet::Packet(boost::asio::ip::udp::endpoint const * endpoint, buffer_t *buffer, std::size_t len)
   :_buffer(buffer), _len(len), _endpoint(endpoint)
@@ -226,7 +227,7 @@ byte_t						*Packet::getStartOfData(unsigned int start_of_data, unsigned int idx
       }
   // test if got to idx nth str and that its not pointed to PACKET_MAXSIZE (cuz it would be null)
   if (idx > 0 || i == PACKET_MAXSIZE)
-    throw ("getStartOfData(): bad data request");
+    throw std::runtime_error("getStartOfData(): bad data request");
   return (res + i);
 }
 
@@ -239,7 +240,7 @@ byte_t						*Packet::getData(unsigned int start_of_data, unsigned int idx) const
  // test the end of idx nth str has end before maxsize
   for (i = 0; i < PACKET_MAXSIZE && res[i] != '\0'; ++i);
   if (i == PACKET_MAXSIZE)
-    throw ("getData(): bad data request");
+    throw std::runtime_error ("getData(): bad data request");
   return res;
 }
 
@@ -271,4 +272,5 @@ void						Packet::appendData(unsigned int start_of_data, unsigned int idx, byte_
 	res[i] = value[i];
       res[i + 1] = '\0';
     }
+  _len += len;
 }

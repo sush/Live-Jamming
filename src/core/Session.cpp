@@ -35,7 +35,6 @@ void	Session::Authentificated(Packet_v1 const * packet_v1)
 void	Session::DeAuthentificated()
 {
   _isLogged = false;
-  _sessionId = 0;
   CancelTimeOutTest();
 }
 
@@ -141,6 +140,20 @@ void				Session::setAutoRetry(Packet_v1 * packet_v1)
   timer->async_wait(boost::bind(&Manager::CallBack_Send_TimeOut, _manager, this, packet_v1, boost::asio::placeholders::error));
 }
 
+
+// void				Session::CancelAll()
+// {
+//   m_m_timer_it			it1, end1 = _timerMapMap.end();
+//   m_timer_it			it2, end2;
+
+//   for (it1 = _timerMapMap.begin(); it1 != end1; ++it1)
+//     {
+//       end2 = it1->second->end();
+//       for (it2 = it1->second->begin(); it2 != end2; ++it2)
+// 	it2->second
+//     }
+
+// }
 
 void				Session::CancelAutoRetry(field_t componentId, field_t requestId)
 {

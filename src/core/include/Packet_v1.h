@@ -17,6 +17,7 @@ public:
 
   static field_t	peekComponentId(Packet::buffer_t const &);
   static field_t	peekRequestId(Packet::buffer_t const &);
+  static field_t	peekDataLen(Packet::buffer_t const &);
 
   virtual void			Print(std::string const &, Manager const *) const;
   field_t		getRequestId() const;

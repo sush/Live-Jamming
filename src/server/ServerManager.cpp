@@ -98,6 +98,7 @@ void		ServerManager::Disconnect(Session *session)
   _channelManager->Disconnect(session);
   _friendManager->Disconnect(session);
   _roomManager->Disconnect(session);
+  _sessionMap.erase(session->getSessionId());
 }
 
 ServerManager::m_Session &	ServerManager::getSessionMap()

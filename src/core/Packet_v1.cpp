@@ -10,6 +10,7 @@
 Packet_v1::Packet_v1(boost::asio::ip::udp::endpoint const *endpoint, buffer_t *buffer, std::size_t len)
   :Packet::Packet(endpoint, buffer, len)
 {
+  setDataLen(len);
 }
 
 
@@ -52,6 +53,10 @@ field_t		Packet_v1::peekRequestId(Packet::buffer_t const &buffer)
   return peekField(buffer, PROTOV1_REQUESTID_OFF, PROTOV1_REQUESTID_SIZE);
 }
 
+field_t		Packet_v1::peekDataLen(Packet::buffer_t const &buffer)
+{
+  return peekField(buffer, PROTOV1_DATALEN_OFF, PROTOV1_DATALEN_SIZE);
+}
 
 field_t		Packet_v1::peekField(Packet::buffer_t const &buffer, unsigned int bin_offset, unsigned int bin_len)
 {
