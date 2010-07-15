@@ -1,15 +1,16 @@
 #include <Client.h>
 #include <stdexcept>
 #include <Packet_v1.h>
+#include <sstream>
+#include <string>
 
-const char		connect_address[] = "127.0.0.1";  //"127.0.0.1";
-//const char		connect_address[] = "88.191.94.150";
+char const	*connect_address = "127.0.0.1";  //"127.0.0.1";
 
-const int		Client::_connect_port	= 5042;
-int			Client::_port	= _connect_port + 1;
-int			Client::_poolSize = 1;
-const int		updateTime = 1;
-const int		treat_delay = 0; //micro seconds
+int		Client::_connect_port	= 5042;
+int		Client::_port	= _connect_port + 1;
+int		Client::_poolSize = 1;
+const int	updateTime = 1;
+const int	treat_delay = 0; //micro seconds
 
 void		Client::Run()
 {
@@ -52,6 +53,7 @@ void	Client::CallBack_handle_receive(boost::system::error_code const & error, st
       catch (std::runtime_error &e)
 	{
 	  std::cout << e.what() << ":" << Packet_v1::peekComponentId(*_recv_buffer) << std::endl;
+	  delete _recv_buffer;
 	}
       ////////////////////////////////////////////
 
@@ -106,6 +108,16 @@ void		Client::BindToLocalPort()
   while (!_local_endpoint);
 }
 
+void		Client::Connect(std::string const & server, int port)
+{
+  // string to int
+  connect_address = server.c_str();
+  _connect_port = port;
+  _remote_endpoint->address(boost::asio::ip::address::from_string(connect_address));
+  _remote_endpoint->port(port);
+  boost::thread		t(boost::bind(&Client::Run, this));
+}
+
 void		Client::Init(int argc, char *argv[])
 {
   _argc = argc;
@@ -127,6 +139,5 @@ void		Client::Init(int argc, char *argv[])
   Proxy proxy(&guiInstance, *_io_service, *_pool, *_socket, *_remote_endpoint);
   guiInstance.setProxy(&proxy);
   _clientManager = &proxy;
-  boost::thread		t(boost::bind(&Client::Run, this));
   MainWindow::run();
 }
