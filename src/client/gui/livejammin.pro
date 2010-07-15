@@ -47,6 +47,8 @@ HEADERS += Session.h \
     Packet_v1_Friend.h
 DEPENDPATH += ../../client
 INCLUDEPATH += ../../client/include
+INCLUDEPATH += /usr/include/qt4/QtMultimedia
+INCLUDEPATH += /usr/include/qt4
 SOURCES += main_net.cpp \
     Client.cpp \
     ClientManager.cpp \
@@ -70,7 +72,8 @@ LIBS += -lboost_system \
     -lboost_thread-mt \
     -lboost_program_options \
     -lyaml-cpp \
-    -L../../libs
+    -L../../libs\
+    -L/usr/share/qt4/lib
 FORMS += mainwindow.ui \
     accountconnection.ui \
     configuration_dialog.ui \

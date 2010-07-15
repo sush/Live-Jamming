@@ -9,7 +9,8 @@
 
 Packet_v1::Packet_v1(boost::asio::ip::udp::endpoint const *endpoint, buffer_t *buffer, std::size_t len)
   :Packet::Packet(endpoint, buffer, len)
-{}
+{
+}
 
 
 

@@ -86,7 +86,10 @@ unsigned int	ServerManager::CountActiveSessions() const
 
 void		ServerManager::Connect(Session *session)
 {
-
+  _sessionManager->Connect(session);
+  _channelManager->Connect(session);
+  _friendManager->Connect(session);
+  _roomManager->Connect(session);
 }
 
 void		ServerManager::Disconnect(Session *session)

@@ -62,11 +62,10 @@ public:
   Packet_v1	*Cond_new_Packet(boost::asio::ip::udp::endpoint &, Packet::buffer_t &, int) const;
   Packet_v1	*Cond_new_Packet(int, int) const;
 
-
-
 protected:
   virtual void		Init_Components() = 0;
   virtual void		Disconnect(Session *) = 0;
+  virtual void		Connect(Session *) = 0;
 
   void		CallBack_handle_send(Packet_v1 *) const;
   void		Send_TimeOutTest(Session *);

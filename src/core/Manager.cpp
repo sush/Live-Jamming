@@ -31,8 +31,10 @@ Packet_v1	*Manager::Cond_new_Packet(boost::asio::ip::udp::endpoint & endpoint, P
     return new Packet_v1_Channel(&endpoint, &buffer, len);
   else if (componentId == FRIEND_COMPONENTID)
     return new Packet_v1_Friend(&endpoint, &buffer, len);
+  else if (componentId == ROOM_COMPONENTID)
+    return new Packet_v1_Room(&endpoint, &buffer, len);
 
-  assert(1);
+  throw std::runtime_error(X_UNKNOWN_REQUESTID);
   return 0; // suppress compiler warning
 }
 
@@ -49,8 +51,11 @@ Packet_v1	*Manager::Cond_new_Packet(int componentId, int requestId) const
     return new Packet_v1_Channel(requestId);
   else if (componentId == FRIEND_COMPONENTID)
     return new Packet_v1_Friend(requestId);
+  else if (componentId == ROOM_COMPONENTID)
+    return new Packet_v1_Room(&endpoint, &buffer, len);
 
   throw std::runtime_error(X_UNKNOWN_COMPONENTID);
+  return 0;
 }
 
 Manager::Manager(boost::asio::io_service & io_service, boost::threadpool::pool & pool, boost::asio::ip::udp::socket & socket)

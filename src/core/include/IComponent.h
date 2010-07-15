@@ -43,6 +43,8 @@ class IComponent
   virtual ~IComponent() {};
   virtual void		BindingsRecv() = 0;
   virtual void		RegisteredRequests() = 0;
+  virtual void		Connect(Session *) = 0;
+  virtual void		Disconnect(Session *) = 0;
   //  virtual void	Bindings_send() = 0;
   
   field_t		getComponentId()				{ return _componentId; }
