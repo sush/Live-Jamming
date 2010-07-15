@@ -16,10 +16,10 @@ public:
     NespAudio();
     QStringList getIDevices();
     QStringList getODevices();
-    QString getDefaultODevice();
-    QString getDefaultIDevice();
     void startIO();
     void stopIO();
+    QAudioDeviceInfo iDevice;
+    QAudioDeviceInfo oDevice;
 public slots:
     void stopRecording();
     void finishedPlaying(QAudio::State);
@@ -27,10 +27,10 @@ public slots:
 signals:
 private:
     QStringList getDevices(QAudio::Mode);
-    QAudioInput* input;
-    QAudioOutput* output;
     QIODevice* inputBuffer;
     QFile inputFile;
+    QAudioInput* input;
+    QAudioOutput* output;
 };
 
 #endif // NESPAUDIO_H

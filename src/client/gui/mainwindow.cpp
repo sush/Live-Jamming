@@ -21,6 +21,7 @@
 #include <Component_Channel.h>
 #include <Session.h>
 #include <Packet_v1.h>
+#include <Client.h>
 #include <proxy.h>
 #include <conversationset.h>
 
@@ -190,9 +191,10 @@ void    MainWindow::addMessage(const QString &channel, const QString &client, co
 void MainWindow::on_actionConnect_triggered()
 {
     if (isConnected == false) {
-           AccountConnection::run(this, params.login, params.password);
+           AccountConnection::run(this, params.login, params.password, params.serverIp, params.serverPort);
 
            if (params.haveId() == true) {
+               proxy->client->Connect(params.serverIp.toStdString(), params.serverPort.toInt());
             proxy->session()->Connect(params.login.toStdString(), params.password.toStdString());
         }
     }

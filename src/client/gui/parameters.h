@@ -12,6 +12,8 @@ public:
 
     QString login;
     QString password;
+    QString serverIp;
+    QString serverPort;
 };
 
 #endif // PARAMETERS_H

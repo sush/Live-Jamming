@@ -27,11 +27,13 @@ void AccountConnection::changeEvent(QEvent *e)
     }
 }
 
-bool  AccountConnection::run(QWidget* parent, QString& login, QString & password)
+bool  AccountConnection::run(QWidget* parent, QString& login, QString & password, QString& serverIp, QString& serverPort)
 {
     AccountConnection ac(parent);
     ac.ui->loginLineEdit->setText(login);
     ac.ui->passwordLineEdit->setText(password);
+    ac.ui->serverIpLineEdit->setText(serverIp);
+    ac.ui->serverPortLineEdit->setText(serverPort);
     //pas présent dans le ui
     connect(ac.ui->buttonBox, SIGNAL(accepted()), &ac, SLOT(accept()));
     connect(ac.ui->buttonBox, SIGNAL(rejected()), &ac, SLOT(reject()));
@@ -39,6 +41,7 @@ bool  AccountConnection::run(QWidget* parent, QString& login, QString & password
        return false;
     login = ac.ui->loginLineEdit->text();
     password = ac.ui->passwordLineEdit->text();
-
+    serverIp = ac.ui->serverIpLineEdit->text();
+    serverPort = ac.ui->serverPortLineEdit->text();
     return true;
 }

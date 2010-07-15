@@ -6,9 +6,9 @@
 
 #include <qdebug.h>
 
-Proxy::Proxy(MainWindow *mainwin, boost::asio::io_service &service,
+Proxy::Proxy(Client* client, MainWindow *mainwin, boost::asio::io_service &service,
              boost::threadpool::pool &pool, boost::asio::ip::udp::socket &socket, boost::asio::ip::udp::endpoint &endpoint)
-                 : ClientManager(service, pool, socket, endpoint)
+                 : client(client), ClientManager(service, pool, socket, endpoint)
 {
     connect(this, SIGNAL(sAuthResponse(MainWindow::authEventsType)), mainwin, SLOT(authEvents(MainWindow::authEventsType)), Qt::QueuedConnection);
     connect(this, SIGNAL(sChanResponse(MainWindow::chanEventsType, const Packet_v1_Channel*)), mainwin, SLOT(chanEvents(MainWindow::chanEventsType, const Packet_v1_Channel*)),Qt::QueuedConnection);

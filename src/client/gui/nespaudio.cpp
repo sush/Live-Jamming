@@ -1,7 +1,8 @@
 #include "nespaudio.h"
 
-NespAudio::NespAudio()
-{
+NespAudio::NespAudio(){
+    this->iDevice = QAudioDeviceInfo::defaultInputDevice();
+    this->oDevice = QAudioDeviceInfo::defaultOutputDevice();
 }
 
 QStringList NespAudio::getODevices(){
@@ -10,14 +11,6 @@ QStringList NespAudio::getODevices(){
 
 QStringList NespAudio::getIDevices(){
     return this->getDevices(QAudio::AudioInput);
-}
-
-QString NespAudio::getDefaultODevice(){
-    return QAudioDeviceInfo::defaultOutputDevice().deviceName();
-}
-
-QString NespAudio::getDefaultIDevice(){
-    return QAudioDeviceInfo::defaultInputDevice().deviceName();
 }
 
 void NespAudio::startIO(){
