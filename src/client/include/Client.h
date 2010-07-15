@@ -26,6 +26,7 @@ class Client : public Singleton<Client>
 public:
   void					Run();
   void					Init(int, char *[]);
+  void					Connect(std::string const &, int);
     
 private:
   void					BindToLocalPort();
@@ -39,7 +40,7 @@ private:
   char					**_argv;
   static const std::string		_address;
   static int				_port;
-  static const int			_connect_port;
+  static int				_connect_port;
   static int				_poolSize;
 
   boost::mutex				_packetQueue_mutex;
