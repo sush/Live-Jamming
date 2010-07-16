@@ -107,7 +107,7 @@ void	Component_RoomManager::RegisteredRequests()
     new Request(ROOM_USER_KICKED, SEND, "USER_KICKED", RETRY);
 
   (*_registeredRequests)[ROOM_KICK_OK] = 
-    new Request(ROOM_USER_KICKED, SEND, "KICK_OK", NORETRY);
+    new Request(ROOM_USER_OK, SEND, "KICK_OK", NORETRY);
 
   (*_registeredRequests)[ROOM_KICK_NOK_NOTINROOM] = 
     new Request(ROOM_KICK_NOK_NOTINROOM, SEND, "KICK_NON_NOTINROOM", NORETRY);
@@ -147,13 +147,13 @@ void	Component_RoomManager::RegisteredRequests()
     new Request(ROOM_KICK, RECV, "KICK", RESPONSETONOTHING);
 
   (*_registeredRequests)[ROOM_KICKED_ACK] = 
-    new Request(ROOM_JOINED_ACK, RECV, "KICKED_ACK", ROOM_KICKED);
+    new Request(ROOM_KICKED_ACK, RECV, "KICKED_ACK", ROOM_KICKED);
 
   (*_registeredRequests)[ROOM_INVITE] = 
     new Request(ROOM_INVITE, RECV, "INVITE", RESPONSETONOTHING);
 
   (*_registeredRequests)[ROOM_INVITED_ACK] = 
-    new Request(ROOM_JOINED_ACK, RECV, "INVITED_ACK", ROOM_INVITED);
+    new Request(ROOM_INVITED_ACK, RECV, "INVITED_ACK", ROOM_INVITED);
 
   (*_registeredRequests)[ROOM_USER_KICKED_ACK] = 
     new Request(ROOM_USER_KICKED_ACK, RECV, "USER_KICKED_ACK", ROOM_USER_KICKED);
