@@ -13,6 +13,12 @@
   <property name="windowTitle">
    <string>LiveJammin</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">#MainWindow {
+	background: qlineargradient(spread:pad, x1:0, y1:0.00568182, x2:0, y2:1, stop:0.0248756 rgba(155, 217, 122, 255), stop:0.0348259 rgba(55, 57, 54, 255), stop:1 rgba(59, 61, 59, 255));
+
+}</string>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
@@ -21,13 +27,23 @@
        <enum>Qt::Horizontal</enum>
       </property>
       <widget class="QTabWidget" name="listsTab">
+       <property name="styleSheet">
+        <string notr="true">#listsTab {
+	background: rgb(155, 217, 122)
+}</string>
+       </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <property name="tabsClosable">
         <bool>false</bool>
        </property>
        <widget class="QWidget" name="tab">
+        <property name="styleSheet">
+         <string notr="true">#tab {	
+	background: rgb(80, 80, 80);
+}</string>
+        </property>
         <attribute name="title">
          <string>Channels</string>
         </attribute>
@@ -36,6 +52,11 @@
           <widget class="ChannelList" name="channelList">
            <property name="contextMenuPolicy">
             <enum>Qt::CustomContextMenu</enum>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">#channelList {
+	background: rgb(132, 132, 132)
+}</string>
            </property>
            <property name="selectionMode">
             <enum>QAbstractItemView::ContiguousSelection</enum>
@@ -62,12 +83,23 @@
         </layout>
        </widget>
        <widget class="QWidget" name="tab_2">
+        <property name="styleSheet">
+         <string notr="true">#tab_2 {
+	background: rgb(80, 80, 80)
+}</string>
+        </property>
         <attribute name="title">
          <string>Friends</string>
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
-          <widget class="QListWidget" name="friendsList"/>
+          <widget class="QListWidget" name="friendsList">
+           <property name="styleSheet">
+            <string notr="true">#friendsList {
+	background: rgb(132, 132, 132);
+}</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>
@@ -86,8 +118,20 @@
         </property>
         <item>
          <widget class="QLabel" name="label">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
           <property name="text">
-           <string>LiveJamming</string>
+           <string/>
+          </property>
+          <property name="pixmap">
+           <pixmap>../../../../../../../medias/Logos/live-jamming.png</pixmap>
+          </property>
+          <property name="scaledContents">
+           <bool>false</bool>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
           </property>
          </widget>
         </item>
@@ -103,7 +147,7 @@
      <x>0</x>
      <y>0</y>
      <width>791</width>
-     <height>27</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
