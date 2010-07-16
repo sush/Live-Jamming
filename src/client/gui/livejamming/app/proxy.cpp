@@ -1,18 +1,20 @@
 #include <Protocol_Session.h>
 #include <Protocol_Channel.h>
+#include <Protocol_Room.h>
 #include <Component_Channel.h>
 #include <Component_Session.h>
+#include <Component_Room.h>
 #include <proxy.h>
 
 #include <qdebug.h>
 
-Proxy::Proxy(Client* client, MainWindow *mainwin, boost::asio::io_service &service,
-             boost::threadpool::pool &pool, boost::asio::ip::udp::socket &socket, boost::asio::ip::udp::endpoint &endpoint)
-                 : client(client), ClientManager(service, pool, socket, endpoint)
+Proxy::Proxy(Client* client, boost::asio::io_service &service,
+             boost::threadpool::pool &pool, boost::asio::ip::udp::socket &socket, boost::asio::ip::udp::endpoint &endpoint) :
+                    ClientManager(service, pool, socket, endpoint),
+                    client(client)
 {
-    connect(this, SIGNAL(sAuthResponse(MainWindow::authEventsType)), mainwin, SLOT(authEvents(MainWindow::authEventsType)), Qt::QueuedConnection);
-    connect(this, SIGNAL(sChanResponse(MainWindow::chanEventsType, const Packet_v1_Channel*)), mainwin, SLOT(chanEvents(MainWindow::chanEventsType, const Packet_v1_Channel*)),Qt::QueuedConnection);
 }
+
 
 void    Proxy::authResponse(Packet_v1 const* packet, Session*)
 {
@@ -31,8 +33,6 @@ void    Proxy::authResponse(Packet_v1 const* packet, Session*)
     }
     emit sAuthResponse(type);
 }
-
-
 
 void    Proxy::chanResponse(Packet_v1 const* packet_, Session*)
 {
@@ -58,6 +58,24 @@ void    Proxy::chanResponse(Packet_v1 const* packet_, Session*)
     emit sChanResponse(type, packet);
 }
 
+void    Proxy::roomResponse(const Packet_v1 *packet_, Session *)
+{
+    const Packet_v1_Room* packet = static_cast<const Packet_v1_Room*>(packet_);
+
+    switch (packet->getRequestId())
+    {
+    case ROOM_JOIN_OK:
+        emit joinOk(packet->getRoomName()); break;
+    case ROOM_JOINED:
+        emit joined(packet->getClientLogin()); break;
+    case ROOM_LEAVED:
+        emit leaved(packet->getClientLogin()); break;
+    case ROOM_MESSAGE_RECV:
+        emit messageRecv(packet->getClientLogin(), packet->getMessage());
+
+    }
+}
+
 void    Proxy::disconnect()
 {
     emit sAuthResponse(MainWindow::DISCONNECTED);
@@ -65,7 +83,7 @@ void    Proxy::disconnect()
 
 const char*    Proxy::channelIdToName(field_t id)
 {
-    qDebug() << _channel->getAllChannel().size();
+    Q_ASSERT(_channel->getAllChannel().size() != 0);
 
     return _channel->getAllChannel().find(id)->second->getName();
 }

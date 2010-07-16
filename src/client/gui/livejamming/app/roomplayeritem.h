@@ -10,7 +10,7 @@ namespace Ui {
 class RoomPlayerItem : public QWidget {
     Q_OBJECT
 public:
-    RoomPlayerItem(QWidget *parent = 0);
+    RoomPlayerItem(QWidget *parent, const QString& name, const QString& location);
     ~RoomPlayerItem();
 
 protected:

@@ -38,11 +38,10 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow();
+    MainWindow(Proxy* proxy);
     ~MainWindow();
     static void gui_init(int argc, char* argv[]);
     static int run();
-    void    setProxy(Proxy* proxy_);
 
     enum authEventsType{OK, BADAUTH, DUPPLICATE, DISCONNECTED};
     enum chanEventsType{JOIN_OK, ALREADYINCHAN, LEAVE_OK, JOINED, LEAVED, MESSAGE_RECV, LISTED};
@@ -68,10 +67,11 @@ private:
 public slots:
     void authEvents(MainWindow::authEventsType event);
     void chanEvents(MainWindow::chanEventsType event, const Packet_v1_Channel*);
+    void createRoom(const QString& name);
 
 private slots:
+    void on_actionCreate_room_triggered();
     void on_channelList_activated(const QModelIndex& index);
-    void on_lineEdit_returnPressed();
     void on_channelList_customContextMenuRequested(QPoint pos);
     void on_actionCreate_Channel_triggered();
     void on_actionDisconnect_triggered();

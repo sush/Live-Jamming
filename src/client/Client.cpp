@@ -133,9 +133,8 @@ void		Client::Init(int argc, char *argv[])
   ///////////  ///////////  ///////////  ///////////  ///////////  ///////////  ///////////
   //  _clientManager = new ClientManager(*_io_service, *_pool, *_socket, *_remote_endpoint);
   MainWindow::gui_init(argc, argv);
-  MainWindow guiInstance;
-  Proxy proxy(this, &guiInstance, *_io_service, *_pool, *_socket, *_remote_endpoint);
-  guiInstance.setProxy(&proxy);
+  Proxy proxy(this, *_io_service, *_pool, *_socket, *_remote_endpoint);
+  MainWindow guiInstance(&proxy);
   _clientManager = &proxy;
   MainWindow::run();
 }

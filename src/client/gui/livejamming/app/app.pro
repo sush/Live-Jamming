@@ -114,7 +114,8 @@ HEADERS += Audio.h \
     ClientManager.h \
     Component_Session.h \
     Component_Friend.h \
-    Component_Channel.h
+    Component_Channel.h \
+    Component_Room.h
 INCLUDEPATH += ../../../../include/boost
 HEADERS += threadpool.hpp
 INCLUDEPATH += ../../../../server/include
@@ -132,7 +133,6 @@ FORMS += mainwindow.ui \
     configuration_dialog.ui \
     roomdialog.ui \
     newchan.ui \
-    convset.ui \
     chanlist.ui \
     conversationset.ui \
     roomplayeritem.ui

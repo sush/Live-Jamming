@@ -19,6 +19,7 @@
 
 #include <Component_Session.h>
 #include <Component_Channel.h>
+#include <Component_Room.h>
 #include <Session.h>
 #include <Packet_v1.h>
 #include <Client.h>
@@ -27,17 +28,21 @@
 
 
 
-MainWindow::MainWindow() :
+MainWindow::MainWindow(Proxy* proxy) :
     QMainWindow(),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    proxy(proxy)
 {
-
     ui->setupUi(this);
     setVisible(true);
     qRegisterMetaType<authEventsType>("MainWindow::authEventsType");
     qRegisterMetaType<chanEventsType>("MainWindow::chanEventsType");
 
-    setConnected(false);
+    connect(proxy, SIGNAL(sAuthResponse(MainWindow::authEventsType)), this, SLOT(authEvents(MainWindow::authEventsType)), Qt::QueuedConnection);
+    connect(proxy, SIGNAL(sChanResponse(MainWindow::chanEventsType, const Packet_v1_Channel*)), this, SLOT(chanEvents(MainWindow::chanEventsType, const Packet_v1_Channel*)),Qt::QueuedConnection);
+    connect(proxy, SIGNAL(joinOk(QString)), this, SLOT(createRoom(QString)), Qt::QueuedConnection);
+
+    isConnected = false;
     connect(QCoreApplication::instance(), SIGNAL(aboutToQuit()), this, SLOT(on_actionDisconnect_triggered()));
 
     QTimer::singleShot(0, this, SLOT(on_actionConnect_triggered()));
@@ -62,11 +67,6 @@ int    MainWindow::run()
     return QApplication::exec();
 }
 
-void   MainWindow::setProxy(Proxy *proxy_)
-{
-    proxy = proxy_;
-}
-
 void MainWindow::changeEvent(QEvent *e)
 {
     QMainWindow::changeEvent(e);
@@ -89,7 +89,8 @@ void MainWindow::setConnected(bool connected)
         ui->menuFile->removeAction(connected ? ui->actionConnect : ui->actionDisconnect);
         ui->menuFile->insertAction(ui->actionCreate_account,
                                    connected ? ui->actionDisconnect : ui->actionConnect);
-        ui->menuChans->setEnabled(connected);
+        Q_FOREACH(QAction* action, ui->menuChans->actions())
+            action->setEnabled(connected);
     }
 }
 
@@ -125,7 +126,6 @@ void    MainWindow::chanEvents(chanEventsType event, const Packet_v1_Channel* pa
         leaveChannel(packet->getChannelName());
         break;
     case JOINED:
-
         addClientToChannel(packet->getChannelName(), packet->getClientLogin());
         break;
     case LEAVED:
@@ -260,28 +260,32 @@ void MainWindow::on_channelList_customContextMenuRequested(QPoint pos)
 {
     if (ui->channelList->indexAt(pos).isValid()) {
         QTreeWidgetItem* item = ui->channelList->itemAt(pos);
-qDebug() << "toto" << ui->channelList->itemAt(pos)->text(0);
         if (channels.contains(item->text(0))) {
             QAction leave(QString("leave"), 0);
             QAction* action = QMenu::exec(QList<QAction*>() << &leave, ui->channelList->mapToGlobal(pos));
-            qDebug() << "SEDING LEAVE ON:" << proxy->channelNameToId[item->text(0)];
             if (action == &leave)
                 proxy->channel()->Send_Leave(proxy->session()->_session, proxy->channelNameToId[item->text(0)]);
         }
     }
 }
 
-void MainWindow::on_lineEdit_returnPressed()
-{
-    QString msg = channels.value(currentChannel).convSet->input->text();
-    qDebug() << "SENDING MSG" << msg << "FROM" << currentChannel;
-
-    proxy->channel()->Send_Message(proxy->session()->_session, msg.toLocal8Bit().data(), proxy->channelNameToId[currentChannel]);
-    channels.value(currentChannel).convSet->input->clear();
-}
-
 void MainWindow::on_channelList_activated(const QModelIndex& index)
 {
     currentChannel = ui->channelList->itemFromIndex(index)->text(0);
     ui->stackedWidget->setCurrentWidget(channels[currentChannel].convSet);
+}
+
+void MainWindow::on_actionCreate_room_triggered()
+{
+    bool    ok;
+    QString name = QInputDialog::getText(this, "Room name", "Enter room name", QLineEdit::Normal, "", &ok);
+    if (ok) {
+        proxy->room()->Send_Join(proxy->session()->_session, name.toLocal8Bit().data());
+    }
+}
+
+void MainWindow::createRoom(const QString &name)
+{
+    RoomDialog* room = new RoomDialog(this, proxy, name);
+    room->show();
 }

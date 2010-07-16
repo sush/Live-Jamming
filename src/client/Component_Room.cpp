@@ -11,28 +11,33 @@ Component_Room::~Component_Room() {}
 void		Component_Room::BindingsRecv()
 {
     (*_bindingsRecv)[ROOM_JOIN_OK] =
-      new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Room::Recv_Join_OK));
+      new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Room::Recv_Join_OK),
+                    static_cast<Proxy*>(_clientManager), static_cast<Proxy::pMethod>(&Proxy::roomResponse));
 
     (*_bindingsRecv)[ROOM_JOIN_NOK_ALREADYINROOM] =
       new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Room::Recv_Join_NOK_ALREADYINROOM));
 
     (*_bindingsRecv)[ROOM_JOINED] =
-      new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Room::Recv_Joined));
+      new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Room::Recv_Joined),
+                    static_cast<Proxy*>(_clientManager), static_cast<Proxy::pMethod>(&Proxy::roomResponse));
 
   (*_bindingsRecv)[ROOM_MESSAGE_ACK] =
     new Bind_recv(0, 0);
 
   (*_bindingsRecv)[ROOM_MESSAGE_RECV] =
-    new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Room::Recv_Message_RECV));
+    new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Room::Recv_Message_RECV),
+                  static_cast<Proxy*>(_clientManager), static_cast<Proxy::pMethod>(&Proxy::roomResponse));
   
   (*_bindingsRecv)[ROOM_LEAVE_OK] =
-    new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Room::Recv_Leave_OK));
+    new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Room::Recv_Leave_OK),
+                    static_cast<Proxy*>(_clientManager), static_cast<Proxy::pMethod>(&Proxy::roomResponse));
   
   (*_bindingsRecv)[ROOM_LEAVE_NOK_NOTINROOM] =
     new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Room::Recv_Leave_NOK_NOTINROOM));
   
   (*_bindingsRecv)[ROOM_LEAVED] =
-    new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Room::Recv_Leaved));
+    new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Room::Recv_Leaved),
+                    static_cast<Proxy*>(_clientManager), static_cast<Proxy::pMethod>(&Proxy::roomResponse));
 
   (*_bindingsRecv)[ROOM_KICK_OK] =
     new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Room::Recv_Kick_OK));
