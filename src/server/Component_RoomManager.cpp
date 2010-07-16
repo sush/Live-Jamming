@@ -107,7 +107,7 @@ void	Component_RoomManager::RegisteredRequests()
     new Request(ROOM_USER_KICKED, SEND, "USER_KICKED", RETRY);
 
   (*_registeredRequests)[ROOM_KICK_OK] = 
-    new Request(ROOM_USER_OK, SEND, "KICK_OK", NORETRY);
+    new Request(ROOM_KICK_OK, SEND, "KICK_OK", NORETRY);
 
   (*_registeredRequests)[ROOM_KICK_NOK_NOTINROOM] = 
     new Request(ROOM_KICK_NOK_NOTINROOM, SEND, "KICK_NON_NOTINROOM", NORETRY);

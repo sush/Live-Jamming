@@ -2,8 +2,8 @@
 
 CPP_NOGUI="server/*.cpp client/*.cpp core/*.cpp"
 INC_NOGUI="server/include/*.h client/include/*.h core/include/*.h"
-CPP_GUI="client/gui/*.cpp"
-INC_GUI="client/gui/*.h"
+CPP_GUI="client/gui/livejamming/app/*.cpp"
+INC_GUI="client/gui/livejamming/app/*.h"
 GREP_LINE=
 
 echo "\###### without GUI"
