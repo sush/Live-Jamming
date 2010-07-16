@@ -1,8 +1,9 @@
 # -------------------------------------------------
 # Project created by QtCreator 2010-03-18T13:38:22
 # -------------------------------------------------
-TARGET = livejammin_client
+TARGET = livejamming_client
 TEMPLATE = app
+QT += multimedia
 SOURCES += mainwindow.cpp \
     accountconnection.cpp \
     configuration_dialog.cpp \
@@ -21,8 +22,8 @@ HEADERS += mainwindow.h \
     channellist.h \
     conversationset.h \
     roomplayeritem.h
-DEPENDPATH += ../../core
-INCLUDEPATH += ../../core/include
+DEPENDPATH += ../../../../core
+INCLUDEPATH += ../../../../core/include
 SOURCES += Manager.cpp \
     Session.cpp \
     Bind_recv.cpp \
@@ -45,8 +46,8 @@ HEADERS += Session.h \
     Packet_v1_Session.h \
     Packet_v1_Channel.h \
     Packet_v1_Friend.h
-DEPENDPATH += ../../client
-INCLUDEPATH += ../../client/include
+DEPENDPATH += ../../../../client
+INCLUDEPATH += ../../../../client/include
 INCLUDEPATH += /usr/include/qt4/QtMultimedia
 INCLUDEPATH += /usr/include/qt4
 SOURCES += main_net.cpp \
@@ -62,17 +63,17 @@ HEADERS += Audio.h \
     Component_Session.h \
     Component_Friend.h \
     Component_Channel.h
-INCLUDEPATH += ../../include/boost
+INCLUDEPATH += ../../../../include/boost
 HEADERS += threadpool.hpp
-INCLUDEPATH += ../../server/include
+INCLUDEPATH += ../../../../server/include
 HEADERS += Config.h
-INCLUDEPATH += ../../include
+INCLUDEPATH += ../../../../include
 HEADERS += Protocol.h
 LIBS += -lboost_system \
     -lboost_thread-mt \
     -lboost_program_options \
     -lyaml-cpp \
-    -L../../libs \
+    -L../../../../libs \
     -L/usr/share/qt4/lib
 FORMS += mainwindow.ui \
     accountconnection.ui \
@@ -88,4 +89,3 @@ debug:QMAKE_CXXFLAGS += -D_DEBUG \
     -g3 \
     -pg
 else:QMAKE_CXXFLAGS += -D_NDEBUG
-QT += multimedia
