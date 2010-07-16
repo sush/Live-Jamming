@@ -109,8 +109,7 @@ SOURCES += main_net.cpp \
     Component_Channel.cpp \
     Component_Room.cpp \
     Component_Jam.cpp
-HEADERS += Audio.h \
-    Client.h \
+HEADERS += Client.h \
     ClientManager.h \
     Component_Session.h \
     Component_Friend.h \
