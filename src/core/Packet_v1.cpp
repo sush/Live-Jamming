@@ -38,7 +38,10 @@ void		Packet_v1::Print_v1(std::string const & componentName, Manager const * man
 {
   Print_base();
   std::cout << "[COMPONENTID: " << componentName << " {" << PROTOV1_COMPONENTID_SIZE << "}]"
-	    << "[REQUESTID: " << manager->getRegisteredRequestName(getComponentId(), getRequestId()) << " {" << PROTOV1_REQUESTID_SIZE << "}]"
+	    << "[REQUESTID: ";
+  COLOR_REVERSE_START;
+  std::cout << manager->getRegisteredRequestName(getComponentId(), getRequestId());
+  std::cout << " {" << PROTOV1_REQUESTID_SIZE << "}]"
 	    << "[SESSIONID: " << getSessionId() << " {" << PROTOV1_SESSIONID_SIZE << "}]"
 	    << "[DATALEN: " << getDataLen() << " {" << PROTOV1_DATALEN_SIZE << "}]"
 	    << std::endl;

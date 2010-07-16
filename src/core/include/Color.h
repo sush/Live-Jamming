@@ -5,7 +5,8 @@
 #define COLOR_INTENSITY std::cout << "\33[1m"
 #define COLOR_UNDERSCORE std::cout << "\33[4m"
 #define COLOR_BLINKING std::cout << "\33[5m"
-#define COLOR_REVERSE std::cout << "\33[7m"
+#define COLOR_REVERSE_START std::cout << "\33[7m"
+#define COLOR_REVERSE_STOP std::cout << "\33[7x" // DOESN'T WORK
 
 #define COLOR_BLACK std::cout << "\33[30m"
 #define COLOR_RED std::cout << "\33[31m"
