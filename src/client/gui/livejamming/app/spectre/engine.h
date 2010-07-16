@@ -75,8 +75,10 @@ QT_FORWARD_DECLARE_CLASS(QFile)
  * of audio data, meanwhile performing real-time analysis of the audio level
  * and frequency spectrum.
  */
+
 class Engine : public QObject {
     Q_OBJECT
+    friend class NespAudio;
 public:
     Engine(QObject *parent = 0);
     ~Engine();

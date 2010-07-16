@@ -1,5 +1,7 @@
 #ifndef NESPAUDIO_H
 #define NESPAUDIO_H
+#include "engine.h"
+
 #include <QAudioDeviceInfo>
 #include <QAudioInput>
 #include <QAudioOutput>
@@ -7,30 +9,21 @@
 #include <qdebug.h>
 #include <QTimer>
 #include <QBuffer>
-#include <QFile>
 
-class NespAudio : public QObject
+class FrequencySpectrum;
+
+class NespAudio : public Engine
 {
     Q_OBJECT;
 public:
     NespAudio();
+
     QStringList getIDevices();
     QStringList getODevices();
-    void startIO();
-    void stopIO();
-    QAudioDeviceInfo iDevice;
-    QAudioDeviceInfo oDevice;
-public slots:
-    void stopRecording();
-    void finishedPlaying(QAudio::State);
-    void stateChanged(QAudio::State);
-signals:
-private:
-    QStringList getDevices(QAudio::Mode);
-    QIODevice* inputBuffer;
-    QFile inputFile;
-    QAudioInput* input;
-    QAudioOutput* output;
+    const QAudioDeviceInfo& iDevice() const
+                            {return this->m_audioInputDevice;}
+    const QAudioDeviceInfo& oDevice() const
+                            {return this->m_audioOutputDevice;}
 };
 
 #endif // NESPAUDIO_H

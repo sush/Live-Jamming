@@ -2,6 +2,7 @@
 # Project created by QtCreator 2010-03-18T13:38:22
 # -------------------------------------------------
 include(../livejamming.pri)
+RESOURCES = app.qrc
 TARGET = livejamming_client
 DESTDIR = ..
 TEMPLATE = app
