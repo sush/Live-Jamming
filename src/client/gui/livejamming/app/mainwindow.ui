@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>LiveJammin</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="app.qrc">
+    <normaloff>:/images/live-jamming.png</normaloff>:/images/live-jamming.png</iconset>
+  </property>
   <property name="styleSheet">
    <string notr="true">#MainWindow {
 	background: qlineargradient(spread:pad, x1:0, y1:0.00568182, x2:0, y2:1, stop:0.0248756 rgba(155, 217, 122, 255), stop:0.0348259 rgba(55, 57, 54, 255), stop:1 rgba(59, 61, 59, 255));
@@ -33,11 +37,7 @@ QToolBar {
       </property>
       <widget class="QTabWidget" name="listsTab">
        <property name="styleSheet">
-        <string notr="true">#listsTab {
-	border: none;
-}
-
-QTabWidget::pane {
+        <string notr="true">QTabWidget::pane {
 	color: rgb(246, 246, 244);
 	margin: 0px,1px,1px,1px;
 
@@ -51,7 +51,7 @@ QTabWidget::pane {
 
 /* Style the tab using the tab sub-control. Note that          it reads QTabBar _not_ QTabWidget */
 QTabBar::tab { 
-	background: rgb(80, 80, 80);
+	background: rgb(132,132,132);
     border: 2px solid #C4C4C3; 
 	border-bottom-color: #C2C7CB; /* same as the pane color */          
 	border-top-left-radius: 4px;          
@@ -59,15 +59,15 @@ QTabBar::tab {
 	min-width: 8ex;
 	padding: 2px;
 	color: #FFFFFF;   
- }
+}
        
-QTabBar::tab:selected, QTabBar::tab:hover {
-	border: 2px solid #9BD97a;
-     }
+QTabBar::tab:selected, QTabBar::tab:hover {	
+
+}
 
 QTabBar::tab:selected {
-	background: rgb(132, 132, 132); 
-	border-color: #C4C4C3;          
+	background: rgb(80,80,80); 
+	border-color: #9BD97a;          
 	border-bottom-color: #C2C7CB; /* same as pane color */
 }
 
