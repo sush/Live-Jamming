@@ -18,6 +18,10 @@
 	background: qlineargradient(spread:pad, x1:0, y1:0.00568182, x2:0, y2:1, stop:0.0248756 rgba(155, 217, 122, 255), stop:0.0348259 rgba(55, 57, 54, 255), stop:1 rgba(59, 61, 59, 255));
 
 }
+
+QToolBar {
+	background: rgb(155, 217, 122);
+}
 </string>
   </property>
   <widget class="QWidget" name="centralWidget">
@@ -168,7 +172,7 @@ QTabBar::tab:!selected {
            <string/>
           </property>
           <property name="pixmap">
-           <pixmap>../../../../../../../medias/Logos/live-jamming.png</pixmap>
+           <pixmap resource="app.qrc">:/images/live-jamming.png</pixmap>
           </property>
           <property name="scaledContents">
            <bool>false</bool>
@@ -190,7 +194,7 @@ QTabBar::tab:!selected {
      <x>0</x>
      <y>0</y>
      <width>791</width>
-     <height>23</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -326,6 +330,8 @@ QTabBar::tab:!selected {
    <header location="global">channellist.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="app.qrc"/>
+ </resources>
  <connections/>
 </ui>
