@@ -163,7 +163,7 @@
     <string>Connect</string>
    </property>
    <property name="shortcut">
-    <string>Alt+C</string>
+    <string>Ctrl+C</string>
    </property>
   </action>
   <action name="actionCreate_account">
@@ -223,6 +223,9 @@
    </property>
   </action>
   <action name="actionList_channels">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>List channels</string>
    </property>

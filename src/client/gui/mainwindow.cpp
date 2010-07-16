@@ -36,7 +36,7 @@ MainWindow::MainWindow() :
     qRegisterMetaType<authEventsType>("MainWindow::authEventsType");
     qRegisterMetaType<chanEventsType>("MainWindow::chanEventsType");
 
-    setConnected(false);
+    isConnected = false;
     connect(QCoreApplication::instance(), SIGNAL(aboutToQuit()), this, SLOT(on_actionDisconnect_triggered()));
 
     QTimer::singleShot(0, this, SLOT(on_actionConnect_triggered()));
@@ -84,7 +84,8 @@ void MainWindow::setConnected(bool connected)
         ui->menuFile->removeAction(connected ? ui->actionConnect : ui->actionDisconnect);
         ui->menuFile->insertAction(ui->actionCreate_account,
                                    connected ? ui->actionDisconnect : ui->actionConnect);
-        ui->menuChans->setEnabled(connected);
+        Q_FOREACH(QAction* action, ui->menuChans->actions())
+                action->setEnabled(connected);
     }
 }
 
@@ -121,7 +122,6 @@ void    MainWindow::chanEvents(chanEventsType event, const Packet_v1_Channel* pa
         leaveChannel(packet->getChannelName());
         break;
     case JOINED:
-
         addClientToChannel(packet->getChannelName(), packet->getClientLogin());
         break;
     case LEAVED:
@@ -138,7 +138,7 @@ void    MainWindow::joinChannel(const QString &name)
     QTreeWidgetItem* item = new QTreeWidgetItem(QStringList(name));
     ui->channelList->addTopLevelItem(item);
 
-    ConversationSet* convSet = new ConversationSet;
+    ConversationSet* convSet = new ConversationSet(ui->stackedWidget);
     connect(convSet->input, SIGNAL(returnPressed()), this, SLOT(on_lineEdit_returnPressed()));
     ui->stackedWidget->addWidget(convSet);
     ui->stackedWidget->setCurrentWidget(convSet);
@@ -150,7 +150,10 @@ void    MainWindow::joinChannel(const QString &name)
 
 void    MainWindow::leaveChannel(const QString &name)
 {
-    delete channels[name].item;
+    UiChannel uiChan = channels.value(name);
+    ui->stackedWidget->removeWidget(uiChan.convSet);
+    delete uiChan.convSet;
+    delete uiChan.item;
 
     channels.remove(name);
 }
@@ -159,7 +162,7 @@ void    MainWindow::addClientToChannel(const QString &channel, const QString &cl
 {
 //    QMap<QString, UiChannel>::const_iterator it = channels.find(channel);
 //    Q_ASSERT(it != channels.end());
-
+qDebug() << "adding" << client << "to" << channel;
     Q_ASSERT(channels.find(channel) != channels.end());
     QTreeWidgetItem* item = new QTreeWidgetItem(QStringList(client));
     channels[channel].item->addChild(item);
@@ -171,7 +174,7 @@ void    MainWindow::removeClientFromChannel(const QString &channel, const QStrin
 {
 //    QMap<QString, UiChannel>::const_iterator it = channels.find(channel);
 //    Q_ASSERT(it != channels.end());
-qDebug() << channel << client << channels.size();
+
     Q_ASSERT(channels.find(channel) != channels.end());
     Q_ASSERT(clients.find(client) != clients.end());
     delete clients[client].item;
@@ -247,11 +250,17 @@ void MainWindow::on_channelList_customContextMenuRequested(QPoint pos)
 {
     if (ui->channelList->indexAt(pos).isValid()) {
         QTreeWidgetItem* item = ui->channelList->itemAt(pos);
-qDebug() << "toto" << ui->channelList->itemAt(pos)->text(0);
+        qDebug() << "requested menu on" << item->text(0);
         if (channels.contains(item->text(0))) {
+            qDebug() << item->text(0) << " IS CHAN ! ";
+            QMapIterator<QString, UiChannel> it(channels);
+            while (it.hasNext()) {
+                it.next();
+                qDebug() << it.key();
+            }
             QAction leave(QString("leave"), 0);
             QAction* action = QMenu::exec(QList<QAction*>() << &leave, ui->channelList->mapToGlobal(pos));
-            qDebug() << "SEDING LEAVE ON:" << proxy->channelNameToId[item->text(0)];
+            qDebug() << "SENDING LEAVE ON:" << proxy->channelNameToId[item->text(0)];
             if (action == &leave)
                 proxy->channel()->Send_Leave(proxy->session()->_session, proxy->channelNameToId[item->text(0)]);
         }
@@ -269,6 +278,8 @@ void MainWindow::on_lineEdit_returnPressed()
 
 void MainWindow::on_channelList_activated(const QModelIndex& index)
 {
-    currentChannel = ui->channelList->itemFromIndex(index)->text(0);
-    ui->stackedWidget->setCurrentWidget(channels[currentChannel].convSet);
+    if (channels.contains(ui->channelList->itemFromIndex(index)->text(0))) {
+        currentChannel = ui->channelList->itemFromIndex(index)->text(0);
+        ui->stackedWidget->setCurrentWidget(channels.value(currentChannel).convSet);
+    }
 }
