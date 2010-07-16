@@ -19,6 +19,7 @@ Packet::Packet(boost::asio::ip::udp::endpoint const * endpoint)
 Packet::Packet()
   :_len(BINARYTOBYTE_LEN(PROTO_PROTOVERSION_SIZE)), _endpoint(0)
 {
+  std::cout << "<<<<<<< HERE HERE HERE >>>>>>>>>>>>>" << std::endl;
   _buffer = new buffer_t;
   for (std::size_t i = 0; i < PACKET_MAXSIZE; ++i)
     _buffer->at(i) = '\0';
@@ -111,7 +112,9 @@ field_t					Packet::getField(unsigned int bin_offset, unsigned int bin_len) cons
   value = byte;
   //  std::cout << "value = " << value << std::endl;
   if (start_byte == end_byte)
-    return value >> (8 - ((bin_offset + bin_len) % 8));
+    return value >> (8 - (((bin_offset + bin_len) % 8 == 0)
+			  ?(8):
+			  ((bin_offset + bin_len) % 8)));
   for (unsigned int i = start_byte + 1; i <= end_byte; ++i)
     {
       if (i < end_byte || (bin_offset + bin_len) % 8 == 0)

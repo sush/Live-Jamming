@@ -19,6 +19,7 @@ Packet_v1::Packet_v1(boost::asio::ip::udp::endpoint const *endpoint, buffer_t *b
 
 
 Packet_v1::Packet_v1(field_t componentId, field_t requestId)
+  :Packet()
 {
   setProtoVersion(PROTOV1);
   setLen(PROTOV1_START_OF_DATA);
