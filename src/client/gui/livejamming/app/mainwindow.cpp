@@ -35,6 +35,7 @@ MainWindow::MainWindow(Proxy* proxy) :
 {
     ui->setupUi(this);
     setVisible(true);
+    ui->mainToolBar->hide();
     qRegisterMetaType<authEventsType>("MainWindow::authEventsType");
     qRegisterMetaType<chanEventsType>("MainWindow::chanEventsType");
 
@@ -126,10 +127,12 @@ void    MainWindow::chanEvents(chanEventsType event, const Packet_v1_Channel* pa
         leaveChannel(packet->getChannelName());
         break;
     case JOINED:
-        addClientToChannel(packet->getChannelName(), packet->getClientLogin());
+        qDebug() << packet->getClientLogin() << "joined" << proxy->channelIdToName(packet->getChannelId());
+        addClientToChannel(proxy->channelIdToName(packet->getChannelId()), packet->getClientLogin());
         break;
     case LEAVED:
-        removeClientFromChannel(packet->getChannelName(), packet->getClientLogin());
+        qDebug() << packet->getClientLogin() << "leaved" << proxy->channelIdToName(packet->getChannelId());
+        removeClientFromChannel(proxy->channelIdToName(packet->getChannelId()), packet->getClientLogin());
         break;
     case MESSAGE_RECV:
         addMessage(proxy->channelIdToName(packet->getChannelId()), "toto", packet->getMessage());
@@ -143,7 +146,8 @@ void    MainWindow::joinChannel(const QString &name)
     ui->channelList->addTopLevelItem(item);
 
     ConversationSet* convSet = new ConversationSet;
-    connect(convSet->input, SIGNAL(returnPressed()), this, SLOT(on_lineEdit_returnPressed()));
+    connect(convSet->input, SIGNAL(returnPressed()), this, SLOT(lineEdit_returnPressed()));
+    connect(convSet->send, SIGNAL(pressed()), this, SLOT(lineEdit_returnPressed()));
     ui->stackedWidget->addWidget(convSet);
     ui->stackedWidget->setCurrentWidget(convSet);
     currentChannel = name;
@@ -190,6 +194,7 @@ void    MainWindow::addMessage(const QString &channel, const QString &client, co
 
     ConversationSet* convSet = static_cast<ConversationSet*>(ui->stackedWidget->currentWidget());
     convSet->display->setPlainText(convSet->display->toPlainText() + "\n" + client + ": " + msg);
+    convSet->input->clear();
 }
 
 void MainWindow::on_actionConnect_triggered()
@@ -252,7 +257,7 @@ void MainWindow::on_actionCreate_Channel_triggered()
 
     dial.exec();
     if ( !dialui.nameLineEdit->text().isEmpty()) {
-        proxy->channel()->Send_Join(proxy->session()->_session, dialui.nameLineEdit->text().toLocal8Bit().data());
+        proxy->channel()->Send_Join(proxy->session()->_session, dialui.nameLineEdit->text().toUtf8().data());
     }
 }
 
@@ -280,8 +285,15 @@ void MainWindow::on_actionCreate_room_triggered()
     bool    ok;
     QString name = QInputDialog::getText(this, "Room name", "Enter room name", QLineEdit::Normal, "", &ok);
     if (ok) {
-        proxy->room()->Send_Join(proxy->session()->_session, name.toLocal8Bit().data());
+        proxy->room()->Send_Join(proxy->session()->_session, name.toUtf8().data());
     }
+}
+
+void MainWindow::lineEdit_returnPressed()
+{
+    QString msg = channels.value(currentChannel).convSet->input->text();
+    qDebug() << "SENDING MSG" << msg << "FROM" << currentChannel;
+    proxy->channel()->Send_Message(proxy->session()->_session, msg.toUtf8().data(), proxy->channelNameToId.value(currentChannel));
 }
 
 void MainWindow::createRoom(const QString &name)

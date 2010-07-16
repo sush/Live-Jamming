@@ -67,6 +67,7 @@ private:
 public slots:
     void authEvents(MainWindow::authEventsType event);
     void chanEvents(MainWindow::chanEventsType event, const Packet_v1_Channel*);
+    void lineEdit_returnPressed();
     void createRoom(const QString& name);
 
 private slots:
