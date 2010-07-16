@@ -20,8 +20,8 @@ typedef unsigned int field_t;
 #define PROTO_PROTOVERSION_OFF 0
 #define PROTO_PROTOVERSION_SIZE 4
 
-
-
+#define PROTO_DATALEN_OFF (PROTO_PROTOVERSION_OFF + PROTO_PROTOVERSION_SIZE)
+#define PROTO_DATALEN_SIZE 12
 
     //////////////////////////////////////////////////////////////////
    //                                                              //
@@ -31,7 +31,7 @@ typedef unsigned int field_t;
 #define PROTOV1		1
 
 // binary data contained in packet in order of placement in the binary fields
-#define PROTOV1_COMPONENTID_OFF (PROTO_PROTOVERSION_OFF + PROTO_PROTOVERSION_SIZE)
+#define PROTOV1_COMPONENTID_OFF (PROTO_DATALEN_OFF + PROTO_DATALEN_SIZE)
 #define PROTOV1_COMPONENTID_SIZE 10
 
 #define PROTOV1_REQUESTID_OFF (PROTOV1_COMPONENTID_OFF + PROTOV1_COMPONENTID_SIZE)
@@ -40,11 +40,9 @@ typedef unsigned int field_t;
 #define PROTOV1_SESSIONID_OFF (PROTOV1_REQUESTID_OFF + PROTOV1_REQUESTID_SIZE)
 #define PROTOV1_SESSIONID_SIZE 32
 
-#define PROTOV1_DATALEN_OFF (PROTOV1_SESSIONID_OFF + PROTOV1_SESSIONID_SIZE)
-#define PROTOV1_DATALEN_SIZE 12
 
 // data contained in packet
-#define PROTOV1_START_OF_DATA BINARYTOBYTE_LEN(PROTOV1_DATALEN_OFF + PROTOV1_DATALEN_SIZE)
+#define PROTOV1_START_OF_DATA BINARYTOBYTE_LEN(PROTOV1_SESSIONID_OFF + PROTOV1_SESSIONID_SIZE)
 
 ///// NOT WORKING runtime8 cuz MACRO ///
 

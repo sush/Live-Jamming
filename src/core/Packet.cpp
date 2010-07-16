@@ -41,7 +41,9 @@ void	Packet::Print(std::string const &, Manager const *) const
 void	Packet::Print_base() const
 {
   std::cout << "REAL_LEN = " << _len << std::endl;
-  std::cout << "[PROTO_VERSION: " << getProtoVersion() << " {" << PROTO_PROTOVERSION_SIZE << "}]" << std::endl;
+  std::cout << "[PROTO_VERSION: " << getProtoVersion() << " {" << PROTO_PROTOVERSION_SIZE << "}]"
+	    << "[DATALEN: " << getDataLen() << " {" << PROTO_DATALEN_SIZE << "}]"
+	    << std::endl;
 }
 
 int	Packet::getMaxSize() const
@@ -274,4 +276,61 @@ void						Packet::appendData(unsigned int start_of_data, unsigned int idx, byte_
       res[i + 1] = '\0';
     }
   _len += len;
+}
+
+void		Packet::setDataLen(field_t dataLen)
+{
+  setField(dataLen, PROTO_DATALEN_OFF, PROTO_DATALEN_SIZE);
+}
+
+field_t		Packet::getDataLen() const
+{
+  return getField(PROTO_DATALEN_OFF, PROTO_DATALEN_SIZE);
+}
+
+field_t		Packet::peekDataLen(Packet::buffer_t const &buffer)
+{
+  return peekField(buffer, PROTO_DATALEN_OFF, PROTO_DATALEN_SIZE);
+}
+
+field_t		Packet::peekField(Packet::buffer_t const &buffer, unsigned int bin_offset, unsigned int bin_len)
+{
+  field_t                               value = 0;
+  unsigned int                          start_byte;
+  unsigned int                          end_byte;
+  byte_t                                byte;
+
+  //  std::cout << "[0] " << (int)_buffer->at(0) << " [1] " << (int)_buffer->at(1) << std::endl;                                                                                                                                             
+
+  start_byte = bin_offset / 8;
+  end_byte = (bin_offset + bin_len) / 8;
+  if ((bin_offset + bin_len) % 8 == 0)
+    --end_byte;
+
+  // byte1              byte2           byte3                                                                                                                                                                                                
+  // xxxx.xxBB        BBBB.BBBB         BBxx.xxxx                                                                                                                                                                                            
+  // putting only data of start byte beginning at offset;                                                                                                                                                                                    
+  byte = buffer.at(start_byte) << (bin_offset % 8);
+  byte = byte >> (bin_offset % 8);
+
+  // 0000.00BB -> value;                                                                                                                                                                                                                     
+
+  value = byte;
+  //  std::cout << "value = " << value << std::endl;                                                                                                                                                                                         
+  if (start_byte == end_byte)
+    return value >> (8 - ((bin_offset + bin_len) % 8));
+  for (unsigned int i = start_byte + 1; i <= end_byte; ++i)
+    {
+      if (i < end_byte || (bin_offset + bin_len) % 8 == 0)
+        value = (value << 8) + buffer.at(i);
+      else
+        {
+          //std::cout << "[0] " << (int)buffer.at(0) << " [1] " << (int)buffer.at(1) << std::endl;                                                                                                                                       
+          byte = buffer.at(i) >> (8 - (bin_offset + bin_len) % 8);
+          //std::cout << "byte = " << (int)byte << std::endl;                                                                                                                                                                                
+          //std::cout << "value << (bin_offset + bin_len) % 8" << (value << (bin_offset + bin_len) % 8) << std::endl;                                                                                                                        
+          value = (value << (bin_offset + bin_len) % 8) + byte;
+        }
+    }
+  return value;
 }

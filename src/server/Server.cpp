@@ -33,7 +33,6 @@ void		Server::Run()
   _io_service->run();
 }
 
-
 void Server::start_receive()
 {
   _recv_buffer = new Packet::buffer_t;
@@ -69,7 +68,6 @@ void	Server::CallBack_handle_receive(boost::system::error_code const & error, st
 	}
 	start_receive();
       ////////////////////////////////////////////
-
     }
 }
 

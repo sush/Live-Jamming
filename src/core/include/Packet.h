@@ -42,8 +42,15 @@ protected:
   void						setLen(std::size_t);
   void						addLen(std::size_t);
 
+  void						setDataLen(field_t);
+  field_t					getDataLen() const;
+  static field_t				peekDataLen(Packet::buffer_t const &);
+
+
 protected:
   void						Print_base() const;
+  static field_t				peekField(Packet::buffer_t const &, unsigned int, unsigned int);
+
 
 private:
   byte_t					*getStartOfData(unsigned int, unsigned int) const;

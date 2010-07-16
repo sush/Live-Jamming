@@ -63,7 +63,7 @@ Packet_v1	*Manager::Cond_new_Packet(int componentId, int requestId) const
 Manager::Manager(boost::asio::io_service & io_service, boost::threadpool::pool & pool, boost::asio::ip::udp::socket & socket)
   :_io_service(io_service), _pool(pool), _socket(socket)
 {
-  // we should be able to remove this lines since none of that info is need for a bind_recv element
+  // we should be able to remove these lines since none of that info is need for a bind_recv element
   // anymore
   // try to call this pure virtual method in abstract class
   // Init_Components();
