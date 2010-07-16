@@ -3,6 +3,7 @@
 #include <Component_Channel.h>
 #include <Component_Friend.h>
 #include <Component_Room.h>
+#include <Component_Jam.h>
 #include <Session.h>
 #include <Bind_recv.h>
 
@@ -67,10 +68,12 @@ void			ClientManager::Init_Components()
   _channel = new Component_Channel(this);
   _friend  = new Component_Friend(this);
   _room  = new Component_Room(this);
+  _jam  = new Component_Jam(this);
   RegisterComponent(_session);
   RegisterComponent(_channel);
   RegisterComponent(_friend);
   RegisterComponent(_room);
+  RegisterComponent(_jam);
 }
 	   
 void			ClientManager::Disconnect(Session *)

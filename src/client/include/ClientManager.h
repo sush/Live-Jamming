@@ -6,6 +6,7 @@ class Component_Session;
 class Component_Channel;
 class Component_Friend;
 class Component_Room;
+class Component_Jam;
 class Session;
 
 #include <iostream>
@@ -34,6 +35,7 @@ protected:
   Component_Channel			*_channel;
   Component_Friend			*_friend;
   Component_Room			*_room;
+  Component_Jam				*_jam;
   // list of additional optional components
 
 private:

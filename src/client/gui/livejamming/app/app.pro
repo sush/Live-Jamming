@@ -83,8 +83,10 @@ SOURCES += Manager.cpp \
     Packet_v1_Channel.cpp \
     Packet_v1_Friend.cpp \
     Packet_v1_Room.cpp \
+    Packet_v1_Jam.cpp \
     Channel.cpp \
-    Room.cpp
+    Room.cpp \
+    Jam.cpp
 HEADERS += Session.h \
     Manager.h \
     Packet.h \
@@ -104,7 +106,8 @@ SOURCES += main_net.cpp \
     Component_Session.cpp \
     Component_Friend.cpp \
     Component_Channel.cpp \
-    Component_Room.cpp
+    Component_Room.cpp \
+    Component_Jam.cpp
 HEADERS += Audio.h \
     Client.h \
     ClientManager.h \
