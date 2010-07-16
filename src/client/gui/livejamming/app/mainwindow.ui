@@ -17,7 +17,8 @@
    <string notr="true">#MainWindow {
 	background: qlineargradient(spread:pad, x1:0, y1:0.00568182, x2:0, y2:1, stop:0.0248756 rgba(155, 217, 122, 255), stop:0.0348259 rgba(55, 57, 54, 255), stop:1 rgba(59, 61, 59, 255));
 
-}</string>
+}
+</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
@@ -29,11 +30,50 @@
       <widget class="QTabWidget" name="listsTab">
        <property name="styleSheet">
         <string notr="true">#listsTab {
-	background: rgb(155, 217, 122)
-}</string>
+	border: none;
+}
+
+QTabWidget::pane {
+	color: rgb(246, 246, 244);
+	margin: 0px,1px,1px,1px;
+
+	border-radius: 10px;
+	background: #E6E6E3;
+      }
+
+  QTabWidget::tab-bar {          
+	left: 5px; /* move to the right by 5px */
+	bottom: -1px;      } 
+
+/* Style the tab using the tab sub-control. Note that          it reads QTabBar _not_ QTabWidget */
+QTabBar::tab { 
+	background: rgb(80, 80, 80);
+    border: 2px solid #C4C4C3; 
+	border-bottom-color: #C2C7CB; /* same as the pane color */          
+	border-top-left-radius: 4px;          
+	border-top-right-radius: 4px;     
+	min-width: 8ex;
+	padding: 2px;
+	color: #FFFFFF;   
+ }
+       
+QTabBar::tab:selected, QTabBar::tab:hover {
+	border: 2px solid #9BD97a;
+     }
+
+QTabBar::tab:selected {
+	background: rgb(132, 132, 132); 
+	border-color: #C4C4C3;          
+	border-bottom-color: #C2C7CB; /* same as pane color */
+}
+
+QTabBar::tab:!selected {
+    margin-top: 2px; /* make non-selected tabs look smaller */
+}
+</string>
        </property>
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <property name="tabsClosable">
         <bool>false</bool>
@@ -42,6 +82,7 @@
         <property name="styleSheet">
          <string notr="true">#tab {	
 	background: rgb(80, 80, 80);
+	border: 1px rgb(155, 217, 122);
 }</string>
         </property>
         <attribute name="title">
@@ -55,7 +96,8 @@
            </property>
            <property name="styleSheet">
             <string notr="true">#channelList {
-	background: rgb(132, 132, 132)
+	background: rgb(132, 132, 132);
+	border: 1px solid #9BD97a;
 }</string>
            </property>
            <property name="selectionMode">
@@ -97,6 +139,7 @@
            <property name="styleSheet">
             <string notr="true">#friendsList {
 	background: rgb(132, 132, 132);
+	border: 1px solid #9BD97a;
 }</string>
            </property>
           </widget>
