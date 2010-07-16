@@ -8,6 +8,7 @@ class MainWindow;
 #include <Component_Channel.h>
 #include <QMap>
 #include <QSettings>
+#include <accountconnection.h>
 
 namespace Ui {
     class MainWindow;
@@ -80,6 +81,8 @@ private slots:
     void on_actionPreferences_triggered();
     void on_actionConnect_triggered();
     void setConnected(bool);
+
+    friend class AccountConnection;
 };
 
 #endif // MAINWINDOW_H
