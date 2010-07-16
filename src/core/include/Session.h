@@ -58,6 +58,9 @@ public:
   l_Friend					&getFriendList();
   void						setFriendList(l_Friend &);
 
+  // async mode get originated packet in a response
+  Packet_v1 *					getOriginatedPacket(field_t, field_t);
+
 private:
   class PacketTimer
   {
@@ -66,13 +69,13 @@ private:
     ~PacketTimer();
     void	setAutoRetry(Packet_v1 *);
     void	CancelAutoRetry();
+    Packet_v1	*getPacket();
 
   private:
     Session				*_session;
     Manager				*_manager;
     boost::asio::deadline_timer		*_timer;
     Packet_v1				*_packet_v1;
-
   };
 
   typedef std::map<field_t, PacketTimer *>				m_timer;

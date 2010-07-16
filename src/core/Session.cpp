@@ -199,6 +199,21 @@ void				Session::setFriendList(Session::l_Friend &friendList)
   _friendList = friendList;
 }
 
+Packet_v1 *			Session::getOriginatedPacket(field_t componentId, field_t requestId)
+{
+  m_timer			*timerMap;
+  PacketTimer			*packetTimer;
+
+  if (_timerMapMap.find(componentId) == _timerMapMap.end())
+    _timerMapMap[componentId] = new m_timer;
+  timerMap = _timerMapMap.find(componentId)->second;
+  
+  if (timerMap->find(requestId) == timerMap->end())
+    (*timerMap)[requestId] = new PacketTimer(this, _manager, _io_service);
+  packetTimer = timerMap->find(requestId)->second;
+  return packetTimer->getPacket();
+}
+
 /////////////////////////////////// Session::PacketTimer ///////////////////////////////
 
 Session::PacketTimer::PacketTimer(Session * session, Manager * manager, boost::asio::io_service & io_service)
@@ -228,4 +243,9 @@ void	Session::PacketTimer::CancelAutoRetry()
   _timer->cancel();
   delete _packet_v1;
   _packet_v1 = 0;
+}
+
+Packet_v1	*Session::PacketTimer::getPacket()
+{
+  return _packet_v1;
 }

@@ -2,11 +2,27 @@
 #include <stdexcept>
 #include <Packet_v1.h>
 
+// unix dependent, do analogue treatment on windows
+#include <signal.h>
+
 const std::string	Server::_address = "127.0.0.1";
 const int		Server::_port	= 5042;
 const int		Server::_poolSize = 1;
 const int		updateTime = 1;
 const int		treat_delay = 0; //micro seconds
+
+
+void sighandler(int sig)
+{
+  std::cout<< "Signal " << sig << " caught..." << std::endl;
+  Server::Stop();
+}
+
+void		Server::Stop()
+{
+  Server	*server=Server::getInstance();
+  server->_io_service->stop();
+}
 
 void		Server::Run()
 {
@@ -49,6 +65,7 @@ void	Server::CallBack_handle_receive(boost::system::error_code const & error, st
 	{
 	  std::cout << e.what() << ":" << Packet_v1::peekComponentId(*_recv_buffer) << std::endl;
 	  delete _recv_buffer;
+	  _recv_buffer = 0;
 	}
 	start_receive();
       ////////////////////////////////////////////
@@ -101,4 +118,22 @@ void		Server::Init(int argc, char *argv[])
   _timer->async_wait(boost::bind(&Server::CallBack_Debug_Print, this));
   _pool = new boost::threadpool::pool(_poolSize);
   _serverManager = new ServerManager(*_io_service, *_pool, *_socket);
+  signal(SIGABRT, &sighandler);
+  signal(SIGTERM, &sighandler);
+  signal(SIGINT, &sighandler);
+}
+
+Server::~Server()
+{
+  _pool->clear();  // boost::threadpool probably calls it mut not documented
+  delete _pool;
+  delete _timer;
+  delete _socket;
+  delete _local_endpoint;
+  delete _remote_endpoint;
+  delete _io_service;
+  delete _recv_buffer;
+  delete _packetQueue;
+  delete _serverManager;
+  delete _config;  
 }

@@ -21,7 +21,12 @@ ServerManager::ServerManager(boost::asio::io_service & io_service, boost::thread
 }
 
 ServerManager::~ServerManager()
-{}
+{
+  delete	_sessionManager;
+  delete	_channelManager;
+  delete	_friendManager;
+  delete	_roomManager;
+}
 
 void				ServerManager::Manage(Packet * packet)
 {
