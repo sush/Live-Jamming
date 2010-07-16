@@ -29,6 +29,8 @@ void		Packet_v1_Channel::Print_v1_Channel(std::string const &componentName, Mana
     std::cout << "# ChannelName: '" << getChannelName() << "'" << std::endl;
   if (id == CHANNEL_JOINED || id == CHANNEL_LEAVED)
     std::cout << "# Login: '" << getClientLogin() << "'" << std::endl;
+  if (id == CHANNEL_MESSAGE || id == CHANNEL_MESSAGE_RECV)
+    std::cout << "# Message: '" << getMessage() << "'" << std::endl;    
 }
 
 field_t		Packet_v1_Channel::getChannelId() const

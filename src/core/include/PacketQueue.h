@@ -1,6 +1,8 @@
 #ifndef __PACKETQUEUE_H__
 #define __PACKETQUEUE_H__
 
+#include <iostream>
+#include <boost/thread.hpp>
 #include <list>
 
 #include <Packet.h>
@@ -12,19 +14,19 @@ public:
   virtual ~PacketQueue();
   void		PushPacket(Packet *);
   Packet *	PopPacket();
-  int		getMaxSize() const;
-  int		getSize() const;
-  int		getCurrentSize() const;
-  int		getPacketCount() const;
+  std::size_t		getMaxSize() const;
+  std::size_t		getSize() const;
+  std::size_t		getPacketCount() const;
   
 private:
   typedef std::list<Packet *>	l_Packet;
   l_Packet::iterator		l_Packet_it;
   l_Packet::const_iterator	l_Packet_cit;
+  boost::mutex			_mutex;
 
   l_Packet			*_packetList;
-  unsigned int			_maxSize; //max size of list
-  unsigned int			_packetCount; //number of packets having been treated
+  std::size_t			_maxSize; //max size of list
+  std::size_t			_packetCount; //number of packets having been treated
 };
 
 

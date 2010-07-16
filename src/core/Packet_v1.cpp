@@ -1,5 +1,6 @@
 #include <Packet_v1.h>
 #include <Manager.h>
+#include <Color.h>
 
 // Packet_v1::Packet_v1(boost::asio::ip::udp::endpoint const *endpoint)
 //   : Packet(endpoint)

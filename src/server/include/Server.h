@@ -42,8 +42,6 @@ class Server : public Singleton<Server>
   static const int		_port;
   static const int		_poolSize;
 
-  boost::mutex			_packetQueue_mutex;
-
   boost::asio::io_service		*_io_service;
   boost::threadpool::pool		*_pool;
 
@@ -55,6 +53,8 @@ class Server : public Singleton<Server>
   PacketQueue				*_packetQueue;
   ServerManager				*_serverManager;
   Config				*_config;
+  std::size_t				_debug_print_packet; // packet_no of last_print
+  std::size_t				_debug_print_session; // session of last_print
 };
 
 #endif // ! __SERVER_H__ 

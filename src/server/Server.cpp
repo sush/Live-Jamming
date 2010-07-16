@@ -1,6 +1,7 @@
 #include <Server.h>
 #include <stdexcept>
 #include <Packet_v1.h>
+#include <Color.h>
 
 // unix dependent, do analogue treatment on windows
 #include <signal.h>
@@ -26,8 +27,8 @@ void		Server::Stop()
 
 void		Server::Run()
 {
-  std::cout << "Server started..." << std::endl;
- 
+  std::cout << "* Server started..." << std::endl;
+  
   start_receive();
   _io_service->run();
 }
@@ -53,12 +54,11 @@ void	Server::CallBack_handle_receive(boost::system::error_code const & error, st
       // the main receiver thread shouldn t be waiting for all thread workers finishing to treat
       // packets
       ///////////////////////////////////////////////////////
+      // MOVED THE LOCK INSIDE CLASS: ADD INT PARAMETER FOR LOCKING PRIORITY
 
       try {
 	Packet * p = reinterpret_cast<Packet *>(_serverManager->Cond_new_Packet(*_remote_endpoint, *_recv_buffer, recv_count));
-	_packetQueue_mutex.lock();
 	_packetQueue->PushPacket(p);
-	_packetQueue_mutex.unlock();
 	_pool->schedule(boost::bind(&Server::Thread_TreatPacket, this));
       }
       catch (std::runtime_error &e)
@@ -75,9 +75,19 @@ void	Server::CallBack_handle_receive(boost::system::error_code const & error, st
 
 void		Server::CallBack_Debug_Print()
 {
+
 #ifdef _DEBUG
-  std::cerr << "[ActiveSessions = " << _serverManager->CountActiveSessions() << "] " << "[PaquetQueue] packet_no[" << _packetQueue->getPacketCount() << "] MaxSize = " << _packetQueue->getMaxSize() << ", Size = " << _packetQueue->getSize() << std::endl;
+  if (_debug_print_session != _serverManager->CountActiveSessions() ||
+      _debug_print_packet != _packetQueue->getPacketCount())
+    {
+      std::cerr << "[ActiveSessions = " << _serverManager->CountActiveSessions() << "] "
+		<< "[PaquetQueue] packet_no[" << _packetQueue->getPacketCount()
+		<< "] MaxSize = " << _packetQueue->getMaxSize()
+		<< ", Size = " << _packetQueue->getSize() << std::endl;
+    }
 #endif
+  _debug_print_packet = _packetQueue->getPacketCount();
+  _debug_print_session = _serverManager->CountActiveSessions();
   _timer->expires_at(_timer->expires_at() + boost::posix_time::seconds(updateTime));
   _timer->async_wait(boost::bind(&Server::CallBack_Debug_Print, this));
 }
@@ -87,11 +97,9 @@ void		Server::Thread_TreatPacket()
   Packet	*packet;
 
   ///////////// THREAD SAFE ///////////////////////
-  _packetQueue_mutex.lock();
   packet = _packetQueue->PopPacket();
-  _packetQueue_mutex.unlock();
   ////////////////////////////////////////////////
-
+  
   _serverManager->Manage(packet);
   ////////////////////////// WAIT //////////////////
   usleep(treat_delay); // wait <treat_delay> to fake for delay introduced by treatment
@@ -104,6 +112,8 @@ void		Server::Init(int argc, char *argv[])
   _argc = argc;
   _argv = argv;
 
+  _debug_print_packet = 0;
+  _debug_print_session = 0;
   _config = new Config(argc, argv);
 
   _io_service = new boost::asio::io_service;

@@ -6,6 +6,7 @@
 #include <Component_RoomManager.h>
 #include <Bind_recv.h>
 #include <Protocol_Session.h>
+#include <Color.h>
 
 ServerManager::ServerManager(boost::asio::io_service & io_service, boost::threadpool::pool & pool, boost::asio::ip::udp::socket & socket)
   :Manager(io_service, pool, socket)
@@ -38,9 +39,11 @@ void				ServerManager::Manage(Packet * packet)
   session = _sessionManager->FindSession(packet_v1);
 
 #ifdef _DEBUG
+  COLOR_BLUE;COLOR_INTENSITY;
   std::cout << std::endl;
   std::cout << "<      RECV       > ";
   packet_v1->Print("", this);
+  COLOR_DEFAULT;
 #endif
   if (session)
     {

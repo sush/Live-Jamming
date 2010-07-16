@@ -40,6 +40,7 @@ void	Packet::Print(std::string const &, Manager const *) const
 
 void	Packet::Print_base() const
 {
+  std::cout << "REAL_LEN = " << _len << std::endl;
   std::cout << "[PROTO_VERSION: " << getProtoVersion() << " {" << PROTO_PROTOVERSION_SIZE << "}]" << std::endl;
 }
 

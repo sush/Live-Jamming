@@ -42,12 +42,11 @@ void	Client::CallBack_handle_receive(boost::system::error_code const & error, st
       // the main receiver thread shouldn t be waiting for all thread workers finishing to treat
       // packets
       ///////////////////////////////////////////////////////
+      // MOVED THE LOCK INSIDE CLASS: ADD INT PARAMETER FOR LOCKING PRIORITY
 
       try {
 	Packet * p = reinterpret_cast<Packet *>(_clientManager->Cond_new_Packet(*_remote_endpoint, *_recv_buffer, recv_count));
-	_packetQueue_mutex.lock();
 	_packetQueue->PushPacket(p);
-	_packetQueue_mutex.unlock();
 	_pool->schedule(boost::bind(&Client::Thread_TreatPacket, this));
       }
       catch (std::runtime_error &e)
@@ -76,9 +75,7 @@ void		Client::Thread_TreatPacket()
   Packet	*packet;
 
   ///////////// THREAD SAFE ///////////////////////
-  _packetQueue_mutex.lock();
   packet = _packetQueue->PopPacket();
-  _packetQueue_mutex.unlock();
   ////////////////////////////////////////////////
 
   //        packet->Print();

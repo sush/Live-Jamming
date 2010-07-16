@@ -10,6 +10,7 @@
 #include <Packet_v1_Friend.h>
 #include <Packet_v1_Room.h>
 #include <Exception.h>
+#include <Color.h>
 
 unsigned int		timeOutTest_maxRetry = 3;
 
@@ -106,9 +107,11 @@ void		Manager::Send(Packet_v1 *packet_v1, Session * session) const
   if (getRegisteredRequest(packet_v1->getComponentId(), packet_v1->getRequestId()).getRetry())
     session->setAutoRetry(packet_v1);
 #ifdef _DEBUG
+  COLOR_RED;
   std::cout << std::endl;
   std::cout << "<..... SEND .....> ";
   packet_v1->Print("", this);
+  COLOR_DEFAULT;
 #endif
   // schedule a retry after a delay with no expected response for that send
   _socket.async_send_to(boost::asio::buffer(packet_v1->getRawData()), session->getEndpoint(),
@@ -118,9 +121,11 @@ void		Manager::Send(Packet_v1 *packet_v1, Session * session) const
 void		Manager::Send(Packet_v1 *packet_v1, boost::asio::ip::udp::endpoint const &endpoint) const
 {
 #ifdef _DEBUG
+  COLOR_RED;
   std::cout << std::endl;
   std::cout << "<..... SEND .....> ";
   packet_v1->Print("", this);
+  COLOR_DEFAULT;
 #endif
   _socket.async_send_to(boost::asio::buffer(packet_v1->getRawData()), endpoint,
 			boost::bind(&Manager::CallBack_handle_send, this, packet_v1));
