@@ -1,7 +1,9 @@
 # -------------------------------------------------
 # Project created by QtCreator 2010-03-18T13:38:22
 # -------------------------------------------------
+include(../livejamming.pri)
 TARGET = livejamming_client
+DESTDIR = ..
 TEMPLATE = app
 QT += multimedia
 SOURCES += mainwindow.cpp \
@@ -22,6 +24,52 @@ HEADERS += mainwindow.h \
     channellist.h \
     conversationset.h \
     roomplayeritem.h
+
+#FOR SPECTRE
+INCLUDEPATH += spectre
+DEPENDPATH += spectre
+SOURCES += engine.cpp \
+    frequencyspectrum.cpp \
+    levelmeter.cpp \
+    mainwidget.cpp \
+    progressbar.cpp \
+    settingsdialog.cpp \
+    spectrograph.cpp \
+    spectrumanalyser.cpp \
+    tonegenerator.cpp \
+    tonegeneratordialog.cpp \
+    utils.cpp \
+    waveform.cpp \
+    wavfile.cpp
+HEADERS += engine.h \
+    frequencyspectrum.h \
+    levelmeter.h \
+    mainwidget.h \
+    progressbar.h \
+    settingsdialog.h \
+    spectrograph.h \
+    spectrum.h \
+    spectrumanalyser.h \
+    tonegenerator.h \
+    tonegeneratordialog.h \
+    utils.h \
+    waveform.h \
+    wavfile.h
+fftreal_dir = ../3rdparty/fftreal
+INCLUDEPATH += $${fftreal_dir}
+
+!contains(DEFINES, DISABLE_FFT) {
+        macx {
+            # Link to fftreal framework
+            LIBS += -F$${fftreal_dir}
+            LIBS += -framework fftreal
+        } else {
+            LIBS += -L..
+            LIBS += -lfftreal
+        }
+}
+#!FOR SPECTRE
+
 DEPENDPATH += ../../../../core
 INCLUDEPATH += ../../../../core/include
 SOURCES += Manager.cpp \
@@ -89,3 +137,7 @@ debug:QMAKE_CXXFLAGS += -D_DEBUG \
     -g3 \
     -pg
 else:QMAKE_CXXFLAGS += -D_NDEBUG
+unix: {
+# Provide relative path from application to fftreal library
+QMAKE_LFLAGS += -Wl,--rpath=\\\$\$ORIGIN
+}
