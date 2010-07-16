@@ -2,7 +2,9 @@
 #define CONFIGURATION_DIALOG_H
 
 #include <QDialog>
+#ifndef NO_MULTIMEDIA
 #include "nespaudio.h"
+#endif
 #include "qdebug.h"
 
 namespace Ui {
@@ -17,7 +19,9 @@ public:
 
 private:
     Ui::ConfigurationDialog*	ui;
+    #ifndef NO_MULTIMEDIA
     NespAudio                   audio;
+    #endif
 
 private slots:
     void on_pushButton_clicked(bool);

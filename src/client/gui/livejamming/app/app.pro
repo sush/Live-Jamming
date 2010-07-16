@@ -6,26 +6,10 @@ RESOURCES = app.qrc
 TARGET = livejamming_client
 DESTDIR = ..
 TEMPLATE = app
+!contains(DEFINES, NO_MULTIMEDIA) {
 QT += multimedia
-SOURCES += mainwindow.cpp \
-    accountconnection.cpp \
-    configuration_dialog.cpp \
-    roomdialog.cpp \
-    proxy.cpp \
-    nespaudio.cpp \
-    channellist.cpp \
-    conversationset.cpp \
-    roomplayeritem.cpp
-HEADERS += mainwindow.h \
-    accountconnection.h \
-    configuration_dialog.h \
-    roomdialog.h \
-    proxy.h \
-    nespaudio.h \
-    channellist.h \
-    conversationset.h \
-    roomplayeritem.h
-
+SOURCES += nespaudio.cpp
+HEADERS += nespaudio.h
 #FOR SPECTRE
 INCLUDEPATH += spectre
 DEPENDPATH += spectre
@@ -69,7 +53,25 @@ INCLUDEPATH += $${fftreal_dir}
             LIBS += -lfftreal
         }
 }
-#!FOR SPECTRE
+#OTHER
+}
+#FOR GUI
+SOURCES += mainwindow.cpp \
+    accountconnection.cpp \
+    configuration_dialog.cpp \
+    roomdialog.cpp \
+    proxy.cpp \
+    channellist.cpp \
+    conversationset.cpp \
+    roomplayeritem.cpp
+HEADERS += mainwindow.h \
+    accountconnection.h \
+    configuration_dialog.h \
+    roomdialog.h \
+    proxy.h \
+    channellist.h \
+    conversationset.h \
+    roomplayeritem.h
 
 DEPENDPATH += ../../../../core
 INCLUDEPATH += ../../../../core/include
@@ -99,8 +101,6 @@ HEADERS += Session.h \
     Packet_v1_Friend.h
 DEPENDPATH += ../../../../client
 INCLUDEPATH += ../../../../client/include
-INCLUDEPATH += /usr/include/qt4/QtMultimedia
-INCLUDEPATH += /usr/include/qt4
 SOURCES += main_net.cpp \
     Client.cpp \
     ClientManager.cpp \

@@ -7,6 +7,7 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     /*Setting ui for input*/
+    #ifndef NO_MULTIMEDIA
     ui->iComboBox->addItems(audio.getIDevices());
     foreach (int channel, audio.iDevice().supportedChannels())
         ui->iChannelsComboBox->addItem(QString::number(channel));
@@ -24,13 +25,16 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent) :
         ui->oFrequenciesComboBox->addItem(QString::number(frequency));
     foreach (int sampleSize, audio.oDevice().supportedSampleSizes())
         ui->oSampleSizesComboBox->addItem(QString::number(sampleSize));
+#endif
 }
 
 void ConfigurationDialog::on_pushButton_clicked(bool checked)
 {
     if (checked){
     ui->pushButton->setText("Stop");
+    #ifndef NO_MULTIMEDIA
     audio.startPlayback();
+    #endif
 }
     else {
         ui->pushButton->setText("Start");
