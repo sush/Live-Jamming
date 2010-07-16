@@ -10,7 +10,8 @@ SOURCES += mainwindow.cpp \
     proxy.cpp \
     nespaudio.cpp \
     channellist.cpp \
-    conversationset.cpp
+    conversationset.cpp \
+    roomplayeritem.cpp
 HEADERS += mainwindow.h \
     accountconnection.h \
     configuration_dialog.h \
@@ -18,7 +19,8 @@ HEADERS += mainwindow.h \
     proxy.h \
     nespaudio.h \
     channellist.h \
-    conversationset.h
+    conversationset.h \
+    roomplayeritem.h
 DEPENDPATH += ../../core
 INCLUDEPATH += ../../core/include
 SOURCES += Manager.cpp \
@@ -79,7 +81,8 @@ FORMS += mainwindow.ui \
     newchan.ui \
     convset.ui \
     chanlist.ui \
-    conversationset.ui
+    conversationset.ui \
+    roomplayeritem.ui
 DEFINES += _GUI
 debug:QMAKE_CXXFLAGS += -D_DEBUG \
     -g3 \

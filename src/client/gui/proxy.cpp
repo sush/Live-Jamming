@@ -14,7 +14,7 @@ Proxy::Proxy(Client* client, MainWindow *mainwin, boost::asio::io_service &servi
     connect(this, SIGNAL(sChanResponse(MainWindow::chanEventsType, const Packet_v1_Channel*)), mainwin, SLOT(chanEvents(MainWindow::chanEventsType, const Packet_v1_Channel*)),Qt::QueuedConnection);
 }
 
-void    Proxy::authResponse(Packet_v1 const* packet, Session* session)
+void    Proxy::authResponse(Packet_v1 const* packet, Session*)
 {
     field_t event = static_cast< Packet_v1_Session const*>(packet)->getRequestId();
     MainWindow::authEventsType type;
@@ -34,7 +34,7 @@ void    Proxy::authResponse(Packet_v1 const* packet, Session* session)
 
 
 
-void    Proxy::chanResponse(Packet_v1 const* packet_, Session* session)
+void    Proxy::chanResponse(Packet_v1 const* packet_, Session*)
 {
     const Packet_v1_Channel* packet = static_cast<const Packet_v1_Channel*>(packet_);
     MainWindow::chanEventsType type;
