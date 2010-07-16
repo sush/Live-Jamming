@@ -321,7 +321,9 @@ field_t		Packet::peekField(Packet::buffer_t const &buffer, unsigned int bin_offs
   value = byte;
   //  std::cout << "value = " << value << std::endl;                                                                                                                                                                                         
   if (start_byte == end_byte)
-    return value >> (8 - ((bin_offset + bin_len) % 8));
+    return value >> (8 - (((bin_offset + bin_len) % 8 == 0)
+			  ?(8):
+			  ((bin_offset + bin_len) % 8)));
   for (unsigned int i = start_byte + 1; i <= end_byte; ++i)
     {
       if (i < end_byte || (bin_offset + bin_len) % 8 == 0)
