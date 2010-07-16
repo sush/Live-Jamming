@@ -202,7 +202,7 @@ void	Component_RoomManager::Recv_Join(Packet_v1 const *packet_v1, Session *sessi
 
   if (room->addConnected(session, sessionId))
     {
-      Send_Join_OK(session, roomId);
+      Send_Join_OK(session, roomId, roomName);
 
       std::map<field_t, Session*> *connected = room->getConnected();
       std::map<field_t, Session *>::iterator it, end = connected->end();
@@ -220,10 +220,11 @@ void	Component_RoomManager::Recv_Join(Packet_v1 const *packet_v1, Session *sessi
     Send_Join_NOK_ALREADYINROOM(session, roomId, roomName);
 }
 
-void	Component_RoomManager::Send_Join_OK(Session *session, field_t roomId)
+void	Component_RoomManager::Send_Join_OK(Session *session, field_t roomId, char const *roomName)
 {
   Packet_v1_Room *packet_v1_room = new Packet_v1_Room(ROOM_LEAVE_OK);
 
+  packet_v1_room->setRoomName(roomName);
   packet_v1_room->setRoomId(roomId);
 
   _serverManager->Send(_componentId, ROOM_JOIN_OK, session);
@@ -297,7 +298,6 @@ void	Component_RoomManager::Send_Leave_NOK_NOTINROOM(Session *session, field_t r
   packet_v1_room->setRoomId(roomId);
   _serverManager->Send(packet_v1_room, session);
 }
-
 
 void	Component_RoomManager::Send_Leaved(Session *session, field_t clientSessionId)
 {
@@ -452,6 +452,8 @@ void	Component_RoomManager::Recv_Start_Jam(Packet_v1 const *packet_v1, Session *
 
   for (it = connected->begin(); it != end ; ++it)
     Send_Started_Jam(it->second);
+
+  _serverManager->getComponentJam()->StartJam(roomId, room);
 }
 
 void	Component_RoomManager::Send_Start_Jam_ACK(Session *session)
@@ -481,6 +483,8 @@ void	Component_RoomManager::Recv_Stop_Jam(Packet_v1 const *packet_v1, Session *s
 
   for (it = connected->begin(); it != end ; ++it)
     Send_Stoped_Jam(it->second);
+
+  _serverManager->getComponentJam()->StopJam(roomId);
 }
 
 void	Component_RoomManager::Send_Stop_Jam_ACK(Session *session)
