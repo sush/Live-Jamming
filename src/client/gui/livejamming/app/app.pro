@@ -53,7 +53,7 @@ INCLUDEPATH += $${fftreal_dir}
             LIBS += -lfftreal
         }
 }
-#OTHER
+
 }
 #FOR GUI
 SOURCES += mainwindow.cpp \
@@ -72,7 +72,7 @@ HEADERS += mainwindow.h \
     channellist.h \
     conversationset.h \
     roomplayeritem.h
-
+#OTHER
 DEPENDPATH += ../../../../core
 INCLUDEPATH += ../../../../core/include
 SOURCES += Manager.cpp \

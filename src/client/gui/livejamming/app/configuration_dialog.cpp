@@ -25,6 +25,7 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent) :
         ui->oFrequenciesComboBox->addItem(QString::number(frequency));
     foreach (int sampleSize, audio.oDevice().supportedSampleSizes())
         ui->oSampleSizesComboBox->addItem(QString::number(sampleSize));
+     audio.initializeRecord();
 #endif
 }
 
@@ -33,6 +34,7 @@ void ConfigurationDialog::on_pushButton_clicked(bool checked)
     if (checked){
     ui->pushButton->setText("Stop");
     #ifndef NO_MULTIMEDIA
+    audio.startRecording();
     audio.startPlayback();
     #endif
 }

@@ -244,7 +244,7 @@ void Engine::startRecording()
 
             m_buffer.fill(0);
             setRecordPosition(0, true);
-            stopPlayback();
+            //stopPlayback();
             m_mode = QAudio::AudioInput;
             CHECKED_CONNECT(m_audioInput, SIGNAL(stateChanged(QAudio::State)),
                             this, SLOT(audioStateChanged(QAudio::State)));
@@ -277,7 +277,7 @@ void Engine::startPlayback()
             spectrumChanged(0, 0, FrequencySpectrum());
 
             setPlayPosition(0, true);
-            stopRecording();
+            //stopRecording();
             m_mode = QAudio::AudioOutput;
             CHECKED_CONNECT(m_audioOutput, SIGNAL(stateChanged(QAudio::State)),
                             this, SLOT(audioStateChanged(QAudio::State)));

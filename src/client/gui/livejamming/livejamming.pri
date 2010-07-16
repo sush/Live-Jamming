@@ -1,7 +1,7 @@
 
 # The following macros allow certain features and debugging output
 # to be disabled / enabled at compile time.
-DEFINES += NO_MULTIMEDIA
+#DEFINES += NO_MULTIMEDIA
 # Debug output from spectrum calculation
 DEFINES += LOG_SPECTRUMANALYSER
 
