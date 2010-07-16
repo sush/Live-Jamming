@@ -2,6 +2,7 @@
 #define ACCOUNTCONNECTION_H
 
 #include <QDialog>
+#include <QSettings>
 
 namespace Ui {
     class AccountConnection;
@@ -13,7 +14,7 @@ class AccountConnection : public QDialog
 public:
     AccountConnection(QWidget *parent = 0);
     ~AccountConnection();
-    static bool    run(QWidget* parent, QString& login, QString& password, QString& serverIp, QString& serverPort);
+    static bool    run(QWidget* parent, const QString& login ,const QString& password,const QString& serverIp, const QString& serverPort);
 
 protected:
     void changeEvent(QEvent *e);

@@ -7,7 +7,6 @@ SOURCES += mainwindow.cpp \
     accountconnection.cpp \
     configuration_dialog.cpp \
     roomdialog.cpp \
-    parameters.cpp \
     proxy.cpp \
     nespaudio.cpp \
     channellist.cpp \
@@ -16,7 +15,6 @@ HEADERS += mainwindow.h \
     accountconnection.h \
     configuration_dialog.h \
     roomdialog.h \
-    parameters.h \
     proxy.h \
     nespaudio.h \
     channellist.h \
@@ -72,7 +70,7 @@ LIBS += -lboost_system \
     -lboost_thread-mt \
     -lboost_program_options \
     -lyaml-cpp \
-    -L../../libs\
+    -L../../libs \
     -L/usr/share/qt4/lib
 FORMS += mainwindow.ui \
     accountconnection.ui \

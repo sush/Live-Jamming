@@ -6,8 +6,8 @@ class MainWindow;
 #include <QMainWindow>
 #include <ClientManager.h>
 #include <Component_Channel.h>
-#include <parameters.h>
 #include <QMap>
+#include <QSettings>
 
 namespace Ui {
     class MainWindow;
@@ -51,14 +51,12 @@ protected:
 
 private:
     Ui::MainWindow  *ui;
-    Parameters      params;
     Proxy*          proxy;
     bool            isConnected;
     QMap<QString, UiChannel>   channels;
     QMap<QString, UiClient>    clients;
     QString         currentChannel;
-
-
+    QSettings       settings;
 private:
     void joinChannel(const QString& name);
     void leaveChannel(const QString& name);

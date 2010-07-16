@@ -11,8 +11,8 @@
 #include <QTimer>
 #include <QMessageBox>
 #include <QThread>
+#include <QDebug>
 
-#include "parameters.h"
 #include "accountconnection.h"
 #include "configuration_dialog.h"
 #include "roomdialog.h"
@@ -25,12 +25,13 @@
 #include <proxy.h>
 #include <conversationset.h>
 
-#include <QDebug>
+
 
 MainWindow::MainWindow() :
     QMainWindow(),
     ui(new Ui::MainWindow)
 {
+
     ui->setupUi(this);
     setVisible(true);
     qRegisterMetaType<authEventsType>("MainWindow::authEventsType");
@@ -40,6 +41,10 @@ MainWindow::MainWindow() :
     connect(QCoreApplication::instance(), SIGNAL(aboutToQuit()), this, SLOT(on_actionDisconnect_triggered()));
 
     QTimer::singleShot(0, this, SLOT(on_actionConnect_triggered()));
+    /* Set apllication indentity*/
+    QCoreApplication::setOrganizationName("LiveJamming");
+    QCoreApplication::setOrganizationDomain("live-jamming.com");
+    QCoreApplication::setApplicationName("Live Jamming");
 }
 
 MainWindow::~MainWindow()
@@ -101,11 +106,10 @@ void MainWindow::authEvents(authEventsType event)
         break;
     case BADAUTH:
         QMessageBox::critical(this, "Authentication error", "Wrong login/password");
-        params.clearId();
+        setConnected(false);
         break ;
     case DUPPLICATE:
         QMessageBox::critical(this, "Authentication error", "Already logged in");
-        params.clearId();
         break ;
     }
 }
@@ -145,7 +149,7 @@ void    MainWindow::joinChannel(const QString &name)
     currentChannel = name;
 
     channels[name] = (UiChannel){item, convSet};
-    addClientToChannel(name, params.login);
+    addClientToChannel(name, settings.value("user/login").toString());
 }
 
 void    MainWindow::leaveChannel(const QString &name)
@@ -194,11 +198,20 @@ void    MainWindow::addMessage(const QString &channel, const QString &client, co
 void MainWindow::on_actionConnect_triggered()
 {
     if (isConnected == false) {
-           AccountConnection::run(this, params.login, params.password, params.serverIp, params.serverPort);
+           AccountConnection::run(this,
+                                   settings.value("user/login", "dude").toString(),
+                                   settings.value("user/password", "12345678").toString(),
+                                   settings.value("server/ip", "127.0.0.1").toString(),
+                                   settings.value("server/port", "5042").toString()
+                                   );
 
-           if (params.haveId() == true) {
-               proxy->client->Connect(params.serverIp.toStdString(), params.serverPort.toInt());
-            proxy->session()->Connect(params.login.toStdString(), params.password.toStdString());
+           if (settings.contains("user/login") == true) {
+               proxy->client->Connect(
+                       settings.value("server/ip").toString().toStdString(),
+                       settings.value("server/port").toInt());
+            proxy->session()->Connect(
+                    settings.value("user/login").toString().toStdString(),
+                    settings.value("user/password").toString().toStdString());
         }
     }
 }

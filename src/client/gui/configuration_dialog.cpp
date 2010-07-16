@@ -17,7 +17,13 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent) :
         ui->iSampleSizesComboBox->addItem(QString::number(sampleSize));
     /*Setting ui for output*/
     ui->outputComboBox->addItems(audio.getODevices());
-
+    foreach (int channel, audio.oDevice.supportedChannels())
+        ui->oChannelsComboBox->addItem(QString::number(channel));
+    ui->oCodecsComboBox->addItems(audio.oDevice.supportedCodecs());
+    foreach (int frequency, audio.oDevice.supportedFrequencies())
+        ui->oFrequenciesComboBox->addItem(QString::number(frequency));
+    foreach (int sampleSize, audio.oDevice.supportedSampleSizes())
+        ui->oSampleSizesComboBox->addItem(QString::number(sampleSize));
 }
 
 void ConfigurationDialog::on_pushButton_clicked(bool checked)
