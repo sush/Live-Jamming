@@ -195,12 +195,12 @@ void    MainWindow::addMessage(const QString &channel, const QString &client, co
 void MainWindow::on_actionConnect_triggered()
 {
     if (isConnected == false) {
-           AccountConnection::run(this,
+           if (AccountConnection::run(this,
                                    settings.value("user/login", "dude").toString(),
                                    settings.value("user/password", "12345678").toString(),
                                    settings.value("server/ip", "127.0.0.1").toString(),
                                    settings.value("server/port", "5042").toString()
-                                   );
+                                   )) {
            if (settings.contains("user/login") == true) {
                proxy->client->Connect(
                        settings.value("server/ip").toString().toStdString(),
@@ -209,6 +209,7 @@ void MainWindow::on_actionConnect_triggered()
                     settings.value("user/login").toString().toStdString(),
                     settings.value("user/password").toString().toStdString());
         }
+       }
     }
 }
 
