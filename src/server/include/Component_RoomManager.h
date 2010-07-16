@@ -30,7 +30,7 @@ private:
   virtual void		RegisteredRequests();
 
   void			Recv_Join(Packet_v1 const *, Session *);
-  void			Send_Join_OK(Session *, field_t. char const*);
+  void			Send_Join_OK(Session *, field_t, char const*);
   void			Send_Join_NOK_ALREADYINROOM(Session *, field_t, char const *);
   void			Send_Joined(Session *, field_t, field_t, char const *);
 

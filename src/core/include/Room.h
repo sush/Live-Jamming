@@ -7,7 +7,8 @@
 #include <Session.h>
 #include <map>
 
-//! COMMON:  It is used to manage the list of channels and users connected.                                                                                 
+//! COMMON:  It is used to manage the list of channels and users connected.
+
 class Room
 {
  public:

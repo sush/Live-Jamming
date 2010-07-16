@@ -1,4 +1,5 @@
 #include <Component_RoomManager.h>
+#include <Component_JamManager.h>
 #include <Bind_recv.h>
 
 Component_RoomManager::Component_RoomManager(ServerManager *serverManager)

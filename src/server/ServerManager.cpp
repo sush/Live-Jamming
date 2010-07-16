@@ -4,6 +4,7 @@
 #include <Component_ChannelManager.h>
 #include <Component_FriendManager.h>
 #include <Component_RoomManager.h>
+#include <Component_JamManager.h>
 #include <Bind_recv.h>
 #include <Protocol_Session.h>
 #include <Color.h>
@@ -81,10 +82,12 @@ void		ServerManager::Init_Components()
   _channelManager = new Component_ChannelManager(this);
   _friendManager  = new Component_FriendManager(this);
   _roomManager  = new Component_RoomManager(this);
+  _jamManager  = new Component_JamManager(this);
   RegisterComponent(_sessionManager);
   RegisterComponent(_channelManager);
   RegisterComponent(_friendManager);
   RegisterComponent(_roomManager);
+  RegisterComponent(_jamManager);
 }
 
 unsigned int	ServerManager::CountActiveSessions() const
@@ -98,6 +101,7 @@ void		ServerManager::Connect(Session *session)
   _channelManager->Connect(session);
   _friendManager->Connect(session);
   _roomManager->Connect(session);
+  _jamManager->Connect(session);
 }
 
 void		ServerManager::Disconnect(Session *session)
@@ -105,6 +109,7 @@ void		ServerManager::Disconnect(Session *session)
   _channelManager->Disconnect(session);
   _friendManager->Disconnect(session);
   _roomManager->Disconnect(session);
+  _jamManager->Disconnect(session);
   _sessionManager->Disconnect(session); // should be called last
   _sessionMap.erase(session->getSessionId());
 }
@@ -112,4 +117,9 @@ void		ServerManager::Disconnect(Session *session)
 ServerManager::m_Session &	ServerManager::getSessionMap()
 {
   return _sessionMap;
+}
+
+Component_JamManager		*ServerManager::getComponentJam()
+{
+  return _jamManager;
 }

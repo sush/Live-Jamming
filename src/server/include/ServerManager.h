@@ -8,6 +8,7 @@ class Component_SessionManager;
 class Component_ChannelManager;
 class Component_FriendManager;
 class Component_RoomManager;
+class Component_JamManager;
 
 #include <iostream>
 #include <map>
@@ -30,6 +31,7 @@ public:
   virtual void		Disconnect(Session *);
   virtual void		Connect(Session *);
   m_Session &		getSessionMap();
+  Component_JamManager	*getComponentJam();
 
 private:
   virtual void		Init_Components();
@@ -40,6 +42,7 @@ private:
   Component_ChannelManager		*_channelManager;
   Component_FriendManager		*_friendManager;
   Component_RoomManager			*_roomManager;
+  Component_JamManager			*_jamManager;
   // list of additional optional components
   m_Session				_sessionMap;
 };
