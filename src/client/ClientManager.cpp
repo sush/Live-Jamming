@@ -84,7 +84,7 @@ void			ClientManager::Disconnect(Session *)
   _channel->Disconnect(session);
   _room->Disconnect(session);
   _friend->Disconnect(session);
-  static_cast<Proxy*>(_clientManager)->disconnect();
+  static_cast<Proxy*>(this)->disconnect();
   delete session;
 }
 

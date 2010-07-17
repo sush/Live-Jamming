@@ -55,7 +55,6 @@ void	Client::CallBack_handle_receive(boost::system::error_code const & error, st
 	{
 	  std::cout << e.what() << ":" << Packet_v1::peekComponentId(*_recv_buffer) << std::endl;
 	  delete _recv_buffer;
-	  _recv_buffer;
 	}
       ////////////////////////////////////////////
 
@@ -115,6 +114,7 @@ void		Client::BindToLocalPort()
 void		Client::Connect(std::string const & server, int port)
 {
   // string to int
+  std::cout << " ########################### CONNECT #################################" << std::endl;
   connect_address = server.c_str();
   _connect_port = port;
   _remote_endpoint->address(boost::asio::ip::address::from_string(connect_address));

@@ -23,10 +23,10 @@ public:
 
   virtual void				Manage(Packet *);
   boost::asio::ip::udp::endpoint	&getEndpoint();
+  virtual void				Disconnect(Session *);
 
 private:
   virtual void				Init_Components();
-  virtual void				Disconnect(Session *);
 
 
 protected:

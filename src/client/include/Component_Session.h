@@ -30,7 +30,9 @@ public:
   Session	*getSession();
   void		Connect(std::string const &, std::string const &);
   bool		IsLogged() const; // not implemented yet (since on session creation always auth ...
-  void		Disconnect();
+
+  void          Connect(Session *);
+  void          Disconnect(Session * = 0);
 
 private:
 
@@ -44,10 +46,7 @@ private:
   void		Send_KeepAlive();
 
   void		CallBack_AuthRequest_timeout(boost::system::error_code const &);
-
-  void                                  Connect(Session *);
-  void                                  Disconnect(Session *);
-  
+ 
   ClientManager				*_clientManager;
   bool					_logged;
 public:

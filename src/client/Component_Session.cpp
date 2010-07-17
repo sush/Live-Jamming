@@ -98,7 +98,7 @@ void		Component_Session::Recv_AuthResponse(Packet_v1 const *packet_v1, Session *
     {}	// auth errors
 }
 
-void		Component_Session::Disconnect()
+void		Component_Session::Disconnect(Session *)
 {
   _logged = false;
   Send_Disconnect();

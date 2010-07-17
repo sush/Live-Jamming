@@ -27,6 +27,7 @@ public:
   void					Run();
   void					Init(int, char *[]);
   void					Connect(std::string const &, int);
+  void					Disconnect();
     
 private:
   void					BindToLocalPort();

@@ -25,6 +25,9 @@ class Component_Friend :public IComponent
 
   bool			IsFriend(Session *, std::string const &) const;
 
+  void			Connect(Session *);
+  void			Disconnect(Session *);
+
  private :
   void			Recv_Friend_Leaved(Packet_v1 const *, Session *);
   void			Recv_Friend_Joined(Packet_v1 const *, Session *);
@@ -37,9 +40,6 @@ class Component_Friend :public IComponent
 
   void			Send_Friend_Joined_ACK(Session *);
   void			Send_Friend_Leaved_ACK(Session *);
-
-  void			Connect(Session *);
-  void			Disconnect(Session *);
 
  private :
   ClientManager		*_clientManager;

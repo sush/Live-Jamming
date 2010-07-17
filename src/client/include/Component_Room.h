@@ -40,6 +40,9 @@ public:
   void					Send_Start_Jam(Session *, field_t );
   void					Send_Stop_Jam(Session *, field_t );
 
+  void					Connect(Session *);
+  void					Disconnect(Session *);
+
 private:
 
   void					Recv_Join_OK(Packet_v1 const *, Session *);
@@ -76,8 +79,6 @@ private:
 
   void					Recv_Kicked(Packet_v1 const *packet_v1, Session *);
  
-  void					Connect(Session *);
-  void					Disconnect(Session *);
  private :
   
   ClientManager				*_clientManager;
