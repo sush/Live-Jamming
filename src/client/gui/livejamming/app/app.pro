@@ -8,8 +8,10 @@ DESTDIR = ..
 TEMPLATE = app
 !contains(DEFINES, NO_MULTIMEDIA) {
 QT += multimedia
-SOURCES += nespaudio.cpp
-HEADERS += nespaudio.h
+SOURCES += nespaudio.cpp \
+    spectrowidget.cpp
+HEADERS += nespaudio.h \
+    spectrowidget.h
 #FOR SPECTRE
 INCLUDEPATH += spectre
 DEPENDPATH += spectre

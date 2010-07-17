@@ -24,6 +24,8 @@ public:
                             {return this->m_audioInputDevice;}
     const QAudioDeviceInfo& oDevice() const
                             {return this->m_audioOutputDevice;}
+    void startRecordAndPlayBack();
+    void stopRecordAndPlayback();
 };
 
 #endif // NESPAUDIO_H

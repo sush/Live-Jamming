@@ -16,11 +16,11 @@ class ConfigurationDialog : public QDialog
 Q_OBJECT
 public:
     ConfigurationDialog(QWidget *parent = 0);
-
+    ~ConfigurationDialog();
 private:
     Ui::ConfigurationDialog*	ui;
     #ifndef NO_MULTIMEDIA
-    NespAudio                   audio;
+    NespAudio*                   audio;
     #endif
 
 private slots:
