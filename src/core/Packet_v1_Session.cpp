@@ -7,8 +7,6 @@ Packet_v1_Session::Packet_v1_Session(boost::asio::ip::udp::endpoint const *endpo
 Packet_v1_Session::Packet_v1_Session(field_t requestId)
   : Packet_v1(SESSION_COMPONENTID, requestId)
 {
-  std::cout << requestId << std::endl;
-  std::cout << "componentId = " << getComponentId() << ", requestId = " << getRequestId() << std::endl;
 }
 
 Packet_v1_Session::~Packet_v1_Session()

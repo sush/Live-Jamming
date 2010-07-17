@@ -2,6 +2,7 @@
 #include <stdexcept>
 #include <Packet_v1.h>
 #include <Color.h>
+#include <Time.h>
 
 // unix dependent, do analogue treatment on windows
 #include <signal.h>
@@ -27,7 +28,9 @@ void		Server::Stop()
 
 void		Server::Run()
 {
-  std::cout << "* Server started..." << std::endl;
+  std::cout << "* ";
+  Time::Print();
+  std::cout << " Server started..." << std::endl;
   
   start_receive();
   _io_service->run();
@@ -78,7 +81,8 @@ void		Server::CallBack_Debug_Print()
   if (_debug_print_session != _serverManager->CountActiveSessions() ||
       _debug_print_packet != _packetQueue->getPacketCount())
     {
-      std::cerr << "[ActiveSessions = " << _serverManager->CountActiveSessions() << "] "
+      std::cerr << Time::getTime()
+		<< "[ActiveSessions = " << _serverManager->CountActiveSessions() << "] "
 		<< "[PaquetQueue] packet_no[" << _packetQueue->getPacketCount()
 		<< "] MaxSize = " << _packetQueue->getMaxSize()
 		<< ", Size = " << _packetQueue->getSize() << std::endl;

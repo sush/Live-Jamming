@@ -19,7 +19,6 @@ Packet::Packet(boost::asio::ip::udp::endpoint const * endpoint)
 Packet::Packet()
   :_len(BINARYTOBYTE_LEN(PROTO_PROTOVERSION_SIZE)), _endpoint(0)
 {
-  std::cout << "<<<<<<< HERE HERE HERE >>>>>>>>>>>>>" << std::endl;
   _buffer = new buffer_t;
   for (std::size_t i = 0; i < PACKET_MAXSIZE; ++i)
     _buffer->at(i) = '\0';
