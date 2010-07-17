@@ -16,7 +16,9 @@ const int		treat_delay = 0; //micro seconds
 
 void sighandler(int sig)
 {
+#ifdef _DEBUG
   std::cout<< "Signal " << sig << " caught..." << std::endl;
+#endif
   Server::Stop();
 }
 
@@ -24,6 +26,9 @@ void		Server::Stop()
 {
   Server	*server=Server::getInstance();
   server->_io_service->stop();
+  std::cout << "* ";
+  Time::Print();
+  std::cout << " Server ended." << std::endl;
 }
 
 void		Server::Run()
@@ -82,14 +87,14 @@ void		Server::CallBack_Debug_Print()
       _debug_print_packet != _packetQueue->getPacketCount())
     {
       std::cerr << Time::getTime()
-		<< "[ActiveSessions = " << _serverManager->CountActiveSessions() << "] "
+		<< " [ActiveSessions = " << _serverManager->CountActiveSessions() << "] "
 		<< "[PaquetQueue] packet_no[" << _packetQueue->getPacketCount()
 		<< "] MaxSize = " << _packetQueue->getMaxSize()
 		<< ", Size = " << _packetQueue->getSize() << std::endl;
     }
-#endif
   _debug_print_packet = _packetQueue->getPacketCount();
   _debug_print_session = _serverManager->CountActiveSessions();
+#endif
   _timer->expires_at(_timer->expires_at() + boost::posix_time::seconds(updateTime));
   _timer->async_wait(boost::bind(&Server::CallBack_Debug_Print, this));
 }

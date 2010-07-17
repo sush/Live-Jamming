@@ -57,6 +57,7 @@ private:
   Config				*_config;
   //  ClientManager				*_clientManager;
   ClientManager				*_clientManager;
+  std::size_t				_debug_print_packet;
 };
 
 #endif // ! __CLIENT_H__ 

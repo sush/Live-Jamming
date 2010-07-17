@@ -3,6 +3,7 @@
 #include <Packet_v1.h>
 #include <sstream>
 #include <string>
+#include <Time.h>
 
 char const	*connect_address = "127.0.0.1";  //"127.0.0.1";
 
@@ -14,9 +15,10 @@ const int	treat_delay = 0; //micro seconds
 
 void		Client::Run()
 {
+  std::cout << "* ";
+  Time::Print();
   std::cout << "Client started..." << std::endl;
  
-  // schedule the UI window to be created
   start_receive();
   _io_service->run();
 }
@@ -64,7 +66,11 @@ void	Client::CallBack_handle_receive(boost::system::error_code const & error, st
 void		Client::CallBack_Debug_Print()
 {
 #ifdef _DEBUG
-  std::cerr << "[PaquetQueue] packet_no[" << _packetQueue->getPacketCount() << "] MaxSize = " << _packetQueue->getMaxSize() << ", Size = " << _packetQueue->getSize() << std::endl;
+  if (_debug_print_packet != _packetQueue->getPacketCount())
+    {
+      std::cerr << Time::getTime() << " [PaquetQueue] packet_no[" << _packetQueue->getPacketCount() << "] MaxSize = " << _packetQueue->getMaxSize() << ", Size = " << _packetQueue->getSize() << std::endl;
+    }
+  _debug_print_packet = _packetQueue->getPacketCount();
 #endif
   _timer->expires_at(_timer->expires_at() + boost::posix_time::seconds(updateTime));
   _timer->async_wait(boost::bind(&Client::CallBack_Debug_Print, this));
@@ -120,6 +126,7 @@ void		Client::Init(int argc, char *argv[])
 {
   _argc = argc;
   _argv = argv;
+  _debug_print_packet = 0;
   _io_service = new boost::asio::io_service;
   _remote_endpoint = new boost::asio::ip::udp::endpoint(boost::asio::ip::address::from_string(connect_address), Client::_connect_port);
   _socket = new boost::asio::ip::udp::socket (*_io_service);
