@@ -6,56 +6,58 @@ RESOURCES = app.qrc
 TARGET = livejamming_client
 DESTDIR = ..
 TEMPLATE = app
-!contains(DEFINES, NO_MULTIMEDIA) {
-QT += multimedia
-SOURCES += audioengine.cpp \
-    audiowidget.cpp
-HEADERS += audioengine.h \
-    audiowidget.h
-#FOR SPECTRE
-INCLUDEPATH += spectre
-DEPENDPATH += spectre
-SOURCES += engine.cpp \
-    frequencyspectrum.cpp \
-    levelmeter.cpp \
-    progressbar.cpp \
-    settingsdialog.cpp \
-    spectrograph.cpp \
-    spectrumanalyser.cpp \
-    tonegenerator.cpp \
-    tonegeneratordialog.cpp \
-    utils.cpp \
-    waveform.cpp \
-    wavfile.cpp
-HEADERS += engine.h \
-    frequencyspectrum.h \
-    levelmeter.h \
-    progressbar.h \
-    settingsdialog.h \
-    spectrograph.h \
-    spectrum.h \
-    spectrumanalyser.h \
-    tonegenerator.h \
-    tonegeneratordialog.h \
-    utils.h \
-    waveform.h \
-    wavfile.h
-fftreal_dir = ../3rdparty/fftreal
-INCLUDEPATH += $${fftreal_dir}
-
-!contains(DEFINES, DISABLE_FFT) {
-        macx {
+!contains(DEFINES, NO_MULTIMEDIA) { 
+    QT += multimedia
+    SOURCES += audioengine.cpp \
+        audiomanager.cpp
+    HEADERS += audioengine.h \
+        audiomanager.h
+    
+    # FOR SPECTRE
+    INCLUDEPATH += spectre
+    DEPENDPATH += spectre
+    SOURCES += engine.cpp \
+        frequencyspectrum.cpp \
+        levelmeter.cpp \
+        progressbar.cpp \
+        settingsdialog.cpp \
+        spectrograph.cpp \
+        spectrumanalyser.cpp \
+        tonegenerator.cpp \
+        tonegeneratordialog.cpp \
+        utils.cpp \
+        waveform.cpp \
+        wavfile.cpp
+    HEADERS += engine.h \
+        frequencyspectrum.h \
+        levelmeter.h \
+        progressbar.h \
+        settingsdialog.h \
+        spectrograph.h \
+        spectrum.h \
+        spectrumanalyser.h \
+        tonegenerator.h \
+        tonegeneratordialog.h \
+        utils.h \
+        waveform.h \
+        wavfile.h
+    fftreal_dir = ../3rdparty/fftreal
+    INCLUDEPATH += $${fftreal_dir}
+    !contains(DEFINES, DISABLE_FFT) { 
+        macx { 
             # Link to fftreal framework
             LIBS += -F$${fftreal_dir}
-            LIBS += -framework fftreal
-        } else {
+            LIBS += -framework \
+                fftreal
+        }
+        else { 
             LIBS += -L..
             LIBS += -lfftreal
         }
+    }
 }
 
-}
-#FOR GUI
+# FOR GUI
 SOURCES += mainwindow.cpp \
     accountconnection.cpp \
     configuration_dialog.cpp \
@@ -63,7 +65,8 @@ SOURCES += mainwindow.cpp \
     proxy.cpp \
     channellist.cpp \
     conversationset.cpp \
-    roomplayeritem.cpp
+    roomplayeritem.cpp \
+    audiosettingswidget.cpp
 HEADERS += mainwindow.h \
     accountconnection.h \
     configuration_dialog.h \
@@ -71,8 +74,10 @@ HEADERS += mainwindow.h \
     proxy.h \
     channellist.h \
     conversationset.h \
-    roomplayeritem.h
-#OTHER
+    roomplayeritem.h \
+    audiosettingswidget.h
+
+# OTHER
 DEPENDPATH += ../../../../core
 INCLUDEPATH += ../../../../core/include
 SOURCES += Manager.cpp \
@@ -135,13 +140,13 @@ FORMS += mainwindow.ui \
     newchan.ui \
     chanlist.ui \
     conversationset.ui \
-    roomplayeritem.ui
+    roomplayeritem.ui \
+    audiosettingswidget.ui
 DEFINES += _GUI
 debug:QMAKE_CXXFLAGS += -D_DEBUG \
     -g3 \
     -pg
 else:QMAKE_CXXFLAGS += -D_NDEBUG
-unix: {
-# Provide relative path from application to fftreal library
+unix:# Provide relative path from application to fftreal library
+:
 QMAKE_LFLAGS += -Wl,--rpath=\\\$\$ORIGIN
-}

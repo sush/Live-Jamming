@@ -1,5 +1,5 @@
-#include "audioengine.h"
 #include "audiowidget.h"
+#include "audioengine.h"
 #include "levelmeter.h"
 #include "waveform.h"
 #include "progressbar.h"
@@ -15,6 +15,7 @@ const int NullTimerId = -1;
 
 AudioWidget::AudioWidget(QWidget *parent)
     :   QWidget(parent)
+    ,   mode(Settings)
 //    ,   m_engine(new AudioEngine())
 //#ifndef DISABLE_WAVEFORM
 //    ,   m_waveform(new Waveform(m_engine->buffer(), this))
@@ -24,6 +25,7 @@ AudioWidget::AudioWidget(QWidget *parent)
 //    ,   m_levelMeter(new LevelMeter(this))
 //    ,   m_infoMessageTimerId(NullTimerId)
 {
+     createSettingsUi();
     //m_spectrograph->setParams(SpectrumNumBands, SpectrumLowFreq, SpectrumHighFreq);
 }
 
@@ -146,6 +148,13 @@ void AudioWidget::dataDurationChanged(qint64 duration)
 //-----------------------------------------------------------------------------
 // Private functions
 //-----------------------------------------------------------------------------
+void AudioWidget::createSettingsUi(){
+
+  m_infoMessage = new QLabel("Select a mode to begin", this);
+  m_infoMessage->show();
+  //layout()->addWidget(m_infoMessage);
+  //setLayout(windowLayout);
+}
 
 //void MainWidget::createUi()
 //{

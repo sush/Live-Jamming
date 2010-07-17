@@ -2,7 +2,9 @@
 #define AUDIOWIDGET_H
 
 #include <QWidget>
+#include <QLabel>
 #include <QtMultimedia/qaudio.h>
+#include <QAudioFormat>
 
 class AudioEngine;
 class FrequencySpectrum;
@@ -12,9 +14,6 @@ class Waveform;
 class LevelMeter;
 class SettingsDialog;
 class ToneGeneratorDialog;
-
-QT_FORWARD_DECLARE_CLASS(QAudioFormat)
-QT_FORWARD_DECLARE_CLASS(QLabel)
 
 class AudioWidget : public QWidget
 {
@@ -40,8 +39,15 @@ private slots:
     void                    dataDurationChanged(qint64 duration);
 private:
     void                    reset();
+    void                    createSettingsUi();
+    enum UiType {
+        Settings,
+        Room
+    };
+    void                    setMode(UiType mode);
 
 private:
+    UiType                  mode;
     AudioEngine*            m_engine;
     Waveform*               m_waveform;
     ProgressBar*            m_progressBar;
@@ -49,6 +55,7 @@ private:
     LevelMeter*             m_levelMeter;
     QLabel*                 m_infoMessage;
     int                     m_infoMessageTimerId;
+
 };
 
 #endif // AUDIOWIDGET_H

@@ -19,7 +19,7 @@ private:
     Ui::ConfigurationDialog*	ui;
 
 private slots:
-    void on_pushButton_clicked(bool);
+    //void on_pushButton_clicked(bool);
 };
 
 #endif // CONFIGURATION_DIALOG_H

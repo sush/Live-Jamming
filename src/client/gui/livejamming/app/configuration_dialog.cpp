@@ -1,12 +1,18 @@
 #include "ui_configuration_dialog.h"
 #include "configuration_dialog.h"
 #include <qdebug.h>
+
 #ifndef NO_MULTIMEDIA
+#include "audiowidget.h"
+
 ConfigurationDialog::ConfigurationDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ConfigurationDialog)
 {
     ui->setupUi(this);
+    AudioWidget* audioSettings = new AudioWidget(ui->tab);
+    ui->tab->layout()->addWidget(audioSettings);
+    audioSettings->show();
     /*Setting ui for input*/
 //    ui->iComboBox->addItems(audio->getIDevices());
 //    foreach (int channel, audio->iDevice().supportedChannels())
@@ -42,11 +48,11 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent) :
 ConfigurationDialog::~ConfigurationDialog(){
 }
 
-void ConfigurationDialog::on_pushButton_clicked(bool checked)
-{
-    if (checked){
-}
-    else {
-        ui->pushButton->setText("Start");
-    }
-}
+//void ConfigurationDialog::on_pushButton_clicked(bool checked)
+//{
+//    if (checked){
+//}
+//    else {
+//        ui->pushButton->setText("Start");
+//    }
+//}
