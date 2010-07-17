@@ -89,7 +89,7 @@ void	Component_Room::RegisteredRequests()
     new Request(ROOM_LEAVED_ACK, SEND, "LEAVED_ACK", NORETRY);
 
   (*_registeredRequests)[ROOM_INVITE] = 
-    new Request(ROOM_LEAVED_ACK, SEND, "INVITE", RETRY);
+    new Request(ROOM_INVITE, SEND, "INVITE", RETRY);
 
   (*_registeredRequests)[ROOM_KICK] = 
     new Request(ROOM_KICK, SEND, "KICK", RETRY);
@@ -187,6 +187,8 @@ void		Component_Room::Recv_Join_OK(Packet_v1 const *packet_v1, Session *)
   field_t roomId = packet_v1_room->getRoomId();
   char const *roomName = packet_v1_room->getRoomName();
 
+  std::cout << "############################## CLIENT ROOM NAME ######################" << roomName << std::endl;
+
   if (_roomMap.find(roomId) == _roomMap.end())
     _roomMap[roomId] = new Room(roomName);
 }
@@ -200,8 +202,8 @@ void		Component_Room::Recv_Join_NOK_ALREADYINROOM(Packet_v1 const *packet_v1, Se
   // in case of lost packet check if user not in chan if so add him to it
   if (_roomMap.find(roomId) != _roomMap.end())
     {
-      Room *chan = _roomMap.find(roomId)->second;
-      chan->addConnected(session, session->getSessionId());
+      Room *room = _roomMap.find(roomId)->second;
+      room->addConnected(0, session->getSessionId());
     }
 }
 
@@ -211,11 +213,10 @@ void		Component_Room::Recv_Joined(Packet_v1 const *packet_v1, Session *session)
     static_cast<Packet_v1_Room const *>(packet_v1);
 
   field_t	clientSessionId = packet_v1_room->getClientSessionId();
-  char const *	clientLogin= packet_v1_room->getClientLogin();
   field_t	roomId = packet_v1_room->getRoomId();
-  Room	*chan = _roomMap.find(roomId)->second;
+  Room	*room = _roomMap.find(roomId)->second;
 
-  chan->addConnected(0, clientSessionId);
+  room->addConnected(0, clientSessionId);
   Send_Joined_ACK(session);
 }
 
@@ -279,8 +280,8 @@ void		Component_Room::Recv_Leave_NOK_NOTINROOM(Packet_v1 const *packet_v1, Sessi
   // in case of lost packet check if user still in chan, if so delete him
   if (_roomMap.find(roomId) != _roomMap.end())
     {
-      Room *chan = _roomMap.find(roomId)->second;
-      chan->removeConnected(session->getSessionId());
+      Room *room = _roomMap.find(roomId)->second;
+      room->removeConnected(session->getSessionId());
       _roomMap.erase(roomId);
     }
 }
@@ -292,10 +293,9 @@ void		Component_Room::Recv_Leaved(Packet_v1 const *packet_v1, Session *session)
 
   field_t	roomId = packet_v1_room->getRoomId();
   field_t	clientSessionId = packet_v1_room->getClientSessionId();
-  char const *	clientLogin = packet_v1_room->getClientLogin();
 
-  Room *chan = _roomMap.find(roomId)->second;
-  chan->removeConnected(clientSessionId);
+  Room *room = _roomMap.find(roomId)->second;
+  room->removeConnected(clientSessionId);
   Send_Leaved_ACK(session);
 }
 

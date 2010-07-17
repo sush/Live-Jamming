@@ -25,8 +25,14 @@ void            Packet_v1_Room::Print_v1_Room(std::string const &componentName, 
 	    << "[CLIENTSESSIONID: " << getClientSessionId() << "{" << PROTOV1_ROOM_CLIENTSESSIONID_SIZE << "}]"
 	    << std::endl;
   int id = getRequestId();
-  if (id == ROOM_JOINED || id == ROOM_LEAVED || id == ROOM_KICKED || ROOM_INVITE)
+  if (id == ROOM_JOIN || id == ROOM_JOIN_OK || id == ROOM_JOINED || id == ROOM_LEAVE_OK || id == ROOM_LEAVED)
+    std::cout << "# RoomName: '" << getRoomName() << "'" << std::endl;
+  if (id == ROOM_JOINED || id == ROOM_LEAVED || id == ROOM_KICKED || id == ROOM_INVITE)
     std::cout << "# Login: '" << getClientLogin() << "'" << std::endl;
+  if (id == ROOM_MESSAGE || id == ROOM_MESSAGE_RECV)
+    std::cout << "# Message: '" << getMessage() << "'" << std::endl;
+
+
 }
 
 field_t         Packet_v1_Room::getRoomId() const
