@@ -16,15 +16,22 @@ class UserModule_mysql : public IUserBackend<UserModule_mysql>, public IDatabase
  public :
 
   IUserBackend<UserModule_mysql>::m_userinfo const *	Authentification(std::string const &, std::string const &);
+
   m_userinfo const					*getProfil(int);
   std::vector<std::string> const &			getFriendList(std::string const &);
 
- private :
-  UserModule_mysql();
-  virtual		 ~UserModule_mysql();
-  void			Connection();
+  void							AddFriend(std::string const &, std::string const &);
+  void							DelFriend(std::string const &, std::string const &);
 
-  mysqlpp::Connection	_dbLink;
+ private :
+
+  UserModule_mysql();
+  virtual						~UserModule_mysql();
+  void							Connection();
+
+ private:
+
+  mysqlpp::Connection					_dbLink;
 };
 
 #endif

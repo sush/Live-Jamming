@@ -9,8 +9,7 @@
 int main(int argc, char *argv[]) {
   // authentification test
     UserModule_mysql *userModule = UserModule_mysql::getInstance();
-    std::cout << "Login check status : " << userModule->Authentification("dude", "12345678") << std::endl;
-    userModule->getProfil(16);
+    userModule->AddFriend("plop", "lolo");
 
   // Config & Arguments test
   //Config *conf = new Config("config.yaml", argc, argv);

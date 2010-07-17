@@ -54,7 +54,41 @@ std::vector<std::string> const &	UserModule_mysql::getFriendList(std::string con
 {
   std::vector<std::string> *friendList = new std::vector<std::string>();
 
+  std::string request	= "CALL PROC_GET_FRIENDLIST_LOGIN('"+login+"');";
+  mysqlpp::Query query	= _dbLink.query(request);
+
+  if (mysqlpp::StoreQueryResult res = query.store())
+    {
+      if (res.size() > 0)
+	{
+	  for (unsigned int i = 0; i < res.size(); ++i)
+	    {
+	      mysqlpp::Row::const_iterator	it, end = res[i].end();
+	      int j;
+	      for (j = 0, it = res[i].begin(); it != end; ++it, ++j)
+		friendList->push_back(it->c_str());
+	    }
+	  query.store_next();
+	}
+      while (query.store_next());
+    }
   return *friendList;
 }
 
-//implement update friend list
+void					UserModule_mysql::AddFriend(std::string const &login, std::string const &friendLogin)
+{
+  std::string request	= "CALL PROC_ADD_FRIEND_LOGIN('"+login+"','"+friendLogin+"');";
+  mysqlpp::Query query	= _dbLink.query(request);
+
+  if (mysqlpp::StoreQueryResult res = query.store())
+    while (query.store_next());
+}
+
+void					UserModule_mysql::DelFriend(std::string const &login, std::string const &friendLogin)
+{
+  std::string request	= "CALL PROC_DEL_FRIEND_LOGIN('"+login+"','"+friendLogin+"');";
+  mysqlpp::Query query	= _dbLink.query(request);
+
+  if (mysqlpp::StoreQueryResult res = query.store())
+    while (query.store_next());
+}

@@ -127,7 +127,7 @@ void		Component_Channel::Recv_Join_NOK_ALREADYINCHAN(Packet_v1 const *packet_v1,
   if (_channelMap.find(channelId) != _channelMap.end())
     {
       Channel *chan = _channelMap.find(channelId)->second;
-      chan->addConnected(session, session->getSessionId());
+      chan->addConnected(0, session->getSessionId());
     }
 }
 

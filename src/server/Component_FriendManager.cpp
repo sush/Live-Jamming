@@ -65,6 +65,7 @@ void		Component_FriendManager::Recv_Friend_Del(Packet_v1 const *packet_v1, Sessi
       if ((*it) == friendLogin)
 	{
 	  existing = true;
+	  //	  _serverManager->getComponentSession()->getUserModule
 	  // call userModule->DelFriend(session->getLogin(), friendLogin);
 	  session->getFriendList().erase(it);
 	  Send_Friend_Del_OK(session, friendLogin);

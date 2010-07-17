@@ -123,3 +123,8 @@ Component_JamManager		*ServerManager::getComponentJam()
 {
   return _jamManager;
 }
+
+Component_SessionManager	*ServerManager::getComponentSession()
+{
+  return _sessionManager;
+}

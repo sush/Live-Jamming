@@ -26,12 +26,13 @@ public:
   ServerManager(boost::asio::io_service &, boost::threadpool::pool &, boost::asio::ip::udp::socket &);
   virtual	~ServerManager();
 
-  virtual void		Manage(Packet *);
-  unsigned int		CountActiveSessions() const;
-  virtual void		Disconnect(Session *);
-  virtual void		Connect(Session *);
-  m_Session &		getSessionMap();
-  Component_JamManager	*getComponentJam();
+  virtual void				Manage(Packet *);
+  unsigned int				CountActiveSessions() const;
+  virtual void				Disconnect(Session *);
+  virtual void				Connect(Session *);
+  m_Session &				getSessionMap();
+  Component_JamManager			*getComponentJam();
+  Component_SessionManager		*getComponentSession();
 
 private:
   virtual void		Init_Components();
