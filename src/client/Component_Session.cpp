@@ -103,7 +103,6 @@ void		Component_Session::Disconnect()
   _logged = false;
   Send_Disconnect();
   _session->DeAuthentificated();
-  static_cast<Proxy*>(_clientManager)->disconnect();
 }
 
 void		Component_Session::Recv_TimeOutTest(Packet_v1 const *, Session *)
@@ -152,7 +151,5 @@ bool		Component_Session::IsLogged() const
 }
 
 void		Component_Session::Connect(Session *)
-{}
-
-void		Component_Session::Disconnect(Session *)
-{}
+{
+}

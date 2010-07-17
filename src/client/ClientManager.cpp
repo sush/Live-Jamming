@@ -75,13 +75,17 @@ void			ClientManager::Init_Components()
   RegisterComponent(_room);
   RegisterComponent(_jam);
 }
-	   
+
 void			ClientManager::Disconnect(Session *)
 {
-  _session->Disconnect();
-  _channel->Disconnect();
-  _room->Disconnect();
-  _friend->Disconnect();
+  Session		* session = _session->getSession();
+
+  _session->Disconnect(session);
+  _channel->Disconnect(session);
+  _room->Disconnect(session);
+  _friend->Disconnect(session);
+  static_cast<Proxy*>(_clientManager)->disconnect();
+  delete session;
 }
 
 boost::asio::ip::udp::endpoint        &ClientManager::getEndpoint()

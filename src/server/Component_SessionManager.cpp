@@ -83,7 +83,7 @@ Session				*Component_SessionManager::DoAuth(Packet_v1_Session const * packet_v1
     {
       field_t			sessionId	= GenSessionId();
       //std::vector<std::string> const friendList	= _userModule->getFriendList(login_str);
-
+      
       new_session = new Session(_serverManager, _serverManager->getIO(), packet_v1_Session, sessionId);
       new_session->setLogin(login_str);
       //      new_session->setFriendList(friendList);
@@ -91,7 +91,7 @@ Session				*Component_SessionManager::DoAuth(Packet_v1_Session const * packet_v1
       std::cout << "after auth id = " << new_session->getSessionId() << std::endl;
       _sessionMap[new_session->getSessionId()] = new_session;
       Send_AuthResponse_OK(new_session);
-
+      _serverManager->Connect(new_session);
       // m_Session::iterator it, end = _sessionMap.end();
       // for (it = _sessionMap.begin(); it != end; ++it)
       // 	{
