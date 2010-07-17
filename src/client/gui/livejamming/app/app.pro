@@ -89,7 +89,8 @@ SOURCES += Manager.cpp \
     Packet_v1_Jam.cpp \
     Channel.cpp \
     Room.cpp \
-    Jam.cpp
+    Jam.cpp \
+    Time.cpp
 HEADERS += Session.h \
     Manager.h \
     Packet.h \
