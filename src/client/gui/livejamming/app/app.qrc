@@ -1,5 +1,8 @@
 <RCC>
   <qresource prefix="/">
+    <file>images/ledred-48x48.png</file>
+    <file>images/ledorange-48x48.png</file>
+    <file>images/ledgreen-48x48.png</file>
     <file>images/live-jamming.png</file>
   </qresource>
 </RCC>

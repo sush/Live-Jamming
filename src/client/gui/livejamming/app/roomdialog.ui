@@ -32,13 +32,9 @@
     </layout>
    </item>
    <item row="0" column="1">
-    <layout class="QVBoxLayout" name="verticalLayout">
+    <layout class="QVBoxLayout" name="playerVBox">
      <item>
-      <widget class="QPlainTextEdit" name="textEdit">
-       <property name="readOnly">
-        <bool>true</bool>
-       </property>
-      </widget>
+      <widget class="QTextEdit" name="textEdit"/>
      </item>
      <item>
       <widget class="QLineEdit" name="lineEdit"/>

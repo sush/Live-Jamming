@@ -19,6 +19,7 @@ class Packet_v1_Channel;
 class QModelIndex;
 class QTreeWidgetItem;
 class ConversationSet;
+class QLabel;
 
 struct UiChannel
 {
@@ -32,6 +33,8 @@ struct UiClient
     QTreeWidgetItem* item;
 
 };
+
+const int statusIconSize = 20;
 
 class MainWindow : public QMainWindow
 {
@@ -53,6 +56,8 @@ private:
     Ui::MainWindow  *ui;
     Proxy*          proxy;
     bool            isConnected;
+    QLabel*         redButton;
+    QLabel*         greenButton;
     QMap<QString, UiChannel>   channels;
     QMap<QString, UiClient>    clients;
     QString         currentChannel;

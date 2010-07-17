@@ -27,7 +27,6 @@
 #include <conversationset.h>
 
 
-
 MainWindow::MainWindow(Proxy* proxy) :
     QMainWindow(),
     ui(new Ui::MainWindow),
@@ -39,12 +38,20 @@ MainWindow::MainWindow(Proxy* proxy) :
     qRegisterMetaType<authEventsType>("MainWindow::authEventsType");
     qRegisterMetaType<chanEventsType>("MainWindow::chanEventsType");
 
-    connect(proxy, SIGNAL(sAuthResponse(MainWindow::authEventsType)), this, SLOT(authEvents(MainWindow::authEventsType)), Qt::QueuedConnection);
-    connect(proxy, SIGNAL(sChanResponse(MainWindow::chanEventsType, const Packet_v1_Channel*)), this, SLOT(chanEvents(MainWindow::chanEventsType, const Packet_v1_Channel*)),Qt::QueuedConnection);
-    connect(proxy, SIGNAL(joinOk(QString)), this, SLOT(createRoom(QString)), Qt::QueuedConnection);
+    QIcon redButtonIcon(":/images/ledred-48x48.png");
+    QIcon greenButtonIcon(":/images/ledgreen-48x48.png");
+    redButton = new QLabel();
+    greenButton = new QLabel();
+    redButton->setPixmap(redButtonIcon.pixmap(QSize(statusIconSize, statusIconSize)));
+    greenButton->setPixmap(greenButtonIcon.pixmap(QSize(statusIconSize, statusIconSize)));
+    statusBar()->addPermanentWidget(redButton);
 
     isConnected = false;
     connect(QCoreApplication::instance(), SIGNAL(aboutToQuit()), this, SLOT(on_actionDisconnect_triggered()));
+
+    connect(proxy, SIGNAL(sAuthResponse(MainWindow::authEventsType)), this, SLOT(authEvents(MainWindow::authEventsType)), Qt::QueuedConnection);
+    connect(proxy, SIGNAL(sChanResponse(MainWindow::chanEventsType, const Packet_v1_Channel*)), this, SLOT(chanEvents(MainWindow::chanEventsType, const Packet_v1_Channel*)),Qt::QueuedConnection);
+    connect(proxy, SIGNAL(joinOk(QString)), this, SLOT(createRoom(QString)), Qt::QueuedConnection);
 
     QTimer::singleShot(0, this, SLOT(on_actionConnect_triggered()));
     /* Set apllication indentity*/
@@ -84,9 +91,10 @@ void MainWindow::setConnected(bool connected)
 {
     if (connected != isConnected) {
         isConnected = connected;
-        ui->statusBar->showMessage(connected ? "Connected" : "Disconnected");
-        //ui->statusBar->clearMessage();
-        //ui->statusBar->addWidget(new QLabel(connected ? "Connected" : "Disconnected"));
+        //ui->statusBar->showMessage(connected ? "Connected" : "Disconnected");
+        ui->statusBar->removeWidget(connected ? redButton : greenButton);
+        ui->statusBar->addPermanentWidget(connected ? greenButton : redButton);
+        connected ? greenButton->show() : redButton->show();
         ui->menuFile->removeAction(connected ? ui->actionConnect : ui->actionDisconnect);
         ui->menuFile->insertAction(ui->actionCreate_account,
                                    connected ? ui->actionDisconnect : ui->actionConnect);
@@ -135,7 +143,7 @@ void    MainWindow::chanEvents(chanEventsType event, const Packet_v1_Channel* pa
         removeClientFromChannel(proxy->channelIdToName(packet->getChannelId()), packet->getClientLogin());
         break;
     case MESSAGE_RECV:
-        addMessage(proxy->channelIdToName(packet->getChannelId()), "toto", packet->getMessage());
+        addMessage(proxy->channelIdToName(packet->getChannelId()), "toto", QString::fromUtf8(packet->getMessage()));
         break;
     }
 }
@@ -148,6 +156,7 @@ void    MainWindow::joinChannel(const QString &name)
     ConversationSet* convSet = new ConversationSet;
     connect(convSet->input, SIGNAL(returnPressed()), this, SLOT(lineEdit_returnPressed()));
     connect(convSet->send, SIGNAL(pressed()), this, SLOT(lineEdit_returnPressed()));
+    convSet->input->setFocus(Qt::OtherFocusReason);
     ui->stackedWidget->addWidget(convSet);
     ui->stackedWidget->setCurrentWidget(convSet);
     currentChannel = name;
@@ -193,7 +202,8 @@ void    MainWindow::addMessage(const QString &channel, const QString &client, co
     //Q_ASSERT(clients.contains(client));
 
     ConversationSet* convSet = static_cast<ConversationSet*>(ui->stackedWidget->currentWidget());
-    convSet->display->setPlainText(convSet->display->toPlainText() + "\n" + client + ": " + msg);
+    convSet->display->append("<strong>" + client + "</strong>: " + msg + "\n");
+    convSet->display->ensureCursorVisible();
     convSet->input->clear();
 }
 
@@ -255,8 +265,8 @@ void MainWindow::on_actionCreate_Channel_triggered()
     QDialog dial;
     dialui.setupUi(&dial);
 
-    dial.exec();
-    if ( !dialui.nameLineEdit->text().isEmpty()) {
+    int retv = dial.exec();
+    if ( retv == QDialog::Accepted && !dialui.nameLineEdit->text().isEmpty()) {
         proxy->channel()->Send_Join(proxy->session()->_session, dialui.nameLineEdit->text().toUtf8().data());
     }
 }
@@ -284,7 +294,7 @@ void MainWindow::on_actionCreate_room_triggered()
 {
     bool    ok;
     QString name = QInputDialog::getText(this, "Room name", "Enter room name", QLineEdit::Normal, "", &ok);
-    if (ok) {
+    if (ok && !name.isEmpty()) {
         proxy->room()->Send_Join(proxy->session()->_session, name.toUtf8().data());
     }
 }
@@ -292,12 +302,13 @@ void MainWindow::on_actionCreate_room_triggered()
 void MainWindow::lineEdit_returnPressed()
 {
     QString msg = channels.value(currentChannel).convSet->input->text();
-    qDebug() << "SENDING MSG" << msg << "FROM" << currentChannel;
-    proxy->channel()->Send_Message(proxy->session()->_session, msg.toUtf8().data(), proxy->channelNameToId.value(currentChannel));
+    if ( !msg.isEmpty())
+        proxy->channel()->Send_Message(proxy->session()->_session, msg.toUtf8().data(), proxy->channelNameToId.value(currentChannel));
 }
 
 void MainWindow::createRoom(const QString &name)
 {
     RoomDialog* room = new RoomDialog(this, proxy, name);
+    //ui->
     room->show();
 }

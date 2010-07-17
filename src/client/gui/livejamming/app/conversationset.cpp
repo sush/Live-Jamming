@@ -1,3 +1,4 @@
+
 #include "conversationset.h"
 
 ConversationSet::ConversationSet(QWidget *parent) :

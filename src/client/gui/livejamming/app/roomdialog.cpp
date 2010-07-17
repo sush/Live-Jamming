@@ -35,6 +35,7 @@ void RoomDialog::changeEvent(QEvent *e)
 void    RoomDialog::joined(QString client)
 {
     RoomPlayerItem* item = new RoomPlayerItem(this, client, QString("0"));
+    ui->playerVBox->addWidget(item);
     players.insert(client, (UiRoomPlayer){item});
 }
 
@@ -45,5 +46,6 @@ void    RoomDialog::leaved(QString client)
 
 void    RoomDialog::messageRecv(QString client, QString msg)
 {
-    ui->textEdit->setPlainText(client + ":" + msg + "\n");
+    ui->textEdit->append("<strong>" + client + "</strong>: " + msg + "\n");
+    ui->textEdit->ensureCursorVisible();
 }
