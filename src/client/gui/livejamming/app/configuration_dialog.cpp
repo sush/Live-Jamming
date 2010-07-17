@@ -29,7 +29,7 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent) :
     foreach (int sampleSize, audio->oDevice().supportedSampleSizes())
         ui->oSampleSizesComboBox->addItem(QString::number(sampleSize));
 }
-#else
+#elif defined(NO_MULTIMEDIA)
 ConfigurationDialog::ConfigurationDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ConfigurationDialog)
