@@ -31,6 +31,7 @@ public:
   virtual				~Component_SessionManager();
   
   void					Manage(Packet *);
+  UserModule_mysql			*getUserModule();
 
 private:
   virtual void				BindingsRecv();
@@ -58,8 +59,9 @@ private:
   void                                  Connect(Session *);
   void                                  Disconnect(Session *);
 
-  ServerManager				*_serverManager;
+ private:
 
+  ServerManager				*_serverManager;
   boost::rand48				_rng;
   ServerManager::m_Session		&_sessionMap;
   UserModule_mysql			*_userModule;

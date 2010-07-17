@@ -1,4 +1,6 @@
 #include <Component_FriendManager.h>
+#include <Component_SessionManager.h>
+#include <UserModule_mysql.h>
 #include <Bind_recv.h>
 
 Component_FriendManager::Component_FriendManager(ServerManager * serverManager)
@@ -45,7 +47,7 @@ void		Component_FriendManager::Recv_Friend_Add(Packet_v1 const *packet_v1, Sessi
 
   if (!existing)
     {
-      // call userModule->AddFriend(session->getLogin(), friendLogin);
+      _serverManager->getComponentSession()->getUserModule()->AddFriend(session->getLogin(), friendLogin);
       session->getFriendList().push_back(friendLogin);
       Send_Friend_Add_OK(session, friendLogin);
     }
@@ -56,7 +58,7 @@ void		Component_FriendManager::Recv_Friend_Del(Packet_v1 const *packet_v1, Sessi
   Packet_v1_Friend	const *packet_v1_friend =
     static_cast<Packet_v1_Friend const *>(packet_v1);
 
-  char const * friendLogin = packet_v1_friend->getFriendLogin();
+  char const *friendLogin = packet_v1_friend->getFriendLogin();
   bool existing		   = false;
 
   std::list<std::string>::iterator it, end = session->getFriendList().end();
@@ -65,8 +67,7 @@ void		Component_FriendManager::Recv_Friend_Del(Packet_v1 const *packet_v1, Sessi
       if ((*it) == friendLogin)
 	{
 	  existing = true;
-	  //	  _serverManager->getComponentSession()->getUserModule
-	  // call userModule->DelFriend(session->getLogin(), friendLogin);
+	  _serverManager->getComponentSession()->getUserModule()->DelFriend(session->getLogin(), friendLogin);
 	  session->getFriendList().erase(it);
 	  Send_Friend_Del_OK(session, friendLogin);
 	  break;

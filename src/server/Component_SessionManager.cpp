@@ -161,6 +161,11 @@ void		Component_SessionManager::Recv_Disconnect(Packet_v1 const *, Session * ses
   _serverManager->Disconnect(session);
 }
 
+UserModule_mysql *Component_SessionManager::getUserModule()
+{
+  return _userModule;
+}
+
 void		Component_SessionManager::Connect(Session *)
 {}
 
