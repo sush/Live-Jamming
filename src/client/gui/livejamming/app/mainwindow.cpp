@@ -223,11 +223,10 @@ void MainWindow::on_actionConnect_triggered()
                                    )) {
            if (settings.contains("user/login") == true) {
                proxy->client->Connect(
+                       settings.value("user/login").toString().toStdString(),
+                       settings.value("user/password").toString().toStdString(),
                        settings.value("server/ip").toString().toStdString(),
                        settings.value("server/port").toInt());
-            proxy->session()->Connect(
-                    settings.value("user/login").toString().toStdString(),
-                    settings.value("user/password").toString().toStdString());
         }
        }
     }
@@ -237,7 +236,7 @@ void MainWindow::on_actionConnect_triggered()
 void MainWindow::on_actionDisconnect_triggered()
 {
     if (isConnected == true) {
-        proxy->session()->Disconnect();
+        proxy->client->Disconnect();
         setConnected(false);
 
     }

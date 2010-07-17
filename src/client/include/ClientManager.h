@@ -24,7 +24,8 @@ public:
   virtual void				Manage(Packet *);
   boost::asio::ip::udp::endpoint	&getEndpoint();
   virtual void				Disconnect(Session *);
-  virtual void				Connect(Session *);
+  virtual void				Connect(std::string const &, std::string const &);
+  virtual void				Connect(Session *) {} // pure virtual must be implemented
 
 private:
   virtual void				Init_Components();

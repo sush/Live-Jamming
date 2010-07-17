@@ -1,6 +1,8 @@
 #include "ui_configuration_dialog.h"
 #include "configuration_dialog.h"
+#ifndef NO_MULTIMEDIA
 #include "spectrowidget.h"
+#endif
 #include <qdebug.h>
 ConfigurationDialog::ConfigurationDialog(QWidget *parent) :
     QDialog(parent),
@@ -32,7 +34,9 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent) :
 
 ConfigurationDialog::~ConfigurationDialog(){
     /*Verify that Engine destructor delete all Audio instances*/
+    #ifndef NO_MULTIMEDIA
     delete audio;
+    #endif
 }
 
 void ConfigurationDialog::on_pushButton_clicked(bool checked)
@@ -45,6 +49,8 @@ void ConfigurationDialog::on_pushButton_clicked(bool checked)
 }
     else {
         ui->pushButton->setText("Start");
+        #ifndef NO_MULTIMEDIA
         audio->stopRecordAndPlayback();
+         #endif
     }
 }
