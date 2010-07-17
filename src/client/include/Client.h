@@ -26,7 +26,7 @@ class Client : public Singleton<Client>
 public:
   void					Run();
   void					Init(int, char *[]);
-  void					Connect(std::string const &, int);
+  void					Connect(std::string const &, std::string const &, std::string const &, int);
   void					Disconnect();
     
 private:

@@ -36,6 +36,7 @@ void	Session::DeAuthentificated()
 {
   _isLogged = false;
   CancelTimeOutTest();
+  CancelTimeOutOccurred();
 }
 
 Session::~Session()

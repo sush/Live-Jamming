@@ -111,7 +111,7 @@ void		Client::BindToLocalPort()
   while (!_local_endpoint);
 }
 
-void		Client::Connect(std::string const & server, int port)
+void		Client::Connect(std::string const & login, std::string const & password, std::string const & server, int port)
 {
   // string to int
   std::cout << " ########################### CONNECT #################################" << std::endl;
@@ -120,6 +120,7 @@ void		Client::Connect(std::string const & server, int port)
   _remote_endpoint->address(boost::asio::ip::address::from_string(connect_address));
   _remote_endpoint->port(port);
   boost::thread		t(boost::bind(&Client::Run, this));
+  _session->Connect(login, password);
 }
 
 void		Client::Disconnect()

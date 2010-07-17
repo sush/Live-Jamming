@@ -66,7 +66,7 @@ unsigned int	Component_SessionManager::CountActiveSessions() const
 Session				*Component_SessionManager::DoAuth(Packet_v1_Session const * packet_v1_Session)
 {
   Session			*new_session;
-  m_userinfo			*userinfo;
+  m_userinfo const		*userinfo;
 
   assert(packet_v1_Session->getRequestId() == SESSION_AUTHREQUEST);
 
