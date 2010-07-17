@@ -317,6 +317,9 @@ QTabBar::tab:!selected {
    <property name="text">
     <string>Create room</string>
    </property>
+   <property name="shortcut">
+    <string>Alt+C</string>
+   </property>
   </action>
   <action name="actionList_rooms">
    <property name="enabled">
@@ -332,6 +335,9 @@ QTabBar::tab:!selected {
    </property>
    <property name="text">
     <string>Create channel</string>
+   </property>
+   <property name="shortcut">
+    <string>Shift+C</string>
    </property>
   </action>
   <action name="actionList_channels">

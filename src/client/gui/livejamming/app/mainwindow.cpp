@@ -315,6 +315,5 @@ void MainWindow::lineEdit_returnPressed()
 void MainWindow::createRoom(const QString &name)
 {
     RoomDialog* room = new RoomDialog(this, proxy, name);
-    //ui->
     room->show();
 }
