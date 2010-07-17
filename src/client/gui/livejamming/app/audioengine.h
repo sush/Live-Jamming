@@ -1,22 +1,25 @@
-#ifndef NESPAUDIO_H
-#define NESPAUDIO_H
+#ifndef AUDIOENGINE_H
+#define AUDIOENGINE_H
 #include "engine.h"
 
 #include <QAudioDeviceInfo>
 #include <QAudioInput>
 #include <QAudioOutput>
 #include <QAudioFormat>
-#include <qdebug.h>
+#include <QVBoxLayout>
 #include <QTimer>
 #include <QBuffer>
+#include <QtMultimedia/qaudio.h>
+#include <qdebug.h>
 
 class FrequencySpectrum;
+class Spectrograph;
 
-class NespAudio : public Engine
+class AudioEngine : public Engine
 {
     Q_OBJECT;
 public:
-    NespAudio();
+    AudioEngine();
 
     QStringList getIDevices();
     QStringList getODevices();
@@ -28,4 +31,4 @@ public:
     void stopRecordAndPlayback();
 };
 
-#endif // NESPAUDIO_H
+#endif // AUDIOENGINE_H

@@ -8,17 +8,16 @@ DESTDIR = ..
 TEMPLATE = app
 !contains(DEFINES, NO_MULTIMEDIA) {
 QT += multimedia
-SOURCES += nespaudio.cpp \
-    spectrowidget.cpp
-HEADERS += nespaudio.h \
-    spectrowidget.h
+SOURCES += audioengine.cpp \
+    audiowidget.cpp
+HEADERS += audioengine.h \
+    audiowidget.h
 #FOR SPECTRE
 INCLUDEPATH += spectre
 DEPENDPATH += spectre
 SOURCES += engine.cpp \
     frequencyspectrum.cpp \
     levelmeter.cpp \
-    mainwidget.cpp \
     progressbar.cpp \
     settingsdialog.cpp \
     spectrograph.cpp \
@@ -31,7 +30,6 @@ SOURCES += engine.cpp \
 HEADERS += engine.h \
     frequencyspectrum.h \
     levelmeter.h \
-    mainwidget.h \
     progressbar.h \
     settingsdialog.h \
     spectrograph.h \

@@ -1,9 +1,9 @@
-#include "nespaudio.h"
+#include "audioengine.h"
 
-NespAudio::NespAudio(){
+AudioEngine::AudioEngine(){
 }
 
-QStringList NespAudio::getODevices(){
+QStringList AudioEngine::getODevices(){
     QStringList list;
     foreach(const QAudioDeviceInfo &deviceInfo, this->availableAudioInputDevices()){
         if(!deviceInfo.isNull())
@@ -12,7 +12,7 @@ QStringList NespAudio::getODevices(){
     return list;
 }
 
-QStringList NespAudio::getIDevices(){
+QStringList AudioEngine::getIDevices(){
     QStringList list;
     foreach(const QAudioDeviceInfo &deviceInfo, this->availableAudioInputDevices()){
         if(!deviceInfo.isNull())
@@ -21,7 +21,7 @@ QStringList NespAudio::getIDevices(){
     return list;
 }
 
-void NespAudio::startRecordAndPlayBack(){
+void AudioEngine::startRecordAndPlayBack(){
     if(m_audioInput){
         if (QAudio::AudioInput == m_mode &&
             QAudio::SuspendedState == m_state) {
@@ -38,7 +38,7 @@ void NespAudio::startRecordAndPlayBack(){
     }
 }
 
-void NespAudio::stopRecordAndPlayback(){
+void AudioEngine::stopRecordAndPlayback(){
     stopPlayback();
     stopRecording();
 }

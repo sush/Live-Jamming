@@ -78,7 +78,7 @@ QT_FORWARD_DECLARE_CLASS(QFile)
 
 class Engine : public QObject {
     Q_OBJECT
-    friend class NespAudio;
+    friend class AudioEngine;
 public:
     Engine(QObject *parent = 0);
     ~Engine();
