@@ -24,6 +24,7 @@ public:
   virtual void				Manage(Packet *);
   boost::asio::ip::udp::endpoint	&getEndpoint();
   virtual void				Disconnect(Session *);
+  virtual void				Connect(Session *);
 
 private:
   virtual void				Init_Components();

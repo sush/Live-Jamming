@@ -23,8 +23,8 @@ void    chanResponse(Packet_v1 const*, Session*);
 void    roomResponse(Packet_v1 const*, Session*);
 
 // New interface not used yet (be aware of new connections / disconnections
- void	Connect(Session *){}
- void	Disconnect(Session *){}
+// void	Connect(Session *){}
+// void	Disconnect(Session *){}
    //////////////////////////////////////
 void    disconnect();
 

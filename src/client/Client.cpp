@@ -120,7 +120,7 @@ void		Client::Connect(std::string const & login, std::string const & password, s
   _remote_endpoint->address(boost::asio::ip::address::from_string(connect_address));
   _remote_endpoint->port(port);
   boost::thread		t(boost::bind(&Client::Run, this));
-  _session->Connect(login, password);
+  _clientManager->Connect(login, password);
 }
 
 void		Client::Disconnect()

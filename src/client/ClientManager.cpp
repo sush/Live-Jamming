@@ -76,6 +76,11 @@ void			ClientManager::Init_Components()
   RegisterComponent(_jam);
 }
 
+void			ClientManager::Connect(std::string const &login, std::string const &password)
+{
+  _session->Connect(login, password);
+}
+
 void			ClientManager::Disconnect(Session *)
 {
   Session		* session = _session->getSession();
