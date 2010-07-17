@@ -194,7 +194,7 @@ QTabBar::tab:!selected {
      <x>0</x>
      <y>0</y>
      <width>791</width>
-     <height>27</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -285,6 +285,9 @@ QTabBar::tab:!selected {
    </property>
   </action>
   <action name="actionHelp">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Help</string>
    </property>
@@ -293,6 +296,9 @@ QTabBar::tab:!selected {
    </property>
   </action>
   <action name="actionAbout_LiveJaming">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>About LiveJaming</string>
    </property>

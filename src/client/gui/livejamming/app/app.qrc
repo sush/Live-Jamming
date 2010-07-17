@@ -1,7 +1,10 @@
 <RCC>
   <qresource prefix="/">
+    <file>images/kmixdocked-30x30.png</file>
+    <file>images/kmixdocked_error-30x30.png</file>
     <file>images/ledred-48x48.png</file>
     <file>images/ledorange-48x48.png</file>
+    <file>images/cc-user_male-60x60.png</file>
     <file>images/ledgreen-48x48.png</file>
     <file>images/live-jamming.png</file>
   </qresource>

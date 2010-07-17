@@ -26,7 +26,8 @@ void	Component_Session::BindingsRecv()
                   static_cast<Proxy*>(_clientManager), static_cast<Proxy::pMethod>(&Proxy::authResponse));
 
   (*_bindingsRecv)[SESSION_TIMEOUT] =
-    new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Session::Recv_TimeOutTest));
+    new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Session::Recv_TimeOutTest),
+                  static_cast<Proxy*>(_clientManager), static_cast<Proxy::pMethod>(&Proxy::authResponse));
 
   (*_bindingsRecv)[SESSION_KEEPALIVE] =
     new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Session::Recv_KeepAlive));

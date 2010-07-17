@@ -5,9 +5,11 @@ class MainWindow;
 
 #include <QMainWindow>
 #include <ClientManager.h>
-#include <Component_Channel.h>
+//#include <Component_Channel.h>
 #include <QMap>
 #include <QSettings>
+#include <QLabel>
+
 #include <accountconnection.h>
 
 namespace Ui {
@@ -19,7 +21,6 @@ class Packet_v1_Channel;
 class QModelIndex;
 class QTreeWidgetItem;
 class ConversationSet;
-class QLabel;
 
 struct UiChannel
 {
@@ -46,7 +47,7 @@ public:
     static void gui_init(int argc, char* argv[]);
     static int run();
 
-    enum authEventsType{OK, BADAUTH, DUPPLICATE, DISCONNECTED};
+    enum authEventsType{OK, BADAUTH, DUPPLICATE, TIMEOUT, DISCONNECTED};
     enum chanEventsType{JOIN_OK, ALREADYINCHAN, LEAVE_OK, JOINED, LEAVED, MESSAGE_RECV, LISTED};
 
 protected:
@@ -56,8 +57,8 @@ private:
     Ui::MainWindow  *ui;
     Proxy*          proxy;
     bool            isConnected;
-    QLabel*         redButton;
-    QLabel*         greenButton;
+    QLabel         redButton;
+    QLabel        greenButton;
     QMap<QString, UiChannel>   channels;
     QMap<QString, UiClient>    clients;
     QString         currentChannel;
@@ -68,11 +69,11 @@ private:
     void addClientToChannel(const QString& channel, const QString& login);
     void removeClientFromChannel(const QString& channel, const QString& login);
     void addMessage(const QString& channel, const QString& client, const QString& msg);
+    void setConnected(bool);
 
 public slots:
     void authEvents(MainWindow::authEventsType event);
     void chanEvents(MainWindow::chanEventsType event, const Packet_v1_Channel*);
-    void lineEdit_returnPressed();
     void createRoom(const QString& name);
 
 private slots:
@@ -86,7 +87,7 @@ private slots:
     void on_actionQuit_triggered();
     void on_actionPreferences_triggered();
     void on_actionConnect_triggered();
-    void setConnected(bool);
+    void lineEdit_returnPressed();
 
     friend class AccountConnection;
 };

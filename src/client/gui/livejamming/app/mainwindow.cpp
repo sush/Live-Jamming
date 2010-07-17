@@ -38,13 +38,9 @@ MainWindow::MainWindow(Proxy* proxy) :
     qRegisterMetaType<authEventsType>("MainWindow::authEventsType");
     qRegisterMetaType<chanEventsType>("MainWindow::chanEventsType");
 
-    QIcon redButtonIcon(":/images/ledred-48x48.png");
-    QIcon greenButtonIcon(":/images/ledgreen-48x48.png");
-    redButton = new QLabel();
-    greenButton = new QLabel();
-    redButton->setPixmap(redButtonIcon.pixmap(QSize(statusIconSize, statusIconSize)));
-    greenButton->setPixmap(greenButtonIcon.pixmap(QSize(statusIconSize, statusIconSize)));
-    statusBar()->addPermanentWidget(redButton);
+    redButton.setPixmap(QIcon(":/images/ledred-48x48.png").pixmap(statusIconSize));
+    greenButton.setPixmap(QIcon(":/images/ledgreen-48x48.png").pixmap(statusIconSize));
+    statusBar()->addPermanentWidget(&redButton);
 
     isConnected = false;
     connect(QCoreApplication::instance(), SIGNAL(aboutToQuit()), this, SLOT(on_actionDisconnect_triggered()));
@@ -92,9 +88,9 @@ void MainWindow::setConnected(bool connected)
     if (connected != isConnected) {
         isConnected = connected;
         //ui->statusBar->showMessage(connected ? "Connected" : "Disconnected");
-        ui->statusBar->removeWidget(connected ? redButton : greenButton);
-        ui->statusBar->addPermanentWidget(connected ? greenButton : redButton);
-        connected ? greenButton->show() : redButton->show();
+        ui->statusBar->removeWidget(connected ? &redButton : &greenButton);
+        ui->statusBar->addPermanentWidget(connected ? &greenButton : &redButton);
+        connected ? greenButton.show() : redButton.show();
         ui->menuFile->removeAction(connected ? ui->actionConnect : ui->actionDisconnect);
         ui->menuFile->insertAction(ui->actionCreate_account,
                                    connected ? ui->actionDisconnect : ui->actionConnect);
@@ -112,14 +108,16 @@ void MainWindow::authEvents(authEventsType event)
     switch (event) {
     case OK:
         setConnected(true);
-        break;
+        break ;
     case DISCONNECTED:
         QMessageBox::critical(this, "Connection Error", "You've been disconnected");
         setConnected(false);
-        break;
+        break ;
     case BADAUTH:
         QMessageBox::critical(this, "Authentication error", "Wrong login/password");
-        setConnected(false);
+        break ;
+    case TIMEOUT:
+        QMessageBox::critical(this, "Authentication error", "Connection timeout");
         break ;
     case DUPPLICATE:
         QMessageBox::critical(this, "Authentication error", "Already logged in");
@@ -156,6 +154,7 @@ void    MainWindow::joinChannel(const QString &name)
 {
     QTreeWidgetItem* item = new QTreeWidgetItem(QStringList(name));
     ui->channelList->addTopLevelItem(item);
+    item->setExpanded(true);
 
     ConversationSet* convSet = new ConversationSet;
     connect(convSet->input, SIGNAL(returnPressed()), this, SLOT(lineEdit_returnPressed()));

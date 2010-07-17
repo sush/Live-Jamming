@@ -10,6 +10,7 @@ RoomDialog::RoomDialog(QWidget *parent, Proxy* proxy, const QString& name) :
     ui(new Ui::RoomDialog)
 {
     ui->setupUi(this);
+    ui->playersVBox->setAlignment(ui->invite, Qt::AlignHCenter);
     setObjectName(name);
 
     joined(QSettings().value("user/login").toString());
@@ -37,7 +38,7 @@ void RoomDialog::changeEvent(QEvent *e)
 
 void    RoomDialog::joined(QString client)
 {
-    RoomPlayerItem* item = new RoomPlayerItem(this, client, QString("0"));
+    RoomPlayerItem* item = new RoomPlayerItem(this, client, QString("Paris, France"));
     ui->playersVBox->insertWidget(0, item);
     players.insert(client, (UiRoomPlayer){item});
 }
