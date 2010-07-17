@@ -101,6 +101,10 @@ void MainWindow::setConnected(bool connected)
         Q_FOREACH(QAction* action, ui->menuChans->actions())
             action->setEnabled(connected);
     }
+
+    if (connected == false)
+        Q_FOREACH(const QString& channel, channels.keys())
+            leaveChannel(channel);
 }
 
 void MainWindow::authEvents(authEventsType event)
@@ -167,6 +171,7 @@ void    MainWindow::joinChannel(const QString &name)
 
 void    MainWindow::leaveChannel(const QString &name)
 {
+    ui->stackedWidget->removeWidget(channels[name].convSet);
     delete channels[name].item;
 
     channels.remove(name);
@@ -234,6 +239,7 @@ void MainWindow::on_actionDisconnect_triggered()
     if (isConnected == true) {
         proxy->session()->Disconnect();
         setConnected(false);
+
     }
 }
 
