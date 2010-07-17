@@ -63,9 +63,11 @@ unsigned int	Component_SessionManager::CountActiveSessions() const
   return _sessionMap.size();
 }
 
-Session 	*Component_SessionManager::DoAuth(Packet_v1_Session const * packet_v1_Session)
+Session				*Component_SessionManager::DoAuth(Packet_v1_Session const * packet_v1_Session)
 {
-  Session	*new_session;
+  Session			*new_session;
+  m_userinfo			*userinfo;
+
   assert(packet_v1_Session->getRequestId() == SESSION_AUTHREQUEST);
 
   char const *login = packet_v1_Session->getLogin();
@@ -77,7 +79,7 @@ Session 	*Component_SessionManager::DoAuth(Packet_v1_Session const * packet_v1_S
   std::string pass_str(pass);
   ///////////////////////////
 
-  if (_userModule->Authentification(login_str, pass_str))
+  if (userinfo = _userModule->Authentification(login_str, pass_str))
     {
       field_t			sessionId	= GenSessionId();
       //std::vector<std::string> const friendList	= _userModule->getFriendList(login_str);

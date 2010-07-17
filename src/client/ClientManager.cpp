@@ -79,6 +79,9 @@ void			ClientManager::Init_Components()
 void			ClientManager::Disconnect(Session *)
 {
   _session->Disconnect();
+  _channel->Disconnect();
+  _room->Disconnect();
+  _friend->Disconnect();
 }
 
 boost::asio::ip::udp::endpoint        &ClientManager::getEndpoint()

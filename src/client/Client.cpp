@@ -122,6 +122,12 @@ void		Client::Connect(std::string const & server, int port)
   boost::thread		t(boost::bind(&Client::Run, this));
 }
 
+void		Client::Disconnect()
+{
+  _io_service->stop();
+  _clientManager->Disconnect(0);
+}
+
 void		Client::Init(int argc, char *argv[])
 {
   _argc = argc;

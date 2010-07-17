@@ -7,15 +7,17 @@
 
 //! SERVER:  Interface defines all mandatory method to get info from module.
 
+typedef std::map<std::string, std::string>	m_userinfo;
+typedef m_userinfo::iterator			m_userinfo_it;
+typedef m_userinfo::const_iterator		m_userinfo_cit;
+typedef std::pair<std::string, std::string>	m_userinfo_pair;
+
+
 template <typename T>
 class IUserBackend : public Singleton<T> 
 {
  public:
 
-  typedef std::map<std::string, std::string>	m_userinfo;
-  typedef m_userinfo::iterator			m_userinfo_it;
-  typedef m_userinfo::const_iterator		m_userinfo_cit;
-  typedef std::pair<std::string, std::string>	m_userinfo_pair;
 
  public:
   //! Authentification method.

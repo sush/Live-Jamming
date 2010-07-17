@@ -18,7 +18,7 @@ void					UserModule_mysql::Connection()
   _dbLink.connect(db, server, user, pass);
 }
 
-IUserBackend<UserModule_mysql>::m_userinfo const *	UserModule_mysql::Authentification(std::string const &login, std::string const &password)
+m_userinfo const *	UserModule_mysql::Authentification(std::string const &login, std::string const &password)
 {
 
   std::string request = "CALL PROC_GET_USERINFO("
