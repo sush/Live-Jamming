@@ -7,8 +7,6 @@ RoomPlayerItem::RoomPlayerItem(QWidget *parent, const QString &name, const QStri
 {
     ui->setupUi(this);
     ui->label->setText("<b>" + name + "</b>  " + "<i>" + location + "</i>");
-
-    ui->speaker->setPixmap(QIcon(":/images/kmixdocked-48x48.png").pixmap(30));
 }
 
 RoomPlayerItem::~RoomPlayerItem()

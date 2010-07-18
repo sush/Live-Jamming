@@ -23,18 +23,23 @@ public:
     RoomDialog(QWidget *parent, Proxy* proxy, const QString& name);
     ~RoomDialog();
 
+    void closeEvent(QCloseEvent*);
     QMap<QString, UiRoomPlayer> players;
 
 public slots:
     void    joined(QString client);
     void    leaved(QString client);
-    void    messageRecv(QString client, QString msg);
+
+private slots:
+    void    sendMessage(const QString&login);
+
 
 protected:
     void changeEvent(QEvent *e);
 
 private:
     Ui::RoomDialog *ui;
+    Proxy*  proxy;
 };
 
 #endif // ROOMDIALOG_H

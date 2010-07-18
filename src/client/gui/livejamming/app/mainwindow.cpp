@@ -157,9 +157,8 @@ void    MainWindow::joinChannel(const QString &name)
     item->setExpanded(true);
 
     ConversationSet* convSet = new ConversationSet;
-    connect(convSet->input, SIGNAL(returnPressed()), this, SLOT(lineEdit_returnPressed()));
-    connect(convSet->send, SIGNAL(pressed()), this, SLOT(lineEdit_returnPressed()));
-    convSet->input->setFocus(Qt::OtherFocusReason);
+    connect(convSet, SIGNAL(msgSend(const QString&)), this, SLOT(sendMessage(const QString&)));
+
     ui->stackedWidget->addWidget(convSet);
     ui->stackedWidget->setCurrentWidget(convSet);
     currentChannel = name;
@@ -206,9 +205,7 @@ void    MainWindow::addMessage(const QString &channel, const QString &client, co
     //Q_ASSERT(clients.contains(client));
 
     ConversationSet* convSet = static_cast<ConversationSet*>(ui->stackedWidget->currentWidget());
-    convSet->display->append("<strong>" + client + "</strong>: " + msg + "\n");
-    convSet->display->ensureCursorVisible();
-    convSet->input->clear();
+    convSet->addMessage(client, msg);
 }
 
 void MainWindow::on_actionConnect_triggered()
@@ -304,10 +301,8 @@ void MainWindow::on_actionCreate_room_triggered()
     }
 }
 
-void MainWindow::lineEdit_returnPressed()
+void MainWindow::sendMessage(const QString& msg)
 {
-    QString msg = channels.value(currentChannel).convSet->input->text();
-    if ( !msg.isEmpty())
         proxy->channel()->Send_Message(proxy->session()->_session, msg.toUtf8().data(), proxy->channelNameToId.value(currentChannel));
 }
 

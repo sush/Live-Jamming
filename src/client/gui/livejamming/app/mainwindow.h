@@ -57,8 +57,8 @@ private:
     Ui::MainWindow  *ui;
     Proxy*          proxy;
     bool            isConnected;
-    QLabel         redButton;
-    QLabel        greenButton;
+    QLabel          redButton;
+    QLabel          greenButton;
     QMap<QString, UiChannel>   channels;
     QMap<QString, UiClient>    clients;
     QString         currentChannel;
@@ -74,7 +74,6 @@ private:
 public slots:
     void authEvents(MainWindow::authEventsType event);
     void chanEvents(MainWindow::chanEventsType event, const Packet_v1_Channel*);
-    void createRoom(const QString& name);
 
 private slots:
     void on_actionCreate_room_triggered();
@@ -87,7 +86,8 @@ private slots:
     void on_actionQuit_triggered();
     void on_actionPreferences_triggered();
     void on_actionConnect_triggered();
-    void lineEdit_returnPressed();
+    void sendMessage(const QString&);
+    void createRoom(const QString& name);
 
     friend class AccountConnection;
 };

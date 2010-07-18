@@ -20,6 +20,8 @@ void    Proxy::authResponse(Packet_v1 const* packet, Session*)
 {
     field_t event = static_cast< Packet_v1_Session const*>(packet)->getRequestId();
     MainWindow::authEventsType type;
+    bool    handled = true;
+
     switch (event)
     {
     case SESSION_AUTHRESPONSE_OK:
@@ -30,14 +32,20 @@ void    Proxy::authResponse(Packet_v1 const* packet, Session*)
         type = MainWindow::DUPPLICATE; break;
     case SESSION_DISCONNECTED:
         type = MainWindow::DISCONNECTED; break;
+    default:
+        handled = false;
     }
-    emit sAuthResponse(type);
+
+    if (handled == true)
+        emit sAuthResponse(type);
 }
 
 void    Proxy::chanResponse(Packet_v1 const* packet_, Session*)
 {
     const Packet_v1_Channel* packet = static_cast<const Packet_v1_Channel*>(packet_);
     MainWindow::chanEventsType type;
+    bool    handled = true;
+
     switch (packet->getRequestId())
     {
     case CHANNEL_JOIN_OK:
@@ -54,8 +62,12 @@ void    Proxy::chanResponse(Packet_v1 const* packet_, Session*)
         type = MainWindow::MESSAGE_RECV; break;
     case CHANNEL_LISTED:
         type = MainWindow::LISTED; break;
+    default:
+        handled = false;
     }
-    emit sChanResponse(type, packet);
+
+    if (handled)
+        emit sChanResponse(type, packet);
 }
 
 void    Proxy::roomResponse(const Packet_v1 *packet_, Session *)
@@ -65,15 +77,16 @@ void    Proxy::roomResponse(const Packet_v1 *packet_, Session *)
     switch (packet->getRequestId())
     {
     case ROOM_JOIN_OK:
+        roomid = packet->getRoomId();
         emit joinOk(packet->getRoomName()); break;
     case ROOM_JOINED:
         emit joined(packet->getClientLogin()); break;
     case ROOM_LEAVED:
         emit leaved(packet->getClientLogin()); break;
     case ROOM_MESSAGE_RECV:
-        emit messageRecv(packet->getClientLogin(), packet->getMessage());
-
-    }
+        qDebug() << "ROOM MSG RECEIVED:" << packet->getMessage();
+        emit messageRecv(packet->getClientLogin(), packet->getMessage()); break;
+    }        
 }
 
 void    Proxy::disconnect()

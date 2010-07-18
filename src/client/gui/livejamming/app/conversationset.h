@@ -6,16 +6,20 @@
 
 #include <qdebug.h>
 
-class ConversationSet : public QWidget, public Ui::ConversationSet
+class ConversationSet : public QWidget, private Ui::ConversationSet
 {
 Q_OBJECT
 public:
     explicit ConversationSet(QWidget *parent = 0);
-    ~ConversationSet() { qDebug() << "DESTROYED"; }
+
 signals:
+    void    msgSend(const QString&);
 
 public slots:
+    void    addMessage(const QString& client, const QString& msg);
 
+private slots:
+    void    sendMsg();
 };
 
 #endif // CONVERSATIONSET_H

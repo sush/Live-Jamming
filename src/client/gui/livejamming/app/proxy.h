@@ -27,7 +27,7 @@ void    roomResponse(Packet_v1 const*, Session*);
 // void	Disconnect(Session *){}
    //////////////////////////////////////
 void    disconnect();
-
+field_t roomid;
 QMap<QString, field_t>    channelNameToId;
 QMap<QString, field_t>    clientNameToId;
 const char* channelIdToName(field_t);

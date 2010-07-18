@@ -67,16 +67,6 @@ QDialog QLineEdit {
      </item>
     </layout>
    </item>
-   <item row="0" column="1">
-    <layout class="QVBoxLayout" name="convVBox">
-     <item>
-      <widget class="QTextEdit" name="textEdit"/>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="lineEdit"/>
-     </item>
-    </layout>
-   </item>
    <item row="1" column="0">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="standardButtons">
@@ -87,8 +77,19 @@ QDialog QLineEdit {
      </property>
     </widget>
    </item>
+   <item row="0" column="1">
+    <widget class="ConversationSet" name="convSet" native="true"/>
+   </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ConversationSet</class>
+   <extends>QWidget</extends>
+   <header location="global">conversationset.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

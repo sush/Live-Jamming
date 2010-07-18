@@ -63,7 +63,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
-      <widget class="QTabWidget" name="listsTab">
+      <widget class="QTabWidget" name="tabWidget">
        <property name="styleSheet">
         <string notr="true">QTabWidget::pane {
 	color: rgb(246, 246, 244);
@@ -110,7 +110,7 @@ QTabBar::tab:!selected {
        <property name="tabsClosable">
         <bool>false</bool>
        </property>
-       <widget class="QWidget" name="tab">
+       <widget class="QWidget" name="channelsTab">
         <property name="styleSheet">
          <string notr="true">#tab {	
 	background: rgb(80, 80, 80);
@@ -179,7 +179,7 @@ ChannelList::branch:open:has-children:has-siblings  {
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="tab_2">
+       <widget class="QWidget" name="FriendsTab">
         <property name="styleSheet">
          <string notr="true">#tab_2 {
 	background: rgb(80, 80, 80)
