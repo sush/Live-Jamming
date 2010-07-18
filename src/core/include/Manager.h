@@ -7,6 +7,13 @@ class Packet_v1;
 #include <iostream>
 #include <list>
 #include <map>
+
+
+typedef std::map<std::string, std::string>	m_userinfo;
+typedef m_userinfo::iterator			m_userinfo_it;
+typedef m_userinfo::const_iterator		m_userinfo_cit;
+typedef std::pair<std::string, std::string>	m_userinfo_pair;
+
 #include <boost/bind.hpp>
 #include <boost/asio.hpp>
 #include <boost/threadpool.hpp>
@@ -16,6 +23,7 @@ class Packet_v1;
 #include <IComponent.h>
 #include <Protocol.h>
 #include <Packet.h>
+
 
 class Manager
 {

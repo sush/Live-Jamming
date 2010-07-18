@@ -106,3 +106,14 @@ Component_Jam			      *ClientManager::getComponentJam()
 {
   return _jam;
 }
+
+ClientManager::m_user &			ClientManager::getUserMap()
+{
+  return _userMap;
+}
+
+ClientManager::m_avatar &		ClientManager::getAvatarMap()
+{
+  return _avatarMap;
+}
+

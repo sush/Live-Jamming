@@ -18,8 +18,9 @@ class Component_ChannelManager;
 
 class Component_ChannelManager : public IComponent
 {
-  friend class Session;
-  friend class ServerManager;
+  friend class Session;   // not needed ?
+
+  friend class ServerManager;  // not needed ?
 
 public:
 

@@ -14,9 +14,13 @@ class Session;
 
 #include <Manager.h>
 
+
 class ClientManager : public Manager
 {
 public:
+  typedef std::map<field_t, m_userinfo const *> m_user;
+  typedef std::map<field_t, char const *> m_avatar;
+
 					ClientManager(boost::asio::io_service &, boost::threadpool::pool &,
 						      boost::asio::ip::udp::socket &, boost::asio::ip::udp::endpoint &);
   virtual				~ClientManager();
@@ -27,6 +31,10 @@ public:
   virtual void				Connect(std::string const &, std::string const &);
   virtual void				Connect(Session *) {} // pure virtual must be implemented
   Component_Jam				*getComponentJam();
+
+  m_user &				getUserMap();
+  m_avatar &				getAvatarMap();
+  
 
 private:
   virtual void				Init_Components();
@@ -42,6 +50,8 @@ protected:
   // list of additional optional components
 
 private:
+  m_user				_userMap;
+  m_avatar				_avatarMap;
   boost::asio::ip::udp::endpoint	&_remote_endpoint;
 };
 

@@ -86,6 +86,7 @@ Session				*Component_SessionManager::DoAuth(Packet_v1_Session const * packet_v1
       
       new_session = new Session(_serverManager, _serverManager->getIO(), packet_v1_Session, sessionId);
       new_session->setLogin(login_str);
+      new_session->setUserInfo(userinfo);
       //      new_session->setFriendList(friendList);
       
       _sessionMap[new_session->getSessionId()] = new_session;

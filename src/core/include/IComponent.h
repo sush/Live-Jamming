@@ -3,7 +3,7 @@
 
 class IComponent;
 class Bind_recv;
-//class Manager;
+class Session;
 
 
 #include <iostream>
@@ -11,9 +11,7 @@ class Bind_recv;
 #include <boost/asio.hpp>
 #include <Protocol.h>
 #include <Request.h>
-//#include <Session.h>
 //#include <Bind_send.h>
-#include <Session.h>
 #include <Packet_v1.h>
 
 class IComponent
@@ -48,14 +46,10 @@ class IComponent
   virtual void		Disconnect(Session *) = 0;
   //  virtual void	Bindings_send() = 0;
   
-  field_t		getComponentId()				{ return _componentId; }
-  void			setBindingsRecv(m_bindings_recv & bindingsRecv)	{ _bindingsRecv = &bindingsRecv; }
-  void			setRegisteredRequests(m_request & requests)	{ _registeredRequests = &requests; }
-  Packet_v1  const	*getOrigPacket(Packet_v1 const *p, Session *session)
-  {
-    assert(_registeredRequests->find(p->getRequestId())->second->getResponseTo() != RESPONSETONOTHING);
-    return session->getOriginatedPacket(_componentId, _registeredRequests->find(p->getRequestId())->second->getResponseTo());
-  }
+  field_t		getComponentId();	
+  void			setBindingsRecv(m_bindings_recv &);
+  void			setRegisteredRequests(m_request &);
+  Packet_v1  const	*getOrigPacket(Packet_v1 const *, Session *);
 
 protected:
   const field_t		_componentId;

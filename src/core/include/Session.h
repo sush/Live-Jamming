@@ -4,7 +4,6 @@
 class Session;
 class Packet;
 class Packet_v1;
-class Manager;
 
 #include <iostream>
 #include <list>
@@ -12,7 +11,7 @@ class Manager;
 #include <boost/asio.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/bind.hpp>
-
+#include <Manager.h>
 #include <Protocol.h>
 
 class Session
@@ -51,6 +50,13 @@ public:
   void						CancelTimeOutOccurred();
   void						setAutoRetry(Packet_v1 *);
   void						CancelAutoRetry(field_t, field_t);
+
+  m_userinfo const	*getUserInfo() const;
+  char const		*getAvatar() const;
+  void		setUserInfo(m_userinfo const *);
+  void		setAvatar(char const *);
+
+
 
   std::string const &				getLogin() const;
   void						setLogin(std::string const &);
@@ -98,6 +104,8 @@ private:
   bool					_isLogged;
   std::string				_login;
   l_Friend				_friendList;
+  m_userinfo const			*_userinfo;
+  char const				*_avatar;
 };
 
 #endif // ! __SESSION_H__

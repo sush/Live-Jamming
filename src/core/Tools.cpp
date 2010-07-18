@@ -1,15 +1,15 @@
-#include "Tools.h"
+#include <Tools.h>
 
-char const *serialize(std::map<std::string, std::string> *m_profil)
+char const *serialize(m_userinfo const *m_profil)
 {
   std::string	profilList;
   char const	*tmp;
 
-  std::map<std::string, std::string>::iterator it, end = m_profil->end();
+  m_userinfo::const_iterator it, end = m_profil->end();
   for (it = m_profil->begin(); it != end; ++it)
     {
       tmp = it->first.c_str();
-      for (unsigned int i = 0; i < it->first.length(); ++i)
+      for (std::size_t i = 0; i < it->first.length(); ++i)
       	{
       	  if (tmp[i] == '\\' || tmp[i] == '#')
       	    profilList += "\\";
@@ -17,7 +17,7 @@ char const *serialize(std::map<std::string, std::string> *m_profil)
       	}
       profilList += '#';
       tmp = it->second.c_str();
-      for (unsigned int i = 0; i < it->second.length(); ++i)
+      for (std::size_t i = 0; i < it->second.length(); ++i)
       	{
       	  if (tmp[i] == '\\' || tmp[i] == '#')
       	    profilList += "\\";
@@ -30,16 +30,15 @@ char const *serialize(std::map<std::string, std::string> *m_profil)
   return profilList.c_str();
 }
 
-std::map<std::string, std::string> *unserialize(char const *userInfos)
+m_userinfo const *unserialize(char const *userInfos)
 {
   std::string	infos = userInfos;
   std::string	tmp;
-  bool		escape = false;
   std::vector<std::string>		*v_tmp = new std::vector<std::string>();
 
-  std::map<std::string, std::string>	*m_userInfos = new std::map<std::string, std::string>();
+  m_userinfo	*m_userInfos = new m_userinfo;
 
-  for (unsigned int i = 0; i < infos.length(); ++i)
+  for (std::size_t i = 0; i < infos.length(); ++i)
     {
       if (infos[i] == '\0')
       	break;
@@ -57,7 +56,7 @@ std::map<std::string, std::string> *unserialize(char const *userInfos)
 	tmp += infos[i];
     }
 
-  for (int j = 0; j < v_tmp->size(); ++j)
+  for (std::size_t j = 0; j < v_tmp->size(); ++j)
     {
       if (j == v_tmp->size())
 	break;

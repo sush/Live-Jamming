@@ -5,11 +5,9 @@
 #include <map>
 #include <vector>
 #include <cstring>
+#include <Manager.h>
 
-char const *serialize(std::map<std::string, std::string> *);
-//char const *serialize(std::map<unsigned int, Channel*> *);
-std::map<std::string, std::string> *unserialize(char const *);
-
-
+char const *serialize(m_userinfo const *);
+m_userinfo const *unserialize(char const *);
 
 #endif // ! __TOOLS_H__

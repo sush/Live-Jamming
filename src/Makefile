@@ -20,6 +20,8 @@ SERVER_SRC	=		server/main.cpp\
 				server/Component_FriendManager.cpp\
 				server/Component_RoomManager.cpp\
 				server/Component_JamManager.cpp\
+				server/Component_UserInfoManager.cpp\
+				core/IComponent.cpp\
 				core/Time.cpp\
 				core/Tools.cpp\
 				core/Channel.cpp\
@@ -36,6 +38,7 @@ SERVER_SRC	=		server/main.cpp\
 				core/Packet_v1_Channel.cpp\
 				core/Packet_v1_Friend.cpp\
 				core/Packet_v1_Room.cpp \
+				core/Packet_v1_UserInfo.cpp \
 				core/Packet_v1_Jam.cpp
 
 CLIENT_SRC	=		client/main_net.cpp\

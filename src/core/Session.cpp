@@ -7,6 +7,8 @@
 Session::Session(Manager * manager, boost::asio::io_service & io_service, Packet_v1 const * packet_v1, unsigned int sessionId)
   :_manager(manager), _io_service(io_service), _sessionId(sessionId), _remote_endpoint(packet_v1->getEndpoint()), _timeOutTestCount(0), _isLogged(true)
 {
+  _userinfo = 0;
+  _avatar = 0;
   _ip = packet_v1->getEndpoint().address();
   _port  = packet_v1->getEndpoint().port();
   
@@ -19,6 +21,8 @@ Session::Session(Manager * manager, boost::asio::io_service & io_service, Packet
 Session::Session(Manager * manager, boost::asio::io_service & io_service, boost::asio::ip::udp::endpoint &endpoint)
   :_manager(manager), _io_service(io_service), _remote_endpoint(endpoint), _timeOutTestCount(0), _isLogged(false)
 {
+  _userinfo = 0;
+  _avatar = 0;
   _timer_timeOutTest = new boost::asio::deadline_timer(_io_service);
   _timer_timeOutOccurred = new boost::asio::deadline_timer(_io_service);
 }
@@ -260,4 +264,24 @@ void	Session::PacketTimer::CancelAutoRetry()
 Packet_v1	*Session::PacketTimer::getPacket()
 {
   return _packet_v1;
+}
+
+m_userinfo const	*Session::getUserInfo() const
+{
+  return _userinfo;
+}
+
+char const		*Session::getAvatar() const
+{
+  return _avatar;
+}
+
+void			Session::setUserInfo(m_userinfo const * userinfo)
+{
+  _userinfo = userinfo;
+}
+
+void			Session::setAvatar(char const * avatar)
+{
+  _avatar = avatar;
 }
