@@ -31,7 +31,9 @@ public slots:
     void    leaved(QString client);
 
 private slots:
+    void on_startButton_clicked(bool checked);
     void    sendMessage(const QString&login);
+    void    startedJam();
 
 
 protected:

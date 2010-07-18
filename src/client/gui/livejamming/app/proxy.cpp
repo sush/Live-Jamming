@@ -86,6 +86,9 @@ void    Proxy::roomResponse(const Packet_v1 *packet_, Session *)
     case ROOM_MESSAGE_RECV:
         qDebug() << "ROOM MSG RECEIVED:" << packet->getMessage();
         emit messageRecv(packet->getClientLogin(), packet->getMessage()); break;
+    case ROOM_STARTED_JAM:
+        qDebug() << "JAM IS OK ! !";
+        emit startedJam(); break;
     }        
 }
 

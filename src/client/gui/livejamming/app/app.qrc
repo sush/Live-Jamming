@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="/">
+    <file>images/player_stop-30x30.png</file>
+    <file>images/player_play-30x30.png</file>
     <file>images/branch-closed.png</file>
     <file>images/branch-more.png</file>
     <file>images/branch-end.png</file>

@@ -43,10 +43,12 @@ Client *              client;
 signals:
 void    sAuthResponse(MainWindow::authEventsType);
 void    sChanResponse(MainWindow::chanEventsType, const Packet_v1_Channel*);
+// room
 void    joinOk(QString);
 void    joined(QString);
 void    leaved(QString);
 void    messageRecv(QString, QString);
+void    startedJam();
 };
 
 #endif // PROXY_H

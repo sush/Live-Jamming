@@ -17,6 +17,7 @@ signals:
 
 public slots:
     void    addMessage(const QString& client, const QString& msg);
+    void    addEvent(const QString& event);
 
 private slots:
     void    sendMsg();

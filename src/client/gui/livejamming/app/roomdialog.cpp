@@ -21,6 +21,7 @@ RoomDialog::RoomDialog(QWidget *parent, Proxy* proxy, const QString& name) :
     connect(proxy, SIGNAL(joined(QString)), this, SLOT(joined(QString)), Qt::QueuedConnection);
     connect(proxy, SIGNAL(leaved(QString)), this, SLOT(leaved(QString)), Qt::QueuedConnection);
     connect(proxy, SIGNAL(messageRecv(QString,QString)), ui->convSet, SLOT(addMessage(const QString&, const QString&)), Qt::QueuedConnection);
+    connect(proxy, SIGNAL(startedJam()), this, SLOT(startedJam()));
 
     connect(ui->convSet, SIGNAL(msgSend(const QString&)), this, SLOT(sendMessage(const QString&)));
 
@@ -68,4 +69,19 @@ void    RoomDialog::sendMessage(const QString &msg)
 {
     qDebug() << "ROOMID = " <<  proxy->roomid;
     proxy->room()->Send_Message(proxy->session()->_session, msg.toUtf8().data(), proxy->roomid);
+}
+
+void RoomDialog::on_startButton_clicked(bool play)
+{
+    if (play)
+        proxy->room()->Send_Start_Jam(proxy->session()->_session, proxy->roomid);
+    else
+        proxy->room()->Send_Stop_Jam(proxy->session()->_session, proxy->roomid);
+}
+
+void    RoomDialog::startedJam()
+{
+    bool checked = ui->startButton->isChecked();
+    ui->startButton->setText(checked ? "stop" : "start");
+    ui->startButton->setIcon(QIcon(checked ? ":/images/player-stop-30x30.png" : ":/images/player-start-30x30.png"));
 }
