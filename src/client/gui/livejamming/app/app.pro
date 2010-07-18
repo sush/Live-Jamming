@@ -91,6 +91,7 @@ SOURCES += Manager.cpp \
     Channel.cpp \
     Room.cpp \
     Jam.cpp \
+    Tools.cpp \
     Time.cpp
 HEADERS += Session.h \
     Manager.h \

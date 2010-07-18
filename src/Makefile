@@ -21,6 +21,7 @@ SERVER_SRC	=		server/main.cpp\
 				server/Component_RoomManager.cpp\
 				server/Component_JamManager.cpp\
 				core/Time.cpp\
+				core/Tools.cpp\
 				core/Channel.cpp\
 				core/Room.cpp\
 				core/Jam.cpp\
