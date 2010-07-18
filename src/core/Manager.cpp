@@ -2,6 +2,8 @@
 #include <stdexcept>
 #include <Packet_v1.h>
 #include <Protocol.h>
+#include <Protocol_Jam.h>
+#include <Protocol_Room.h>
 #include <Protocol_Session.h>
 #include <stdexcept>
 

@@ -1,5 +1,5 @@
-#ifndef __PROTOCOL_ROOM_H__
-#define __PROTOCOL_ROOM_H__
+#ifndef __PROTOCOL_JAM_H__
+#define __PROTOCOL_JAM_H__
 
 #define JAM_COMPONENTID				5
 
