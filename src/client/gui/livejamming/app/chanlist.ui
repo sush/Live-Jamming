@@ -13,9 +13,40 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">#chanList {
+	background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.00934579 rgba(155, 217, 122, 255), stop:0.0116822 rgba(59, 61, 59, 255), stop:0.995455 rgba(59, 61, 59, 255))
+}
+#chanList QPushButton {
+color: #333;
+border: 2px solid #555;
+border-radius: 11px;
+padding: 5px;
+background: qradialgradient(cx: 0.3, cy: -0.4,
+fx: 0.3, fy: -0.4,
+radius: 1.35, stop: 0 #fff, stop: 1 #888);
+min-width: 80px;
+}
+#chanList QPushButton:hover {
+background: qradialgradient(cx: 0.3, cy: -0.4,
+fx: 0.3, fy: -0.4,
+radius: 1.35, stop: 0 #fff, stop: 1 #bbb);
+}
+#chanList QPushButton:pressed {
+background: qradialgradient(cx: 0.4, cy: -0.1,
+fx: 0.4, fy: -0.1,
+radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
+}</string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QTreeWidget" name="treeWidget">
+     <property name="styleSheet">
+      <string notr="true">#treeWidget {
+background: rgb(132, 132, 132);
+border-radius: 20px;
+}</string>
+     </property>
      <column>
       <property name="text">
        <string>Channel</string>
@@ -35,6 +66,11 @@
      </property>
      <item row="0" column="0">
       <widget class="QLabel" name="findLabel">
+       <property name="styleSheet">
+        <string notr="true">#findLabel {
+	color: #FFFFFF;
+}</string>
+       </property>
        <property name="text">
         <string>Find</string>
        </property>
@@ -45,6 +81,11 @@
      </item>
      <item row="1" column="0">
       <widget class="QLabel" name="lookInLabel">
+       <property name="styleSheet">
+        <string notr="true">#lookInLabel {
+	color: #FFFFFF;
+}</string>
+       </property>
        <property name="text">
         <string>Look in topic too</string>
        </property>
