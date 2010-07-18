@@ -97,6 +97,13 @@ void	Component_Channel::RegisteredRequests()
     new Request(CHANNEL_LISTED, RECV, "LISTED", CHANNEL_LIST);
 }
 
+char const	*Component_Channel::getChannelName(field_t channelId) const
+{
+  if (_channelMap.find(channelId) != _channelMap.end())
+    return _channelMap.find(channelId)->second->getName();
+  return 0;
+}
+
 void		Component_Channel::Send_Join(Session *session, char * const name)
 {
   Packet_v1_Channel *packet_v1_channel = new Packet_v1_Channel(CHANNEL_JOIN);
@@ -105,22 +112,30 @@ void		Component_Channel::Send_Join(Session *session, char * const name)
   _clientManager->Send(packet_v1_channel, session);
 }
 
-void		Component_Channel::Recv_Join_OK(Packet_v1 const *packet_v1, Session *)
+void		Component_Channel::Recv_Join_OK(Packet_v1 const *packet_v1, Session * session)
 {
   Packet_v1_Channel const *packet_v1_channel = 
     static_cast<Packet_v1_Channel const *>(packet_v1);
 
+  Packet_v1_Channel const	*orig_packet = static_cast<Packet_v1_Channel const *>
+    (getOrigPacket(packet_v1, session));
+      
+  std::cout << "orig_packet = " << (int)orig_packet << std::endl;
   field_t channelId = packet_v1_channel->getChannelId();
-  char const *channelName = packet_v1_channel->getChannelName();
+  //  char const *channelName = packet_v1_channel->getChannelName();
 
+  std::cout << "getChannelName() = " << orig_packet->getChannelName() << std::endl;
   if (_channelMap.find(channelId) == _channelMap.end())
-    _channelMap[channelId] = new Channel(channelName);
+    _channelMap[channelId] = new Channel(orig_packet->getChannelName());
 }
 
 void		Component_Channel::Recv_Join_NOK_ALREADYINCHAN(Packet_v1 const *packet_v1, Session *session)
 {
   Packet_v1_Channel const *packet_v1_channel = 
     static_cast<Packet_v1_Channel const *>(packet_v1);
+
+  Packet_v1_Channel const	*orig_packet = static_cast<Packet_v1_Channel const *>
+    (getOrigPacket(packet_v1, session));
 
   field_t channelId = packet_v1_channel->getChannelId();
   // in case of lost packet check if user not in chan if so add him to it

@@ -8,6 +8,7 @@
 #include <Bind_recv.h>
 #include <Protocol_Session.h>
 #include <Color.h>
+#include <Time.h>
 
 ServerManager::ServerManager(boost::asio::io_service & io_service, boost::threadpool::pool & pool, boost::asio::ip::udp::socket & socket)
   :Manager(io_service, pool, socket)
@@ -97,6 +98,11 @@ unsigned int	ServerManager::CountActiveSessions() const
 
 void		ServerManager::Connect(Session *session)
 {
+  std::cout << "* ";
+  Time::Print();
+  session->Print();
+  std::cout << " Connected" << std::endl;
+
   _sessionManager->Connect(session);// should be called first
   _channelManager->Connect(session);
   _friendManager->Connect(session);
@@ -106,12 +112,18 @@ void		ServerManager::Connect(Session *session)
 
 void		ServerManager::Disconnect(Session *session)
 {
+  std::cout << "* ";
+  Time::Print();
+  session->Print();
+  std::cout << " Disconnected" << std::endl;
+
   _channelManager->Disconnect(session);
   _friendManager->Disconnect(session);
   _roomManager->Disconnect(session);
   _jamManager->Disconnect(session);
   _sessionManager->Disconnect(session); // should be called last
   _sessionMap.erase(session->getSessionId());
+  delete session;
 }
 
 ServerManager::m_Session &	ServerManager::getSessionMap()

@@ -127,14 +127,16 @@ void MainWindow::authEvents(authEventsType event)
 
 void    MainWindow::chanEvents(chanEventsType event, const Packet_v1_Channel* packet)
 {
+  char const * channelName = proxy->channel()->getChannelName(packet->getChannelId());
+
     switch(event) {
     case JOIN_OK:
-        proxy->channelNameToId[packet->getChannelName()] = packet->getChannelId();
-        joinChannel(packet->getChannelName());
+        proxy->channelNameToId[channelName] = packet->getChannelId();
+        joinChannel(channelName);
         break;
     case LEAVE_OK:
-        proxy->channelNameToId.remove(packet->getChannelName());
-        leaveChannel(packet->getChannelName());
+        proxy->channelNameToId.remove(channelName);
+        leaveChannel(channelName);
         break;
     case JOINED:
         qDebug() << packet->getClientLogin() << "joined" << proxy->channelIdToName(packet->getChannelId());

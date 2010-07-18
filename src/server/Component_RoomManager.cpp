@@ -83,7 +83,7 @@ void	Component_RoomManager::RegisteredRequests()
     new Request(ROOM_LEAVED, SEND, "LEAVED", RETRY);
 
   (*_registeredRequests)[ROOM_MESSAGE_RECV] = 
-    new Request(ROOM_MESSAGE_RECV, SEND, "MESSAGE_RECV", NORETRY);
+    new Request(ROOM_MESSAGE_RECV, SEND, "MESSAGE_RECV", RETRY);
 
   (*_registeredRequests)[ROOM_MESSAGE_ACK] = 
     new Request(ROOM_MESSAGE_ACK, SEND, "MESSAGE_ACK", NORETRY);

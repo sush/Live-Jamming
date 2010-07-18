@@ -34,6 +34,8 @@ public:
   void					Connect(Session *);
   void					Disconnect(Session *);
 
+  char const	*			getChannelName(field_t) const;
+
   //! Create a channel Join request to the server.
   void					Send_Join(Session *, char * const);
   //! Create a channel Leave request in order to leave the channel.

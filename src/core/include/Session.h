@@ -59,7 +59,7 @@ public:
   void						setFriendList(l_Friend &);
 
   // async mode get originated packet in a response
-  Packet_v1 *					getOriginatedPacket(field_t, field_t);
+  Packet_v1 const *					getOriginatedPacket(field_t, field_t) const;
 
 private:
   class PacketTimer

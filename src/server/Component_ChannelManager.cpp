@@ -134,7 +134,7 @@ void	Component_ChannelManager::Send_Join_OK(Session *session, field_t channelId,
   Packet_v1_Channel *packet_v1_channel = new Packet_v1_Channel(CHANNEL_JOIN_OK);
 
   packet_v1_channel->setChannelId(channelId);
-  packet_v1_channel->setChannelName(channelName);
+  //  packet_v1_channel->setChannelName(channelName);
   _serverManager->Send(packet_v1_channel, session);
 }
 
@@ -143,7 +143,7 @@ void	Component_ChannelManager::Send_Join_NOK_ALREADYINCHAN(Session *session, fie
   Packet_v1_Channel *packet_v1_channel = new Packet_v1_Channel(CHANNEL_JOIN_NOK_ALREADYINCHAN);
 
   packet_v1_channel->setChannelId(channelId);
-  packet_v1_channel->setChannelName(channelName);
+  //  packet_v1_channel->setChannelName(channelName);
   _serverManager->Send(packet_v1_channel, session);
 }
 

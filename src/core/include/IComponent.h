@@ -3,9 +3,8 @@
 
 class IComponent;
 class Bind_recv;
-class Session;
 //class Manager;
-class Packet_v1;
+
 
 #include <iostream>
 #include <map>
@@ -14,6 +13,8 @@ class Packet_v1;
 #include <Request.h>
 //#include <Session.h>
 //#include <Bind_send.h>
+#include <Session.h>
+#include <Packet_v1.h>
 
 class IComponent
 {
@@ -50,6 +51,11 @@ class IComponent
   field_t		getComponentId()				{ return _componentId; }
   void			setBindingsRecv(m_bindings_recv & bindingsRecv)	{ _bindingsRecv = &bindingsRecv; }
   void			setRegisteredRequests(m_request & requests)	{ _registeredRequests = &requests; }
+  Packet_v1  const	*getOrigPacket(Packet_v1 const *p, Session *session)
+  {
+    assert(_registeredRequests->find(p->getRequestId())->second->getResponseTo() != RESPONSETONOTHING);
+    return session->getOriginatedPacket(_componentId, _registeredRequests->find(p->getRequestId())->second->getResponseTo());
+  }
 
 protected:
   const field_t		_componentId;
