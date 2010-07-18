@@ -83,10 +83,7 @@ QTabBar::tab:!selected {
 QTabWidget QLabel {
 	color: #FFFFFF;
 }
-QTabWidget QComboBox {
-	background: rgb(59, 61, 59);
-	color: #FFFFFF;
-}</string>
+</string>
      </property>
      <property name="currentIndex">
       <number>0</number>
