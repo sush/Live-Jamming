@@ -153,7 +153,6 @@ void	Component_ChannelManager::Send_Joined(Session *session, field_t channelId, 
 
   packet_v1_channel->setChannelId(channelId);
   packet_v1_channel->setClientSessionId(clientSessionId);
-  packet_v1_channel->setChannelName(_channelMap->find(channelId)->second->getName());
   packet_v1_channel->setClientLogin(clientLogin);
 
   _serverManager->Send(packet_v1_channel, session);
@@ -252,7 +251,6 @@ void	Component_ChannelManager::Send_Leaved(Session *session, field_t channelId, 
 
   packet_v1_channel->setChannelId(channelId);
   packet_v1_channel->setClientSessionId(clientSessionId);
-  packet_v1_channel->setChannelName(_channelMap->find(channelId)->second->getName());
   packet_v1_channel->setClientLogin(clientLogin);
 
   _serverManager->Send(packet_v1_channel, session);

@@ -9,6 +9,7 @@
 #include <Packet_v1_Channel.h>
 #include <Packet_v1_Friend.h>
 #include <Packet_v1_Room.h>
+#include <Packet_v1_Jam.h>
 #include <Exception.h>
 #include <Color.h>
 
@@ -35,6 +36,8 @@ Packet_v1	*Manager::Cond_new_Packet(boost::asio::ip::udp::endpoint & endpoint, P
     return new Packet_v1_Friend(&endpoint, &buffer, len);
   else if (componentId == ROOM_COMPONENTID)
     return new Packet_v1_Room(&endpoint, &buffer, len);
+  else if (componentId == JAM_COMPONENTID)
+    return new Packet_v1_Jam(&endpoint, &buffer, len);
 
   throw std::runtime_error(X_UNKNOWN_REQUESTID);
   return 0; // suppress compiler warning
@@ -55,6 +58,8 @@ Packet_v1	*Manager::Cond_new_Packet(int componentId, int requestId) const
     return new Packet_v1_Friend(requestId);
   else if (componentId == ROOM_COMPONENTID)
     return new Packet_v1_Room(requestId);
+  else if (componentId == JAM_COMPONENTID)
+    return new Packet_v1_Jam(requestId);
 
   throw std::runtime_error(X_UNKNOWN_COMPONENTID);
   return 0;
