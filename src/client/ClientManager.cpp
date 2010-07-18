@@ -89,8 +89,12 @@ void			ClientManager::Disconnect(Session *)
   _channel->Disconnect(session);
   _room->Disconnect(session);
   _friend->Disconnect(session);
-  static_cast<Proxy*>(this)->disconnect();
-  delete session;
+  static_cast<Proxy*>(this)->disconnect(); // session_timeout, connection_timeout
+  std::cout << "session = " << session << std::endl;
+  std::cout << "session = " << session << std::endl;
+  std::cout << "^^^^^^^^^^^^^^            STOP           ^^^^^^^^^^^^^^^" << std::endl;
+  _io_service.stop();   // STOPS socket monitoring
+  _io_service.reset();
 }
 
 boost::asio::ip::udp::endpoint        &ClientManager::getEndpoint()

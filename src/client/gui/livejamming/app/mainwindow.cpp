@@ -226,7 +226,7 @@ void MainWindow::on_actionConnect_triggered()
                        settings.value("user/password").toString().toStdString(),
                        settings.value("server/ip").toString().toStdString(),
                        settings.value("server/port").toInt());
-        }
+	   }
        }
     }
 }
@@ -234,8 +234,9 @@ void MainWindow::on_actionConnect_triggered()
 
 void MainWindow::on_actionDisconnect_triggered()
 {
-    if (isConnected == true) {
-        proxy->client->Disconnect();
+    if (isConnected == true)
+      {
+	proxy->client->Disconnect();
         setConnected(false);
 
     }

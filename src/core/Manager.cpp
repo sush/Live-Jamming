@@ -85,7 +85,13 @@ boost::asio::io_service		&Manager::getIO()
 void		Manager::CallBack_handle_send(Packet_v1 *packet_v1) const
 {
   if (!getRegisteredRequest(packet_v1->getComponentId(), packet_v1->getRequestId()).getRetry())
-    delete packet_v1;
+    {
+      std::cout << "!!!! [FREE]  ";
+      std::cout << "ComponentID = " << packet_v1->getComponentId()
+		<< "REQUESTID = " << packet_v1->getRequestId()
+		<< std::endl;
+      delete packet_v1;
+    }
 }
 
 void		Manager::CallBack_Send_TimeOut(Session * session, Packet_v1 *packet_v1, boost::system::error_code error_code)

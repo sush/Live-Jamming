@@ -9,8 +9,8 @@
 #define SESSION_AUTHRESPONSE_NOK_DUPLICATE	4
 #define	SESSION_DISCONNECT			5
 #define SESSION_DISCONNECTED			6
-#define SESSION_TIMEOUT				7
-#define	SESSION_KEEPALIVE			8
+#define SESSION_TIMEOUT				7 // PACKET TO TEST SESSION TIMEOUT
+#define	SESSION_KEEPALIVE			8 // 
 
 // binary data contained in packet in order of placement in the binary fields
 

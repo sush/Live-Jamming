@@ -78,7 +78,7 @@ void    Proxy::roomResponse(const Packet_v1 *packet_, Session *)
 
 void    Proxy::disconnect()
 {
-    emit sAuthResponse(MainWindow::DISCONNECTED);
+  //    emit sAuthResponse(MainWindow::DISCONNECTED);
 }
 
 const char*    Proxy::channelIdToName(field_t id)

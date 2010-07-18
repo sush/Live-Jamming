@@ -20,9 +20,10 @@ void		Client::Run()
   std::cout << "Client started..." << std::endl;
  
   start_receive();
+  std::cout << "^^^^^^^^^^^^^^            RUN           ^^^^^^^^^^^^^^^" << std::endl;
   _io_service->run();
+  std::cout << "^^^^^^^^^^^^^^            END_RUN           ^^^^^^^^^^^^^^^" << std::endl;
 }
-
 
 void Client::start_receive()
 {
@@ -115,6 +116,7 @@ void		Client::Connect(std::string const & login, std::string const & password, s
 {
   // string to int
   std::cout << " ########################### CONNECT #################################" << std::endl;
+  std::cout << "login = " << login << ", pass = " << password << ", server = " << server << ", port = " << port << std::endl;
   connect_address = server.c_str();
   _connect_port = port;
   _remote_endpoint->address(boost::asio::ip::address::from_string(connect_address));
@@ -125,7 +127,7 @@ void		Client::Connect(std::string const & login, std::string const & password, s
 
 void		Client::Disconnect()
 {
-  _io_service->stop();
+  std::cout << " _ _ _ _ _ _ _ *** _ _ _ _ _ _ DISCONNECT #################################" << std::endl;
   _clientManager->Disconnect(0);
 }
 

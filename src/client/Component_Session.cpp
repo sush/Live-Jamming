@@ -26,8 +26,7 @@ void	Component_Session::BindingsRecv()
                   static_cast<Proxy*>(_clientManager), static_cast<Proxy::pMethod>(&Proxy::authResponse));
 
   (*_bindingsRecv)[SESSION_TIMEOUT] =
-    new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Session::Recv_TimeOutTest),
-                  static_cast<Proxy*>(_clientManager), static_cast<Proxy::pMethod>(&Proxy::authResponse));
+    new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Session::Recv_TimeOutTest));
 
   (*_bindingsRecv)[SESSION_KEEPALIVE] =
     new Bind_recv(this, static_cast<IComponent::pMethod>(&Component_Session::Recv_KeepAlive));
@@ -96,14 +95,19 @@ void		Component_Session::Recv_AuthResponse(Packet_v1 const *packet_v1, Session *
       session->Authentificated(packet_v1);
     }
   else
-    {}	// auth errors
+    {
+      _clientManager->Disconnect(0);
+    }	// auth errors
 }
 
 void		Component_Session::Disconnect(Session *)
 {
-  _logged = false;
-  Send_Disconnect();
-  _session->DeAuthentificated();
+  if (_logged)
+    {
+      _logged = false;
+      Send_Disconnect();
+      _session->DeAuthentificated();
+    }
 }
 
 void		Component_Session::Recv_TimeOutTest(Packet_v1 const *, Session *)

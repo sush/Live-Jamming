@@ -6,7 +6,6 @@ CONFIG  += ordered
     SUBDIRS += 3rdparty/fftreal
 }
 
-
 SUBDIRS += app
 
 TARGET = livejamming_client

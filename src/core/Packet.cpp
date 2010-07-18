@@ -26,7 +26,6 @@ Packet::Packet()
 
 Packet::~Packet()
 {
-  delete _endpoint;
   delete _buffer;
 }
 
@@ -121,7 +120,9 @@ field_t					Packet::getField(unsigned int bin_offset, unsigned int bin_len) cons
       else
 	{
 	  //std::cout << "[0] " << (int)_buffer->at(0) << " [1] " << (int)_buffer->at(1) << std::endl;
-	  byte = _buffer->at(i) >> (8 - (bin_offset + bin_len) % 8);
+	  byte = _buffer->at(i) >> (8 - (((bin_offset + bin_len) % 8 == 0)
+					 ?(8):
+					 ((bin_offset + bin_len) % 8)));
 	  //std::cout << "byte = " << (int)byte << std::endl;
 	  //std::cout << "value << (bin_offset + bin_len) % 8" << (value << (bin_offset + bin_len) % 8) << std::endl;
 	  value = (value << (bin_offset + bin_len) % 8) + byte;
@@ -330,7 +331,9 @@ field_t		Packet::peekField(Packet::buffer_t const &buffer, unsigned int bin_offs
       else
         {
           //std::cout << "[0] " << (int)buffer.at(0) << " [1] " << (int)buffer.at(1) << std::endl;                                                                                                                                       
-          byte = buffer.at(i) >> (8 - (bin_offset + bin_len) % 8);
+	  byte = buffer.at(i) >> (8 - (((bin_offset + bin_len) % 8 == 0)
+					 ?(8):
+					 ((bin_offset + bin_len) % 8)));
           //std::cout << "byte = " << (int)byte << std::endl;                                                                                                                                                                                
           //std::cout << "value << (bin_offset + bin_len) % 8" << (value << (bin_offset + bin_len) % 8) << std::endl;                                                                                                                        
           value = (value << (bin_offset + bin_len) % 8) + byte;
