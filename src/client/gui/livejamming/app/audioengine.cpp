@@ -1,44 +1,83 @@
 #include "audioengine.h"
 
-AudioEngine::AudioEngine(){
-}
+AudioEngine::AudioEngine(QObject *parent)
+    :   QObject(parent)
+    ,   _availableInputDevices(QAudioDeviceInfo::availableDevices(QAudio::AudioInput))
+    ,   _inputDevice(QAudioDeviceInfo::defaultInputDevice())
+    ,   _input(0)
+    ,   _inputIODevice(0)
 
-const QStringList AudioEngine::outputDevices(){
-    QStringList list;
-    foreach(const QAudioDeviceInfo &deviceInfo, this->availableAudioInputDevices()){
-        if(!deviceInfo.isNull())
-        list << deviceInfo.deviceName();
-    }
-    return list;
+{
+    initialize();
 }
 
 const QStringList AudioEngine::inputDevices(){
     QStringList list;
-    foreach(const QAudioDeviceInfo &deviceInfo, this->availableAudioInputDevices()){
+    foreach(const QAudioDeviceInfo &deviceInfo, _availableInputDevices){
         if(!deviceInfo.isNull())
         list << deviceInfo.deviceName();
     }
     return list;
 }
 
-void AudioEngine::startRecordAndPlayBack(){
-    if(m_audioInput){
-        if (QAudio::AudioInput == m_mode &&
-            QAudio::SuspendedState == m_state) {
-            m_audioInput->resume();
-        } else {
-            if (QAudio::AudioInput == m_mode &&
-                QAudio::SuspendedState == m_state) {
-                m_audioInput->resume();
-            } else {
-                m_audioInputIODevice = m_audioInput->start();
-                m_audioOutput->start(m_audioInputIODevice);
-            }
-        }
-    }
+//-----------------------------------------------------------------------------
+// Private functions
+//-----------------------------------------------------------------------------
+void AudioEngine::reset(){
+   stopRecording();
+   setInputState(QAudio::StoppedState);
+   setInputFormat(QAudioFormat());
+   delete _input;
+   _input = 0;
+   _inputIODevice = 0;
+   /* NOT A PROPER _output END*/
 }
 
-void AudioEngine::stopRecordAndPlayback(){
-    stopPlayback();
-    stopRecording();
+bool AudioEngine::initialize(){
+    bool result = false;
+
+    reset();
+
+    if (selectInputFormat()){
+        _input = new QAudioInput(_inputDevice, _inputFormat, this);
+        result = true;
+    }
+    return result;
+}
+
+void AudioEngine::stopRecording(){
+    if(_input){
+        _input->stop();
+        _input->disconnect();
+    }
+    _inputIODevice = 0;
+}
+
+bool AudioEngine::selectInputFormat(){
+    bool foundSupportedFormat = false;
+
+    QAudioFormat format;
+    format.setByteOrder(QAudioFormat::LittleEndian);
+    format.setCodec("audio/pcm");
+    format.setSampleSize(16);
+    format.setSampleType(QAudioFormat::SignedInt);
+    format.setFrequency(8000);
+    format.setChannels(1);
+
+    if (_inputDevice.isFormatSupported(format))
+        foundSupportedFormat = true;
+    else
+        format = QAudioFormat();
+
+    setInputFormat(format);
+    return foundSupportedFormat;
+}
+
+void AudioEngine::setInputFormat(const QAudioFormat &format){
+    _inputFormat = format;
+}
+
+void AudioEngine::setInputState(QAudio::State state)
+{
+    _inputState = state;
 }

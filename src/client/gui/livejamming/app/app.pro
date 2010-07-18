@@ -8,10 +8,8 @@ DESTDIR = ..
 TEMPLATE = app
 !contains(DEFINES, NO_MULTIMEDIA) { 
     QT += multimedia
-    SOURCES += audioengine.cpp \
-        audiomanager.cpp
-    HEADERS += audioengine.h \
-        audiomanager.h
+    SOURCES += audioengine.cpp
+    HEADERS += audioengine.h
     
     # FOR SPECTRE
     INCLUDEPATH += spectre
