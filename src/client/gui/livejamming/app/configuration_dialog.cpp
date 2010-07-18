@@ -3,6 +3,7 @@
 #include <qdebug.h>
 
 #ifndef NO_MULTIMEDIA
+#include "audiomanager.h"
 
 ConfigurationDialog::ConfigurationDialog(QWidget *parent) :
     QDialog(parent),
