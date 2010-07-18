@@ -22,18 +22,19 @@ class Component_Jam : public IComponent
 
   void		Send_Jam(Session *, char const *, field_t);
 
+  void		StartJam(field_t, Room *);
+  void		StopJam(field_t);
+
+
+  void		Connect(Session *);
+  void		Disconnect(Session *);
+
   private:
 
   virtual void	BindingsRecv();
   virtual void	RegisteredRequests();
 
   void		Recv_Jam(Packet_v1 const *, Session *);
-
-  void		StartJam(field_t, Room *);
-  void		StopJam(field_t);
-
-  void		Connect(Session *);
-  void		Disconnect(Session *);
 
  private:
 

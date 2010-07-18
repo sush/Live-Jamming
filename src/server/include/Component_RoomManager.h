@@ -55,7 +55,7 @@ private:
   void			Send_Invited(Session *, char const *);
 
   void			Recv_Start_Jam(Packet_v1 const *, Session *);
-  void			Send_Started_Jam(Session *);
+  void			Send_Started_Jam(Session *, field_t);
   void			Send_Start_Jam_ACK(Session *);
 
   void			Recv_Stop_Jam(Packet_v1 const *, Session *);

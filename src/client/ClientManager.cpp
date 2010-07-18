@@ -101,3 +101,8 @@ boost::asio::ip::udp::endpoint        &ClientManager::getEndpoint()
 {
   return _remote_endpoint;
 }
+
+Component_Jam			      *ClientManager::getComponentJam()
+{
+  return _jam;
+}

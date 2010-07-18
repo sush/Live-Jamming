@@ -453,7 +453,7 @@ void	Component_RoomManager::Recv_Start_Jam(Packet_v1 const *packet_v1, Session *
   Send_Start_Jam_ACK(session);
 
   for (it = connected->begin(); it != end ; ++it)
-    Send_Started_Jam(it->second);
+    Send_Started_Jam(it->second, roomId);
 
   _serverManager->getComponentJam()->StartJam(roomId, room);
 }
@@ -463,7 +463,7 @@ void	Component_RoomManager::Send_Start_Jam_ACK(Session *session)
   _serverManager->Send(_componentId, ROOM_START_JAM_ACK, session);
 }
 
-void	Component_RoomManager::Send_Started_Jam(Session *session)
+void	Component_RoomManager::Send_Started_Jam(Session *session, field_t roomId)
 {
   Packet_v1_Room *packet_v1_room = new Packet_v1_Room(ROOM_STARTED_JAM);
 

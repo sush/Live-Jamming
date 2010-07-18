@@ -1,4 +1,5 @@
 #include <Component_Room.h>
+#include <Component_Jam.h>
 #include <Bind_recv.h>
 
 Component_Room::Component_Room(ClientManager *clientManager)
@@ -60,7 +61,7 @@ void		Component_Room::BindingsRecv()
   (*_bindingsRecv)[ROOM_START_JAM_ACK] =
     new Bind_recv(0, 0);
 
-  (*_bindingsRecv)[ROOM_START_JAM_ACK] =
+  (*_bindingsRecv)[ROOM_STOP_JAM_ACK] =
     new Bind_recv(0, 0);
 
   (*_bindingsRecv)[ROOM_KICKED] =
@@ -412,6 +413,13 @@ void		Component_Room::Recv_User_Kicked(Packet_v1 const *packet_v1, Session *sess
 void		Component_Room::Recv_Started_Jam(Packet_v1 const *packet_v1, Session *session)
 {
   // JAM HAS STARTED
+  Packet_v1_Room const *packet_v1_room = 
+    static_cast<Packet_v1_Room const *>(packet_v1);
+
+  field_t roomId = packet_v1_room->getRoomId();
+  Room *room	 = _roomMap.find(roomId)->second;
+
+  _clientManager->getComponentJam()->StartJam(roomId, room);
   Send_Started_Jam_ACK(session);
 }
 

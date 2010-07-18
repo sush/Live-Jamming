@@ -26,6 +26,7 @@ public:
   virtual void				Disconnect(Session *);
   virtual void				Connect(std::string const &, std::string const &);
   virtual void				Connect(Session *) {} // pure virtual must be implemented
+  Component_Jam				*getComponentJam();
 
 private:
   virtual void				Init_Components();
