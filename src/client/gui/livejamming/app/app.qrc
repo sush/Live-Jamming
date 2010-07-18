@@ -1,5 +1,9 @@
 <RCC>
   <qresource prefix="/">
+    <file>images/branch-closed.png</file>
+    <file>images/branch-more.png</file>
+    <file>images/branch-end.png</file>
+    <file>images/branch-open.png</file>
     <file>images/kmixdocked-30x30.png</file>
     <file>images/kmixdocked_error-30x30.png</file>
     <file>images/ledred-48x48.png</file>

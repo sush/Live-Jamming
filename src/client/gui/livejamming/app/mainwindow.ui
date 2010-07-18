@@ -19,7 +19,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">#MainWindow {
-	background: qlineargradient(spread:pad, x1:0, y1:0.00568182, x2:0, y2:1, stop:0.0248756 rgba(155, 217, 122, 255), stop:0.0348259 rgba(55, 57, 54, 255), stop:1 rgba(59, 61, 59, 255));
+	background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.00934579 rgba(155, 217, 122, 255), stop:0.0116822 rgba(59, 61, 59, 255), stop:0.995455 rgba(59, 61, 59, 255));
 
 }
 
@@ -102,7 +102,30 @@ QTabBar::tab:!selected {
             <string notr="true">#channelList {
 	background: rgb(132, 132, 132);
 	border: 1px solid #9BD97a;
-}</string>
+	color: #FFFFFF;
+}
+
+ QTreeView::branch:!has-children:!has-siblings:adjoins-item {
+     border-image: url(:/images/branch-end.png) 0;
+ }
+ QTreeView::branch:has-siblings:adjoins-item {
+     border-image: url(:/images/branch-more.png) 0;
+ }
+ChannelList::branch:!has-children:!has-siblings:adjoins-item {
+     border-image: url(:/images/branch-end.png) 0;
+ }
+
+ChannelList::branch:has-children:!has-siblings:closed,
+ChannelList::branch:closed:has-children:has-siblings {
+         border-image: none;
+         image: url(:/images/branch-closed.png);
+ }
+
+ChannelList::branch:open:has-children:!has-siblings,
+ChannelList::branch:open:has-children:has-siblings  {
+         border-image: none;
+         image: url(:/images/branch-open.png);
+ }</string>
            </property>
            <property name="selectionMode">
             <enum>QAbstractItemView::ContiguousSelection</enum>
@@ -194,7 +217,7 @@ QTabBar::tab:!selected {
      <x>0</x>
      <y>0</y>
      <width>791</width>
-     <height>25</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
