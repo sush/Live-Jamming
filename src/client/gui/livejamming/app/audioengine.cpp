@@ -2,25 +2,6 @@
 
 AudioEngine::AudioEngine(){
 }
-
-QStringList AudioEngine::getODevices(){
-    QStringList list;
-    foreach(const QAudioDeviceInfo &deviceInfo, this->availableAudioInputDevices()){
-        if(!deviceInfo.isNull())
-        list << deviceInfo.deviceName();
-    }
-    return list;
-}
-
-QStringList AudioEngine::getIDevices(){
-    QStringList list;
-    foreach(const QAudioDeviceInfo &deviceInfo, this->availableAudioInputDevices()){
-        if(!deviceInfo.isNull())
-        list << deviceInfo.deviceName();
-    }
-    return list;
-}
-
 void AudioEngine::startRecordAndPlayBack(){
     if(m_audioInput){
         if (QAudio::AudioInput == m_mode &&

@@ -1,4 +1,4 @@
-#include "audiowidget.h"
+#include "audiomanager.h"
 #include "audioengine.h"
 #include "levelmeter.h"
 #include "waveform.h"
@@ -13,9 +13,8 @@
 
 const int NullTimerId = -1;
 
-AudioWidget::AudioWidget(QWidget *parent)
+AudioManager::AudioManager(QWidget *parent)
     :   QWidget(parent)
-    ,   mode(Settings)
 //    ,   m_engine(new AudioEngine())
 //#ifndef DISABLE_WAVEFORM
 //    ,   m_waveform(new Waveform(m_engine->buffer(), this))
@@ -25,16 +24,37 @@ AudioWidget::AudioWidget(QWidget *parent)
 //    ,   m_levelMeter(new LevelMeter(this))
 //    ,   m_infoMessageTimerId(NullTimerId)
 {
-     createSettingsUi();
     //m_spectrograph->setParams(SpectrumNumBands, SpectrumLowFreq, SpectrumHighFreq);
 }
 
-AudioWidget::~AudioWidget(){}
+AudioManager::~AudioManager(){}
+
+//-----------------------------------------------------------------------------
+// Public functions
+//-----------------------------------------------------------------------------
+
+QStringList AudioManager::getOutputDevices(){
+    QStringList list;
+    foreach(const QAudioDeviceInfo &deviceInfo, m_engine->availableAudioInputDevices()){
+        if(!deviceInfo.isNull())
+        list << deviceInfo.deviceName();
+    }
+    return list;
+}
+
+QStringList AudioManager::getInputDevices(){
+    QStringList list;
+    foreach(const QAudioDeviceInfo &deviceInfo, m_engine->availableAudioInputDevices()){
+        if(!deviceInfo.isNull())
+        list << deviceInfo.deviceName();
+    }
+    return list;
+}
 
 //-----------------------------------------------------------------------------
 // Public slots
 //-----------------------------------------------------------------------------
-void AudioWidget::stateChanged(QAudio::Mode mode, QAudio::State state)
+void AudioManager::stateChanged(QAudio::Mode mode, QAudio::State state)
 {
     Q_UNUSED(mode);
 
@@ -46,7 +66,7 @@ void AudioWidget::stateChanged(QAudio::Mode mode, QAudio::State state)
     }
 }
 
-void AudioWidget::formatChanged(const QAudioFormat &format)
+void AudioManager::formatChanged(const QAudioFormat &format)
 {
    infoMessage(formatToString(format), NullMessageTimeout);
 
@@ -58,14 +78,14 @@ void AudioWidget::formatChanged(const QAudioFormat &format)
 #endif
 }
 
-void AudioWidget::spectrumChanged(qint64 position, qint64 length,
+void AudioManager::spectrumChanged(qint64 position, qint64 length,
                                  const FrequencySpectrum &spectrum)
 {
     m_progressBar->windowChanged(position, length);
     m_spectrograph->spectrumChanged(spectrum);
 }
 
-void AudioWidget::infoMessage(const QString &message, int timeoutMs)
+void AudioManager::infoMessage(const QString &message, int timeoutMs)
 {
     //m_infoMessage->setText(message);
 
@@ -78,12 +98,12 @@ void AudioWidget::infoMessage(const QString &message, int timeoutMs)
         m_infoMessageTimerId = startTimer(timeoutMs);
 }
 
-void AudioWidget::errorMessage(const QString &heading, const QString &detail)
+void AudioManager::errorMessage(const QString &heading, const QString &detail)
 {
     QMessageBox::warning(this, heading, detail, QMessageBox::Close);
 }
 
-void AudioWidget::timerEvent(QTimerEvent *event)
+void AudioManager::timerEvent(QTimerEvent *event)
 {
     Q_ASSERT(event->timerId() == m_infoMessageTimerId);
     Q_UNUSED(event) // suppress warnings in release builds
@@ -92,7 +112,7 @@ void AudioWidget::timerEvent(QTimerEvent *event)
     //m_infoMessage->setText("");
 }
 
-void AudioWidget::positionChanged(qint64 positionUs)
+void AudioManager::positionChanged(qint64 positionUs)
 {
 #ifndef DISABLE_WAVEFORM
     qint64 positionBytes = audioLength(m_engine->format(), positionUs);
@@ -102,7 +122,7 @@ void AudioWidget::positionChanged(qint64 positionUs)
 #endif
 }
 
-void AudioWidget::bufferDurationChanged(qint64 durationUs)
+void AudioManager::bufferDurationChanged(qint64 durationUs)
 {
     m_progressBar->bufferDurationChanged(durationUs);
 }
@@ -112,7 +132,7 @@ void AudioWidget::bufferDurationChanged(qint64 durationUs)
 // Private slots
 //-----------------------------------------------------------------------------
 
-void AudioWidget::dataDurationChanged(qint64 duration)
+void AudioManager::dataDurationChanged(qint64 duration)
 {
 #ifndef DISABLE_WAVEFORM
     const qint64 dataLength = audioLength(m_engine->format(), duration);
@@ -148,101 +168,6 @@ void AudioWidget::dataDurationChanged(qint64 duration)
 //-----------------------------------------------------------------------------
 // Private functions
 //-----------------------------------------------------------------------------
-void AudioWidget::createSettingsUi(){
-
-  m_infoMessage = new QLabel("Select a mode to begin", this);
-  m_infoMessage->show();
-  //layout()->addWidget(m_infoMessage);
-  //setLayout(windowLayout);
-}
-
-//void MainWidget::createUi()
-//{
-//    createMenus();
-//
-//    setWindowTitle(tr("Spectrum Analyser"));
-//
-//    QVBoxLayout *windowLayout = new QVBoxLayout(this);
-//
-//    m_infoMessage->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
-//    m_infoMessage->setAlignment(Qt::AlignHCenter);
-//    windowLayout->addWidget(m_infoMessage);
-//
-//#ifdef SUPERIMPOSE_PROGRESS_ON_WAVEFORM
-//    QScopedPointer<QHBoxLayout> waveformLayout(new QHBoxLayout);
-//    waveformLayout->addWidget(m_progressBar);
-//    m_progressBar->setMinimumHeight(m_waveform->minimumHeight());
-//    waveformLayout->setMargin(0);
-//    m_waveform->setLayout(waveformLayout.data());
-//    waveformLayout.take();
-//    windowLayout->addWidget(m_waveform);
-//#else
-//#ifndef DISABLE_WAVEFORM
-//    windowLayout->addWidget(m_waveform);
-//#endif // DISABLE_WAVEFORM
-//    windowLayout->addWidget(m_progressBar);
-//#endif // SUPERIMPOSE_PROGRESS_ON_WAVEFORM
-//
-//    // Spectrograph and level meter
-//
-//    QScopedPointer<QHBoxLayout> analysisLayout(new QHBoxLayout);
-//    analysisLayout->addWidget(m_spectrograph);
-//    analysisLayout->addWidget(m_levelMeter);
-//    windowLayout->addLayout(analysisLayout.data());
-//    analysisLayout.take();
-//
-//    // Button panel
-//
-//    const QSize buttonSize(30, 30);
-//
-//    m_modeButton->setText(tr("Mode"));
-//
-//    m_recordIcon = QIcon(":/images/record.png");
-//    m_recordButton->setIcon(m_recordIcon);
-//    m_recordButton->setEnabled(false);
-//    m_recordButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-//    m_recordButton->setMinimumSize(buttonSize);
-//
-//    m_pauseIcon = style()->standardIcon(QStyle::SP_MediaPause);
-//    m_pauseButton->setIcon(m_pauseIcon);
-//    m_pauseButton->setEnabled(false);
-//    m_pauseButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-//    m_pauseButton->setMinimumSize(buttonSize);
-//
-//    m_playIcon = style()->standardIcon(QStyle::SP_MediaPlay);
-//    m_playButton->setIcon(m_playIcon);
-//    m_playButton->setEnabled(false);
-//    m_playButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-//    m_playButton->setMinimumSize(buttonSize);
-//
-//    m_settingsIcon = QIcon(":/images/settings.png");
-//    m_settingsButton->setIcon(m_settingsIcon);
-//    m_settingsButton->setEnabled(true);
-//    m_settingsButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-//    m_settingsButton->setMinimumSize(buttonSize);
-//
-//    QScopedPointer<QHBoxLayout> buttonPanelLayout(new QHBoxLayout);
-//    buttonPanelLayout->addStretch();
-//    buttonPanelLayout->addWidget(m_modeButton);
-//    buttonPanelLayout->addWidget(m_recordButton);
-//    buttonPanelLayout->addWidget(m_pauseButton);
-//    buttonPanelLayout->addWidget(m_playButton);
-//    buttonPanelLayout->addWidget(m_settingsButton);
-//
-//    QWidget *buttonPanel = new QWidget(this);
-//    buttonPanel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-//    buttonPanel->setLayout(buttonPanelLayout.data());
-//    buttonPanelLayout.take(); // ownership transferred to buttonPanel
-//
-//    QScopedPointer<QHBoxLayout> bottomPaneLayout(new QHBoxLayout);
-//    bottomPaneLayout->addWidget(buttonPanel);
-//    windowLayout->addLayout(bottomPaneLayout.data());
-//    bottomPaneLayout.take(); // ownership transferred to windowLayout
-//
-//    // Apply layout
-//
-//    setLayout(windowLayout);
-//}
 
 //void MainWidget::connectUi()
 //{
@@ -317,7 +242,7 @@ void AudioWidget::createSettingsUi(){
 //    connect(m_recordAction, SIGNAL(triggered(bool)), this, SLOT(initializeRecord()));
 //}
 
-void AudioWidget::reset()
+void AudioManager::reset()
 {
 #ifndef DISABLE_WAVEFORM
     m_waveform->reset();

@@ -1,8 +1,10 @@
 #ifndef CONFIGURATION_DIALOG_H
 #define CONFIGURATION_DIALOG_H
+#include "audiomanager.h"
+#include "qdebug.h"
 
 #include <QDialog>
-#include "qdebug.h"
+
 
 namespace Ui {
     class ConfigurationDialog;
@@ -17,7 +19,7 @@ public:
 
 private:
     Ui::ConfigurationDialog*	ui;
-
+    AudioManager*               audioManager;
 private slots:
     //void on_pushButton_clicked(bool);
 };

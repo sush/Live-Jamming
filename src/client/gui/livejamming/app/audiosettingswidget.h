@@ -2,6 +2,7 @@
 #define AUDIOSETTINGSWIDGET_H
 
 #include <QWidget>
+#include "audiomanager.h"
 
 namespace Ui {
     class AudioSettingsWidget;
@@ -18,6 +19,7 @@ protected:
 
 private:
     Ui::AudioSettingsWidget *ui;
+    AudioManager*           audio;
 };
 
 #endif // AUDIOSETTINGSWIDGET_H

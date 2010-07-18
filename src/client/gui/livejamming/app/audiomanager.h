@@ -1,5 +1,5 @@
-#ifndef AUDIOWIDGET_H
-#define AUDIOWIDGET_H
+#ifndef AUDIOMANAGER_H
+#define AUDIOMANAGER_H
 
 #include <QWidget>
 #include <QLabel>
@@ -15,16 +15,17 @@ class LevelMeter;
 class SettingsDialog;
 class ToneGeneratorDialog;
 
-class AudioWidget : public QWidget
+class AudioManager : public QWidget
 {
     Q_OBJECT
 public:
-    AudioWidget(QWidget *parent = 0);
-    ~AudioWidget();
+    AudioManager(QWidget *parent = 0);
+    ~AudioManager();
 
     // QObject
     void                    timerEvent(QTimerEvent *event);
-
+    QStringList             getOutputDevices();
+    QStringList             getInputDevices();
 public slots:
     void                    stateChanged(QAudio::Mode mode, QAudio::State state);
     void                    formatChanged(const QAudioFormat &format);
@@ -39,15 +40,8 @@ private slots:
     void                    dataDurationChanged(qint64 duration);
 private:
     void                    reset();
-    void                    createSettingsUi();
-    enum UiType {
-        Settings,
-        Room
-    };
-    void                    setMode(UiType mode);
 
 private:
-    UiType                  mode;
     AudioEngine*            m_engine;
     Waveform*               m_waveform;
     ProgressBar*            m_progressBar;
@@ -58,4 +52,4 @@ private:
 
 };
 
-#endif // AUDIOWIDGET_H
+#endif // AUDIOMANAGER_H
