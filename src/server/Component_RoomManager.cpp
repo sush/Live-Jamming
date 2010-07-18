@@ -272,7 +272,7 @@ void	Component_RoomManager::Recv_Leave(Packet_v1 const *packet_v1, Session *sess
 	  std::map<field_t, Session *>::iterator it, end = connected->end();
 
 	  for (it = connected->begin(); it != end ; ++it)
-	    Send_Leaved(it->second, sessionId);
+	    Send_Leaved(it->second, sessionId, roomId);
 	  if (connected->size() == 0)
 	    _roomMap->erase(roomId);
 	}
@@ -300,10 +300,11 @@ void	Component_RoomManager::Send_Leave_NOK_NOTINROOM(Session *session, field_t r
   _serverManager->Send(packet_v1_room, session);
 }
 
-void	Component_RoomManager::Send_Leaved(Session *session, field_t clientSessionId)
+void	Component_RoomManager::Send_Leaved(Session *session, field_t clientSessionId, field_t roomId)
 {
   Packet_v1_Room *packet_v1_room = new Packet_v1_Room(ROOM_LEAVED);
 
+  packet_v1_room->setRoomId(roomId);
   packet_v1_room->setClientSessionId(clientSessionId);
 
   _serverManager->Send(packet_v1_room, session);
@@ -530,7 +531,7 @@ void	Component_RoomManager::Disconnect(Session *session)
 	      std::map<field_t, Session*>::iterator i, e = connected->end();
 	      
 	      for (i = connected->begin(); i != e; ++i)
-		Send_Leaved(i->second, session->getSessionId());
+		Send_Leaved(i->second, session->getSessionId(), it->first);
 	    }
 	}
     }

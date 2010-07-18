@@ -37,7 +37,7 @@ private:
   void			Recv_Leave(Packet_v1 const *, Session *);
   void			Send_Leave_OK(Session *, field_t);
   void			Send_Leave_NOK_NOTINROOM(Session *, field_t);
-  void			Send_Leaved(Session *, field_t);
+  void			Send_Leaved(Session *, field_t, field_t);
 
   void			Recv_Message(Packet_v1 const *, Session *);
   void			Send_Message_RECV(Session *, char const *, field_t, field_t);
