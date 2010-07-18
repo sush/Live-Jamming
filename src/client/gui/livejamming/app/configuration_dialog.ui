@@ -44,11 +44,10 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
     <widget class="QTabWidget" name="tabWidget">
      <property name="styleSheet">
       <string notr="true">QTabWidget::pane {
-	color: rgb(246, 246, 244);
+	color: rgb(255,255,255);
 	margin: 0px,1px,1px,1px;
-
 	border-radius: 10px;
-	background: #E6E6E3;
+	background: rgb(132, 132, 132);
       }
 
   QTabWidget::tab-bar {          
@@ -80,7 +79,14 @@ QTabBar::tab:selected {
 QTabBar::tab:!selected {
     margin-top: 2px; /* make non-selected tabs look smaller */
 }
-</string>
+
+QTabWidget QLabel {
+	color: #FFFFFF;
+}
+QTabWidget QComboBox {
+	background: rgb(59, 61, 59);
+	color: #FFFFFF;
+}</string>
      </property>
      <property name="currentIndex">
       <number>0</number>
@@ -121,7 +127,13 @@ QTabBar::tab:!selected {
         </widget>
        </item>
        <item row="3" column="1">
-        <widget class="QComboBox" name="iChannelsComboBox"/>
+        <widget class="QComboBox" name="iChannelsComboBox">
+         <property name="styleSheet">
+          <string notr="true">#iChannelsComboBox {
+	color: #FFFFFF;
+}</string>
+         </property>
+        </widget>
        </item>
        <item row="4" column="0">
         <widget class="QLabel" name="frequencyLabel">
