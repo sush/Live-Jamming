@@ -1,6 +1,5 @@
 #ifndef AUDIOENGINE_H
 #define AUDIOENGINE_H
-#include "engine.h"
 
 #include <QAudioDeviceInfo>
 #include <QAudioInput>

@@ -1,7 +1,6 @@
 #ifndef CONFIGURATION_DIALOG_H
 #define CONFIGURATION_DIALOG_H
 #include "qdebug.h"
-
 #include <QDialog>
 
 
