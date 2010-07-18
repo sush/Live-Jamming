@@ -93,6 +93,134 @@ QTabBar::tab:!selected {
        <property name="fieldGrowthPolicy">
         <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
        </property>
+       <item row="1" column="0">
+        <widget class="QLabel" name="devicesLabel">
+         <property name="text">
+          <string>Device</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QComboBox" name="iComboBox"/>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="codecsLabel">
+         <property name="text">
+          <string>Codec</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QComboBox" name="iCodecsComboBox"/>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="channelsLabel">
+         <property name="text">
+          <string>Channel</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QComboBox" name="iChannelsComboBox"/>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="frequencyLabel">
+         <property name="text">
+          <string>Frequency</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QComboBox" name="iFrequenciesComboBox"/>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="sampleSizeLabel">
+         <property name="text">
+          <string>Sample Size</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QComboBox" name="iSampleSizesComboBox"/>
+       </item>
+       <item row="7" column="0">
+        <widget class="QLabel" name="deviceLabel">
+         <property name="text">
+          <string>Device</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="1">
+        <widget class="QComboBox" name="oComboBox"/>
+       </item>
+       <item row="8" column="0">
+        <widget class="QLabel" name="codecLabel">
+         <property name="text">
+          <string>Codec</string>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="1">
+        <widget class="QComboBox" name="oCodecsComboBox"/>
+       </item>
+       <item row="9" column="0">
+        <widget class="QLabel" name="channelLabel">
+         <property name="text">
+          <string>Channel</string>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="1">
+        <widget class="QComboBox" name="oChannelsComboBox"/>
+       </item>
+       <item row="10" column="0">
+        <widget class="QLabel" name="frequencyLabel_2">
+         <property name="text">
+          <string>Frequency</string>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="1">
+        <widget class="QComboBox" name="oFrequenciesComboBox"/>
+       </item>
+       <item row="11" column="0">
+        <widget class="QLabel" name="sampleSizeLabel_2">
+         <property name="text">
+          <string>Sample Size</string>
+         </property>
+        </widget>
+       </item>
+       <item row="11" column="1">
+        <widget class="QComboBox" name="oSampleSizesComboBox"/>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Input</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="label_2">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Output</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
     </widget>

@@ -24,8 +24,6 @@ public:
 
     // QObject
     void                    timerEvent(QTimerEvent *event);
-    QStringList             getOutputDevices();
-    QStringList             getInputDevices();
 public slots:
     void                    stateChanged(QAudio::Mode mode, QAudio::State state);
     void                    formatChanged(const QAudioFormat &format);

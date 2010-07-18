@@ -14,7 +14,7 @@
 const int NullTimerId = -1;
 
 AudioManager::AudioManager(QWidget *parent)
-    :   QWidget(parent)
+    :   QWidget(parent), m_engine(new AudioEngine())
 //    ,   m_engine(new AudioEngine())
 //#ifndef DISABLE_WAVEFORM
 //    ,   m_waveform(new Waveform(m_engine->buffer(), this))
@@ -33,23 +33,6 @@ AudioManager::~AudioManager(){}
 // Public functions
 //-----------------------------------------------------------------------------
 
-QStringList AudioManager::getOutputDevices(){
-    QStringList list;
-    foreach(const QAudioDeviceInfo &deviceInfo, m_engine->availableAudioInputDevices()){
-        if(!deviceInfo.isNull())
-        list << deviceInfo.deviceName();
-    }
-    return list;
-}
-
-QStringList AudioManager::getInputDevices(){
-    QStringList list;
-    foreach(const QAudioDeviceInfo &deviceInfo, m_engine->availableAudioInputDevices()){
-        if(!deviceInfo.isNull())
-        list << deviceInfo.deviceName();
-    }
-    return list;
-}
 
 //-----------------------------------------------------------------------------
 // Public slots
@@ -253,7 +236,7 @@ void AudioManager::reset()
     m_progressBar->reset();
 }
 
-/*oid MainWidget::setMode(Mode mode)
+/*void MainWidget::setMode(Mode mode)
 {
 
     m_mode = mode;

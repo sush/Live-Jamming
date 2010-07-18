@@ -3,31 +3,38 @@
 #include <qdebug.h>
 
 #ifndef NO_MULTIMEDIA
-#include "audiomanager.h"
+#include "audioengine.h"
+#include "utils.h"
 
 ConfigurationDialog::ConfigurationDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ConfigurationDialog)
 {
+    AudioEngine* audioEngine = new AudioEngine();
+
     ui->setupUi(this);
+
     /*Setting ui for input*/
-//    ui->iComboBox->addItems(audio->getIDevices());
-//    foreach (int channel, audio->iDevice().supportedChannels())
-//        ui->iChannelsComboBox->addItem(QString::number(channel));
-//    ui->iCodecsComboBox->addItems(audio->iDevice().supportedCodecs());
-//    foreach (int frequency, audio->iDevice().supportedFrequencies())
-//        ui->iFrequenciesComboBox->addItem(QString::number(frequency));
-//    foreach (int sampleSize, audio->iDevice().supportedSampleSizes())
-//        ui->iSampleSizesComboBox->addItem(QString::number(sampleSize));
-//    /*Setting ui for output*/
-//    ui->outputComboBox->addItems(audio->getODevices());
-//    foreach (int channel, audio->oDevice().supportedChannels())
-//        ui->oChannelsComboBox->addItem(QString::number(channel));
-//    ui->oCodecsComboBox->addItems(audio->oDevice().supportedCodecs());
-//    foreach (int frequency, audio->oDevice().supportedFrequencies())
-//        ui->oFrequenciesComboBox->addItem(QString::number(frequency));
-//    foreach (int sampleSize, audio->oDevice().supportedSampleSizes())
-//        ui->oSampleSizesComboBox->addItem(QString::number(sampleSize));
+    ui->iComboBox->addItems(audioEngine->inputDevices());
+    foreach (int channel, audioEngine->inputDevice().supportedChannels())
+        ui->iChannelsComboBox->addItem(QString::number(channel));
+    ui->iCodecsComboBox->addItems(audioEngine->inputDevice().supportedCodecs());
+    foreach (int frequency, audioEngine->inputDevice().supportedFrequencies())
+        ui->iFrequenciesComboBox->addItem(QString::number(frequency));
+    foreach (int sampleSize, audioEngine->inputDevice().supportedSampleSizes())
+        ui->iSampleSizesComboBox->addItem(QString::number(sampleSize));
+    /*Setting ui for output*/
+    ui->oComboBox->addItems(audioEngine->outputDevices());
+    foreach (int channel, audioEngine->outputDevice().supportedChannels())
+        ui->oChannelsComboBox->addItem(QString::number(channel));
+    ui->oCodecsComboBox->addItems(audioEngine->outputDevice().supportedCodecs());
+    foreach (int frequency, audioEngine->outputDevice().supportedFrequencies())
+        ui->oFrequenciesComboBox->addItem(QString::number(frequency));
+    foreach (int sampleSize, audioEngine->outputDevice().supportedSampleSizes())
+        ui->oSampleSizesComboBox->addItem(QString::number(sampleSize));
+}
+
+ConfigurationDialog::~ConfigurationDialog(){
 }
 
 #elif defined(NO_MULTIMEDIA)
@@ -37,7 +44,8 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent) :
 {
 
 }
-#endif
 
 ConfigurationDialog::~ConfigurationDialog(){
 }
+#endif
+
