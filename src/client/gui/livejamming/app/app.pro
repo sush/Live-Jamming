@@ -138,8 +138,7 @@ FORMS += mainwindow.ui \
     newchan.ui \
     chanlist.ui \
     conversationset.ui \
-    roomplayeritem.ui \
-    audiosettingswidget.ui
+    roomplayeritem.ui
 DEFINES += _GUI
 debug:QMAKE_CXXFLAGS += -D_DEBUG \
     -g3 \
