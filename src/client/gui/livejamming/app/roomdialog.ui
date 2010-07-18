@@ -96,6 +96,9 @@ QDialog QLineEdit {
          <height>30</height>
         </size>
        </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
       </widget>
      </item>
     </layout>

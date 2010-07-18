@@ -73,6 +73,7 @@ void    RoomDialog::sendMessage(const QString &msg)
 
 void RoomDialog::on_startButton_clicked(bool play)
 {
+    qDebug() << "PAY" << play << "\n\n";
     if (play)
         proxy->room()->Send_Start_Jam(proxy->session()->_session, proxy->roomid);
     else

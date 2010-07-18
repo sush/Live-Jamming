@@ -139,8 +139,8 @@ void    MainWindow::chanEvents(chanEventsType event, const Packet_v1_Channel* pa
         leaveChannel(channelName);
         break;
     case JOINED:
-        qDebug() << packet->getClientLogin() << "joined" << proxy->channelIdToName(packet->getChannelId());
-        addClientToChannel(proxy->channelIdToName(packet->getChannelId()), packet->getClientLogin());
+        qDebug() << "FROM PROXY" << packet->getClientLogin() << "joined" << proxy->channel()->getChannelName(packet->getChannelId());
+        addClientToChannel(proxy->channelIdToName(packet->getChannelId()), proxy->channel()->getChannelName(packet->getChannelId()));
         break;
     case LEAVED:
         qDebug() << packet->getClientLogin() << "leaved" << proxy->channelIdToName(packet->getChannelId());
@@ -179,12 +179,13 @@ void    MainWindow::leaveChannel(const QString &name)
 
 void    MainWindow::addClientToChannel(const QString &channel, const QString &client)
 {
-//    QMap<QString, UiChannel>::const_iterator it = channels.find(channel);
-//    Q_ASSERT(it != channels.end());
-
+    qDebug() << "LOOKING FOR" << channel << "IN";
+    foreach(QString name, channels.keys())
+        qDebug() << " * " << name;
     Q_ASSERT(channels.find(channel) != channels.end());
     QTreeWidgetItem* item = new QTreeWidgetItem(QStringList(client));
     channels[channel].item->addChild(item);
+    channels[channel].convSet->addEvent(client + " has joined");
 
     clients[client] = (UiClient){item};
 }
@@ -197,6 +198,7 @@ qDebug() << channel << client << channels.size();
     Q_ASSERT(channels.find(channel) != channels.end());
     Q_ASSERT(clients.find(client) != clients.end());
     delete clients[client].item;
+    channels[channel].convSet->addEvent(client + " has leaved");
 
     clients.remove(client);
 }
