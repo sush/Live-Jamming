@@ -253,13 +253,13 @@ void		Component_Channel::Send_List(Session *session)
   _clientManager->Send(_componentId, CHANNEL_LIST, session);
 }
 
-void		Component_Channel::Recv_Listed(Packet_v1 const *packet_v1, Session *session)
+void		Component_Channel::Recv_Listed(Packet_v1 const *, Session *)
 {
-  Packet_v1_Channel const		*packet_v1_channel = 
-    static_cast<Packet_v1_Channel const *>(packet_v1);
+  // Packet_v1_Channel const		*packet_v1_channel = 
+  //   static_cast<Packet_v1_Channel const *>(packet_v1);
 
   // list of existing channels
-  std::vector<std::string>		*v_channel = packet_v1_channel->getChannelList();
+  // std::vector<std::string>		*v_channel = packet_v1_channel->getChannelList();
 }
 
 void		Component_Channel::Connect(Session *)

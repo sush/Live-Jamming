@@ -90,14 +90,14 @@ char const	*Packet_v1_Channel::getChannelName() const
 void		Packet_v1_Channel::setChannelList(std::map<unsigned int, Channel*> *m_channel)
 {
   Channel		*chan;
-  std::string		name;
+  std::string		name = "";
 
   std::map<unsigned int, Channel*>::iterator it, end = m_channel->end();
   for (it = m_channel->begin(); it != end; ++it)
     {
       chan = it->second;
       name += chan->getName();
-      name += "#";
+      name += '#';
     }
   appendData(PROTOV1_CHANNEL_START_OF_DATA, PROTOV1_CHANNEL_DATA_CHANNEL_LIST, reinterpret_cast<byte_t const *>(name.c_str()));
 }
