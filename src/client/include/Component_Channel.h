@@ -41,7 +41,9 @@ public:
   //! Create a channel Leave request in order to leave the channel.
   void					Send_Leave(Session *, field_t);
   void					Send_Message(Session *, char const *, field_t);
-  //! Handle a channel Joined request from server to inform that a new user has joined the channel
+
+  //! Create a channel List request in order to inform server that the list of all existing channels is requested.
+  void					Send_List(Session *);
 private:
   //! Handle a channel Join OK request from the server to inform that the channel has been joined.
   void					Recv_Join_OK(Packet_v1 const *, Session *);
@@ -72,8 +74,6 @@ private:
 
   //! Handle a channel Listed request from server to be aware of all existing channels.
   void					Recv_Listed(Packet_v1 const *, Session *);
-  //! Create a channel List request in order to inform server that the list of all existing channels is requested.
-  void					Send_List(Session *);
  
   ClientManager				*_clientManager;
   m_channel				_channelMap;
