@@ -30,6 +30,9 @@ void	Component_ChannelManager::BindingsRecv()
 
   (*_bindingsRecv)[CHANNEL_LEAVED_ACK] =
     new Bind_recv(0, 0);
+
+  (*_bindingsRecv)[CHANNEL_LIST] =
+    new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_ChannelManager::Recv_List));
 }
 
 void	Component_ChannelManager::RegisteredRequests()
@@ -59,6 +62,9 @@ void	Component_ChannelManager::RegisteredRequests()
   (*_registeredRequests)[CHANNEL_LEAVED] = 
     new Request(CHANNEL_LEAVED, SEND, "LEAVED", RETRY);
 
+  (*_registeredRequests)[CHANNEL_LISTED] = 
+    new Request(CHANNEL_LISTED, SEND, "LISTED", NORETRY);
+
   // RECV requests
   (*_registeredRequests)[CHANNEL_JOIN] = 
     new Request(CHANNEL_JOIN, RECV, "JOIN", RESPONSETONOTHING);
@@ -77,6 +83,9 @@ void	Component_ChannelManager::RegisteredRequests()
 
   (*_registeredRequests)[CHANNEL_LEAVED_ACK] = 
     new Request(CHANNEL_LEAVED_ACK, RECV, "LEAVED_ACK", CHANNEL_LEAVED);
+
+  (*_registeredRequests)[CHANNEL_LIST] = 
+    new Request(CHANNEL_LIST, RECV, "LIST", RESPONSETONOTHING);
 }
 
 void	Component_ChannelManager::Recv_Join(Packet_v1 const *packet_v1, Session *session)
@@ -225,6 +234,20 @@ void	Component_ChannelManager::Recv_Leave(Packet_v1 const *packet_v1, Session *s
     }
   else
     Send_Leave_NOK_NOTINCHAN(session, channelId);
+}
+
+void	Component_ChannelManager::Recv_List(Packet_v1 const *, Session *session)
+{
+  Send_Listed(session);
+}
+
+void	Component_ChannelManager::Send_Listed(Session *session)
+{
+  Packet_v1_Channel *packet_v1_channel = new Packet_v1_Channel(CHANNEL_LISTED);
+
+  packet_v1_channel->setChannelList(_channelMap);
+
+  _serverManager->Send(packet_v1_channel, session);
 }
 
 void	Component_ChannelManager::Send_Leave_OK(Session *session, field_t channelId)
