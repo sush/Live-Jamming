@@ -102,25 +102,15 @@ void		Packet_v1_Channel::setChannelList(std::map<unsigned int, Channel*> *m_chan
   appendData(PROTOV1_CHANNEL_START_OF_DATA, PROTOV1_CHANNEL_DATA_CHANNEL_LIST, reinterpret_cast<byte_t const *>(name.c_str()));
 }
 
-std::vector<std::string> 	*Packet_v1_Channel::getChannelList() const
+std::vector<std::string> 	Packet_v1_Channel::getChannelList() const
 {
-  char const			*channelList = reinterpret_cast<char const *>(getData(PROTOV1_CHANNEL_START_OF_DATA, PROTOV1_CHANNEL_DATA_CHANNEL_LIST));
-  std::vector<std::string> 	*v_channel = new std::vector<std::string>();
-  std::string			name;
+  const std::string& cl = reinterpret_cast<char *>(getData(PROTOV1_CHANNEL_START_OF_DATA, PROTOV1_CHANNEL_DATA_CHANNEL_LIST));
+  std::vector<std::string> v;
+  size_t begin, sharp = 0;
 
-  for (unsigned int i = 0; i < strlen(channelList); ++i)
-    {
-      if (channelList[i] == '\0')
-	break;
-      if (channelList[i] != '#')
-	name += channelList[i];
-      else
-	{
-	  v_channel->push_back(name);
-	  name.clear();
-	}
-    }
-  return v_channel;
+  for (begin = 0; (sharp = cl.find_first_of('#', begin)) != std::string::npos; begin = sharp +1 )
+    v.push_back(cl.substr(begin, sharp - begin));
+  return v;
 }
 
 void		Packet_v1_Channel::setClientLogin(char const *login)
