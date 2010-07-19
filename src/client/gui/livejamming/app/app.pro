@@ -63,7 +63,8 @@ SOURCES += mainwindow.cpp \
     proxy.cpp \
     channellist.cpp \
     conversationset.cpp \
-    roomplayeritem.cpp
+    roomplayeritem.cpp \
+    channelsearch.cpp
 HEADERS += mainwindow.h \
     accountconnection.h \
     configuration_dialog.h \
@@ -71,7 +72,8 @@ HEADERS += mainwindow.h \
     proxy.h \
     channellist.h \
     conversationset.h \
-    roomplayeritem.h
+    roomplayeritem.h \
+    channelsearch.h
 
 # OTHER
 DEPENDPATH += ../../../../core

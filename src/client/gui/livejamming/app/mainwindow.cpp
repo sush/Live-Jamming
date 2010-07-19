@@ -16,6 +16,9 @@
 #include "accountconnection.h"
 #include "configuration_dialog.h"
 #include "roomdialog.h"
+#include <proxy.h>
+#include <conversationset.h>
+#include <channelsearch.h>
 
 #include <Component_Session.h>
 #include <Component_Channel.h>
@@ -23,8 +26,6 @@
 #include <Session.h>
 #include <Packet_v1.h>
 #include <Client.h>
-#include <proxy.h>
-#include <conversationset.h>
 
 
 MainWindow::MainWindow(Proxy* proxy) :
@@ -158,7 +159,7 @@ void    MainWindow::joinChannel(const QString &name)
     ui->channelList->addTopLevelItem(item);
     item->setExpanded(true);
 
-    ConversationSet* convSet = new ConversationSet;
+    ConversationSet* convSet = new ConversationSet(ui->stackedWidget);
     connect(convSet, SIGNAL(msgSend(const QString&)), this, SLOT(sendMessage(const QString&)));
 
     ui->stackedWidget->addWidget(convSet);
@@ -172,6 +173,7 @@ void    MainWindow::joinChannel(const QString &name)
 void    MainWindow::leaveChannel(const QString &name)
 {
     ui->stackedWidget->removeWidget(channels[name].convSet);
+    delete channels[name].convSet;
     delete channels[name].item;
 
     channels.remove(name);
@@ -286,7 +288,7 @@ void MainWindow::on_channelList_customContextMenuRequested(QPoint pos)
             QAction* action = QMenu::exec(QList<QAction*>() << &leave, ui->channelList->mapToGlobal(pos));
             if (action == &leave)
                 proxy->channel()->Send_Leave(proxy->session()->_session, proxy->channelNameToId[item->text(0)]);
-        }
+         }
     }
 }
 
@@ -314,4 +316,9 @@ void MainWindow::createRoom(const QString &name)
 {
     RoomDialog* room = new RoomDialog(this, proxy, name);
     room->show();
+}
+
+void MainWindow::on_actionList_channels_triggered()
+{
+    new ChannelSearch(proxy, this);
 }

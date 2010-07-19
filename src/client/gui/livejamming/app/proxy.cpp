@@ -1,6 +1,7 @@
 #include <Protocol_Session.h>
 #include <Protocol_Channel.h>
 #include <Protocol_Room.h>
+#include <string>
 #include <Component_Channel.h>
 #include <Component_Session.h>
 #include <Component_Room.h>
@@ -61,7 +62,9 @@ void    Proxy::chanResponse(Packet_v1 const* packet_, Session*)
     case CHANNEL_MESSAGE_RECV:
         type = MainWindow::MESSAGE_RECV; break;
     case CHANNEL_LISTED:
-        type = MainWindow::LISTED; break;
+        type = MainWindow::LISTED;
+        emit channelsListed(QList<std::string>::fromVector(QVector<std::string>::fromStdVector(packet->getChannelList())));
+        return ;
     default:
         handled = false;
     }
@@ -103,5 +106,3 @@ const char*    Proxy::channelIdToName(field_t id)
 
     return _channel->getAllChannel().find(id)->second->getName();
 }
-
-

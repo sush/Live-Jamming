@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>chanList</class>
- <widget class="QDialog" name="chanList">
+ <class>ChannelSearch</class>
+ <widget class="QDialog" name="ChannelSearch">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -40,7 +40,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QTreeWidget" name="treeWidget">
+    <widget class="QTreeWidget" name="channelTree">
      <property name="styleSheet">
       <string notr="true">#treeWidget {
 background: rgb(132, 132, 132);
@@ -151,7 +151,7 @@ border-radius: 20px;
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>chanList</receiver>
+   <receiver>ChannelSearch</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -167,7 +167,7 @@ border-radius: 20px;
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>chanList</receiver>
+   <receiver>ChannelSearch</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

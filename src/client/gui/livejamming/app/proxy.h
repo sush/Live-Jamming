@@ -43,6 +43,8 @@ Client *              client;
 signals:
 void    sAuthResponse(MainWindow::authEventsType);
 void    sChanResponse(MainWindow::chanEventsType, const Packet_v1_Channel*);
+// chan
+void    channelsListed(QList<std::string>);
 // room
 void    joinOk(QString);
 void    joined(QString);

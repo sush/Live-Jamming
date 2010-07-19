@@ -76,6 +76,7 @@ public slots:
     void chanEvents(MainWindow::chanEventsType event, const Packet_v1_Channel*);
 
 private slots:
+    void on_actionList_channels_triggered();
     void on_actionCreate_room_triggered();
     void on_channelList_activated(const QModelIndex& index);
     void on_channelList_customContextMenuRequested(QPoint pos);
