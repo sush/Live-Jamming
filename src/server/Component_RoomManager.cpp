@@ -167,8 +167,8 @@ void	Component_RoomManager::RegisteredRequests()
   (*_registeredRequests)[ROOM_STOP_JAM] = 
     new Request(ROOM_STOP_JAM, RECV, "STOP_JAM", RESPONSETONOTHING);
 
-  (*_registeredRequests)[ROOM_STOPED_JAM] = 
-    new Request(ROOM_STOPED_JAM, RECV, "STOPED_JAM", ROOM_STOPED_JAM);
+  (*_registeredRequests)[ROOM_STOPED_JAM_ACK] = 
+    new Request(ROOM_STOPED_JAM_ACK, RECV, "STOPED_JAM", ROOM_STOPED_JAM);
 }
 
 void	Component_RoomManager::Recv_Join(Packet_v1 const *packet_v1, Session *session)
