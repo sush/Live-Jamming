@@ -6,55 +6,6 @@ RESOURCES = app.qrc
 TARGET = livejamming_client
 DESTDIR = ..
 TEMPLATE = app
-!contains(DEFINES, NO_MULTIMEDIA) { 
-    QT += multimedia
-    SOURCES += audioengine.cpp
-    HEADERS += audioengine.h
-    
-    # FOR SPECTRE
-    INCLUDEPATH += spectre
-    DEPENDPATH += spectre
-    SOURCES += engine.cpp \
-        frequencyspectrum.cpp \
-        levelmeter.cpp \
-        progressbar.cpp \
-        settingsdialog.cpp \
-        spectrograph.cpp \
-        spectrumanalyser.cpp \
-        tonegenerator.cpp \
-        tonegeneratordialog.cpp \
-        utils.cpp \
-        waveform.cpp \
-        wavfile.cpp
-    HEADERS += engine.h \
-        frequencyspectrum.h \
-        levelmeter.h \
-        progressbar.h \
-        settingsdialog.h \
-        spectrograph.h \
-        spectrum.h \
-        spectrumanalyser.h \
-        tonegenerator.h \
-        tonegeneratordialog.h \
-        utils.h \
-        waveform.h \
-        wavfile.h
-    fftreal_dir = ../3rdparty/fftreal
-    INCLUDEPATH += $${fftreal_dir}
-    !contains(DEFINES, DISABLE_FFT) { 
-        macx { 
-            # Link to fftreal framework
-            LIBS += -F$${fftreal_dir}
-            LIBS += -framework \
-                fftreal
-        }
-        else { 
-            LIBS += -L..
-            LIBS += -lfftreal
-        }
-    }
-}
-
 # FOR GUI
 SOURCES += mainwindow.cpp \
     accountconnection.cpp \
@@ -106,6 +57,10 @@ HEADERS += Session.h \
     Packet_v1_Session.h \
     Packet_v1_Channel.h \
     Packet_v1_Friend.h
+#PIERRE
+SOURCES += audioengine.cpp
+HEADERS += audioengine.h
+#!PIERRE
 DEPENDPATH += ../../../../client
 INCLUDEPATH += ../../../../client/include
 SOURCES += main_net.cpp \
@@ -122,7 +77,8 @@ HEADERS += Client.h \
     Component_Session.h \
     Component_Friend.h \
     Component_Channel.h \
-    Component_Room.h
+    Component_Room.h \
+    Component_Jam.h
 INCLUDEPATH += ../../../../include/boost
 HEADERS += threadpool.hpp
 INCLUDEPATH += ../../../../server/include
@@ -144,6 +100,8 @@ FORMS += mainwindow.ui \
     conversationset.ui \
     roomplayeritem.ui
 DEFINES += _GUI
+CONFIG += link_pkgconfig
+PKGCONFIG += portaudiocpp
 debug:QMAKE_CXXFLAGS += -D_DEBUG \
     -g3 \
     -pg

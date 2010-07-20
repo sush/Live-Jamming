@@ -1,83 +1,50 @@
 #include "audioengine.h"
 
-AudioEngine::AudioEngine(QObject *parent)
-    :   QObject(parent)
-    ,   _availableInputDevices(QAudioDeviceInfo::availableDevices(QAudio::AudioInput))
-    ,   _inputDevice(QAudioDeviceInfo::defaultInputDevice())
-    ,   _input(0)
-    ,   _inputIODevice(0)
+/*
+  TODO :
+  * HANDLE ALL ERRORS WITH PORTAUDIO::EXCEPTION
+ */
 
-{
-    initialize();
+/*
+  CONSTRUCTOR/DESTRUCTOR
+ */
+
+AudioEngine::AudioEngine(){
+  initialize();
 }
 
-const QStringList AudioEngine::inputDevices(){
-    QStringList list;
-    foreach(const QAudioDeviceInfo &deviceInfo, _availableInputDevices){
-        if(!deviceInfo.isNull())
-        list << deviceInfo.deviceName();
-    }
-    return list;
+AudioEngine::~AudioEngine(){
+  terminate();
 }
 
-//-----------------------------------------------------------------------------
-// Private functions
-//-----------------------------------------------------------------------------
-void AudioEngine::reset(){
-   stopRecording();
-   setInputState(QAudio::StoppedState);
-   setInputFormat(QAudioFormat());
-   delete _input;
-   _input = 0;
-   _inputIODevice = 0;
-   /* NOT A PROPER _output END*/
+/*
+  PUBLIC METHODS
+ */
+void	AudioEngine::startRecording(){
+/*
+  TODO :
+  * FIND A WAY TO OPEN AN INPUT STREAM ON THE DEFAULT INPUT DEVICE.
+  * WRITE A CALLBACK TO READ THE DATA FROM THE INPUT STREAM.
+  * PRINT THE AMOUT OF DATA RECEIVED FROM THE INPUT STREAM.
+  * 
+ */
 }
 
-bool AudioEngine::initialize(){
-    bool result = false;
+/*
+  PRIVATE METHODS
+ */
 
-    reset();
-
-    if (selectInputFormat()){
-        _input = new QAudioInput(_inputDevice, _inputFormat, this);
-        result = true;
-    }
-    return result;
+void	AudioEngine::initialize(){
+  portaudio::System::initialize();
+  
+  _system = &(portaudio::System::instance());
 }
 
-void AudioEngine::stopRecording(){
-    if(_input){
-        _input->stop();
-        _input->disconnect();
-    }
-    _inputIODevice = 0;
-}
-
-bool AudioEngine::selectInputFormat(){
-    bool foundSupportedFormat = false;
-
-    QAudioFormat format;
-    format.setByteOrder(QAudioFormat::LittleEndian);
-    format.setCodec("audio/pcm");
-    format.setSampleSize(16);
-    format.setSampleType(QAudioFormat::SignedInt);
-    format.setFrequency(8000);
-    format.setChannels(1);
-
-    if (_inputDevice.isFormatSupported(format))
-        foundSupportedFormat = true;
-    else
-        format = QAudioFormat();
-
-    setInputFormat(format);
-    return foundSupportedFormat;
-}
-
-void AudioEngine::setInputFormat(const QAudioFormat &format){
-    _inputFormat = format;
-}
-
-void AudioEngine::setInputState(QAudio::State state)
-{
-    _inputState = state;
+void	AudioEngine::terminate(){
+  /* 
+     TODO :
+     * TERMINATE ALL OPENED STREAMS.
+     * CLOSE ALL OPENED DEVICES.
+   */
+  _system->terminate();
 }

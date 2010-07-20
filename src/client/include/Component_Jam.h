@@ -2,6 +2,7 @@
 #define __COMPONENT_JAM_H__
 
 class Component_Jam;
+#include "audioengine.h"
 
 #include <iostream>
 #include <IComponent.h>
@@ -11,7 +12,6 @@ class Component_Jam;
 #include <Protocol.h>
 #include <Protocol_Jam.h>
 #include <Session.h>
-#include <Jam.h>
 
 class Component_Jam : public IComponent
 {
@@ -39,7 +39,7 @@ class Component_Jam : public IComponent
  private:
 
   ClientManager	*_clientManager;
-  Jam		*_jam;
+  AudioEngine   *_audioEngine;
 };
 
 #endif // ! __COMPONENT_JAM_H__

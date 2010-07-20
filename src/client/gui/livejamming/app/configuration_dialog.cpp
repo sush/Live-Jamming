@@ -2,27 +2,24 @@
 #include "configuration_dialog.h"
 #include <qdebug.h>
 
-#ifndef NO_MULTIMEDIA
-#include "audioengine.h"
-#include "utils.h"
 
 ConfigurationDialog::ConfigurationDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ConfigurationDialog)
 {
-    AudioEngine* audioEngine = new AudioEngine();
+    // AudioEngine* audioEngine = new AudioEngine();
 
-    ui->setupUi(this);
+    // ui->setupUi(this);
 
-    /*Setting ui for input*/
-    ui->iComboBox->addItems(audioEngine->inputDevices());
-    foreach (int channel, audioEngine->inputDevice().supportedChannels())
-        ui->iChannelsComboBox->addItem(QString::number(channel));
-    ui->iCodecsComboBox->addItems(audioEngine->inputDevice().supportedCodecs());
-    foreach (int frequency, audioEngine->inputDevice().supportedFrequencies())
-        ui->iFrequenciesComboBox->addItem(QString::number(frequency));
-    foreach (int sampleSize, audioEngine->inputDevice().supportedSampleSizes())
-        ui->iSampleSizesComboBox->addItem(QString::number(sampleSize));
+    // /*Setting ui for input*/
+    // ui->iComboBox->addItems(audioEngine->inputDevices());
+    // foreach (int channel, audioEngine->inputDevice().supportedChannels())
+    //     ui->iChannelsComboBox->addItem(QString::number(channel));
+    // ui->iCodecsComboBox->addItems(audioEngine->inputDevice().supportedCodecs());
+    // foreach (int frequency, audioEngine->inputDevice().supportedFrequencies())
+    //     ui->iFrequenciesComboBox->addItem(QString::number(frequency));
+    // foreach (int sampleSize, audioEngine->inputDevice().supportedSampleSizes())
+    //     ui->iSampleSizesComboBox->addItem(QString::number(sampleSize));
     /*Setting ui for output*/
 //    ui->oComboBox->addItems(audioEngine->outputDevices());
 //    foreach (int channel, audioEngine->outputDevice().supportedChannels())
@@ -37,15 +34,4 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent) :
 ConfigurationDialog::~ConfigurationDialog(){
 }
 
-#elif defined(NO_MULTIMEDIA)
-ConfigurationDialog::ConfigurationDialog(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::ConfigurationDialog)
-{
-
-}
-
-ConfigurationDialog::~ConfigurationDialog(){
-}
-#endif
 
