@@ -41,7 +41,8 @@ void		Component_Channel::BindingsRecv()
     static_cast<Proxy*>(_clientManager), static_cast<Proxy::pMethod>(&Proxy::chanResponse));
 
   (*_bindingsRecv)[CHANNEL_LISTED] =
-    new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Channel::Recv_Listed));
+    new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Channel::Recv_Listed),
+    static_cast<Proxy*>(_clientManager), static_cast<Proxy::pMethod>(&Proxy::chanResponse));
 }
 
 void	Component_Channel::RegisteredRequests()

@@ -13,7 +13,7 @@ public:
     ChannelSearch(Proxy* proxy, QWidget* parent = 0);
 
 public slots:
-    void    channelsListed(QList<std::string>);
+    void    channelsListed(QStringList);
 };
 
 #endif // CHANNELSEARCH_H

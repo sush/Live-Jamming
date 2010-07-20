@@ -41,6 +41,11 @@ void    Proxy::authResponse(Packet_v1 const* packet, Session*)
         emit sAuthResponse(type);
 }
 
+QString op(const std::string& str)
+{
+    return QString::fromStdString(str);
+}
+
 void    Proxy::chanResponse(Packet_v1 const* packet_, Session*)
 {
     const Packet_v1_Channel* packet = static_cast<const Packet_v1_Channel*>(packet_);
@@ -63,7 +68,14 @@ void    Proxy::chanResponse(Packet_v1 const* packet_, Session*)
         type = MainWindow::MESSAGE_RECV; break;
     case CHANNEL_LISTED:
         type = MainWindow::LISTED;
-        emit channelsListed(QList<std::string>::fromVector(QVector<std::string>::fromStdVector(packet->getChannelList())));
+        static QStringList sl;
+        qDebug() << "PROXY RECVED LIST ! !";
+//        sl = std::vector<std::string>();
+//        transform(packet->getChannelList().begin(), packet->getChannelList().end(),
+//                  std::vector<std::string>(packet->getChannelList().size()).begin(), op);
+        foreach(std::string str, packet->getChannelList())
+            sl << QString::fromStdString(str);
+        emit channelsListed(sl);
         return ;
     default:
         handled = false;
@@ -90,9 +102,10 @@ void    Proxy::roomResponse(const Packet_v1 *packet_, Session *)
         qDebug() << "ROOM MSG RECEIVED:" << packet->getMessage();
         emit messageRecv(packet->getClientLogin(), packet->getMessage()); break;
     case ROOM_STARTED_JAM:
-        qDebug() << "JAM IS OK ! !";
-        emit startedJam(); break;
-    }        
+        emit startedStopedJam(true); break;
+    case ROOM_STOPED_JAM:
+        emit startedStopedJam(false); break;
+    }
 }
 
 void    Proxy::disconnect()

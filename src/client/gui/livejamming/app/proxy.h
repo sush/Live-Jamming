@@ -44,13 +44,13 @@ signals:
 void    sAuthResponse(MainWindow::authEventsType);
 void    sChanResponse(MainWindow::chanEventsType, const Packet_v1_Channel*);
 // chan
-void    channelsListed(QList<std::string>);
+void    channelsListed(QStringList);
 // room
 void    joinOk(QString);
 void    joined(QString);
 void    leaved(QString);
 void    messageRecv(QString, QString);
-void    startedJam();
+void    startedStopedJam(bool);
 };
 
 #endif // PROXY_H

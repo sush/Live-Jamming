@@ -9,13 +9,14 @@
 
 ChannelSearch::ChannelSearch(Proxy *proxy, QWidget *parent)
 {
+    setupUi(this);
     proxy->channel()->Send_List(proxy->session()->_session);
-    connect(proxy, SIGNAL(channelsListed(QList<std::string>)), this, SLOT(channelsListed(QList<std::string>)));
+    connect(proxy, SIGNAL(channelsListed(QStringList)), this, SLOT(channelsListed(QStringList)));
+    show();
 }
 
-void    ChannelSearch::channelsListed(QList<std::string> channelNameList)
+void    ChannelSearch::channelsListed(QStringList channelNameList)
 {
-    foreach(std::string channelName, channelNameList)
-        //QString::fromStdString(channelName);
-        channelTree->addTopLevelItem(new QTreeWidgetItem(QStringList(QString::fromStdString(channelName))));
+    foreach(QString channelName, channelNameList)
+        channelTree->addTopLevelItem(new QTreeWidgetItem(QStringList(channelName)));
 }

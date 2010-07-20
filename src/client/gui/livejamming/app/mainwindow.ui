@@ -250,7 +250,7 @@ ChannelList::branch:open:has-children:has-siblings  {
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
-     <string>File</string>
+     <string>&amp;File</string>
     </property>
     <addaction name="actionConnect"/>
     <addaction name="actionCreate_account"/>
@@ -259,7 +259,7 @@ ChannelList::branch:open:has-children:has-siblings  {
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
-     <string>Edit</string>
+     <string>&amp;Edit</string>
     </property>
     <addaction name="separator"/>
     <addaction name="separator"/>
@@ -267,7 +267,7 @@ ChannelList::branch:open:has-children:has-siblings  {
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
-     <string>Help</string>
+     <string>&amp;Help</string>
     </property>
     <addaction name="actionHelp"/>
     <addaction name="separator"/>
@@ -275,7 +275,7 @@ ChannelList::branch:open:has-children:has-siblings  {
    </widget>
    <widget class="QMenu" name="menuChans">
     <property name="title">
-     <string>Channels</string>
+     <string>&amp;Channels</string>
     </property>
     <addaction name="actionCreate_Channel"/>
     <addaction name="actionList_channels"/>
@@ -311,10 +311,7 @@ ChannelList::branch:open:has-children:has-siblings  {
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionConnect">
    <property name="text">
-    <string>Connect</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+C</string>
+    <string>&amp;Connect</string>
    </property>
   </action>
   <action name="actionCreate_account">
@@ -324,7 +321,7 @@ ChannelList::branch:open:has-children:has-siblings  {
   </action>
   <action name="actionQuit">
    <property name="text">
-    <string>Quit</string>
+    <string>&amp;Quit</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Q</string>
@@ -332,7 +329,10 @@ ChannelList::branch:open:has-children:has-siblings  {
   </action>
   <action name="actionPreferences">
    <property name="text">
-    <string>Preferences</string>
+    <string>&amp;Preferences</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F12</string>
    </property>
   </action>
   <action name="actionHelp">
@@ -375,7 +375,7 @@ ChannelList::branch:open:has-children:has-siblings  {
     <string>Create room</string>
    </property>
    <property name="shortcut">
-    <string>Alt+C</string>
+    <string>Ctrl+R</string>
    </property>
   </action>
   <action name="actionList_rooms">
@@ -384,6 +384,9 @@ ChannelList::branch:open:has-children:has-siblings  {
    </property>
    <property name="text">
     <string>List rooms</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+R</string>
    </property>
   </action>
   <action name="actionCreate_Channel">
@@ -394,7 +397,7 @@ ChannelList::branch:open:has-children:has-siblings  {
     <string>Create channel</string>
    </property>
    <property name="shortcut">
-    <string>Shift+C</string>
+    <string>Ctrl+C</string>
    </property>
   </action>
   <action name="actionList_channels">
@@ -403,6 +406,9 @@ ChannelList::branch:open:has-children:has-siblings  {
    </property>
    <property name="text">
     <string>List channels</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+C</string>
    </property>
   </action>
  </widget>

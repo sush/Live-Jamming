@@ -6,7 +6,17 @@
 #include <portaudiocpp/Device.hxx>
 #include <iostream>
 
-class AudioEngine
+class bidon
+{
+public:
+    bidon()
+    {
+        portaudio::System::initialize();
+        std::cout << "SYSTEM INITIALISED" << std::endl;
+    }
+};
+
+class AudioEngine : public bidon
 {
  public:
     AudioEngine();
@@ -23,7 +33,7 @@ class AudioEngine
       PRIVATE VARIABLES
      */
  private:
-    portaudio::System	*_system;
+    portaudio::System&	_system;
 };
 
 #endif // AUDIOENGINE_H

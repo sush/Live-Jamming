@@ -53,10 +53,12 @@ void		Component_Room::BindingsRecv()
     new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Room::Recv_User_Kicked));
 
   (*_bindingsRecv)[ROOM_STARTED_JAM] =
-    new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Room::Recv_Started_Jam));
+    new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Room::Recv_Started_Jam),
+                  static_cast<Proxy*>(_clientManager), static_cast<Proxy::pMethod>(&Proxy::roomResponse));
 
   (*_bindingsRecv)[ROOM_STOPED_JAM] =
-    new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Room::Recv_Stoped_Jam));
+    new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Room::Recv_Stoped_Jam),
+                  static_cast<Proxy*>(_clientManager), static_cast<Proxy::pMethod>(&Proxy::roomResponse));
 
   (*_bindingsRecv)[ROOM_START_JAM_ACK] =
     new Bind_recv(0, 0);

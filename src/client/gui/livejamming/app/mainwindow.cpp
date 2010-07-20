@@ -315,7 +315,6 @@ void MainWindow::sendMessage(const QString& msg)
 void MainWindow::createRoom(const QString &name)
 {
     RoomDialog* room = new RoomDialog(this, proxy, name);
-    room->show();
 }
 
 void MainWindow::on_actionList_channels_triggered()

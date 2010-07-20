@@ -1,5 +1,8 @@
 #include "audioengine.h"
 
+#include <portaudiocpp/System.hxx>
+
+
 /*
   TODO :
   * HANDLE ALL ERRORS WITH PORTAUDIO::EXCEPTION
@@ -9,12 +12,14 @@
   CONSTRUCTOR/DESTRUCTOR
  */
 
-AudioEngine::AudioEngine(){
-  initialize();
+AudioEngine::AudioEngine() :
+    _system(portaudio::System::instance())
+{
+
 }
 
 AudioEngine::~AudioEngine(){
-  terminate();
+  portaudio::System::terminate();
 }
 
 /*
@@ -34,17 +39,17 @@ void	AudioEngine::startRecording(){
   PRIVATE METHODS
  */
 
-void	AudioEngine::initialize(){
-  portaudio::System::initialize();
-  
-  _system = &(portaudio::System::instance());
-}
+//void	AudioEngine::initialize(){
+//  portaudio::System::initialize();
+//
+//  _system = &(portaudio::System::instance());
+//}
 
-void	AudioEngine::terminate(){
-  /* 
-     TODO :
-     * TERMINATE ALL OPENED STREAMS.
-     * CLOSE ALL OPENED DEVICES.
-   */
-  _system->terminate();
-}
+//void	AudioEngine::terminate(){
+//  /*
+//     TODO :
+//     * TERMINATE ALL OPENED STREAMS.
+//     * CLOSE ALL OPENED DEVICES.
+//   */
+//  _system->terminate();
+//}

@@ -33,8 +33,7 @@ public slots:
 private slots:
     void on_startButton_clicked(bool checked);
     void    sendMessage(const QString&login);
-    void    startedJam();
-
+    void    startedStopedJam(bool started);
 
 protected:
     void changeEvent(QEvent *e);
