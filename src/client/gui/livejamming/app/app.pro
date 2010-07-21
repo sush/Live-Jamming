@@ -58,7 +58,7 @@ HEADERS += Session.h \
     Packet_v1_Channel.h \
     Packet_v1_Friend.h
 #PIERRE
-SOURCES += audioengine.cpp
+#SOURCES += audioengine.cpp
 HEADERS += audioengine.h
 #!PIERRE
 DEPENDPATH += ../../../../client

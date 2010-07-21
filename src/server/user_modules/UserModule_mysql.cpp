@@ -1,6 +1,7 @@
 #include <UserModule_mysql.h>
+#include <Constants.h> //temporary before config
 
-std::string const	&salt = "DYhG93b0qLive-JammingDIENOOBVoUubWwvniR2G0FgaC9mi";
+std::string const	&salt = DB_SALT;
 
 UserModule_mysql::UserModule_mysql()
 {
@@ -12,7 +13,7 @@ UserModule_mysql::~UserModule_mysql()
 
 void					UserModule_mysql::Connection()
 {
-  const char* db = "live-jamming_db", *server = "192.168.0.12", *user = "root", *pass = "MAgoun12$";
+  const char* db = DB_NAME, *server = DB_HOST, *user = DB_USER, *pass = DB_PASS;
   
   _dbLink.set_option(new mysqlpp::MultiStatementsOption(true));
   _dbLink.connect(db, server, user, pass);

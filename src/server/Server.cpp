@@ -9,7 +9,7 @@
 
 const std::string	Server::_address = "192.168.0.12";
 const int		Server::_port	= 5042;
-const int		Server::_poolSize = 1;
+const int		Server::_poolSize = 8;
 const int		updateTime = 1;
 const int		treat_delay = 0; //micro seconds
 

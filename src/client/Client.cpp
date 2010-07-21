@@ -4,10 +4,11 @@
 #include <sstream>
 #include <string>
 #include <Time.h>
+#include <Constants.h>
 
-char const	*connect_address = "127.0.0.1";  //"127.0.0.1";
+char const	*connect_address = LJ_DEFAULT_SERVER;  //"127.0.0.1";
 
-int		Client::_connect_port	= 5042;
+int		Client::_connect_port	= LJ_PORT;
 int		Client::_port	= _connect_port + 1;
 int		Client::_poolSize = 1;
 const int	updateTime = 1;

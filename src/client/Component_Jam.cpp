@@ -26,13 +26,13 @@ void	Component_Jam::RegisteredRequests()
 
 void	Component_Jam::StartJam(field_t jamId, Room *room)
 {
-    _audioEngine = new AudioEngine();
+  //    _audioEngine = new AudioEngine();
     //    _audioEngine->startRecording();
 }
 
 void	Component_Jam::StopJam(field_t jamId)
 {
-  delete _audioEngine;
+  //    delete _audioEngine;
 }
 
 void	Component_Jam::Recv_Jam(Packet_v1 const *packet_v1, Session *session)
