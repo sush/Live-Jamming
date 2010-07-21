@@ -57,7 +57,7 @@ void	Client::CallBack_handle_receive(boost::system::error_code const & error, st
       catch (std::runtime_error &e)
 	{
 	  std::cout << e.what() << ":" << Packet_v1::peekComponentId(*_recv_buffer) << std::endl;
-	  //!!! delete _recv_buffer;
+	  delete _recv_buffer;
 	}
       ////////////////////////////////////////////
 

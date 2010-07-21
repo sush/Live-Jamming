@@ -97,7 +97,7 @@ void		Manager::CallBack_handle_send(Packet_v1 *packet_v1) const
       std::cout << "ComponentID = " << packet_v1->getComponentId()
 		<< "REQUESTID = " << packet_v1->getRequestId()
 		<< std::endl;
-      //      delete packet_v1;
+      delete packet_v1;
     }
 }
 
