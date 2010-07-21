@@ -92,9 +92,8 @@ void			ClientManager::Disconnect(Session *)
   static_cast<Proxy*>(this)->disconnect(); // session_timeout, connection_timeout
   std::cout << "session = " << session << std::endl;
   std::cout << "session = " << session << std::endl;
-  std::cout << "^^^^^^^^^^^^^^            STOP           ^^^^^^^^^^^^^^^" << std::endl;
-  _io_service.stop();   // STOPS socket monitoring
-  _io_service.reset();
+  session->DeAuthentificated();
+  //  _io_service.stop();
 }
 
 boost::asio::ip::udp::endpoint        &ClientManager::getEndpoint()

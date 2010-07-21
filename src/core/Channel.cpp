@@ -1,8 +1,8 @@
 #include <Channel.h>
 
 Channel::Channel(char const * name)
+  :_name(name)
 {
-  _name = name;
   _connected = new m_session();
 }
 
@@ -39,7 +39,7 @@ bool			Channel::removeConnected(field_t sessionId)
 
 char const		*Channel::getName() const
 {
-  return _name;
+  return _name.c_str();
 }
 
 void			Channel::setName(char const * name)

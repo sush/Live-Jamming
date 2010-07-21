@@ -1,8 +1,8 @@
 #include <Room.h>
 
 Room::Room(char const * name)
+  :_name(name)
 {
-  _name = name;
   _connected = new m_session();
 }
 
@@ -39,7 +39,7 @@ bool                    Room::removeConnected(field_t sessionId)
 
 char const              *Room::getName() const
 {
-  return _name;
+  return _name.c_str();
 }
 
 void                    Room::setName(char const * name)

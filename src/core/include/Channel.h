@@ -5,7 +5,9 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/asio.hpp>
 #include <Session.h>
+
 #include <map>
+#include <iostream>
 
 //! COMMON:  It is used to manage the list of channels and users connected.
 
@@ -39,7 +41,7 @@ private:
   typedef std::map<field_t, Session*>	m_session;    
   m_session			*_connected;
   boost::mutex			_channel_mutex;
-  char const *			_name;
+  std::string			_name;
 };
 
 #endif // ! __CHANNEL_H__

@@ -3,7 +3,7 @@
 
 #include <Protocol.h>
 
-#define USERINFO_COMPONENTID				5
+#define USERINFO_COMPONENTID				6
 
 #define USERINFO_GETINFO_REQUEST			1
 #define USERINFO_GETINFO_RESPONSE_OK			2

@@ -21,6 +21,7 @@ void		Client::Run()
  
   start_receive();
   std::cout << "^^^^^^^^^^^^^^            RUN           ^^^^^^^^^^^^^^^" << std::endl;
+  _io_service->reset();
   _io_service->run();
   std::cout << "^^^^^^^^^^^^^^            END_RUN           ^^^^^^^^^^^^^^^" << std::endl;
 }
@@ -121,14 +122,19 @@ void		Client::Connect(std::string const & login, std::string const & password, s
   _connect_port = port;
   _remote_endpoint->address(boost::asio::ip::address::from_string(connect_address));
   _remote_endpoint->port(port);
-  boost::thread		t(boost::bind(&Client::Run, this));
+  static int aaa = 0;
+  if (aaa == 0)
+    boost::thread		t(boost::bind(&Client::Run, this));
   _clientManager->Connect(login, password);
+
+  ++aaa;
 }
 
 void		Client::Disconnect()
 {
   std::cout << " _ _ _ _ _ _ _ *** _ _ _ _ _ _ DISCONNECT #################################" << std::endl;
   _clientManager->Disconnect(0);
+  std::cout << "^^^^^^^^^^^^^^            STOP           ^^^^^^^^^^^^^^^" << std::endl;
 }
 
 void		Client::Init(int argc, char *argv[])

@@ -7,7 +7,7 @@
 // unix dependent, do analogue treatment on windows
 #include <signal.h>
 
-const std::string	Server::_address = "127.0.0.1";
+const std::string	Server::_address = "192.168.0.12";
 const int		Server::_port	= 5042;
 const int		Server::_poolSize = 1;
 const int		updateTime = 1;
@@ -25,6 +25,7 @@ void sighandler(int sig)
 void		Server::Stop()
 {
   Server	*server=Server::getInstance();
+  server->_io_service->reset();
   server->_io_service->stop();
   std::cout << "* ";
   Time::Print();
