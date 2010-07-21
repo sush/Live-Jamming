@@ -241,7 +241,7 @@ Session::PacketTimer::PacketTimer(Session * session, Manager * manager, boost::a
 Session::PacketTimer::~PacketTimer()
 {
   delete _timer;
-  delete _packet_v1;
+  //  delete _packet_v1;
 }
 
 void	Session::PacketTimer::setAutoRetry(Packet_v1 *packet_v1)
