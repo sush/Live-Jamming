@@ -133,16 +133,6 @@ QTabBar::tab:!selected {
 	color: #FFFFFF;
 }
 
- QTreeView::branch:!has-children:!has-siblings:adjoins-item {
-     border-image: url(:/images/branch-end.png) 0;
- }
- QTreeView::branch:has-siblings:adjoins-item {
-     border-image: url(:/images/branch-more.png) 0;
- }
-ChannelList::branch:!has-children:!has-siblings:adjoins-item {
-     border-image: url(:/images/branch-end.png) 0;
- }
-
 ChannelList::branch:has-children:!has-siblings:closed,
 ChannelList::branch:closed:has-children:has-siblings {
          border-image: none;
@@ -245,7 +235,7 @@ ChannelList::branch:open:has-children:has-siblings  {
      <x>0</x>
      <y>0</y>
      <width>791</width>
-     <height>25</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
