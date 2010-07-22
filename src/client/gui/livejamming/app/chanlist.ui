@@ -14,10 +14,10 @@
    <string>Dialog</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">#chanList {
+   <string notr="true">QDialog{
 	background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.00934579 rgba(155, 217, 122, 255), stop:0.0116822 rgba(59, 61, 59, 255), stop:0.995455 rgba(59, 61, 59, 255))
 }
-#chanList QPushButton {
+QDialog QPushButton {
 color: #333;
 border: 2px solid #555;
 border-radius: 11px;
@@ -27,12 +27,12 @@ fx: 0.3, fy: -0.4,
 radius: 1.35, stop: 0 #fff, stop: 1 #888);
 min-width: 80px;
 }
-#chanList QPushButton:hover {
+QDialog QPushButton:hover {
 background: qradialgradient(cx: 0.3, cy: -0.4,
 fx: 0.3, fy: -0.4,
 radius: 1.35, stop: 0 #fff, stop: 1 #bbb);
 }
-#chanList QPushButton:pressed {
+QDialog QPushButton:pressed {
 background: qradialgradient(cx: 0.4, cy: -0.1,
 fx: 0.4, fy: -0.1,
 radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
@@ -42,7 +42,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
    <item>
     <widget class="QTreeWidget" name="channelTree">
      <property name="styleSheet">
-      <string notr="true">#treeWidget {
+      <string notr="true">QTreeWidget{
 background: rgb(132, 132, 132);
 border-radius: 20px;
 }</string>
@@ -77,7 +77,11 @@ border-radius: 20px;
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QLineEdit" name="findLineEdit"/>
+      <widget class="QLineEdit" name="findLineEdit">
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+      </widget>
      </item>
      <item row="1" column="0">
       <widget class="QLabel" name="lookInLabel">
