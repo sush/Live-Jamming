@@ -31,7 +31,8 @@
 MainWindow::MainWindow(Proxy* proxy) :
     QMainWindow(),
     ui(new Ui::MainWindow),
-    proxy(proxy)
+    proxy(proxy),
+    settings(QSettings::IniFormat,QSettings::UserScope, "LiveJamming", "live-jamming")
 {
     ui->setupUi(this);
     setVisible(true);
