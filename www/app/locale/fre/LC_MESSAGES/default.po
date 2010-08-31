@@ -999,7 +999,7 @@ msgstr "Type de connection"
 
 #: /views/users/register.ctp:29
 msgid "user_register_form_captcha"
-msgstr "Recopier le text ci-dessus"
+msgstr "Recopiez le texte ci-dessus"
 
 #: /views/users/view.ctp:9
 msgid "Pseudo"
@@ -1028,3 +1028,32 @@ msgstr "Plus de news"
 #: /views/pages/home.ctp:57
 msgid "all_records"
 msgstr "Derniers enregistrements"
+
+#: /model/user.php:23
+msgid "user_register_form_login_unique_message"
+msgstr "Votre login n'est pas unique."
+
+#: /model/user.php
+msgid "user_register_form_login_alphanumeric"
+msgstr "Le login doit contenir des caractères alphanumériques."
+
+#: /model/user.php
+msgid "user_register_form_email_1_message"
+msgstr "Le format de votre email n'est pas valide."
+
+#: /model/user.php
+msgid "user_register_form_email_unique_message"
+msgstr "Votre email est deja utilisé."
+
+#: /model/user.php
+msgid "user_register_form_password_message"
+msgstr "Votre mot de passe doit contenir minimun 8 caractères."
+
+#: /model/user.php
+msgid "user_register_form_password_confirm_message"
+msgstr "Le mot de passe de confirmation ne correspond pas au password."
+
+#: /model/user.php
+msgid "user_register_form_captcha"
+msgstr "Les caracterès que vous avez entre ne correspondent pas à l'image affiché au dessus."
+

@@ -1032,3 +1032,28 @@ msgstr "Last records"
 #: /model/user.php:23
 msgid "user_register_form_login_unique_message"
 msgstr "Your login is not unique"
+
+#: /model/user.php
+msgid "user_register_form_login_alphanumeric"
+msgstr "Your login must contain alphanumeric characters"
+
+#: /model/user.php
+msgid "user_register_form_email_1_message"
+msgstr "Your email is not a valid email"
+
+#: /model/user.php
+msgid "user_register_form_email_unique_message"
+msgstr "Your email is not unique"
+
+#: /model/user.php
+msgid "user_register_form_password_message"
+msgstr "Your password required minimun 8 characters"
+
+#: /model/user.php
+msgid "user_register_form_password_confirm_message"
+msgstr "Confirm password does not match with password"
+
+#: /model/user.php
+msgid "user_register_form_captcha"
+msgstr "The characters you entered didn't match the word verification. Please try again."
+

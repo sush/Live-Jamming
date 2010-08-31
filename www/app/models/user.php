@@ -14,44 +14,48 @@ class User extends AppModel {
 				   );
 
 	/* /!\ Search plugin*/
-	var $validate = array(
-			      'login' => array(
-					       'alphaNumeric' => array(
-								       'rule' => 'alphaNumeric',
-								       'required' => true,
-								       'message' => __('user_register_form_login_alphanumeric',true)),
-					       'isUnique' => array(
-								   'rule' => 'isUnique',
-								   'message' => __('user_register_form_login_unique_message',true))
-					       ),
-			      'email' => array(
-					       'email-1' => array(
-								  'rule' => array('email'),
-								  'message' => __('user_register_form_email_1_message',true)),
-					       'email-2' => array(
-								  'rule' => 'isUnique',
-								  'message' => __('user_register_form_email_unique_message',true))
-					       ),
-			      'password' => array(
-						  'minLength' => array(
-								       'rule' => array('minLength', '8'),
-								       'message' => __('user_register_form_password_message',true)),
-						  ),
-			      'confirm_password' => array(
-							  'minLength' => array(
-									       'rule' => array('minLength','8'),
-									       'message' => __('user_register_form_password_message',true)),
-							  'matchPassword' => array(
-										   'rule' => 'matchPassword',
-										   'message' => __('user_register_form_password_confirm_message',true))
-							  ),
-			      'captcha' => array(
-						 'validateCaptcha' => array(
-									    'rule' => 'validateCaptcha',
-									    'message' => __('user_register_form_captcha',true))
-						 )
-				  );
+	//var $validate = array();
 	
+	public function __construct($id = false, $table = null, $ds = null) {
+	  parent::__construct($id, $table, $ds);
+	  
+	  $rules = array(
+			 'alphaNumeric' => array('rule' => 'alphaNumeric',
+						 'required' => true,
+						 'message' => __('user_register_form_login_alphanumeric',true)),
+			 'isUnique' => array(
+					     'rule' => 'isUnique',
+					     'message' => __('user_register_form_login_unique_message',true)),
+			 'email-1' => array(
+					    'rule' => array('email'),
+					    'message' => __('user_register_form_email_1_message',true)),
+			 'email-2' => array(
+					    'rule' => 'isUnique',
+					    'message' => __('user_register_form_email_unique_message',true)),
+			 'minLength' => array(
+					      'rule' => array('minLength', '8'),
+					      'message' => __('user_register_form_password_message',true)),
+			 'matchPassword' => array(
+						  'rule' => 'matchPassword',
+						  'message' => __('user_register_form_password_confirm_message',true)),
+			 'validateCaptcha' => array(
+						    'rule' => 'validateCaptcha',
+						    'message' => __('user_register_form_captcha',true))
+			 );
+				
+	$this->validate = array(
+				'login' => $rules['alphaNumeric'],
+				'login' => $rules['isUnique'],
+				'email' => $rules['email-1'],
+				'email' => $rules['email-2'],
+				'password' => $rules['minLength'],
+				'confirm_password' => $rules['minLength'],
+				'confirm_password' => $rules['matchPassword'],
+				'captcha' => $rules['validateCaptcha']
+				);
+	  
+	}
+
 	function validateCaptcha($field=null){
 	  if (!defined('CAPTCHA_SESSION_ID')) {
             define('CAPTCHA_SESSION_ID', 'php_captcha');
