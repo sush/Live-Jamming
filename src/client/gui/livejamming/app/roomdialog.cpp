@@ -8,6 +8,8 @@
 #include <Component_Session.h>
 #include <qdebug.h>
 
+extern QSettings settings;
+
 RoomDialog::RoomDialog(QWidget *parent, Proxy* proxy, const QString& name) :
     QDialog(parent),
     ui(new Ui::RoomDialog),
@@ -17,7 +19,7 @@ RoomDialog::RoomDialog(QWidget *parent, Proxy* proxy, const QString& name) :
     ui->playersVBox->setAlignment(ui->invite, Qt::AlignHCenter);
     setWindowTitle("Room - " + name);
 
-    joined(QSettings().value("user/login").toString());
+    joined(settings.value("user/login").toString());
     connect(proxy, SIGNAL(joined(QString)), this, SLOT(joined(QString)), Qt::QueuedConnection);
     connect(proxy, SIGNAL(leaved(QString)), this, SLOT(leaved(QString)), Qt::QueuedConnection);
     connect(proxy, SIGNAL(messageRecv(QString,QString)), ui->convSet, SLOT(addMessage(const QString&, const QString&)), Qt::QueuedConnection);
@@ -51,14 +53,15 @@ void    RoomDialog::closeEvent(QCloseEvent*)
     proxy->room()->Send_Leave(proxy->session()->_session, proxy->roomid);
 }
 
-void    RoomDialog::joined(QString client)
+void    RoomDialog::joined(const QString& client)
 {
+    qDebug() << client << "has joined in room";
     RoomPlayerItem* item = new RoomPlayerItem(this, client, QString("Paris, France"));
-    ui->playersVBox->insertWidget(0, item);
+    ui->playersVBox->addWidget(item);
     players.insert(client, (UiRoomPlayer){item});
 }
 
-void    RoomDialog::leaved(QString client)
+void    RoomDialog::leaved(const QString& client)
 {
     Q_ASSERT(players.contains(client));
 

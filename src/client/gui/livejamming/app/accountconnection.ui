@@ -79,7 +79,7 @@
 }</string>
      </property>
      <property name="text">
-      <string>Server Ip</string>
+      <string>Server IP</string>
      </property>
     </widget>
    </item>

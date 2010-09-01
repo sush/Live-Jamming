@@ -3,6 +3,8 @@
 
 #include <qdebug.h>
 
+extern QSettings settings;
+
 AccountConnection::AccountConnection(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::AccountConnection)
@@ -39,9 +41,9 @@ bool  AccountConnection::run(MainWindow* parent, const QString& login, const QSt
     connect(ac.ui->buttonBox, SIGNAL(rejected()), &ac, SLOT(reject()));
     if (ac.exec() != QDialog::Accepted)
        return false;
-    parent->settings.setValue("user/login", ac.ui->loginLineEdit->text());
-    parent->settings.setValue("user/password",ac.ui->passwordLineEdit->text());
-    parent->settings.setValue("server/ip", ac.ui->serverIpLineEdit->text());
-    parent->settings.setValue("server/port", ac.ui->serverPortLineEdit->text());
+    /*parent->*/settings.setValue("user/login", ac.ui->loginLineEdit->text());
+    /*parent->*/settings.setValue("user/password",ac.ui->passwordLineEdit->text());
+    /*parent->*/settings.setValue("server/ip", ac.ui->serverIpLineEdit->text());
+    /*parent->*/settings.setValue("server/port", ac.ui->serverPortLineEdit->text());
     return true;
 }

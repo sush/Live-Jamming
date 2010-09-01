@@ -27,12 +27,12 @@
 #include <Packet_v1.h>
 #include <Client.h>
 
+QSettings       settings(QSettings::IniFormat,QSettings::UserScope, "LiveJamming", "live-jamming");
 
 MainWindow::MainWindow(Proxy* proxy) :
     QMainWindow(),
     ui(new Ui::MainWindow),
-    proxy(proxy),
-    settings(QSettings::IniFormat,QSettings::UserScope, "LiveJamming", "live-jamming")
+    proxy(proxy)
 {
     ui->setupUi(this);
     setVisible(true);
@@ -142,14 +142,16 @@ void    MainWindow::chanEvents(chanEventsType event, const Packet_v1_Channel* pa
         break;
     case JOINED:
         qDebug() << "FROM PROXY" << packet->getClientLogin() << "joined" << proxy->channel()->getChannelName(packet->getChannelId());
-        addClientToChannel(proxy->channelIdToName(packet->getChannelId()), proxy->channel()->getChannelName(packet->getChannelId()));
+        proxy->clientIdToName[packet->getClientSessionId()] = packet->getClientLogin();
+        addClientToChannel(proxy->channelIdToName(packet->getChannelId()), packet->getClientLogin());
         break;
     case LEAVED:
         qDebug() << packet->getClientLogin() << "leaved" << proxy->channelIdToName(packet->getChannelId());
         removeClientFromChannel(proxy->channelIdToName(packet->getChannelId()), packet->getClientLogin());
         break;
     case MESSAGE_RECV:
-        addMessage(proxy->channelIdToName(packet->getChannelId()), "toto", QString::fromUtf8(packet->getMessage()));
+        assert(proxy->clientIdToName.contains(packet->getClientSessionId()));
+        addMessage(proxy->channelIdToName(packet->getChannelId()), proxy->clientIdToName.find(packet->getClientSessionId()).value(), QString::fromUtf8(packet->getMessage()));
         break;
     }
 }
@@ -173,6 +175,7 @@ void    MainWindow::joinChannel(const QString &name)
 
 void    MainWindow::leaveChannel(const QString &name)
 {
+    qDebug() << "SODOMIE AVEC DU GRAVIER ! ! 1 <<" << name << ">> !";
     ui->stackedWidget->removeWidget(channels[name].convSet);
     delete channels[name].convSet;
     delete channels[name].item;
@@ -188,7 +191,8 @@ void    MainWindow::addClientToChannel(const QString &channel, const QString &cl
     Q_ASSERT(channels.find(channel) != channels.end());
     QTreeWidgetItem* item = new QTreeWidgetItem(QStringList(client));
     channels[channel].item->addChild(item);
-    channels[channel].convSet->addEvent(client + " has joined");
+    if (client != settings.value("user/login").toString())
+        channels[channel].convSet->addEvent(client + " has joined");
 
     clients[client] = (UiClient){item};
 }

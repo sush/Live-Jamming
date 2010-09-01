@@ -62,7 +62,7 @@ private:
     QMap<QString, UiChannel>   channels;
     QMap<QString, UiClient>    clients;
     QString         currentChannel;
-    QSettings       settings;
+
 private:
     void joinChannel(const QString& name);
     void leaveChannel(const QString& name);
