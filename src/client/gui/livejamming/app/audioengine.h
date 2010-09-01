@@ -1,39 +1,37 @@
 #ifndef AUDIOENGINE_H
 #define AUDIOENGINE_H
 
-#include <portaudiocpp/System.hxx>
-#include <portaudiocpp/SystemDeviceIterator.hxx>
-#include <portaudiocpp/Device.hxx>
 #include <iostream>
+#include <jack/jack.h>
 
-class bidon
-{
-public:
-    bidon()
-    {
-        portaudio::System::initialize();
-        std::cout << "SYSTEM INITIALISED" << std::endl;
-    }
-};
-
-class AudioEngine : public bidon
+class AudioEngine
 {
  public:
     AudioEngine();
     ~AudioEngine();
-    void		startRecording();
 
     /*
       PRIVATE METHODS
      */
  private:
-    void		initialize();
-    void		terminate();
+    bool    init();
+    bool    activate();
+    void    deactivate();
+    void    setCallbacks();
+    void    clean();
     /*
       PRIVATE VARIABLES
      */
  private:
-    portaudio::System&	_system;
+    jack_client_t   *_jackClient;
+    jack_options_t  _options;
+    jack_status_t   _status;
+    jack_port_t     **_iPorts;
+    jack_port_t     **_oPorts;
+    const char      *_clientName;
+    bool            _activated;
+    unsigned short  _iChannels;
+
 };
 
 #endif // AUDIOENGINE_H

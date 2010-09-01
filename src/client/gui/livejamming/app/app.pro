@@ -58,7 +58,7 @@ HEADERS += Session.h \
     Packet_v1_Channel.h \
     Packet_v1_Friend.h
 #PIERRE
-#SOURCES += audioengine.cpp
+SOURCES += audioengine.cpp
 HEADERS += 
 #!PIERRE
 DEPENDPATH += ../../../../client
@@ -88,9 +88,7 @@ HEADERS += Protocol.h
 LIBS += -lboost_system \
     -lboost_thread-mt \
     -lboost_program_options \
-    -lyaml-cpp \
-    -L../../../../libs \
-    -L/usr/share/qt4/lib
+    -L../../../../libs
 FORMS += mainwindow.ui \
     accountconnection.ui \
     configuration_dialog.ui \
@@ -101,7 +99,7 @@ FORMS += mainwindow.ui \
     roomplayeritem.ui
 DEFINES += _GUI
 CONFIG += link_pkgconfig
-PKGCONFIG += portaudiocpp
+PKGCONFIG += jack
 debug:QMAKE_CXXFLAGS += -D_DEBUG \
     -g3 \
     -pg

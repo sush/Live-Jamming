@@ -1,55 +1,56 @@
 #include "audioengine.h"
 
-#include <portaudiocpp/System.hxx>
-
-
-/*
-  TODO :
-  * HANDLE ALL ERRORS WITH PORTAUDIO::EXCEPTION
- */
-
 /*
   CONSTRUCTOR/DESTRUCTOR
  */
 
-AudioEngine::AudioEngine() :
-    _system(portaudio::System::instance())
+AudioEngine::AudioEngine()
+    : _options(JackNullOption),
+    _clientName("Live-Jamming"),
+    _activated(false),
+    _iChannels(2)
 {
 
 }
 
 AudioEngine::~AudioEngine(){
-  portaudio::System::terminate();
-}
-
-/*
-  PUBLIC METHODS
- */
-void	AudioEngine::startRecording(){
-/*
-  TODO :
-  * FIND A WAY TO OPEN AN INPUT STREAM ON THE DEFAULT INPUT DEVICE.
-  * WRITE A CALLBACK TO READ THE DATA FROM THE INPUT STREAM.
-  * PRINT THE AMOUT OF DATA RECEIVED FROM THE INPUT STREAM.
-  * 
- */
 }
 
 /*
   PRIVATE METHODS
  */
+bool	AudioEngine::init(){
+_jackClient = jack_client_open(_clientName, _options, NULL);
 
-//void	AudioEngine::initialize(){
-//  portaudio::System::initialize();
-//
-//  _system = &(portaudio::System::instance());
-//}
+if (_jackClient == NULL ||
+    _status & JackServerFailed)
+    return false;
+_clientName = jack_get_client_name(_jackClient);
+return true;
+}
 
-//void	AudioEngine::terminate(){
-//  /*
-//     TODO :
-//     * TERMINATE ALL OPENED STREAMS.
-//     * CLOSE ALL OPENED DEVICES.
-//   */
-//  _system->terminate();
-//}
+void    AudioEngine::setCallbacks(){
+    jack_set_process_callback(_jackClient, AudioEngine_process, this);
+    jack_on_shutdown(_jackClient, AudioEngine_shutdown, this);
+}
+
+bool    AudioEngine::activate(){
+    this->setCallbacks();
+    if (!jack_activate(_jackClient) == 0)
+        _activated = false;
+    else
+        _activated = true;
+    return _activated;
+}
+
+void    AudioEngine::deactivate(){
+    if(_jackClient)
+        jack_deactivate(_jackClient);
+}
+
+void    AudioEngine::clean(){
+    if (_jackClient){
+        jack_client_close(_jackClient);
+        _jackClient = NULL;
+    }
+}
