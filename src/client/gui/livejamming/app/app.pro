@@ -59,7 +59,7 @@ HEADERS += Session.h \
     Packet_v1_Friend.h
 #PIERRE
 SOURCES += audioengine.cpp
-HEADERS += 
+HEADERS += audioengine.h
 #!PIERRE
 DEPENDPATH += ../../../../client
 INCLUDEPATH += ../../../../client/include

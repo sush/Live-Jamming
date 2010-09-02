@@ -1,5 +1,4 @@
 #include "audioengine.h"
-
 /*
   CONSTRUCTOR/DESTRUCTOR
  */
@@ -16,6 +15,12 @@ AudioEngine::AudioEngine()
 AudioEngine::~AudioEngine(){
 }
 
+/*
+    STATIC METHODS FOR JACK CALLBACK
+  */
+static int  AudioEngine_process(jack_nframes_t nframes, void *pvArg ){
+}
+static void AudioEngine_shutdown(void *pvArg){}
 /*
   PRIVATE METHODS
  */
