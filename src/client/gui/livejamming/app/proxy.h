@@ -28,10 +28,10 @@ void    roomResponse(Packet_v1 const*, Session*);
    //////////////////////////////////////
 void    disconnect();
 field_t roomid;
-QMap<QString, field_t>    channelNameToId;
-QMap<QString, field_t>    clientNameToId;
 QMap<field_t, QString>    clientIdToName;
-const char* channelIdToName(field_t);
+QMap<field_t, QString>    channelIdToName;
+unsigned int channelNameToId(const QString& name);
+
 
 typedef void    (Proxy::*pMethod)(Packet_v1 const*, Session*);
 

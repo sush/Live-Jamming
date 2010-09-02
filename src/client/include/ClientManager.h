@@ -36,13 +36,13 @@ public:
   m_avatar &				getAvatarMap();
   
 
+  Component_Session			*_session;
 private:
   virtual void				Init_Components();
 
 
 protected:
   // core components
-  Component_Session			*_session;
   Component_Channel			*_channel;
   Component_Friend			*_friend;
   Component_Room			*_room;

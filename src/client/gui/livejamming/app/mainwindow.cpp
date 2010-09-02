@@ -133,25 +133,26 @@ void    MainWindow::chanEvents(chanEventsType event, const Packet_v1_Channel* pa
 
     switch(event) {
     case JOIN_OK:
-        proxy->channelNameToId[channelName] = packet->getChannelId();
+        proxy->channelIdToName[packet->getChannelId()] = proxy->channel()->getChannelName(packet->getChannelId());
+        proxy->clientIdToName[proxy->_session->getSessionId()] = settings.value("user/login").toString();
         joinChannel(channelName);
         break;
     case LEAVE_OK:
-        proxy->channelNameToId.remove(channelName);
-        leaveChannel(channelName);
+        leaveChannel(proxy->channelIdToName[packet->getChannelId()]);
+        proxy->channelIdToName.remove(packet->getChannelId());
         break;
     case JOINED:
         qDebug() << "FROM PROXY" << packet->getClientLogin() << "joined" << proxy->channel()->getChannelName(packet->getChannelId());
         proxy->clientIdToName[packet->getClientSessionId()] = packet->getClientLogin();
-        addClientToChannel(proxy->channelIdToName(packet->getChannelId()), packet->getClientLogin());
+        addClientToChannel(proxy->channelIdToName[packet->getChannelId()], packet->getClientLogin());
         break;
     case LEAVED:
-        qDebug() << packet->getClientLogin() << "leaved" << proxy->channelIdToName(packet->getChannelId());
-        removeClientFromChannel(proxy->channelIdToName(packet->getChannelId()), packet->getClientLogin());
+        qDebug() << packet->getClientLogin() << "leaved" << proxy->channelIdToName[packet->getChannelId()];
+        removeClientFromChannel(proxy->channelIdToName[packet->getChannelId()], packet->getClientLogin());
         break;
     case MESSAGE_RECV:
         assert(proxy->clientIdToName.contains(packet->getClientSessionId()));
-        addMessage(proxy->channelIdToName(packet->getChannelId()), proxy->clientIdToName.find(packet->getClientSessionId()).value(), QString::fromUtf8(packet->getMessage()));
+        addMessage(proxy->channelIdToName[packet->getChannelId()], proxy->clientIdToName[packet->getClientSessionId()], QString::fromUtf8(packet->getMessage()));
         break;
     }
 }
@@ -175,7 +176,6 @@ void    MainWindow::joinChannel(const QString &name)
 
 void    MainWindow::leaveChannel(const QString &name)
 {
-    qDebug() << "SODOMIE AVEC DU GRAVIER ! ! 1 <<" << name << ">> !";
     ui->stackedWidget->removeWidget(channels[name].convSet);
     delete channels[name].convSet;
     delete channels[name].item;
@@ -292,8 +292,8 @@ void MainWindow::on_channelList_customContextMenuRequested(QPoint pos)
             QAction leave(QString("leave"), 0);
             QAction* action = QMenu::exec(QList<QAction*>() << &leave, ui->channelList->mapToGlobal(pos));
             if (action == &leave)
-                proxy->channel()->Send_Leave(proxy->session()->_session, proxy->channelNameToId[item->text(0)]);
-         }
+                proxy->channel()->Send_Leave(proxy->session()->_session, proxy->channelNameToId(item->text(0)));
+        }
     }
 }
 
@@ -314,7 +314,7 @@ void MainWindow::on_actionCreate_room_triggered()
 
 void MainWindow::sendMessage(const QString& msg)
 {
-        proxy->channel()->Send_Message(proxy->session()->_session, msg.toUtf8().data(), proxy->channelNameToId.value(currentChannel));
+        proxy->channel()->Send_Message(proxy->session()->_session, msg.toUtf8().data(), proxy->channelNameToId(currentChannel));
 }
 
 void MainWindow::createRoom(const QString &name)

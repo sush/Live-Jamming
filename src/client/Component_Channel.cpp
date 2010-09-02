@@ -126,8 +126,10 @@ void		Component_Channel::Recv_Join_OK(Packet_v1 const *packet_v1, Session * sess
   //  char const *channelName = packet_v1_channel->getChannelName();
 
   std::cout << "getChannelName() = " << orig_packet->getChannelName() << std::endl;
-  if (_channelMap.find(channelId) == _channelMap.end())
+  if (_channelMap.find(channelId) == _channelMap.end()) {
+      std::cerr << "ORIG_PACKET->GETCHANNELNAME: " << packet_v1_channel->getChannelId() << std::endl;
     _channelMap[channelId] = new Channel(orig_packet->getChannelName());
+}
 }
 
 void		Component_Channel::Recv_Join_NOK_ALREADYINCHAN(Packet_v1 const *packet_v1, Session *session)

@@ -113,9 +113,14 @@ void    Proxy::disconnect()
   //    emit sAuthResponse(MainWindow::DISCONNECTED);
 }
 
-const char*    Proxy::channelIdToName(field_t id)
+unsigned int    Proxy::channelNameToId(const QString &name)
 {
-    Q_ASSERT(_channel->getAllChannel().size() != 0);
-
-    return _channel->getAllChannel().find(id)->second->getName();
+    QMapIterator<unsigned int, QString> it(channelIdToName);
+    while (it.hasNext()) {
+        it.next();
+        if (it.value() == name)
+            return it.key();
+    }
+    bool chan_not_found_in_list = true;
+    assert(chan_not_found_in_list);
 }
