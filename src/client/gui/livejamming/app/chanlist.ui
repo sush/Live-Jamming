@@ -40,7 +40,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QTreeWidget" name="channelTree">
+    <widget class="ChannelList" name="channelTree">
      <property name="styleSheet">
       <string notr="true">QTreeWidget{
 background: rgb(132, 132, 132);
@@ -100,27 +100,15 @@ border-radius: 20px;
      </item>
     </layout>
    </item>
-   <item>
-    <widget class="QPushButton" name="pushButton">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="layoutDirection">
-      <enum>Qt::RightToLeft</enum>
-     </property>
-     <property name="text">
-      <string>&amp;Join</string>
-     </property>
-     <attribute name="buttonGroup">
-      <string>buttonGroup</string>
-     </attribute>
-    </widget>
-   </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ChannelList</class>
+   <extends>QTreeWidget</extends>
+   <header location="global">channellist.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
  <buttongroups>

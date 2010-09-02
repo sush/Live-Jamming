@@ -161,6 +161,7 @@ void    MainWindow::joinChannel(const QString &name)
 {
     QTreeWidgetItem* item = new QTreeWidgetItem(QStringList(name));
     ui->channelList->addTopLevelItem(item);
+    ui->channelList->setCurrentItem(item);
     item->setExpanded(true);
 
     ConversationSet* convSet = new ConversationSet(ui->stackedWidget);
@@ -213,10 +214,9 @@ qDebug() << channel << client << channels.size();
 void    MainWindow::addMessage(const QString &channel, const QString &client, const QString &msg)
 {
     Q_ASSERT(channels.contains(channel));
-    //Q_ASSERT(clients.contains(client));
+    Q_ASSERT(clients.contains(client));
 
-    ConversationSet* convSet = static_cast<ConversationSet*>(ui->stackedWidget->currentWidget());
-    convSet->addMessage(client, msg);
+    channels.value(channel).convSet->addMessage(client, msg);
 }
 
 void MainWindow::on_actionConnect_triggered()
@@ -297,7 +297,7 @@ void MainWindow::on_channelList_customContextMenuRequested(QPoint pos)
     }
 }
 
-void MainWindow::on_channelList_activated(const QModelIndex& index)
+void MainWindow::on_channelList_clicked(const QModelIndex& index)
 {
     currentChannel = ui->channelList->itemFromIndex(index)->text(0);
     ui->stackedWidget->setCurrentWidget(channels[currentChannel].convSet);
@@ -324,5 +324,5 @@ void MainWindow::createRoom(const QString &name)
 
 void MainWindow::on_actionList_channels_triggered()
 {
-    new ChannelSearch(proxy, this);
+    ChannelSearch* cs = new ChannelSearch(proxy, this);
 }

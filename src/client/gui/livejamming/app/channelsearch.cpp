@@ -8,6 +8,7 @@
 #include <qdebug.h>
 
 ChannelSearch::ChannelSearch(Proxy *proxy, QWidget *parent)
+    : _proxy(proxy)
 {
     setupUi(this);
     proxy->channel()->Send_List(proxy->session()->_session);
@@ -19,4 +20,9 @@ void    ChannelSearch::channelsListed(QStringList channelNameList)
 {
     foreach(QString channelName, channelNameList)
         channelTree->addTopLevelItem(new QTreeWidgetItem(QStringList(channelName)));
+}
+
+void ChannelSearch::on_channelTree_doubleClicked(QModelIndex index)
+{
+    _proxy->channel()->Send_Join(_proxy->session()->_session, channelTree->itemFromIndex(index)->text(0).toUtf8().data());
 }

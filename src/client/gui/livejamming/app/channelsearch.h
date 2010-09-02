@@ -14,6 +14,13 @@ public:
 
 public slots:
     void    channelsListed(QStringList);
+    void    on_channelTree_doubleClicked(QModelIndex index);
+
+signals:
+    void    join(QString);
+
+private:
+    Proxy*  _proxy;
 };
 
 #endif // CHANNELSEARCH_H

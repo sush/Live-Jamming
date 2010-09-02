@@ -14,7 +14,7 @@
    <string>LiveJammin</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="app.qrc">
+   <iconset>
     <normaloff>:/images/live-jamming.png</normaloff>:/images/live-jamming.png</iconset>
   </property>
   <property name="styleSheet">
@@ -213,7 +213,7 @@ ChannelList::branch:open:has-children:has-siblings  {
            <string/>
           </property>
           <property name="pixmap">
-           <pixmap resource="app.qrc">:/images/live-jamming.png</pixmap>
+           <pixmap>:/images/live-jamming.png</pixmap>
           </property>
           <property name="scaledContents">
            <bool>false</bool>
@@ -235,7 +235,7 @@ ChannelList::branch:open:has-children:has-siblings  {
      <x>0</x>
      <y>0</y>
      <width>791</width>
-     <height>23</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -410,8 +410,6 @@ ChannelList::branch:open:has-children:has-siblings  {
    <header location="global">channellist.h</header>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="app.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

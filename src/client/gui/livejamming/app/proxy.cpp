@@ -95,6 +95,7 @@ void    Proxy::roomResponse(const Packet_v1 *packet_, Session *)
         roomid = packet->getRoomId();
         emit joinOk(packet->getRoomName()); break;
     case ROOM_JOINED:
+        qDebug() << __FUNCTION__ << packet->getClientLogin() << ": has joined the room";
         emit joined(packet->getClientLogin()); break;
     case ROOM_LEAVED:
         emit leaved(packet->getClientLogin()); break;

@@ -27,7 +27,7 @@ public:
     QMap<QString, UiRoomPlayer> players;
 
 public slots:
-    void    joined(const QString& client);
+    void    joined(QString client);
     void    leaved(const QString& client);
 
 private slots:

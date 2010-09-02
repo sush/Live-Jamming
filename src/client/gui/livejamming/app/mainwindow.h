@@ -78,7 +78,7 @@ public slots:
 private slots:
     void on_actionList_channels_triggered();
     void on_actionCreate_room_triggered();
-    void on_channelList_activated(const QModelIndex& index);
+    void on_channelList_clicked(const QModelIndex& index);
     void on_channelList_customContextMenuRequested(QPoint pos);
     void on_actionCreate_Channel_triggered();
     void on_actionDisconnect_triggered();

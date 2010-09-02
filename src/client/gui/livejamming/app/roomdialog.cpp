@@ -53,7 +53,7 @@ void    RoomDialog::closeEvent(QCloseEvent*)
     proxy->room()->Send_Leave(proxy->session()->_session, proxy->roomid);
 }
 
-void    RoomDialog::joined(const QString& client)
+void    RoomDialog::joined(QString client)
 {
     qDebug() << client << "has joined in room";
     RoomPlayerItem* item = new RoomPlayerItem(this, client, QString("Paris, France"));
