@@ -104,6 +104,3 @@ debug:QMAKE_CXXFLAGS += -D_DEBUG \
     -g3 \
     -pg
 else:QMAKE_CXXFLAGS += -D_NDEBUG
-unix:# Provide relative path from application to fftreal library
-:
-QMAKE_LFLAGS += -Wl,--rpath=\\\$\$ORIGIN
