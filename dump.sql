@@ -18,6 +18,7 @@
 --
 -- Table structure for table `articles`
 --
+use live-jamming_db
 
 DROP TABLE IF EXISTS `articles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
