@@ -8,7 +8,7 @@ ConversationSet::ConversationSet(QWidget *parent) :
 
     input->setFocus(Qt::OtherFocusReason);
 
-    connect(input, SIGNAL(returnPressed()), this, SLOT(sendMsg()));
+    //connect(input, SIGNAL(returnPressed()), this, SLOT(sendMsg()));
     connect(send, SIGNAL(pressed()), this, SLOT(sendMsg()));
 }
 

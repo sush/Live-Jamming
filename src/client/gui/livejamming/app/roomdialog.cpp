@@ -55,7 +55,7 @@ void    RoomDialog::closeEvent(QCloseEvent*)
 
 void    RoomDialog::joined(QString client)
 {
-    qDebug() << client << "has joined in room";
+    qDebug() << __FUNCTION__ << client << "has joined the room";
     RoomPlayerItem* item = new RoomPlayerItem(this, client, QString("Paris, France"));
     ui->playersVBox->addWidget(item);
     players.insert(client, (UiRoomPlayer){item});
@@ -72,6 +72,7 @@ void    RoomDialog::leaved(const QString& client)
 void    RoomDialog::sendMessage(const QString &msg)
 {
     qDebug() << "ROOMID = " <<  proxy->roomid;
+    qDebug() << "I SAY:" << msg.toUtf8().data();
     proxy->room()->Send_Message(proxy->session()->_session, msg.toUtf8().data(), proxy->roomid);
 }
 

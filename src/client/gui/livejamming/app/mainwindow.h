@@ -26,13 +26,11 @@ struct UiChannel
 {
     QTreeWidgetItem* item;
     ConversationSet*    convSet;
-    //unsigned int field;
 };
 
 struct UiClient
 {
     QTreeWidgetItem* item;
-
 };
 
 const int statusIconSize = 20;
@@ -40,6 +38,8 @@ const int statusIconSize = 20;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
+
+    friend class AccountConnection;
 
 public:
     MainWindow(Proxy* proxy);
@@ -59,9 +59,9 @@ private:
     bool            isConnected;
     QLabel          redButton;
     QLabel          greenButton;
+    QString         currentChannel;
     QMap<QString, UiChannel>   channels;
     QMap<QString, UiClient>    clients;
-    QString         currentChannel;
 
 private:
     void joinChannel(const QString& name);
@@ -89,8 +89,6 @@ private slots:
     void on_actionConnect_triggered();
     void sendMessage(const QString&);
     void createRoom(const QString& name);
-
-    friend class AccountConnection;
 };
 
 #endif // MAINWINDOW_H

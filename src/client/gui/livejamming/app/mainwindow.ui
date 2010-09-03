@@ -14,7 +14,7 @@
    <string>LiveJammin</string>
   </property>
   <property name="windowIcon">
-   <iconset>
+   <iconset resource="app.qrc">
     <normaloff>:/images/live-jamming.png</normaloff>:/images/live-jamming.png</iconset>
   </property>
   <property name="styleSheet">
@@ -213,7 +213,7 @@ ChannelList::branch:open:has-children:has-siblings  {
            <string/>
           </property>
           <property name="pixmap">
-           <pixmap>:/images/live-jamming.png</pixmap>
+           <pixmap resource="app.qrc">:/images/live-jamming.png</pixmap>
           </property>
           <property name="scaledContents">
            <bool>false</bool>
@@ -392,7 +392,7 @@ ChannelList::branch:open:has-children:has-siblings  {
   </action>
   <action name="actionList_channels">
    <property name="enabled">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="text">
     <string>List channels</string>
@@ -410,6 +410,8 @@ ChannelList::branch:open:has-children:has-siblings  {
    <header location="global">channellist.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="app.qrc"/>
+ </resources>
  <connections/>
 </ui>

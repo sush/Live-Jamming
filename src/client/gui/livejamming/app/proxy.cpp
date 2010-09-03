@@ -96,12 +96,14 @@ void    Proxy::roomResponse(const Packet_v1 *packet_, Session *)
         emit joinOk(packet->getRoomName()); break;
     case ROOM_JOINED:
         qDebug() << __FUNCTION__ << packet->getClientLogin() << ": has joined the room";
+        clientIdToName[packet->getClientSessionId()] = packet->getClientLogin();
         emit joined(packet->getClientLogin()); break;
     case ROOM_LEAVED:
+        clientIdToName.remove(packet->getSessionId());
         emit leaved(packet->getClientLogin()); break;
     case ROOM_MESSAGE_RECV:
-        qDebug() << "ROOM MSG RECEIVED:" << packet->getMessage();
-        emit messageRecv(packet->getClientLogin(), packet->getMessage()); break;
+        qDebug() << "ROOM :" << clientIdToName.value(packet->getClientSessionId()) << "HAS SAID:" << packet->getMessage();
+        emit messageRecv(clientIdToName.value(packet->getClientSessionId()), packet->getMessage()); break;
     case ROOM_STARTED_JAM:
         emit startedStopedJam(true); break;
     case ROOM_STOPED_JAM:
