@@ -1,8 +1,13 @@
 #ifndef AUDIOENGINE_H
 #define AUDIOENGINE_H
 
+#include <cstdlib>
 #include <iostream>
+
 #include <jack/jack.h>
+
+#include <QString>
+#include <QDebug>
 
 class AudioEngine
 {
@@ -13,12 +18,15 @@ class AudioEngine
     /*
       PRIVATE METHODS
      */
- private:
+ public:
     bool    init();
     bool    activate();
     void    deactivate();
     void    setCallbacks();
-    void    clean();
+    void    connectPorts();
+    int    process(jack_nframes_t);
+    bool    registerPorts();
+    void    close();
     /*
       PRIVATE VARIABLES
      */
@@ -28,8 +36,7 @@ class AudioEngine
     jack_status_t   _status;
     jack_port_t     **_iPorts;
     jack_port_t     **_oPorts;
-    const char      *_clientName;
-    bool            _activated;
+        QString	    _clientName;
     unsigned short  _iChannels;
 
 };
