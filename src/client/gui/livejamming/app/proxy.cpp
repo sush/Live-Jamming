@@ -126,4 +126,6 @@ unsigned int    Proxy::channelNameToId(const QString &name)
     }
     bool chan_not_found_in_list = true;
     assert(chan_not_found_in_list);
+    // never reached
+    return 0;
 }
