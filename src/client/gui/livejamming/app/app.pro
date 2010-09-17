@@ -6,6 +6,7 @@ RESOURCES = app.qrc
 TARGET = livejamming_client
 DESTDIR = ..
 TEMPLATE = app
+
 # FOR GUI
 SOURCES += mainwindow.cpp \
     accountconnection.cpp \
@@ -57,10 +58,12 @@ HEADERS += Session.h \
     Packet_v1_Session.h \
     Packet_v1_Channel.h \
     Packet_v1_Friend.h
-#PIERRE
+
+# PIERRE
 SOURCES += audioengine.cpp
 HEADERS += audioengine.h
-#!PIERRE
+
+# !PIERRE
 DEPENDPATH += ../../../../client
 INCLUDEPATH += ../../../../client/include
 SOURCES += main_net.cpp \
@@ -96,7 +99,8 @@ FORMS += mainwindow.ui \
     newchan.ui \
     chanlist.ui \
     conversationset.ui \
-    roomplayeritem.ui
+    roomplayeritem.ui \
+    kickdialog.ui
 DEFINES += _GUI
 CONFIG += link_pkgconfig
 PKGCONFIG += jack

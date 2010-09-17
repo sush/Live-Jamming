@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>426</width>
-    <height>306</height>
+    <width>749</width>
+    <height>538</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -60,8 +60,33 @@ QDialog QLineEdit {
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="maximumSize">
+        <size>
+         <width>94</width>
+         <height>31</height>
+        </size>
+       </property>
        <property name="text">
-        <string>invite</string>
+        <string>&amp;invite</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>94</width>
+         <height>31</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>&amp;kick</string>
        </property>
       </widget>
      </item>

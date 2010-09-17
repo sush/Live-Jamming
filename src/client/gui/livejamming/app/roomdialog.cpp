@@ -2,7 +2,10 @@
 #include "ui_roomdialog.h"
 #include "proxy.h"
 #include "roomplayeritem.h"
+#include "ui_kickdialog.h"
 #include <QSettings>
+#include <QMessageBox>
+#include <QListWidget>
 
 #include <Component_Room.h>
 #include <Component_Session.h>
@@ -57,7 +60,7 @@ void    RoomDialog::joined(QString client)
 {
     qDebug() << __FUNCTION__ << client << "has joined the room";
     RoomPlayerItem* item = new RoomPlayerItem(this, client, QString("Paris, France"));
-    ui->playersVBox->addWidget(item);
+    ui->playersVBox->insertWidget(players.size(), item);
     players.insert(client, (UiRoomPlayer){item});
 }
 
@@ -90,3 +93,18 @@ void    RoomDialog::startedStopedJam(bool started)
     ui->startButton->setIcon(QIcon(started ? ":/images/player_stop-30x30.png" : ":/images/player_play-30x30.png"));
 }
 
+void RoomDialog::on_pushButton_clicked()
+{
+    QDialog box(this);
+    Ui::KickDialog* kickdial = new Ui::KickDialog;
+    kickdial->setupUi(&box);
+    QList<QString>  tmp = players.keys();
+    tmp.removeAll(settings.value("user/login").toString());
+    kickdial->listWidget->addItems(tmp);
+    if (box.exec() == QDialog::Accepted) {
+        foreach(QListWidgetItem* elem,  kickdial->listWidget->selectedItems()) {
+            qDebug() << "Kicking player:" << elem->text();
+            proxy->room()->Send_Kick(proxy->session()->_session, proxy->roomid, proxy->clientIdToName.keys(elem->text())[0]);
+        }
+    }
+}

@@ -8,7 +8,8 @@
 #include <qdebug.h>
 
 ChannelSearch::ChannelSearch(Proxy *proxy, QWidget *parent)
-    : _proxy(proxy)
+    : QDialog(parent),
+        _proxy(proxy)
 {
     setupUi(this);
     proxy->channel()->Send_List(proxy->session()->_session);
