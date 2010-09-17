@@ -239,10 +239,20 @@ div.wrapper h1, div.wrapper h2, div.wrapper h3, div.wrapper h4, div.wrapper h5, 
 
 #comments .commentlist li.comment_odd, #comments .commentlist li.comment_even{margin:0 0 10px 0; padding:15px; list-style:none;}
 
-#comments .commentlist li.comment_odd{color:#666666; background-color:#F7F7F7;}
+#comments .commentlist li.comment_odd{
+                                       color:#666666; 
+                                       background-color:#F7F7F7;
+                                       -webkit-border-radius: 10px 10px 10px 10px;
+                                       -moz-border-radius: 10px 10px 10px 10px;
+                                       }
 #comments .commentlist li.comment_odd a{color:#95AD19; background-color:#F7F7F7; }
 
-#comments .commentlist li.comment_even{color:#666666; background-color:#E8E8E8;}
+#comments .commentlist li.comment_even{
+                                        color:#666666; 
+                                        background-color:#E8E8E8;
+                                        -webkit-border-radius: 10px 10px 10px 10px;
+                                        -moz-border-radius: 10px 10px 10px 10px;
+                                        }
 #comments .commentlist li.comment_even a{color:#95AD19; background-color:#E8E8E8;}
 
 #comments .commentlist .author .name{font-weight:bold; font-size:20px;}
@@ -489,7 +499,7 @@ div.wrapper h1, div.wrapper h2, div.wrapper h3, div.wrapper h4, div.wrapper h5, 
           text-align:center;
          }
 .last_register #members { 
-                          background: #F9F9F9;
+                          background: #E8E8E8;
                           padding: 30px;
                           }
 

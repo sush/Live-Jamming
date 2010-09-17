@@ -6,24 +6,33 @@ array('inline' => false)); ?>
   <div id="featured_slide">
     <div id="featured_content">
       <ul>
-        <li><img src="img/home/install_it.jpg" alt="" />
-          <div class="floater">
-            <p><?php __('home_caroussel_title_1');?></p>
-          </div>
+        <li>
+	<table>
+	  <tr>
+	    <td><?php __('home_caroussel_title_1');?></p></td>
+	    <td><img src="img/home/install_it.jpg" alt="" /></td>
+	    </tr>
+	</table>
+      </li>
+        <li>
+      	<table>
+	  <tr>
+            <td><?php __('home_caroussel_title_2');?></td>
+	    <td><img src="img/home/plug_it.jpg" alt="" /></td>
+	  </tr>
+	</table>
         </li>
-        <li><img src="img/home/plug_it.jpg" alt="" />
-          <div class="floater">
-            <p><?php __('home_caroussel_title_2');?></p>
-          </div>
-        </li>
-        <li><img src="img/home/play_it.jpg" alt="" />
-          <div class="floater">
-            <p><?php __('home_caroussel_title_3');?></p>
-          </div>
+        <li>
+	<table>
+	  <tr>
+	    <td><?php __('home_caroussel_title_3');?></td>
+	    <td><img src="img/home/play_it.jpg" alt="" /></td>
+	  </tr>
+      </table>
         </li>
       </ul>
     </div>
-    <a href="javascript:void(0);" id="featured-item-prev"><img src="img/prev.png" alt="" /></a> <a href="javascript:void(0);" id="featured-item-next"><img src="img/next.png" alt="" /></a> </div>
+ </div>
 </div>
 <!-- ####################################################################################################### -->
 <div class="wrapper col3">

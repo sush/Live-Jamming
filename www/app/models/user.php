@@ -40,7 +40,7 @@ class User extends AppModel {
 						  'message' => __('user_register_form_password_confirm_message',true)),
 			 'validateCaptcha' => array(
 						    'rule' => 'validateCaptcha',
-						    'message' => __('user_register_form_captcha',true))
+						    'message' => __('user_register_form_captcha_error',true))
 			 );
 				
 	$this->validate = array(

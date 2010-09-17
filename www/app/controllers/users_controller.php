@@ -137,8 +137,8 @@ class UsersController extends AppController {
     if (!empty($this->data)) {
       $this->User->create();
       if ($this->User->save($this->data)) {
-	$this->Session->setFlash(sprintf(__('The %s has been saved', true), 'user'));
-	$this->redirect(array('controller' => 'pages', 'action' => 'display','home'));
+	$this->AppAuth->login($this->data);
+	$this->redirect($this->AppAuth->loginRedirect = array('controller' => 'pages', 'action' => 'display', 'home'));
       } else {
 	$this->data['User']['password'] = '';
 	$this->data['User']['confirm_password'] = '';

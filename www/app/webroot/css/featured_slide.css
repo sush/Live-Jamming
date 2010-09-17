@@ -177,3 +177,9 @@ Licence: Dual licensed under the <a href="http://www.opensource.org/licenses/mit
 	z-index:3;
 	display:none;
 	}
+
+#featured_content table, #featured_content td { 
+                                                border: none;
+                                                font-size: 35px;
+                                                margin-left: 20px;
+ }

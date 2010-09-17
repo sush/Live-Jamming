@@ -9,6 +9,8 @@
 
 <?php // Scripts
 echo $html->css('/forum/css/style.css');
+echo $html->css('/forum/css/markitup.css');
+echo $html->css('/forum/css/bbcode.css');
 echo $html->css('/forum/css/menu.css');
 echo $javascript->link('/forum/js/jquery-1.3.2.min.js');
 echo $javascript->link('/forum/js/script.js');

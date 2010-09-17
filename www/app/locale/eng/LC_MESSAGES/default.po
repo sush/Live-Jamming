@@ -1055,5 +1055,9 @@ msgstr "Confirm password does not match with password"
 
 #: /model/user.php
 msgid "user_register_form_captcha"
+msgstr "Please, retype the caracters below"
+
+#: /model/user.php
+msgid "user_register_form_captcha_error"
 msgstr "The characters you entered didn't match the word verification. Please try again."
 

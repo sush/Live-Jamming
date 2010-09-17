@@ -126,8 +126,8 @@ Licence: <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commo
 /* ----------------------------------------------Connexion Form-------------------------------------*/
 #connexion_form { 
                   margin: 0 145px;
-                  width: 55%;
-                  background-color: #95AD19;
+                  width: 60%;
+                  border: 2px solid #777777;
                   -webkit-border-radius: 10px 10px 10px 10px;
                   -moz-border-radius: 10px 10px 10px 10px;
                   }
@@ -143,7 +143,7 @@ Licence: <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commo
                      border-right: none;
                      }
 #connexion_form table tbody td { 
-                                 color: #FFFFFF;
+                                 color: #777777;
                                  font-size: 1.4em;
                                  font-weight: bold;
                                  vertical-align: right;

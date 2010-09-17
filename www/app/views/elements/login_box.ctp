@@ -1,3 +1,4 @@
+
 <div id="connexion_form">
   <?php echo $form->create('User', array('action' => 'login'));?>
   <table>

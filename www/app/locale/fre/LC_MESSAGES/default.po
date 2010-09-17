@@ -1054,6 +1054,10 @@ msgid "user_register_form_password_confirm_message"
 msgstr "Le mot de passe de confirmation ne correspond pas au password."
 
 #: /model/user.php
-msgid "user_register_form_captcha"
+msgid "user_register_form_captcha_error"
 msgstr "Les caracterès que vous avez entre ne correspondent pas à l'image affiché au dessus."
+
+#: /model/user.php
+msgid "user_register_form_captcha"
+msgstr "Recopiez les lettres affichés ci dessus."
 
