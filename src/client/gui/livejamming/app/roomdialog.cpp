@@ -104,7 +104,7 @@ void RoomDialog::on_pushButton_clicked()
     if (box.exec() == QDialog::Accepted) {
         foreach(QListWidgetItem* elem,  kickdial->listWidget->selectedItems()) {
             qDebug() << "Kicking player:" << elem->text();
-            proxy->room()->Send_Kick(proxy->session()->_session, proxy->roomid, proxy->clientIdToName.keys(elem->text())[0]);
+            proxy->room()->Send_Kick(proxy->session()->_session, proxy->clientIdToName.keys(elem->text())[0], proxy->roomid);
         }
     }
 }
