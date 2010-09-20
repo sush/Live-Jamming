@@ -73,6 +73,7 @@ void    Proxy::chanResponse(Packet_v1 const* packet_, Session*)
 //        sl = std::vector<std::string>();
 //        transform(packet->getChannelList().begin(), packet->getChannelList().end(),
 //                  std::vector<std::string>(packet->getChannelList().size()).begin(), op);
+        sl.clear();
         foreach(std::string str, packet->getChannelList())
             sl << QString::fromStdString(str);
         emit channelsListed(sl);
