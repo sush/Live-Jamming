@@ -6,30 +6,28 @@ OutputThread::OutputThread()
 
 bool    OutputThread::setPorts(){
     unsigned short i;
-    const QString portname("%1_%2");
-    const char	**ports;
+    const QString portname("output_%1");
+    const char	**tmpPorts;
 
-    _ouputInfo.ports = new jack_port_t * [_channels];
+   tmpPorts = new jack_port_t * [channels];
 
-    for (i=0;i < _channels;i++){
-      _outputInfo.ports[i] = jack_port_register(
-                                               _jackClient,
-                                               portname.arg("output").arg(i+1).toUtf8().constData(),
+    for (i=0;i < channels;i++){
+      ports[i] = jack_port_register(
+                                               client,
+                                               portname.arg(i+1).toUtf8().constData(),
                                                JACK_DEFAULT_AUDIO_TYPE,
-                                               JackPortIsInput,
+                                               JackPortIsOutput,
                                                0
                                                );
-      if(_inputInfo.ports[i] == NULL){
-        setMessage((QString)"No more JACK output ports available", true);
-        return false;
-      }
+      if(ports[i] == NULL)
+          throw std::runtime_error("No more JACK output ports available");
 
-      ports = jack_get_ports(_jackClient, 0, JACK_DEFAULT_AUDIO_TYPE, JackPortIsInput | JackPortIsPhysical);
+      tmpPorts = jack_get_ports(_jackClient, 0, JACK_DEFAULT_AUDIO_TYPE, JackPortIsInput | JackPortIsPhysical);
       if (ports){
-        for (i=0;i< _channels && ports[i];i++){
-          jack_connect(_jackClient,jack_port_name(_ouputInfo.ports[i]),ports[i]);
+        for (i=0;i< channels && ports[i];i++){
+          jack_connect(client,jack_port_name(ports[i]),tmpPorts[i]);
         }
-        ::free(ports);
+        ::free(tmpPorts);
       }
     }
 }

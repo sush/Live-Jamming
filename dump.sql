@@ -1,3 +1,4 @@
+USE `live-jamming_db`;
 -- MySQL dump 10.11
 --
 -- Host: 192.168.0.12    Database: live-jamming_db
