@@ -18,10 +18,10 @@ class AudioThread : public QThread
 {
 public:
     AudioThread();
-    virtual bool setPorts();
-    virtual int process(jack_nframes_t);
+    virtual void setPorts();
+    //virtual int process(jack_nframes_t);
 
-private:
+protected:
     QMutex    lock;
     QWaitCondition    ready;
     jack_nframes_t rb_size;

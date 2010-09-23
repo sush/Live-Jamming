@@ -7,7 +7,7 @@
 
 static int  jackProcess(jack_nframes_t nframes, void *arg ){
     AudioThread *at = static_cast<AudioThread *> (arg);
-    return at->process(nframes);
+    return 0;
 }
 
 static void jackShutdown(void *){
@@ -61,3 +61,4 @@ AudioThread::AudioThread() :
 //    memset(_inputInfo.rb->buf, 0, rb->size);
 
 }
+void   AudioThread::setPorts(){}

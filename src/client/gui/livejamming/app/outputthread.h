@@ -7,7 +7,7 @@ class OutputThread : public AudioThread
 {
 public:
     OutputThread();
-    bool    setPorts();
+    void    setPorts();
 };
 
 #endif // OUTPUTTHREAD_H
