@@ -4,7 +4,7 @@ OutputThread::OutputThread()
 {
 }
 
-OutputThread::setPorts(){
+bool    OutputThread::setPorts(){
     unsigned short i;
     const QString portname("%1_%2");
     const char	**ports;

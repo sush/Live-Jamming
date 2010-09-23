@@ -1,8 +1,13 @@
 #include "audiothread.h"
 
+#include <QDebug>
+
+#include <iostream>
+#include <stdexcept>
+
 static int  jackProcess(jack_nframes_t nframes, void *arg ){
     AudioThread *at = static_cast<AudioThread *> (arg);
-    return p->process(nframes);
+    return at->process(nframes);
 }
 
 static void jackShutdown(void *arg){
@@ -22,22 +27,20 @@ static void jackInfo(const char *msg){
 
 AudioThread::AudioThread() :
         client(NULL),
-        channels(2),
+        nb_ports(NB_CHANNELS),
         clientName("live-jamming"),
         options(JackNullOption)
 {
     client = jack_client_open(clientName.toUtf8().constData(), options,&status, NULL);
 
-    if (client == NULL ||
-        status & JackServerFailed){
-      setMessage((QString)"Initialization of the Jack server Failed", true);
-      return false;
+    if (client == NULL || status & JackServerFailed){
+        throw std::runtime_error("Initialization of the Jack server Failed");
     }
     if(status & JackServerStarted)
-      setMessage((QString)"Jack server started", true);
+      qDebug() << "Jack server started";
     if(status & JackNameNotUnique){
         clientName = jack_get_client_name(client);
-        setMessage((QString)"Unique name : "+clientName +" assigned", true);
+        qDebug() << "Unique name : "+clientName +" assigned";
     }
     jack_set_error_function(jackError);
     jack_set_info_function(jackInfo);
@@ -45,7 +48,10 @@ AudioThread::AudioThread() :
     jack_on_shutdown(client, jackShutdown, this);
 
     if (!jack_activate(client) == 0)
-        return false;
+        throw std::runtime_error("Could not activate jack");
+
+    rb = jack_ringbuffer_create(nb_ports * DEFAULT_RB_SIZE * SAMPLE_SIZE);
+
 //    _inputInfo.rb_size = DEFAULT_RB_SIZE;
 //    _inputInfo.client = _jackClient;
 //    _inputInfo._channels = _channels;
@@ -55,10 +61,3 @@ AudioThread::AudioThread() :
 //    memset(_inputInfo.rb->buf, 0, rb->size);
 
 }
-
-void	AudioThread::setMessage(QString msg, bool print){
-  message = msg;
-  if (print)
-    qDebug() << msg;
-}
-

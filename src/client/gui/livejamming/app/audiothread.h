@@ -10,11 +10,16 @@
 #include <jack/jack.h>
 #include <jack/ringbuffer.h>
 
+const int DEFAULT_RB_SIZE = 16384; //stolen from capture_client.c
+const int NB_CHANNELS = 2;
+const size_t SAMPLE_SIZE = sizeof(jack_default_audio_sample_t);
+
 class AudioThread : public QThread
 {
 public:
     AudioThread();
-    virtual void setPorts();
+    virtual bool setPorts();
+    virtual int process(jack_nframes_t);
 
 private:
     QMutex    lock;
@@ -25,13 +30,11 @@ private:
     jack_ringbuffer_t *rb;
     jack_status_t status;
     jack_options_t options;
-    unsigned int channels;
+    unsigned int nb_ports;
     int bitdepth;
     long overruns;
-    volatile int can_capture, can_process, status;
+    volatile int can_capture, can_process, rb_status;
     QString	    clientName,message;
-
-    virtual void jackInfo();
 };
 
 #endif // AUDIOTHREAD_H
