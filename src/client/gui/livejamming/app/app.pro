@@ -16,7 +16,10 @@ SOURCES += mainwindow.cpp \
     channellist.cpp \
     conversationset.cpp \
     roomplayeritem.cpp \
-    channelsearch.cpp
+    channelsearch.cpp \
+    audiothread.cpp \
+    outputthread.cpp \
+    inputthread.cpp
 HEADERS += mainwindow.h \
     accountconnection.h \
     configuration_dialog.h \
@@ -25,7 +28,10 @@ HEADERS += mainwindow.h \
     channellist.h \
     conversationset.h \
     roomplayeritem.h \
-    channelsearch.h
+    channelsearch.h \
+    audiothread.h \
+    outputthread.h \
+    inputthread.h
 
 # OTHER
 DEPENDPATH += ../../../../core
