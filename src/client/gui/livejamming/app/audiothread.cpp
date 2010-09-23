@@ -10,7 +10,7 @@ static int  jackProcess(jack_nframes_t nframes, void *arg ){
     return at->process(nframes);
 }
 
-static void jackShutdown(void *arg){
+static void jackShutdown(void *){
     std::cerr << "jack has shutdown" << std::endl;
     std::cerr.flush();
 }
@@ -27,9 +27,9 @@ static void jackInfo(const char *msg){
 
 AudioThread::AudioThread() :
         client(NULL),
+        options(JackNullOption),
         nb_ports(NB_CHANNELS),
-        clientName("live-jamming"),
-        options(JackNullOption)
+        clientName("live-jamming")
 {
     client = jack_client_open(clientName.toUtf8().constData(), options,&status, NULL);
 
