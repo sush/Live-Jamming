@@ -1,5 +1,6 @@
 #include <UserModule_mysql.h>
 #include <Constants.h> //temporary before config
+#include <stdexcept>
 
 std::string const	&salt = DB_SALT;
 
@@ -47,7 +48,7 @@ m_userinfo const *	UserModule_mysql::Authentification(std::string const &login, 
       return 0;
     }
   else
-    throw std::string("SQL server error: Unable to process SQL statement.");
+    throw std::runtime_error("SQL server error: Unable to process SQL statement.");
   return 0;
 }
 
