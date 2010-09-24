@@ -78,7 +78,7 @@ class DATABASE_CONFIG {
 		'persistent' => false,
 		'host' => 'localhost',
 		'login' => 'root',
-		'password' => 'toor',
+		'password' => 'root',
 		'database' => 'live-jamming_db',
 		'prefix' => '',
 	);

@@ -782,7 +782,7 @@ msgstr "Branchez votre instrument"
 
 #: /views/pages/home.ctp:21
 msgid "home_caroussel_title_3"
-msgstr "Jouer & Profitez"
+msgstr "Jouez & Profitez"
 
 #: /views/pages/home.ctp:34
 msgid "home_page_title_news"

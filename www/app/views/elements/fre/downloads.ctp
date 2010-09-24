@@ -8,7 +8,7 @@
 	<br/>Pour plus d'informations, visitez la section <a href="#">"Tutorial"</a>.</p>
       </div>
       <div class="button">
-	<?php echo $this->Html->link($this->Html->tag('span','T&eacute;l&eacute;charger'), array('controller' => 'downloads','action' => 'windows), array('escape' => false));?><span class="version"><i>(Version 32bits)</i></span>
+	<?php echo $this->Html->link($this->Html->tag('span','T&eacute;l&eacute;charger'), array('controller' => 'downloads','action' => 'windows'), array('escape' => false));?><span class="version"><i>(Version 32bits)</i></span>
       </div>
     </div>
 

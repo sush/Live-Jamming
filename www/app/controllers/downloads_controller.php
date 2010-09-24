@@ -6,13 +6,13 @@ class DownloadsController extends AppController {
   /*CALLBACKS*/
   function beforeFilter(){
     parent::beforeFilter();
-    $this->AppAuth->allow('unix', 'windows', 'index');
+    $this->AppAuth->allow('unix', 'windows', 'index', 'unixboost140', 'unixboost135');
   }
   /* /!\ CALLBACKS*/
 
   function index(){
-    if (!isset($_SESSION['Auth']['User']))
-      $this->redirect('/users/login');
+    //if (!isset($_SESSION['Auth']['User']))
+    //$this->redirect('/users/login');
   }
   
   function unixboost140(){
