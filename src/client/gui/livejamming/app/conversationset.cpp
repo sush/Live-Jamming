@@ -8,7 +8,7 @@ ConversationSet::ConversationSet(QWidget *parent) :
 
     input->setFocus(Qt::OtherFocusReason);
 
-    //connect(input, SIGNAL(returnPressed()), this, SLOT(sendMsg()));
+    connect(input, SIGNAL(returnPressed()), this, SLOT(sendMsg()));
     connect(send, SIGNAL(pressed()), this, SLOT(sendMsg()));
 }
 
@@ -25,7 +25,9 @@ void    ConversationSet::addEvent(const QString &event)
 
 void    ConversationSet::sendMsg()
 {
-    emit msgSend(input->text());
-    input->clear();
+    if ( input->text().isEmpty() == false ) {
+        emit msgSend(input->text());
+        input->clear();
+    }
 }
 
