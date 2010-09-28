@@ -154,6 +154,8 @@ void    MainWindow::chanEvents(chanEventsType event, const Packet_v1_Channel* pa
         assert(proxy->clientIdToName.contains(packet->getClientSessionId()));
         addMessage(proxy->channelIdToName[packet->getChannelId()], proxy->clientIdToName[packet->getClientSessionId()], QString::fromUtf8(packet->getMessage()));
         break;
+    case ALREADYINCHAN:
+        QMessageBox::information(this, "Error", "Already in chan");
     }
 }
 
@@ -186,9 +188,6 @@ void    MainWindow::leaveChannel(const QString &name)
 
 void    MainWindow::addClientToChannel(const QString &channel, const QString &client)
 {
-    qDebug() << "LOOKING FOR" << channel << "IN";
-    foreach(QString name, channels.keys())
-        qDebug() << " * " << name;
     Q_ASSERT(channels.find(channel) != channels.end());
     QTreeWidgetItem* item = new QTreeWidgetItem(QStringList(client));
     channels[channel].item->addChild(item);
@@ -287,12 +286,12 @@ void MainWindow::on_actionCreate_Channel_triggered()
 void MainWindow::on_channelList_customContextMenuRequested(QPoint pos)
 {
     if (ui->channelList->indexAt(pos).isValid()) {
-        QTreeWidgetItem* item = ui->channelList->itemAt(pos);
-        if (channels.contains(item->text(0))) {
+        QString item = ui->channelList->itemAt(pos)->text(0);
+        if (channels.contains(item)) { //it's a channel
             QAction leave(QString("leave"), 0);
             QAction* action = QMenu::exec(QList<QAction*>() << &leave, ui->channelList->mapToGlobal(pos));
             if (action == &leave)
-                proxy->channel()->Send_Leave(proxy->session()->_session, proxy->channelNameToId(item->text(0)));
+                proxy->channel()->Send_Leave(proxy->session()->_session, proxy->channelNameToId(item));
         }
     }
 }
@@ -300,7 +299,8 @@ void MainWindow::on_channelList_customContextMenuRequested(QPoint pos)
 void MainWindow::on_channelList_clicked(const QModelIndex& index)
 {
     currentChannel = ui->channelList->itemFromIndex(index)->text(0);
-    ui->stackedWidget->setCurrentWidget(channels[currentChannel].convSet);
+    if (channels.contains(currentChannel))
+        ui->stackedWidget->setCurrentWidget(channels[currentChannel].convSet);
 }
 
 void MainWindow::on_actionCreate_room_triggered()
@@ -319,10 +319,12 @@ void MainWindow::sendMessage(const QString& msg)
 
 void MainWindow::createRoom(const QString &name)
 {
-    RoomDialog* room = new RoomDialog(this, proxy, name);
+    //RoomDialog* room =
+    new RoomDialog(this, proxy, name);
 }
 
 void MainWindow::on_actionList_channels_triggered()
 {
-    ChannelSearch* cs = new ChannelSearch(proxy, this);
+    //ChannelSearch* cs =
+    new ChannelSearch(proxy, this);
 }
