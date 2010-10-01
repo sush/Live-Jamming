@@ -18,6 +18,7 @@ class AudioEngine
     Component_Jam&  jam;
     InputThread*    inputThread;
     OutputThread*   outputThread;
+    bool    running;
 };
 
 #endif // AUDIOENGINE_H

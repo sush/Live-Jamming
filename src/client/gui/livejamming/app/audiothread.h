@@ -35,6 +35,8 @@ protected:
     volatile int can_process, rb_status;
     const char*   clientName;
     QString     message;
+
+    friend class AudioEngine;
 };
 
 #endif // AUDIOTHREAD_H

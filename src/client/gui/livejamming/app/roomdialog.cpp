@@ -22,11 +22,10 @@ RoomDialog::RoomDialog(QWidget *parent, Proxy* proxy, const QString& name) :
     ui->playersVBox->setAlignment(ui->invite, Qt::AlignHCenter);
     setWindowTitle("Room - " + name);
 
-    joined(settings.value("user/login").toString());
     connect(proxy, SIGNAL(joined(QString)), this, SLOT(joined(QString)), Qt::QueuedConnection);
     connect(proxy, SIGNAL(leaved(QString)), this, SLOT(leaved(QString)), Qt::QueuedConnection);
     connect(proxy, SIGNAL(messageRecv(QString,QString)), ui->convSet, SLOT(addMessage(const QString&, const QString&)), Qt::QueuedConnection);
-    connect(proxy, SIGNAL(startedStopedJam(bool)), this, SLOT(startedStopedJam(bool)));
+    connect(proxy, SIGNAL(startedStopedJam(bool)), this, SLOT(startedStopedJam(bool)), Qt::QueuedConnection);
 
     connect(ui->convSet, SIGNAL(msgSend(const QString&)), this, SLOT(sendMessage(const QString&)));
 
@@ -58,7 +57,7 @@ void    RoomDialog::closeEvent(QCloseEvent*)
 
 void    RoomDialog::joined(QString client)
 {
-    qDebug() << __FUNCTION__ << client << "has joined the room";
+    qDebug() << __FUNCTION__ << (sender() == NULL ? "Me" : client) << "has joined the room";
     RoomPlayerItem* item = new RoomPlayerItem(this, client, QString("Paris, France"));
     ui->playersVBox->insertWidget(players.size(), item);
     players.insert(client, (UiRoomPlayer){item});
@@ -75,7 +74,7 @@ void    RoomDialog::leaved(const QString& client)
 void    RoomDialog::sendMessage(const QString &msg)
 {
     qDebug() << "ROOMID = " <<  proxy->roomid;
-    qDebug() << "I SAY:" << msg.toUtf8().data();
+    qDebug() << "I SAY:" << msg;
     proxy->room()->Send_Message(proxy->session()->_session, msg.toUtf8().data(), proxy->roomid);
 }
 
@@ -85,6 +84,8 @@ void RoomDialog::on_startButton_clicked(bool play)
         proxy->room()->Send_Start_Jam(proxy->session()->_session, proxy->roomid);
     else
         proxy->room()->Send_Stop_Jam(proxy->session()->_session, proxy->roomid);
+    ui->startButton->setText("Pending...");
+    ui->startButton->setIcon(QIcon());
 }
 
 void    RoomDialog::startedStopedJam(bool started)

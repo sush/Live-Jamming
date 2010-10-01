@@ -68,9 +68,10 @@ InputThread::InputThread() : nb_pass(0)
 
 void    InputThread::run()
 {
-    qDebug() << "INPUT THREAD STARTED";
     mutex.lock();
     forever {
+        if (can_process)
+            break ;
         //process audio compression
         //blah
         size_t toread = jack_ringbuffer_read_space(rb);

@@ -41,7 +41,6 @@ AudioThread::~AudioThread()
     }
 
     delete [] ports;
-    qDebug() << "AUDIOTHREAD::DESTRUCTOR";
     jack_deactivate(client);
     jack_client_close(client);
     ports = NULL;

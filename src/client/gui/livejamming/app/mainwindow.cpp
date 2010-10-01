@@ -319,8 +319,9 @@ void MainWindow::sendMessage(const QString& msg)
 
 void MainWindow::createRoom(const QString &name)
 {
-    //RoomDialog* room =
+    RoomDialog* room =
     new RoomDialog(this, proxy, name);
+    room->joined(settings.value("user/login").toString());
 }
 
 void MainWindow::on_actionList_channels_triggered()

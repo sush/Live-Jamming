@@ -41,11 +41,6 @@ void    Proxy::authResponse(Packet_v1 const* packet, Session*)
         emit sAuthResponse(type);
 }
 
-QString op(const std::string& str)
-{
-    return QString::fromStdString(str);
-}
-
 void    Proxy::chanResponse(Packet_v1 const* packet_, Session*)
 {
     const Packet_v1_Channel* packet = static_cast<const Packet_v1_Channel*>(packet_);
@@ -96,7 +91,7 @@ void    Proxy::roomResponse(const Packet_v1 *packet_, Session *)
         roomid = packet->getRoomId();
         emit joinOk(packet->getRoomName()); break;
     case ROOM_JOINED:
-        qDebug() << __FUNCTION__ << packet->getClientLogin() << ": has joined the room";
+        qDebug() << __FUNCTION__ << "HELLO BANDE DE GAY ICI C'EST LA GUERRE PUTAIN ! !"<< packet->getClientLogin() << ": has joined the room ";
         clientIdToName[packet->getClientSessionId()] = packet->getClientLogin();
         emit joined(packet->getClientLogin()); break;
     case ROOM_LEAVED:

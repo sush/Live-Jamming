@@ -427,7 +427,13 @@ void		Component_Room::Recv_Started_Jam(Packet_v1 const *packet_v1, Session *sess
 
 void		Component_Room::Recv_Stoped_Jam(Packet_v1 const *packet_v1, Session *session)
 {
+    Packet_v1_Room const *packet_v1_room =
+      static_cast<Packet_v1_Room const *>(packet_v1);
+
+    field_t roomId = packet_v1_room->getRoomId();
+
   // JAM HAS STOPPED
+    _clientManager->getComponentJam()->StopJam(roomId);
   Send_Stoped_Jam_ACK(session);
 }
 
