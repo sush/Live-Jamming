@@ -62,7 +62,7 @@ OBJ_CLIENT	=		$(CLIENT_SRC:.cpp=.o)
 SRC		=		$(SERVER_SRC) $(CLIENT_SRC)
 OBJ		=		$(SRC:.cpp=.o)
 INCLUDE_DIR	=		-Iinclude -Iserver/include -Iclient/include -Iserver/logger_modules/include -Icore/include -Iserver/user_modules/include
-LIB_DIR		=		-Llibs
+LIB_DIR		=		
 CXXFLAGS	=		-W -Wall -ansi $(INCLUDE_DIR) -DMYSQLPP_MYSQL_HEADERS_BURIED # if not def mysql++ doesnt find loads of files
 LDFLAGS		=		-lboost_system -lboost_thread-mt -lboost_program_options -lyaml-cpp -lmysqlpp
 ifeq ($(DEBUG), yes)
@@ -77,7 +77,7 @@ RM		=		rm -f
 STRIP		=		strip
 CP		=		cp
 
-all: server client
+all: server 
 
 server: $(OBJ_SERVER)
 ifneq ($(DEBUG), yes)
