@@ -6,7 +6,11 @@ class InputThread : public AudioThread
 {
 public:
     InputThread();
-   void setPorts();
+    int process(jack_nframes_t);
+    void    run();
+
+private:
+    unsigned int nb_pass;
 };
 
 #endif // INPUTTHREAD_H

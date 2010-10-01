@@ -1,6 +1,8 @@
 #include <Component_Jam.h>
 #include <Bind_recv.h>
 
+#include "audioengine.h"
+
 Component_Jam::Component_Jam(ClientManager *clientManager)
   : IComponent(JAM_COMPONENTID), _clientManager(clientManager)
 {}
@@ -26,13 +28,12 @@ void	Component_Jam::RegisteredRequests()
 
 void	Component_Jam::StartJam(field_t jamId, Room *room)
 {
-  //    _audioEngine = new AudioEngine();
-  //    _audioEngine->startRecording();
+    _audioEngine = new AudioEngine(*this);
 }
 
 void	Component_Jam::StopJam(field_t jamId)
 {
-  //    delete _audioEngine;
+      delete _audioEngine;
 }
 
 void	Component_Jam::Recv_Jam(Packet_v1 const *packet_v1, Session *session)
@@ -41,6 +42,7 @@ void	Component_Jam::Recv_Jam(Packet_v1 const *packet_v1, Session *session)
     static_cast<Packet_v1_Jam const *>(packet_v1);
 
     // play audio stream packet_v1_jam->getAudio() sent by packet_v1_jam->getClientSessionId()
+    //audio_engine->processOutput();
 }
 
 void	Component_Jam::Send_Jam(Session *session, char const *audio, field_t jamId)

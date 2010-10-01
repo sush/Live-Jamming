@@ -1,12 +1,20 @@
 #include "audioengine.h"
+#include <inputthread.h>
+#include <outputthread.h>
 
-AudioEngine::AudioEngine(){
+class Component_Jam;
+
+AudioEngine::AudioEngine(Component_Jam& jam_) :
+        jam(jam_)
+{
+
   inputThread = new InputThread();
-  outputThread = new OutputThread();
+  //outputThread = new OutputThread();
 }
 
-AudioEngine::~AudioEngine(){
-
+AudioEngine::~AudioEngine(){ //faire qq chose de + propre
+    inputThread->terminate();
+    delete inputThread;
+    outputThread->terminate();
+    delete outputThread;
 }
-
-

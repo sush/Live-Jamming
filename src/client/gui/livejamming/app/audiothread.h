@@ -18,23 +18,24 @@ class AudioThread : public QThread
 {
 public:
     AudioThread();
-    virtual void setPorts();
-    //virtual int process(jack_nframes_t);
+    void    start();
+    virtual ~AudioThread();
 
 protected:
-    QMutex    lock;
-    QWaitCondition    ready;
+    QMutex    mutex;
+    QWaitCondition    condition;
     jack_nframes_t rb_size;
     jack_client_t *client;
     jack_port_t **ports;
     jack_ringbuffer_t *rb;
     jack_status_t status;
     jack_options_t options;
+    long overruns;
     unsigned int nb_ports;
     int bitdepth;
-    long overruns;
     volatile int can_capture, can_process, rb_status;
-    QString	    clientName,message;
+    const char*   clientName;
+    QString     message;
 };
 
 #endif // AUDIOTHREAD_H

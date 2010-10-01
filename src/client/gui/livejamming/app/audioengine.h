@@ -1,21 +1,23 @@
 #ifndef AUDIOENGINE_H
 #define AUDIOENGINE_H
 
-#include "outputthread.h"
-#include "inputthread.h"
+class OutputThread;
+class InputThread;
 
 #include <jack/ringbuffer.h>
+
+class Component_Jam;
 
 class AudioEngine
 {
  public:
-    AudioEngine();
+    AudioEngine(Component_Jam&);
     ~AudioEngine();
 
  private:
+    Component_Jam&  jam;
     InputThread*    inputThread;
     OutputThread*   outputThread;
-    jack_ringbuffer_t*  rb;
 };
 
 #endif // AUDIOENGINE_H
