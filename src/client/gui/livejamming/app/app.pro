@@ -17,6 +17,7 @@ SOURCES += mainwindow.cpp \
     conversationset.cpp \
     roomplayeritem.cpp \
     channelsearch.cpp \
+    audioengine.cpp \
     audiothread.cpp \
     outputthread.cpp \
     inputthread.cpp
@@ -29,6 +30,7 @@ HEADERS += mainwindow.h \
     conversationset.h \
     roomplayeritem.h \
     channelsearch.h \
+    audioengine.h \
     audiothread.h \
     outputthread.h \
     inputthread.h
@@ -64,10 +66,6 @@ HEADERS += Session.h \
     Packet_v1_Session.h \
     Packet_v1_Channel.h \
     Packet_v1_Friend.h
-
-# PIERRE
-#SOURCES += audioengine.cpp
-#HEADERS += audioengine.h
 
 # !PIERRE
 DEPENDPATH += ../../../../client

@@ -10,6 +10,7 @@ AudioThread::AudioThread() :
         options(JackNullOption),
         overruns(0),
         nb_ports(NB_CHANNELS),
+        can_process(0),
         clientName("live-jamming")
 
 {
@@ -29,12 +30,20 @@ AudioThread::AudioThread() :
     rb = jack_ringbuffer_create(nb_ports * DEFAULT_RB_SIZE * SAMPLE_SIZE);
 }
 
-void    AudioThread::start()
-{
-
-}
-
 AudioThread::~AudioThread()
 {
+  /* FREE THE FUCKING RING BUFFER USING jack_ringbuffer_free()*/
+    unsigned short i;
+    for(i=0;i<nb_ports && ports[i];i++){
+        qDebug() << "DESTRUCT PORTS : " << i;
+        jack_port_unregister(client,ports[i]);
+        ports[i] = NULL;
+    }
+
+    delete [] ports;
+    qDebug() << "AUDIOTHREAD::DESTRUCTOR";
     jack_deactivate(client);
+    jack_client_close(client);
+    ports = NULL;
+    client = NULL;
 }

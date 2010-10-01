@@ -13,8 +13,8 @@ AudioEngine::AudioEngine(Component_Jam& jam_) :
 }
 
 AudioEngine::~AudioEngine(){ //faire qq chose de + propre
-    inputThread->terminate();
+    //Send signal to inputthread to quit the thread
     delete inputThread;
-    outputThread->terminate();
-    delete outputThread;
+    //outputThread->terminate();
+    //delete outputThread;
 }

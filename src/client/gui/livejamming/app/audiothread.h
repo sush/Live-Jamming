@@ -18,7 +18,6 @@ class AudioThread : public QThread
 {
 public:
     AudioThread();
-    void    start();
     virtual ~AudioThread();
 
 protected:
@@ -33,7 +32,7 @@ protected:
     long overruns;
     unsigned int nb_ports;
     int bitdepth;
-    volatile int can_capture, can_process, rb_status;
+    volatile int can_process, rb_status;
     const char*   clientName;
     QString     message;
 };
