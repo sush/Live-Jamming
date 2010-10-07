@@ -14,8 +14,9 @@ AudioEngine::AudioEngine(Component_Jam& jam_) :
 
 AudioEngine::~AudioEngine(){ //faire qq chose de + propre
     //Send signal to inputthread to quit the thread
-    qDebug() << "DELETING INPUT THREAD";
     inputThread->can_process = 0;
+    inputThread->wait();
+    qDebug() << "DELETING INPUT THREAD";
     delete inputThread;
     qDebug() << "DONE";
     //outputThread->terminate();

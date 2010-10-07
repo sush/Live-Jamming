@@ -11,6 +11,7 @@ public:
 
 private:
     unsigned int nb_pass;
+        unsigned int nb_pass_treat;
 };
 
 #endif // INPUTTHREAD_H
