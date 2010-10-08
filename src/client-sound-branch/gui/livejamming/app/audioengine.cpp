@@ -15,6 +15,9 @@ AudioEngine::AudioEngine(Component_Jam& jam_) :
 AudioEngine::~AudioEngine(){ //faire qq chose de + propre
     //Send signal to inputthread to quit the thread
     inputThread->can_process = 0;
+    inputThread->mutex.unlock();
+    inputThread->condition.wakeAll();
+    //inputThread->terminate(); //should not be used but used anywamy because can_process does not make thread return
     inputThread->wait();
     qDebug() << "DELETING INPUT THREAD";
     delete inputThread;

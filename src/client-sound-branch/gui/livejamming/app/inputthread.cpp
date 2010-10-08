@@ -68,12 +68,12 @@ InputThread::InputThread() : nb_pass(0), nb_pass_treat(0)
 
 void    InputThread::run()
 {
-    mutex.lock();
     forever {
         if ( !can_process ) {
-            qDebug() << "CAN PROCESS GONE 0, INPUTTHREAD TERMINATING ! !";
+            qDebug() << "CAN PROCESS GONE 0, INPUTTHREAD TERMINATING ! !\n";
             return ;//break ; //marche po !
         }
+        mutex.lock();
         condition.wait(&mutex);
         //process audio compression
         //blah
@@ -85,7 +85,7 @@ void    InputThread::run()
             qDebug() << "audio proceed, nb_pass:" << nb_pass << nb_pass_treat;
         //jam->Send_jam(0, );
         nb_pass_treat++;
+        mutex.unlock();
     }
     qDebug() << "CAN PROCESS GONE 0, INPUTTHREAD TERMINATING WITH REACHING END ! !";
-    mutex.unlock();
 }
