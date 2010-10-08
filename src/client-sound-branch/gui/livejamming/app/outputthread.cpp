@@ -14,7 +14,8 @@ int OutputThread::process(jack_nframes_t nframes)
     return 0;
 }
 
-OutputThread::OutputThread() : nb_pass(0), nb_pass_treat(0)
+OutputThread::OutputThread() : nb_pass(0), nb_pass_treat(0),
+    intermediate_rb (jack_ringbuffer_create(nb_ports * DEFAULT_RB_SIZE * SAMPLE_SIZE))
 {
     unsigned short i;
     const char	**tmpPorts;
@@ -48,6 +49,29 @@ OutputThread::OutputThread() : nb_pass(0), nb_pass_treat(0)
     can_process = 1;
     /*Tell Qthread to call run()*/
     start();
+
 }
 
 
+void    OutputThread::processPacket(void* buf, size_t bufize)
+{
+    jack_ring_buffer_write(rb_a_nous, buf,size);
+    mutex.tryLock();
+    condition.wakeAll();
+    mutex.unlock();
+}
+
+
+void    OutputThread::run()
+{
+    forever {
+        mutex.lock();
+        condition.wait(&mutex);
+        //decompression
+        //void* decompressed;
+        //celt_decompress(decompressed, b_a_nous, bufsize);
+        //jack_ring_buffer_write(rb, decompressed, bufsize);
+        mutex.unlock();
+    }
+
+}
