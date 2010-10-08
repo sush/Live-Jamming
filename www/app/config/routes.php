@@ -40,4 +40,9 @@ Router::connect('/:language/:controller/:action/*',
  * FORUM
 */
 Router::connect('/forum', array('plugin' => 'forum', 'controller' => 'home', 'action' => 'index'));
+
+/**
+ * ADMIN
+ **/
+Router::connect('/admin', array('controller' => 'admin', 'action' => 'display', 'admin_home'));
 ?>

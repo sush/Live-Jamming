@@ -10,6 +10,8 @@ class	AppController extends Controller {
   } 
   
   function beforeRender(){
+    if(!empty($this->luser) && $this->luser['group_id'] == GROUP_ADMIN && preg_match('/^admin/', $this->params['url']['url']))
+      $this->layout = 'admin';
   }
   
   function isAuthorized(){
@@ -40,6 +42,7 @@ class	AppController extends Controller {
     
     $this->set('userIsConnected', ((!empty($data['User']['id']))?true:false));
     $this->set('user', ((!empty($data['User']['id']))?$data['User']:''));
+    $this->luser = $data['User'];
   }
   
   }

@@ -371,6 +371,7 @@ div.wrapper h1, div.wrapper h2, div.wrapper h3, div.wrapper h4, div.wrapper h5, 
 #copyright p{
 	margin:0;
 	padding:0;
+              height:60px;
 	}
 
 /*Homme page music duration*/
@@ -518,3 +519,18 @@ div.wrapper h1, div.wrapper h2, div.wrapper h3, div.wrapper h4, div.wrapper h5, 
 .last_register #members img{ 
                              display: inline;
                           }
+
+.com { 
+       float: right;
+
+ }
+
+.com img { 
+       display: inline;
+       margin-bottom: 10px;
+ }
+
+.com img:hover { 
+       margin-bottom: 5px;
+
+ }

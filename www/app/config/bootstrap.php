@@ -49,4 +49,7 @@
  *
  */
 
+define('GROUP_ADMIN', 1);
+define('GROUP_USER', 2);
+
 ?>

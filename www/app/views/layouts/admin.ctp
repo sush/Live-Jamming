@@ -20,7 +20,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="EN" lang="EN" dir="ltr">
 <head profile="http://gmpg.org/xfn/11">
-<?php e($html->meta('rss', array('controller' => 'articles', 'action' => 'flux.rss'), array('title' => "Les derniers articles")));?>
 <?php echo $this->Html->charset(); ?>
 <title>
 Live-Jamming
@@ -36,44 +35,18 @@ echo $scripts_for_layout;
 <body id="top">
 <div class="wrapper col1">
 <div id="header">
-<div class="language">
-  <?php
-  $newUrl = null;
-  $flagUrl = explode('/',$this->here);
-  if(strchr($this->here,'/users/profil/')){
-  $newUrl = 'users/profil/'.end($flagUrl);
-  }
-  ?>
-  <?php echo $this->Html->link($html->image("gb.png", array("alt" => "Change to english")), (strchr($this->here, '/users/profil/')) ? '/en/'.$newUrl : array('language'=>'en'), array('escape' => false)); ?>
-  <?php echo $this->Html->link($html->image("fr.png", array("alt" => "Change to french")), (strchr($this->here, '/users/profil/')) ? '/fr/'.$newUrl : array('language'=>'fr'), array('escape' => false)); ?>
-</div>
 <div id="logo">
   <?php echo $this->Html->image('/img/logo.png', array('alt' => 'live-jamming', 'url' => '/'));?>
-  <?php
-  if ($userIsConnected)
-  echo $this->element('welcome')
-  ?>
 </div>
-<?php
-if($userIsConnected)
-echo $this->element('menu/connected');
-else
-echo $this->element('menu/default');
-?>
+<?php e($this->element('admin/menu')); ?>
 <br class="clear" />
 </div>
 
 </div>
 <?php echo $content_for_layout; ?>
 <div class="wrapper col5">
-
 <div id="copyright">
   <p class="fl_left">Copyright &copy; 2010 - All Rights Reserved - <a href="#">Live-Jamming</a></p>
-  <div class="com">
-  <?php echo $this->Html->link($html->image("com/facebook.png", array("alt" => "Live-jamming on facebook")), 'http://www.facebook.com/pages/Live-Jamming/156516611034269', array('escape' => false, 'target' => 'blank')); ?>
-  <?php echo $this->Html->link($html->image("com/twitter.png", array("alt" => "Follow us on twitter")), 'https://twitter.com/LiveJamming', array('escape' => false, 'target' => 'blank')); ?>
-  <?php echo $this->Html->link($html->image("com/RSS.png", array("alt" => "Live-Jamming Rss feed")), 'http://live-jamming.com/articles/flux.rss', array('escape' => false)); ?>
-  </div>
   <br class="clear" />
 </div>
 </div>

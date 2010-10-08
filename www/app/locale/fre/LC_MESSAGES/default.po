@@ -774,7 +774,7 @@ msgstr ""
 
 #: /views/pages/home.ctp:11
 msgid "home_caroussel_title_1"
-msgstr "Téléchargez Live-Jamming & Installez"
+msgstr "Téléchargez Live-Jamming &amp; Installez"
 
 #: /views/pages/home.ctp:16
 msgid "home_caroussel_title_2"
@@ -782,7 +782,7 @@ msgstr "Branchez votre instrument"
 
 #: /views/pages/home.ctp:21
 msgid "home_caroussel_title_3"
-msgstr "Jouez & Profitez"
+msgstr "Jouez &amp; Profitez"
 
 #: /views/pages/home.ctp:34
 msgid "home_page_title_news"

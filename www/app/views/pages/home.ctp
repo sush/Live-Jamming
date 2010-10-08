@@ -9,7 +9,7 @@ array('inline' => false)); ?>
         <li>
 	<table>
 	  <tr>
-	    <td><?php __('home_caroussel_title_1');?></p></td>
+	    <td><?php __('home_caroussel_title_1');?></td>
 	    <td><img src="img/home/install_it.jpg" alt="" /></td>
 	    </tr>
 	</table>
