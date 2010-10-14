@@ -285,14 +285,30 @@ void MainWindow::on_actionCreate_Channel_triggered()
 
 void MainWindow::on_channelList_customContextMenuRequested(QPoint pos)
 {
-    if (ui->channelList->indexAt(pos).isValid()) {
-        QString item = ui->channelList->itemAt(pos)->text(0);
-        if (channels.contains(item)) { //it's a channel
-            QAction leave(QString("leave"), 0);
-            QAction* action = QMenu::exec(QList<QAction*>() << &leave, ui->channelList->mapToGlobal(pos));
-            if (action == &leave)
-                proxy->channel()->Send_Leave(proxy->session()->_session, proxy->channelNameToId(item));
+    int nbSelectedItems = ui->channelList->selectedItems().size();
+
+    if (nbSelectedItems == 1) {
+        if (ui->channelList->indexAt(pos).isValid()) {
+            QString item = ui->channelList->itemAt(pos)->text(0);
+            if (channels.contains(item)) { //it's a channel
+                QAction leave("leave", 0);
+                QAction* action = QMenu::exec(QList<QAction*>() << &leave, ui->channelList->mapToGlobal(pos));
+                if (action == &leave)
+                    proxy->channel()->Send_Leave(proxy->session()->_session, proxy->channelNameToId(item));
+            }
         }
+    }
+
+    else {
+        QList<QTreeWidgetItem*> selectedItems = ui->channelList->selectedItems();
+        foreach (QTreeWidgetItem* item , selectedItems) { //checking there is no chan in the selected rows
+            if (channels.contains(item->text(0)))
+                return ;
+        }
+        QAction invite("Invite", 0);
+        QAction* action = QMenu::exec(QList<QAction*>() << &invite, ui->channelList->mapToGlobal(pos));
+        if (action == &invite)
+            ;//proxy->channel()->Se
     }
 }
 
