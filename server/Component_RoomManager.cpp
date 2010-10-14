@@ -322,16 +322,13 @@ void	Component_RoomManager::Recv_Message(Packet_v1 const *packet_v1, Session *se
   if (_roomMap->find(roomId) != _roomMap->end())
     {
       Room *room = _roomMap->find(roomId)->second;
-
       std::map<field_t, Session*> *connected = room->getConnected();
-      std::map<field_t, Session *>::iterator it, end = connected->end();
-
-      for (it = connected->begin(); it != end ; ++it)
-	{
-	  if (it->first != sessionId)
-	    Send_Message_RECV(it->second, message, roomId, sessionId);
-	}
+      
       Send_Message_ACK(session);
+
+      std::map<field_t, Session *>::iterator it, end = connected->end();
+      for (it = connected->begin(); it != end ; ++it)
+	Send_Message_RECV(it->second, message, roomId, sessionId);
     }
 }
 

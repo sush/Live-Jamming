@@ -10,7 +10,7 @@ char const	*connect_address = LJ_DEFAULT_SERVER;  //"127.0.0.1";
 
 int		Client::_connect_port	= LJ_PORT;
 int		Client::_port	= _connect_port + 1;
-int		Client::_poolSize = 1;
+int		Client::_poolSize = 2;
 const int	updateTime = 1;
 const int	treat_delay = 0; //micro seconds
 
