@@ -1,5 +1,30 @@
-placez a la racine les fichiers communs aux deux (client + serveur)
-et dans le repertoire correspondant (client/serveur) les fichiers specifiques
+# Live Jamming
 
-placez egalement les include communs dans celui a la racine 
-et ceux specifiques dans client ou serveur
+Live-Jamming is a software that gives you the opportunity to create a music band online.
+
+With Live-Jamming a musician can create an online record studio in order to play with other musicians connected all around the world.
+
+Meet new musicians and share you're creations with them !
+
+## Website
+
+http://www.live-jamming.com
+
+## Requirements
+
+## Installing
+
+## Issues
+
+Please report any issues you have with the software to the [issue tracker](http://github.com/livejamming/Live-Jamming/issues) on github.
+
+## Licence
+
+Live Jamming is offered under an [MIT license](http://www.opensource.org/licenses/mit-license.php).
+
+### Authors
+* Pierre Nespo
+* Aylic Petit
+* Gregory O-connell
+* Mathieu Dupuy
+* Charles Sarda
