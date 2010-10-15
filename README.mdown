@@ -21,8 +21,8 @@ Please report any issues you have with the software to the [issue tracker](http:
 Live Jamming is offered under an [MIT license](http://www.opensource.org/licenses/mit-license.php).
 
 ### Authors
-* Pierre Nespo
-* Aylic Petit
-* Gregory O-connell
-* Mathieu Dupuy
-* Charles Sarda
+* [Pierre Nespo](http://github.com/pi3r)
+* [Aylic Petit](http://github.com/Sushl)
+* [Gregory O-connell]()
+* [Mathieu Dupuy](http://github.com/deronnax)
+* [Charles Sarda](http://github.com/CharlesS)
