@@ -6,9 +6,7 @@ With Live-Jamming a musician can create an online record studio in order to play
 
 Meet new musicians and share you're creations with them !
 
-## Website
-
-http://www.live-jamming.com
+Please, visit our [website](http://www.live-jamming.com).
 
 ## Requirements
 
