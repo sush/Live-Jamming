@@ -17,10 +17,7 @@ SOURCES += mainwindow.cpp \
     conversationset.cpp \
     roomplayeritem.cpp \
     channelsearch.cpp \
-    audioengine.cpp \
-    audiothread.cpp \
-    outputthread.cpp \
-    inputthread.cpp
+    audioengine.cpp
 HEADERS += mainwindow.h \
     accountconnection.h \
     configuration_dialog.h \
@@ -30,10 +27,7 @@ HEADERS += mainwindow.h \
     conversationset.h \
     roomplayeritem.h \
     channelsearch.h \
-    audioengine.h \
-    audiothread.h \
-    outputthread.h \
-    inputthread.h
+    audioengine.h
 
 # OTHER
 DEPENDPATH += ../../../../core
@@ -108,6 +102,7 @@ FORMS += mainwindow.ui \
 DEFINES += _GUI
 CONFIG += link_pkgconfig
 PKGCONFIG += jack
+PKGCONFIG += celt
 debug:QMAKE_CXXFLAGS += -D_DEBUG \
     -g3 \
     -pg
