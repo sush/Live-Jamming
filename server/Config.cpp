@@ -43,10 +43,10 @@ std::string const * Config::getValueFromConfig(std::string const & key) const {
 
   it = _config.find(key);
   if (it != _config.end()) {
-    return &it->second;
+    if (it->second != "~")
+      return &it->second;
   } 
-  else
-    return NULL;
+  return NULL;
 }
 
 std::vector<std::string> const * Config::getValueFromCommand(std::string const & key) const{
