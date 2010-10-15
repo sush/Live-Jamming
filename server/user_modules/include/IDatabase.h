@@ -8,7 +8,7 @@ class IDatabase
  private :
 
   //! Connection to the database.
-  virtual void Connection() = 0;
+  //virtual void Connection() = 0;
 };
 
 #endif

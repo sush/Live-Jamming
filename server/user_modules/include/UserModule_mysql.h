@@ -23,14 +23,16 @@ class UserModule_mysql : public IUserBackend<UserModule_mysql>, public IDatabase
   void							AddFriend(std::string const &, std::string const &);
   void							DelFriend(std::string const &, std::string const &);
 
+  void							Connection(char const *, char const *, char const *, char const *, char const *);
+
  private :
 
   UserModule_mysql();
   virtual						~UserModule_mysql();
-  void							Connection();
 
  private:
 
+  char const *						_salt;
   mysqlpp::Connection					_dbLink;
 };
 

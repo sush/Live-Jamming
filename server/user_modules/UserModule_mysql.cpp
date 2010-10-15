@@ -1,33 +1,25 @@
 #include <UserModule_mysql.h>
-#include <Constants.h> //temporary before config
 #include <stdexcept>
 
-std::string const	&salt = DB_SALT;
-
 UserModule_mysql::UserModule_mysql()
-{
-  Connection();
-}
+{}
 
 UserModule_mysql::~UserModule_mysql()
 {}
 
-void					UserModule_mysql::Connection()
+void			UserModule_mysql::Connection(char const *db, char const *server, char const *salt, char const *user, char const *pass)
 {
-  const char* db = DB_NAME, *server = DB_HOST, *user = DB_USER, *pass = DB_PASS;
-  
+  _salt = salt;
+ 
   _dbLink.set_option(new mysqlpp::MultiStatementsOption(true));
   _dbLink.connect(db, server, user, pass);
 }
 
 m_userinfo const *	UserModule_mysql::Authentification(std::string const &login, std::string const &password)
 {
-
-  std::string request = "CALL PROC_GET_USERINFO("
-    "(SELECT id FROM users WHERE login = '" +login+"' AND password = SHA1('" + salt + password + "')),"
-   " 'fre');";
-  
-  mysqlpp::Query query = _dbLink.query(request);
+  mysqlpp::Query query = _dbLink.query();
+  query << "CALL PROC_GET_USERINFO(""(SELECT id FROM users WHERE login = \"" << mysqlpp::escape << login << "\" AND password = SHA1(\"" << mysqlpp::escape << (_salt + password) << "\")),"
+    " 'fre');";
   
   if (mysqlpp::StoreQueryResult res = query.store())
     {
@@ -38,9 +30,7 @@ m_userinfo const *	UserModule_mysql::Authentification(std::string const &login, 
 	  int					i;
 
 	  for (i = 0, it = res[0].begin(); it != end; ++it, ++i)
-	    {
-	      profil->insert(m_userinfo_pair(res.field_name(i), it->c_str()));
-	    }
+	    profil->insert(m_userinfo_pair(res.field_name(i), it->c_str()));
 	  query.store_next();
 	  return profil;
 	}

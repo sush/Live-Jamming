@@ -60,7 +60,12 @@ void Config::BuildOption() {
   _options.insert(m_option_pair("ConfigFile", new Option("ConfigFile", "-f", "-file", "1", true, std::vector<std::string>(1, "config.yaml"))));
   _options.insert(m_option_pair("HostName", new Option("HostName", "-h", "-hostname", "1", true, std::vector<std::string>(1, "Live-Jamming"))));
   _options.insert(m_option_pair("Port", new Option("Port", "-p", "-port", "1", true, std::vector<std::string>(1, "5042"))));
-  _options.insert(m_option_pair("BindAdress", new Option("BindAdress", "-b", "-bind", "1-", true, std::vector<std::string>(1, "0.0.0.0"))));
+  _options.insert(m_option_pair("BindAddress", new Option("BindAddress", "-b", "-bind", "1-", true, std::vector<std::string>(1, "0.0.0.0"))));
+  _options.insert(m_option_pair("Db", new Option("Db", "-d", "-database", "1", true, std::vector<std::string>(1, "live-jamming_db"))));
+  _options.insert(m_option_pair("DbServer", new Option("DbServer", "-s", "-dbserver", "1", true, std::vector<std::string>(1, "0.0.0.0"))));
+  _options.insert(m_option_pair("DbSalt", new Option("DbSalt", "-S", "-salt", "1", true, std::vector<std::string>(1, "DYhG93b0qLive-JammingDIENOOBVoUubWwvniR2G0FgaC9mi"))));
+  _options.insert(m_option_pair("DbUser", new Option("DbUser", "-u", "-user", "1", true, std::vector<std::string>(1, "root"))));
+  _options.insert(m_option_pair("DbPassword", new Option("DbPassword", "-P", "-password", "1", true, std::vector<std::string>(1, ""))));
 }
 
 void Config::UpdateOptionFromConfig(std::string const & filename) {
@@ -93,9 +98,9 @@ void Config::UpdateOptionFromCommand(int argc, char** const & argv) {
   }
 }
 
-std::vector<std::string> const & Config::getValue(std::string const & key) {
+std::string const & Config::getValue(std::string const & key) {
   Option *selectedOption;
 
   selectedOption = _options[key];
-  return selectedOption->getValue();
+  return selectedOption->getValue()[0];
 }

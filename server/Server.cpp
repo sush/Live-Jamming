@@ -3,12 +3,12 @@
 #include <Packet_v1.h>
 #include <Color.h>
 #include <Time.h>
+#include <string>
+#include <iostream>
 
 // unix dependent, do analogue treatment on windows
 #include <signal.h>
 
-const std::string	Server::_address = "127.0.0.1";
-const int		Server::_port	= 5042;
 const int		Server::_poolSize = 2;
 const int		updateTime = 1;
 const int		treat_delay = 0; //micro seconds
@@ -125,7 +125,8 @@ void		Server::Init(int argc, char *argv[])
   _config = new Config(argc, argv);
 
   _io_service = new boost::asio::io_service;
-  _local_endpoint = new boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), _port);
+  //  _local_endpoint = new boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), _port);
+  _local_endpoint = new boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), atoi(_config->getValue("Port").c_str()));
  
   _socket = new boost::asio::ip::udp::socket (*_io_service);
   _socket->open(boost::asio::ip::udp::v4());
@@ -135,7 +136,7 @@ void		Server::Init(int argc, char *argv[])
   _timer = new boost::asio::deadline_timer(*_io_service, boost::posix_time::seconds(updateTime));
   _timer->async_wait(boost::bind(&Server::CallBack_Debug_Print, this));
   _pool = new boost::threadpool::pool(_poolSize);
-  _serverManager = new ServerManager(*_io_service, *_pool, *_socket);
+  _serverManager = new ServerManager(*_io_service, *_pool, *_socket, _config);
   signal(SIGABRT, &sighandler);
   signal(SIGTERM, &sighandler);
   signal(SIGINT, &sighandler);

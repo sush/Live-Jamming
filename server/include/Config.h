@@ -26,7 +26,7 @@ class Config
 
   //! Get value of a specified option.
   /*! \param 1 index of value wanted. */
-  std::vector<std::string> const &	getValue(std::string const &);
+  std::string const &	getValue(std::string const &);
   void					TraceOption();
 
  private :

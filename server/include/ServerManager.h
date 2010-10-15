@@ -13,6 +13,7 @@ class Component_JamManager;
 #include <iostream>
 #include <map>
 
+#include <Config.h>
 #include <Manager.h>
 #include <Packet.h>
 
@@ -23,7 +24,7 @@ public:
   typedef m_Session::iterator			m_Session_it;
   typedef m_Session::const_iterator		m_Session_cit;
 
-  ServerManager(boost::asio::io_service &, boost::threadpool::pool &, boost::asio::ip::udp::socket &);
+  ServerManager(boost::asio::io_service &, boost::threadpool::pool &, boost::asio::ip::udp::socket &, Config *);
   virtual	~ServerManager();
 
   virtual void				Manage(Packet *);
@@ -33,6 +34,7 @@ public:
   m_Session &				getSessionMap();
   Component_JamManager			*getComponentJam();
   Component_SessionManager		*getComponentSession();
+  Config				*getConfig();
 
 private:
   virtual void		Init_Components();
@@ -46,6 +48,7 @@ private:
   Component_JamManager			*_jamManager;
   // list of additional optional components
   m_Session				_sessionMap;
+  Config				*_config;
 };
 
 #endif // ! __SERVER_MANAGER_H__

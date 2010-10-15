@@ -10,7 +10,7 @@
 #include <Color.h>
 #include <Time.h>
 
-ServerManager::ServerManager(boost::asio::io_service & io_service, boost::threadpool::pool & pool, boost::asio::ip::udp::socket & socket)
+ServerManager::ServerManager(boost::asio::io_service & io_service, boost::threadpool::pool & pool, boost::asio::ip::udp::socket & socket, Config  *config)
   :Manager(io_service, pool, socket)
 {
   // manual set but should be in options
@@ -18,6 +18,7 @@ ServerManager::ServerManager(boost::asio::io_service & io_service, boost::thread
   _retryDelay = 3;
   _timeOutTestDelay = 20;
   _timeOutOccurredDelay = 3;
+  _config = config;
   //
 
   Init_Components();
@@ -134,6 +135,11 @@ ServerManager::m_Session &	ServerManager::getSessionMap()
 Component_JamManager		*ServerManager::getComponentJam()
 {
   return _jamManager;
+}
+
+Config				*ServerManager::getConfig()
+{
+  return _config;
 }
 
 Component_SessionManager	*ServerManager::getComponentSession()

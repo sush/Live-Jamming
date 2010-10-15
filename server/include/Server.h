@@ -38,8 +38,6 @@ class Server : public Singleton<Server>
 
   int				_argc;
   char				**_argv;
-  static const std::string	_address;
-  static const int		_port;
   static const int		_poolSize;
 
   boost::asio::io_service		*_io_service;

@@ -14,6 +14,11 @@ Component_SessionManager::Component_SessionManager(ServerManager * serverManager
 {
   _rng.seed((int32_t)std::clock());
   _userModule = UserModule_mysql::getInstance();
+  _userModule->Connection(_serverManager->getConfig()->getValue("Db").c_str(), 
+			  _serverManager->getConfig()->getValue("DbServer").c_str(), 
+			  _serverManager->getConfig()->getValue("DbSalt").c_str(), 
+			  _serverManager->getConfig()->getValue("DbUser").c_str(),
+			  _serverManager->getConfig()->getValue("DbPassword").c_str());
 }
 
 Component_SessionManager::~Component_SessionManager()

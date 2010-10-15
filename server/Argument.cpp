@@ -12,10 +12,15 @@ int Argument::BuildCommandLine(int argc, char** const & argv) {
 
   try {
     desc.add_options()
-      ("help,h", "produce help message")
+      ("help,h", "produces help message")
       ("HostName,H", boost::program_options::value<std::vector<std::string> >(), "set server hostname")
       ("Port,p", boost::program_options::value<std::vector<std::string> >(), "set server port")
-      ("BindAdress,b", boost::program_options::value<std::vector<std::string> >(), "set server bind(s) address(es)");
+      ("BindAdress,b", boost::program_options::value<std::vector<std::string> >(), "set server bind(s) address(es)")
+      ("Db,d", boost::program_options::value<std::vector<std::string> >(), "set database")
+      ("DbServer,s", boost::program_options::value<std::vector<std::string> >(), "set database server address")
+      ("DbSalt,S", boost::program_options::value<std::vector<std::string> >(), "set database salt")
+      ("DbUser,u", boost::program_options::value<std::vector<std::string> >(), "set database user")
+      ("DbPassword,P", boost::program_options::value<std::vector<std::string> >(), "set database password");
     boost::program_options::store(boost::program_options::parse_command_line(argc, argv, desc), _args);
     boost::program_options::notify(_args);
     
