@@ -1,4 +1,6 @@
+
 #include <Packet_v1_Jam.h>
+#include <cmath>
 
 Packet_v1_Jam::Packet_v1_Jam(boost::asio::ip::udp::endpoint const *endpoint, buffer_t *buffer, std::size_t len)
   :Packet_v1::Packet_v1(endpoint, buffer, len)
@@ -43,14 +45,33 @@ field_t         Packet_v1_Jam::getClientSessionId() const
   return getField(PROTOV1_JAM_CLIENTSESSIONID_OFF, PROTOV1_JAM_CLIENTSESSIONID_SIZE);
 }
 
-void            Packet_v1_Jam::setAudio(char const * audio)
+void            Packet_v1_Jam::setAudioDataLen(field_t audioDataLen)
 {
-  //  assert(getRequestId() == CHANNEL_MESSAGE || getRequestId() == CHANNEL_MESSAGE_RECV);                                                                  
-  appendData(PROTOV1_JAM_START_OF_DATA, PROTOV1_JAM_DATA_AUDIO, reinterpret_cast<byte_t const *>(audio));
+  setField(audioDataLen, PROTOV1_JAM_AUDIODATALEN_OFF, PROTOV1_JAM_AUDIODATALEN_SIZE);
 }
 
-char const      *Packet_v1_Jam::getAudio() const
+field_t         Packet_v1_Jam::getAudioDataLen() const
 {
-  //  assert(getRequestId() == CHANNEL_MESSAGE || getRequestId() == CHANNEL_MESSAGE_RECV);                                                                  
-  return reinterpret_cast<char const *>(getData(PROTOV1_JAM_START_OF_DATA, PROTOV1_JAM_DATA_AUDIO));
+  return getField(PROTOV1_JAM_AUDIODATALEN_OFF, PROTOV1_JAM_AUDIODATALEN_SIZE);
 }
+
+void            Packet_v1_Jam::setAudio(byte_t const * audio, field_t len)
+{
+  byte_t	*res;
+
+  assert(len < PACKET_MAXSIZE - 50); // taille fixe pour le moment...
+
+  setAudioDataLen(len);
+  res = getStartOfData(PROTOV1_JAM_START_OF_DATA, PROTOV1_JAM_DATA_AUDIO);
+  // assert(getRequestId() == CHANNEL_MESSAGE || getRequestId() == CHANNEL_MESSAGE_RECV);
+  for (unsigned int i = 0; i < len; ++i)
+    res[i] = audio[i];
+}
+
+byte_t const      *Packet_v1_Jam::getAudio(field_t len) const
+{
+  //  assert(getRequestId() == CHANNEL_MESSAGE || getRequestId() == CHANNEL_MESSAGE_RECV);                            
+
+  return getStartOfData(PROTOV1_JAM_START_OF_DATA, PROTOV1_JAM_DATA_AUDIO);
+}
+byte_t const      *Packet_v1_Jam::getAudio(field_t len) const

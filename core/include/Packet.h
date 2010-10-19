@@ -46,14 +46,14 @@ protected:
   field_t					getDataLen() const;
   static field_t				peekDataLen(Packet::buffer_t const &);
 
+  byte_t					*getStartOfData(unsigned int, unsigned int) const;
+  // not private anymore since audio data manipulation needs it
 
 protected:
   void						Print_base() const;
   static field_t				peekField(Packet::buffer_t const &, unsigned int, unsigned int);
 
 
-private:
-  byte_t					*getStartOfData(unsigned int, unsigned int) const;
 
 private:
   buffer_t *					_buffer;
