@@ -2,10 +2,13 @@
 #include <Bind_recv.h>
 #include <proxy.h>
 
+Session* gl_session;
+
 Component_Session::Component_Session(ClientManager *clientManager)
   :IComponent(SESSION_COMPONENTID), _clientManager(clientManager), _logged(false), _session(0)
 {
   _session = new Session(_clientManager, _clientManager->getIO(), _clientManager->getEndpoint());
+  gl_session = _session;
 }
 
 Component_Session::~Component_Session()
