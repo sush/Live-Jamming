@@ -74,4 +74,3 @@ byte_t const      *Packet_v1_Jam::getAudio(field_t len) const
 
   return getStartOfData(PROTOV1_JAM_START_OF_DATA, PROTOV1_JAM_DATA_AUDIO);
 }
-byte_t const      *Packet_v1_Jam::getAudio(field_t len) const
