@@ -35,6 +35,8 @@ private slots:
     void on_startButton_clicked(bool checked);
     void    sendMessage(const QString&login);
     void    startedStopedJam(bool started);
+    void    userKicked(QString user);
+    void    youvebeenKicked();
 
 protected:
     void changeEvent(QEvent *e);

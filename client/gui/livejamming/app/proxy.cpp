@@ -64,10 +64,6 @@ void    Proxy::chanResponse(Packet_v1 const* packet_, Session*)
     case CHANNEL_LISTED:
         type = MainWindow::LISTED;
         static QStringList sl;
-        qDebug() << "PROXY RECVED LIST ! !";
-//        sl = std::vector<std::string>();
-//        transform(packet->getChannelList().begin(), packet->getChannelList().end(),
-//                  std::vector<std::string>(packet->getChannelList().size()).begin(), op);
         sl.clear();
         foreach(std::string str, packet->getChannelList())
             sl << QString::fromStdString(str);
@@ -84,6 +80,7 @@ void    Proxy::chanResponse(Packet_v1 const* packet_, Session*)
 void    Proxy::roomResponse(const Packet_v1 *packet_, Session *)
 {
     const Packet_v1_Room* packet = static_cast<const Packet_v1_Room*>(packet_);
+    QString login;
 
     switch (packet->getRequestId())
     {
@@ -91,19 +88,24 @@ void    Proxy::roomResponse(const Packet_v1 *packet_, Session *)
         roomid = packet->getRoomId();
         emit joinOk(packet->getRoomName()); break;
     case ROOM_JOINED:
-        qDebug() << __FUNCTION__ << "HELLO BANDE DE GAY ICI C'EST LA GUERRE PUTAIN ! !"<< packet->getClientLogin() << ": has joined the room ";
-        clientIdToName[packet->getClientSessionId()] = packet->getClientLogin();
-        emit joined(packet->getClientLogin()); break;
+        login = packet->getClientLogin();
+        clientIdToName[packet->getClientSessionId()] = login;
+        qDebug() << __FUNCTION__ << ": HELLO BANDE DE GAY ICI C'EST LA GUERRE PUTAIN ! !"<< login << ": has joined the room ";
+        emit joined(login); break;
     case ROOM_LEAVED:
-        clientIdToName.remove(packet->getSessionId());
-        emit leaved(packet->getClientLogin()); break;
+        emit leaved(clientIdToName.take(packet->getSessionId())); break;
     case ROOM_MESSAGE_RECV:
-        qDebug() << "ROOM :" << clientIdToName.value(packet->getClientSessionId()) << "HAS SAID:" << packet->getMessage();
+        login = clientIdToName.value(packet->getClientSessionId());
+        qDebug() << "ROOM :" << login << "HAS SAID:" << packet->getMessage();
         emit messageRecv(clientIdToName.value(packet->getClientSessionId()), packet->getMessage()); break;
     case ROOM_STARTED_JAM:
         emit startedStopedJam(true); break;
     case ROOM_STOPED_JAM:
         emit startedStopedJam(false); break;
+    case ROOM_KICKED:
+        emit kicked(clientIdToName.value(packet->getClientSessionId())); break;
+    case ROOM_USER_KICKED:
+        emit userKicked();
     }
 }
 

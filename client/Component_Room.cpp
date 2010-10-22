@@ -52,7 +52,8 @@ void		Component_Room::BindingsRecv()
     new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Room::Recv_Invited));
 
   (*_bindingsRecv)[ROOM_USER_KICKED] =
-    new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Room::Recv_User_Kicked));
+    new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Room::Recv_User_Kicked),
+                  static_cast<Proxy*>(_clientManager), static_cast<Proxy::pMethod>(&Proxy::roomResponse));
 
   (*_bindingsRecv)[ROOM_STARTED_JAM] =
     new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Room::Recv_Started_Jam),
@@ -69,7 +70,8 @@ void		Component_Room::BindingsRecv()
     new Bind_recv(0, 0);
 
   (*_bindingsRecv)[ROOM_KICKED] =
-    new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Room::Recv_Kicked));
+    new Bind_recv(this,static_cast<IComponent::pMethod>(&Component_Room::Recv_Kicked),
+                  static_cast<Proxy*>(_clientManager), static_cast<Proxy::pMethod>(&Proxy::roomResponse));
 }
 
 void	Component_Room::RegisteredRequests()

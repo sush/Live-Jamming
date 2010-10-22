@@ -52,6 +52,8 @@ void    joined(QString);
 void    leaved(QString);
 void    messageRecv(QString, QString);
 void    startedStopedJam(bool);
+void    kicked(QString);
+void    userKicked();
 };
 
 #endif // PROXY_H

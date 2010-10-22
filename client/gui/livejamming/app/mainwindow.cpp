@@ -110,6 +110,7 @@ void MainWindow::authEvents(authEventsType event)
     switch (event) {
     case OK:
         setConnected(true);
+        setWindowTitle(settings.value("user/login").toString() + "- LJ");
         break ;
     case DISCONNECTED:
         QMessageBox::critical(this, "Connection Error", "You've been disconnected");

@@ -20,7 +20,7 @@ RoomDialog::RoomDialog(QWidget *parent, Proxy* proxy, const QString& name) :
 {
     ui->setupUi(this);
     ui->playersVBox->setAlignment(ui->invite, Qt::AlignHCenter);
-    setWindowTitle("Room - " + name);
+    setWindowTitle(name + " - Room");
 
     connect(proxy, SIGNAL(joined(QString)), this, SLOT(joined(QString)), Qt::QueuedConnection);
     connect(proxy, SIGNAL(leaved(QString)), this, SLOT(leaved(QString)), Qt::QueuedConnection);
@@ -28,6 +28,9 @@ RoomDialog::RoomDialog(QWidget *parent, Proxy* proxy, const QString& name) :
     connect(proxy, SIGNAL(startedStopedJam(bool)), this, SLOT(startedStopedJam(bool)), Qt::QueuedConnection);
 
     connect(ui->convSet, SIGNAL(msgSend(const QString&)), this, SLOT(sendMessage(const QString&)));
+
+    connect(proxy, SIGNAL(kicked(QString)), this, SLOT(userKicked(QString)), Qt::QueuedConnection);
+    connect(proxy, SIGNAL(userKicked()), this, SLOT(youvebeenKicked()),Qt::QueuedConnection);
 
     setAttribute(Qt::WA_DeleteOnClose);
     show();
@@ -99,13 +102,25 @@ void RoomDialog::on_pushButton_clicked()
     QDialog box(this);
     Ui::KickDialog* kickdial = new Ui::KickDialog;
     kickdial->setupUi(&box);
-    QList<QString>  tmp = players.keys();
-    tmp.removeAll(settings.value("user/login").toString());
-    kickdial->listWidget->addItems(tmp);
+    QList<QString>  playerList = players.keys();
+    playerList.removeAll(settings.value("user/login").toString());
+    kickdial->listWidget->addItems(playerList);
     if (box.exec() == QDialog::Accepted) {
         foreach(QListWidgetItem* elem,  kickdial->listWidget->selectedItems()) {
-            qDebug() << "Kicking player:" << elem->text();
             proxy->room()->Send_Kick(proxy->clientIdToName.keys(elem->text())[0], proxy->roomid);
+            qDebug() << "Kicking player:" << elem->text();
         }
     }
+}
+
+void    RoomDialog::userKicked(QString user)
+{
+    ui->convSet->addEvent(user + " have been kicked");
+    leaved(user);
+}
+
+void    RoomDialog::youvebeenKicked()
+{
+    QMessageBox::information(this, "Kickage", "You've been kicked by admin");
+    delete this;
 }
