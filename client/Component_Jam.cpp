@@ -51,7 +51,6 @@ void	Component_Jam::Send_Jam(char const *audio, field_t jamId)
   Packet_v1_Jam *packet_v1_jam = new Packet_v1_Jam(JAM_SEND);
 
   // boucle
-  packet_v1_jam->setAudio(audio);
   _clientManager->Send(packet_v1_jam, gl_session);
 }
 

@@ -52,7 +52,7 @@ void RoomDialog::changeEvent(QEvent *e)
 
 void    RoomDialog::closeEvent(QCloseEvent*)
 {
-    proxy->room()->Send_Leave(proxy->session()->_session, proxy->roomid);
+    proxy->room()->Send_Leave(proxy->roomid);
 }
 
 void    RoomDialog::joined(QString client)
@@ -75,15 +75,15 @@ void    RoomDialog::sendMessage(const QString &msg)
 {
     qDebug() << "ROOMID = " <<  proxy->roomid;
     qDebug() << "I SAY:" << msg;
-    proxy->room()->Send_Message(proxy->session()->_session, msg.toUtf8().data(), proxy->roomid);
+    proxy->room()->Send_Message(msg.toUtf8().data(), proxy->roomid);
 }
 
 void RoomDialog::on_startButton_clicked(bool play)
 {
     if (play)
-        proxy->room()->Send_Start_Jam(proxy->session()->_session, proxy->roomid);
+        proxy->room()->Send_Start_Jam(proxy->roomid);
     else
-        proxy->room()->Send_Stop_Jam(proxy->session()->_session, proxy->roomid);
+        proxy->room()->Send_Stop_Jam(proxy->roomid);
     ui->startButton->setText("Pending...");
     ui->startButton->setIcon(QIcon());
 }
@@ -105,7 +105,7 @@ void RoomDialog::on_pushButton_clicked()
     if (box.exec() == QDialog::Accepted) {
         foreach(QListWidgetItem* elem,  kickdial->listWidget->selectedItems()) {
             qDebug() << "Kicking player:" << elem->text();
-            proxy->room()->Send_Kick(proxy->session()->_session, proxy->clientIdToName.keys(elem->text())[0], proxy->roomid);
+            proxy->room()->Send_Kick(proxy->clientIdToName.keys(elem->text())[0], proxy->roomid);
         }
     }
 }

@@ -12,7 +12,7 @@ ChannelSearch::ChannelSearch(Proxy *proxy, QWidget *parent)
         _proxy(proxy)
 {
     setupUi(this);
-    proxy->channel()->Send_List(proxy->session()->_session);
+    proxy->channel()->Send_List();
     connect(proxy, SIGNAL(channelsListed(QStringList)), this, SLOT(channelsListed(QStringList)));
     show();
 }
@@ -25,5 +25,5 @@ void    ChannelSearch::channelsListed(QStringList channelNameList)
 
 void ChannelSearch::on_channelTree_doubleClicked(QModelIndex index)
 {
-    _proxy->channel()->Send_Join(_proxy->session()->_session, channelTree->itemFromIndex(index)->text(0).toUtf8().data());
+    _proxy->channel()->Send_Join(channelTree->itemFromIndex(index)->text(0).toUtf8().data());
 }

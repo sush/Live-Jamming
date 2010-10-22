@@ -161,7 +161,7 @@ void		Component_Channel::Recv_Joined(Packet_v1 const *packet_v1, Session *sessio
   Channel	*chan = _channelMap.find(channelId)->second;
 
   chan->addConnected(0, clientSessionId);
-  Send_Joined_ACK(session);
+  Send_Joined_ACK();
 }
 
 void		Component_Channel::Send_Joined_ACK()
@@ -188,7 +188,7 @@ void		Component_Channel::Recv_Message_RECV(Packet_v1 const *packet_v1, Session *
   char const * message = packet_v1_channel->getMessage();
 
   // implement gui receive message
-  Send_Message_RECV_ACK(session);
+  Send_Message_RECV_ACK();
 }
 
 void		Component_Channel::Send_Message_RECV_ACK()
@@ -240,7 +240,7 @@ void		Component_Channel::Recv_Leaved(Packet_v1 const *packet_v1, Session *sessio
 
   Channel *chan = _channelMap.find(channelId)->second;
   chan->removeConnected(clientSessionId);
-  Send_Leaved_ACK(session);
+  Send_Leaved_ACK();
 }
 
 void		Component_Channel::Send_Leaved_ACK()

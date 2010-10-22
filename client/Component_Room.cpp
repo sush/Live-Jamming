@@ -222,7 +222,7 @@ void		Component_Room::Recv_Joined(Packet_v1 const *packet_v1, Session *session)
   Room	*room = _roomMap.find(roomId)->second;
 
   room->addConnected(0, clientSessionId);
-  Send_Joined_ACK(session);
+  Send_Joined_ACK();
 }
 
 void		Component_Room::Send_Joined_ACK()
@@ -249,7 +249,7 @@ void		Component_Room::Recv_Message_RECV(Packet_v1 const *packet_v1, Session *ses
   char const * message = packet_v1_room->getMessage();
 
   // implement gui receive message
-  Send_Message_RECV_ACK(session);
+  Send_Message_RECV_ACK();
 }
 
 void		Component_Room::Send_Message_RECV_ACK()
@@ -301,7 +301,7 @@ void		Component_Room::Recv_Leaved(Packet_v1 const *packet_v1, Session *session)
 
   Room *room = _roomMap.find(roomId)->second;
   room->removeConnected(clientSessionId);
-  Send_Leaved_ACK(session);
+  Send_Leaved_ACK();
 }
 
 void		Component_Room::Send_Leaved_ACK()
@@ -401,7 +401,7 @@ void		Component_Room::Recv_Invited(Packet_v1 const *packet_v1, Session *session)
 
   // clientSessionId has invited you to a room !
 
-  Send_Invited_ACK(session);
+  Send_Invited_ACK();
 }
 
 void		Component_Room::Recv_User_Kicked(Packet_v1 const *packet_v1, Session *session)
@@ -411,7 +411,7 @@ void		Component_Room::Recv_User_Kicked(Packet_v1 const *packet_v1, Session *sess
 
   field_t clientSessionId = packet_v1_room->getClientSessionId();
   // clientSessionId has kicked you from the room !
-  Send_User_Kicked_ACK(session);
+  Send_User_Kicked_ACK();
 }
 
 void		Component_Room::Recv_Started_Jam(Packet_v1 const *packet_v1, Session *session)
@@ -424,7 +424,7 @@ void		Component_Room::Recv_Started_Jam(Packet_v1 const *packet_v1, Session *sess
   Room *room	 = _roomMap.find(roomId)->second;
 
   _clientManager->getComponentJam()->StartJam(roomId, room);
-  Send_Started_Jam_ACK(session);
+  Send_Started_Jam_ACK();
 }
 
 void		Component_Room::Recv_Stoped_Jam(Packet_v1 const *packet_v1, Session *session)
@@ -436,7 +436,7 @@ void		Component_Room::Recv_Stoped_Jam(Packet_v1 const *packet_v1, Session *sessi
 
   // JAM HAS STOPPED
     _clientManager->getComponentJam()->StopJam(roomId);
-  Send_Stoped_Jam_ACK(session);
+  Send_Stoped_Jam_ACK();
 }
 
 void		Component_Room::Recv_Kicked(Packet_v1 const *packet_v1, Session *session)
@@ -448,7 +448,7 @@ void		Component_Room::Recv_Kicked(Packet_v1 const *packet_v1, Session *session)
 
   // clientSessionId has been kicked of the room
 
-  Send_Kicked_ACK(session);
+  Send_Kicked_ACK();
 }
 
 void		Component_Room::Connect(Session *)

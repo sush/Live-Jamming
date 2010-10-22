@@ -279,7 +279,7 @@ void MainWindow::on_actionCreate_Channel_triggered()
 
     int retv = dial.exec();
     if ( retv == QDialog::Accepted && !dialui.nameLineEdit->text().isEmpty()) {
-        proxy->channel()->Send_Join(proxy->session()->_session, dialui.nameLineEdit->text().toUtf8().data());
+        proxy->channel()->Send_Join(dialui.nameLineEdit->text().toUtf8().data());
     }
 }
 
@@ -294,7 +294,7 @@ void MainWindow::on_channelList_customContextMenuRequested(QPoint pos)
                 QAction leave("leave", 0);
                 QAction* action = QMenu::exec(QList<QAction*>() << &leave, ui->channelList->mapToGlobal(pos));
                 if (action == &leave)
-                    proxy->channel()->Send_Leave(proxy->session()->_session, proxy->channelNameToId(item));
+                    proxy->channel()->Send_Leave(proxy->channelNameToId(item));
             }
         }
     }
@@ -324,13 +324,13 @@ void MainWindow::on_actionCreate_room_triggered()
     bool    ok;
     QString name = QInputDialog::getText(this, "Room name", "Enter room name", QLineEdit::Normal, "", &ok);
     if (ok && !name.isEmpty()) {
-        proxy->room()->Send_Join(proxy->session()->_session, name.toUtf8().data());
+        proxy->room()->Send_Join(name.toUtf8().data());
     }
 }
 
 void MainWindow::sendMessage(const QString& msg)
 {
-        proxy->channel()->Send_Message(proxy->session()->_session, msg.toUtf8().data(), proxy->channelNameToId(currentChannel));
+        proxy->channel()->Send_Message(msg.toUtf8().data(), proxy->channelNameToId(currentChannel));
 }
 
 void MainWindow::createRoom(const QString &name)
