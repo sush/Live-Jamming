@@ -2,6 +2,8 @@
 #include <Component_Jam.h>
 #include <Bind_recv.h>
 
+extern Session* gl_session;
+
 Component_Room::Component_Room(ClientManager *clientManager)
   : IComponent(ROOM_COMPONENTID), _clientManager(clientManager)
 {
@@ -174,12 +176,12 @@ void	Component_Room::RegisteredRequests()
     new Request(ROOM_KICKED, RECV, "KICKED", RESPONSETONOTHING);
 }
 
-void		Component_Room::Send_Join(Session *session, char * const name)
+void		Component_Room::Send_Join(char * const name)
 {
   Packet_v1_Room *packet_v1_room = new Packet_v1_Room(ROOM_JOIN);
   packet_v1_room->setRoomName(name);
 
-  _clientManager->Send(packet_v1_room, session);
+  _clientManager->Send(packet_v1_room, gl_session);
 }
 
 void		Component_Room::Recv_Join_OK(Packet_v1 const *packet_v1, Session *)
@@ -223,18 +225,18 @@ void		Component_Room::Recv_Joined(Packet_v1 const *packet_v1, Session *session)
   Send_Joined_ACK(session);
 }
 
-void		Component_Room::Send_Joined_ACK(Session *session)
+void		Component_Room::Send_Joined_ACK()
 {
-  _clientManager->Send(_componentId, ROOM_JOINED_ACK, session);
+  _clientManager->Send(_componentId, ROOM_JOINED_ACK, gl_session);
 }
 
-void		Component_Room::Send_Message(Session *session, char const *message, field_t roomId)
+void		Component_Room::Send_Message(char const *message, field_t roomId)
 {
   Packet_v1_Room *packet_v1_room = new Packet_v1_Room(ROOM_MESSAGE);
 
   packet_v1_room->setRoomId(roomId);
   packet_v1_room->setMessage(message);
-  _clientManager->Send(packet_v1_room, session);
+  _clientManager->Send(packet_v1_room, gl_session);
 }
 
 void		Component_Room::Recv_Message_RECV(Packet_v1 const *packet_v1, Session *session)
@@ -250,18 +252,18 @@ void		Component_Room::Recv_Message_RECV(Packet_v1 const *packet_v1, Session *ses
   Send_Message_RECV_ACK(session);
 }
 
-void		Component_Room::Send_Message_RECV_ACK(Session *session)
+void		Component_Room::Send_Message_RECV_ACK()
 {
-  _clientManager->Send(_componentId, ROOM_MESSAGE_RECV_ACK, session);
+  _clientManager->Send(_componentId, ROOM_MESSAGE_RECV_ACK, gl_session);
 }
 
-void		Component_Room::Send_Leave(Session *session, field_t roomId)
+void		Component_Room::Send_Leave(field_t roomId)
 {
   Packet_v1_Room *packet_v1_room = new Packet_v1_Room(ROOM_LEAVE);
 
   packet_v1_room->setRoomId(roomId);
 
-  _clientManager->Send(packet_v1_room, session);
+  _clientManager->Send(packet_v1_room, gl_session);
 }
 
 void		Component_Room::Recv_Leave_OK(Packet_v1 const *packet_v1, Session *)
@@ -302,72 +304,72 @@ void		Component_Room::Recv_Leaved(Packet_v1 const *packet_v1, Session *session)
   Send_Leaved_ACK(session);
 }
 
-void		Component_Room::Send_Leaved_ACK(Session *session)
+void		Component_Room::Send_Leaved_ACK()
 {
-  _clientManager->Send(_componentId, ROOM_LEAVED_ACK, session);
+  _clientManager->Send(_componentId, ROOM_LEAVED_ACK, gl_session);
 }
 
-void		Component_Room::Send_Invite(Session *session, char const *clientLogin, field_t roomId)
+void		Component_Room::Send_Invite(char const *clientLogin, field_t roomId)
 {
   Packet_v1_Room *packet_v1_room = new Packet_v1_Room(ROOM_INVITE);
 
   packet_v1_room->setClientLogin(clientLogin);
   packet_v1_room->setRoomId(roomId);
 
-  _clientManager->Send(packet_v1_room, session);
+  _clientManager->Send(packet_v1_room, gl_session);
 }
 
-void		Component_Room::Send_Kick(Session *session, field_t clientSessionId, field_t roomId)
+void		Component_Room::Send_Kick(field_t clientSessionId, field_t roomId)
 {
   Packet_v1_Room *packet_v1_room = new Packet_v1_Room(ROOM_KICK);
 
   packet_v1_room->setClientSessionId(clientSessionId);
   packet_v1_room->setRoomId(roomId);
 
-  _clientManager->Send(packet_v1_room, session);
+  _clientManager->Send(packet_v1_room, gl_session);
 }
 
-void		Component_Room::Send_Start_Jam(Session *session, field_t roomId)
+void		Component_Room::Send_Start_Jam(field_t roomId)
 {
   Packet_v1_Room *packet_v1_room = new Packet_v1_Room(ROOM_START_JAM);
 
   packet_v1_room->setRoomId(roomId);
 
-  _clientManager->Send(packet_v1_room, session);
+  _clientManager->Send(packet_v1_room, gl_session);
 }
 
-void		Component_Room::Send_Stop_Jam(Session *session, field_t roomId)
+void		Component_Room::Send_Stop_Jam(field_t roomId)
 {
   Packet_v1_Room *packet_v1_room = new Packet_v1_Room(ROOM_STOP_JAM);
 
   packet_v1_room->setRoomId(roomId);
 
-  _clientManager->Send(packet_v1_room, session);
+  _clientManager->Send(packet_v1_room, gl_session);
 }
 
-void		Component_Room::Send_Kicked_ACK(Session *session)
+void		Component_Room::Send_Kicked_ACK()
 {
-  _clientManager->Send(_componentId, ROOM_KICKED_ACK, session);
+  _clientManager->Send(_componentId, ROOM_KICKED_ACK, gl_session);
 }
 
-void		Component_Room::Send_Invited_ACK(Session *session)
+void		Component_Room::Send_Invited_ACK()
 {
-  _clientManager->Send(_componentId, ROOM_INVITED_ACK, session);
+  _clientManager->Send(_componentId, ROOM_INVITED_ACK, gl_session);
 }
 
-void		Component_Room::Send_Started_Jam_ACK(Session *session)
+void		Component_Room::Send_Started_Jam_ACK()
 {
-  _clientManager->Send(_componentId, ROOM_STARTED_JAM_ACK, session);
+  _clientManager->Send(_componentId, ROOM_STARTED_JAM_ACK, gl_session);
 }
 
-void		Component_Room::Send_Stoped_Jam_ACK(Session *session)
+void		Component_Room::Send_Stoped_Jam_ACK()
 {
-  _clientManager->Send(_componentId, ROOM_STOPED_JAM_ACK, session);
+  _clientManager->Send(_componentId, ROOM_STOPED_JAM_ACK, gl_session);
 }
 
-void		Component_Room::Send_User_Kicked_ACK(Session *session)
+void		Component_Room::Send_User_Kicked_ACK()
 {
-  _clientManager->Send(_componentId, ROOM_USER_KICKED_ACK, session);
+  _clientManager->Send(_componentId, ROOM_USER_KICKED_ACK, gl_session);
 }
 
 void		Component_Room::Recv_Kick_OK(Packet_v1 const *packet_v1, Session *session)

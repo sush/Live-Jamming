@@ -20,7 +20,7 @@ class Component_Jam : public IComponent
   Component_Jam(ClientManager *);
   virtual	~Component_Jam();
 
-  void		Send_Jam(Session *, char const *, field_t);
+  void		Send_Jam(char const *, field_t);
 
   void		StartJam(field_t, Room *);
   void		StopJam(field_t);

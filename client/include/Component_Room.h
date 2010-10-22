@@ -29,16 +29,16 @@ public:
 
   typedef std::map<field_t, Room *>	m_room;
 
-  void					Send_Join(Session *, char * const);
-  void					Send_Leave(Session *, field_t);
+  void					Send_Join(char * const);
+  void					Send_Leave(field_t);
 
-  void					Send_Message(Session *, char const *, field_t);
+  void					Send_Message(char const *, field_t);
 
-  void					Send_Invite(Session *, char const *, field_t );
-  void					Send_Kick(Session *, field_t clientSessionId, field_t );
+  void					Send_Invite(char const *, field_t );
+  void					Send_Kick(field_t clientSessionId, field_t );
 
-  void					Send_Start_Jam(Session *, field_t );
-  void					Send_Stop_Jam(Session *, field_t );
+  void					Send_Start_Jam(field_t );
+  void					Send_Stop_Jam(field_t );
 
   void					Connect(Session *);
   void					Disconnect(Session *);
@@ -49,24 +49,24 @@ private:
   void					Recv_Join_NOK_ALREADYINROOM(Packet_v1 const *, Session *);
 
   void					Recv_Joined(Packet_v1 const *, Session *);
-  void					Send_Joined_ACK(Session *);
+  void					Send_Joined_ACK();
 
   void					Recv_Message_RECV(Packet_v1 const *, Session *);
-  void					Send_Message_RECV_ACK(Session *);
+  void					Send_Message_RECV_ACK();
 
   void					Recv_Leave_OK(Packet_v1 const *, Session *);
   void					Recv_Leave_NOK_NOTINROOM(Packet_v1 const *, Session *);
   
   void					Recv_Leaved(Packet_v1 const *, Session *);
-  void					Send_Leaved_ACK(Session *);
+  void					Send_Leaved_ACK();
 
-  void					Send_Kicked_ACK(Session *);
-  void					Send_Invited_ACK(Session *);
+  void					Send_Kicked_ACK();
+  void					Send_Invited_ACK();
 
-  void					Send_Started_Jam_ACK(Session *);
-  void					Send_Stoped_Jam_ACK(Session *);
+  void					Send_Started_Jam_ACK();
+  void					Send_Stoped_Jam_ACK();
 
-  void					Send_User_Kicked_ACK(Session *);
+  void					Send_User_Kicked_ACK();
 
   void					Recv_Kick_OK(Packet_v1 const *packet_v1, Session *);
   void					Recv_Kick_NOK_NOTINROOM(Packet_v1 const *packet_v1, Session *);

@@ -1,7 +1,8 @@
 #include <Component_Jam.h>
 #include <Bind_recv.h>
-
 #include "audioengine.h"
+
+extern Session* gl_session;
 
 Component_Jam::Component_Jam(ClientManager *clientManager)
   : IComponent(JAM_COMPONENTID), _clientManager(clientManager)
@@ -45,13 +46,13 @@ void	Component_Jam::Recv_Jam(Packet_v1 const *packet_v1, Session *session)
     //audio_engine->processOutput();
 }
 
-void	Component_Jam::Send_Jam(Session *session, char const *audio, field_t jamId)
+void	Component_Jam::Send_Jam(char const *audio, field_t jamId)
 {
   Packet_v1_Jam *packet_v1_jam = new Packet_v1_Jam(JAM_SEND);
 
   // boucle
   packet_v1_jam->setAudio(audio);
-  _clientManager->Send(packet_v1_jam, session);
+  _clientManager->Send(packet_v1_jam, gl_session);
 }
 
 void	Component_Jam::Connect(Session *)

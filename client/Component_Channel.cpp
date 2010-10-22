@@ -1,6 +1,8 @@
 #include <Component_Channel.h>
 #include <Bind_recv.h>
 
+extern Session* gl_session;
+
 Component_Channel::Component_Channel(ClientManager *clientManager)
   : IComponent(CHANNEL_COMPONENTID), _clientManager(clientManager)
 {
@@ -105,12 +107,12 @@ char const	*Component_Channel::getChannelName(field_t channelId) const
   return 0;
 }
 
-void		Component_Channel::Send_Join(Session *session, char * const name)
+void		Component_Channel::Send_Join(char * const name)
 {
   Packet_v1_Channel *packet_v1_channel = new Packet_v1_Channel(CHANNEL_JOIN);
   packet_v1_channel->setChannelName(name);
 
-  _clientManager->Send(packet_v1_channel, session);
+  _clientManager->Send(packet_v1_channel, gl_session);
 }
 
 void		Component_Channel::Recv_Join_OK(Packet_v1 const *packet_v1, Session * session)
@@ -162,18 +164,18 @@ void		Component_Channel::Recv_Joined(Packet_v1 const *packet_v1, Session *sessio
   Send_Joined_ACK(session);
 }
 
-void		Component_Channel::Send_Joined_ACK(Session *session)
+void		Component_Channel::Send_Joined_ACK()
 {
-  _clientManager->Send(_componentId, CHANNEL_JOINED_ACK, session);
+  _clientManager->Send(_componentId, CHANNEL_JOINED_ACK, gl_session);
 }
 
-void		Component_Channel::Send_Message(Session *session, char const *message, field_t channelId)
+void		Component_Channel::Send_Message(char const *message, field_t channelId)
 {
   Packet_v1_Channel *packet_v1_channel = new Packet_v1_Channel(CHANNEL_MESSAGE);
 
   packet_v1_channel->setChannelId(channelId);
   packet_v1_channel->setMessage(message);
-  _clientManager->Send(packet_v1_channel, session);
+  _clientManager->Send(packet_v1_channel, gl_session);
 }
 
 void		Component_Channel::Recv_Message_RECV(Packet_v1 const *packet_v1, Session *session)
@@ -189,18 +191,18 @@ void		Component_Channel::Recv_Message_RECV(Packet_v1 const *packet_v1, Session *
   Send_Message_RECV_ACK(session);
 }
 
-void		Component_Channel::Send_Message_RECV_ACK(Session *session)
+void		Component_Channel::Send_Message_RECV_ACK()
 {
-  _clientManager->Send(_componentId, CHANNEL_MESSAGE_RECV_ACK, session);
+  _clientManager->Send(_componentId, CHANNEL_MESSAGE_RECV_ACK, gl_session);
 }
 
-void		Component_Channel::Send_Leave(Session *session, field_t channelId)
+void		Component_Channel::Send_Leave(field_t channelId)
 {
   Packet_v1_Channel *packet_v1_channel = new Packet_v1_Channel(CHANNEL_LEAVE);
 
   packet_v1_channel->setChannelId(channelId);
 
-  _clientManager->Send(packet_v1_channel, session);
+  _clientManager->Send(packet_v1_channel, gl_session);
 }
 
 void		Component_Channel::Recv_Leave_OK(Packet_v1 const *packet_v1, Session *)
@@ -241,9 +243,9 @@ void		Component_Channel::Recv_Leaved(Packet_v1 const *packet_v1, Session *sessio
   Send_Leaved_ACK(session);
 }
 
-void		Component_Channel::Send_Leaved_ACK(Session *session)
+void		Component_Channel::Send_Leaved_ACK()
 {
-  _clientManager->Send(_componentId, CHANNEL_LEAVED_ACK, session);
+  _clientManager->Send(_componentId, CHANNEL_LEAVED_ACK, gl_session);
 }
 
 Component_Channel::m_channel const &	Component_Channel::getAllChannel() const
@@ -251,9 +253,9 @@ Component_Channel::m_channel const &	Component_Channel::getAllChannel() const
   return _channelMap;
 }
 
-void		Component_Channel::Send_List(Session *session)
+void		Component_Channel::Send_List()
 {
-  _clientManager->Send(_componentId, CHANNEL_LIST, session);
+  _clientManager->Send(_componentId, CHANNEL_LIST, gl_session);
 }
 
 void		Component_Channel::Recv_Listed(Packet_v1 const *, Session *)
