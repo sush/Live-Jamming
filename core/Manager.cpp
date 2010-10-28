@@ -25,6 +25,7 @@ Packet_v1	*Manager::Cond_new_Packet(boost::asio::ip::udp::endpoint & endpoint, P
   field_t	componentId = Packet_v1::peekComponentId(buffer);
   field_t	requestId = Packet_v1::peekRequestId(buffer);
   
+  //  std::cout << "[Cond_new_packet 1] componentid = " << componentId << ", requestId = " << requestId << std::endl;
   if (!IsRegisteredComponent(componentId))
     throw std::runtime_error(X_UNKNOWN_COMPONENTID);
   if (!IsRegisteredRequest(componentId, requestId))
@@ -41,12 +42,14 @@ Packet_v1	*Manager::Cond_new_Packet(boost::asio::ip::udp::endpoint & endpoint, P
   else if (componentId == JAM_COMPONENTID)
     return new Packet_v1_Jam(&endpoint, &buffer, len);
 
+  //  std::cout << "[Cond_new_packet 1] end" << std::endl;
   throw std::runtime_error(X_UNKNOWN_REQUESTID);
   return 0; // suppress compiler warning
 }
 
 Packet_v1	*Manager::Cond_new_Packet(int componentId, int requestId) const
 {
+  //  std::cout << "[Cond_new_packet 2] componentid = " << componentId << ", requestId = " << requestId << std::endl;
   if (!IsRegisteredComponent(componentId))
     throw std::runtime_error(X_UNKNOWN_COMPONENTID);
   if (!IsRegisteredRequest(componentId, requestId))
@@ -222,6 +225,7 @@ bool					Manager::IsRegisteredComponent(field_t componentId) const
 
 bool					Manager::IsRegisteredRequest(field_t componentId, field_t requestId) const
 {
+  //  std::cout << "testing registered request " << "(" << componentId << ", " << requestId << ")" << std::endl;
   assert(IsRegisteredComponent(componentId));
   return _componentBindings.find(componentId)->second->_registeredRequests.find(requestId) != _componentBindings.find(componentId)->second->_registeredRequests.end();
 }

@@ -28,7 +28,9 @@ void		Client::Run()
 
 void Client::start_receive()
 {
+  //  std::cout << "BEFORE START RECEIVE....................." << (int)_recv_buffer << std::endl;
   _recv_buffer = new Packet::buffer_t;
+  //  std::cout << "AFTER START RECEIVE....................." << (int)_recv_buffer << std::endl;
   _socket->async_receive_from(boost::asio::buffer(*_recv_buffer), *_remote_endpoint,
 			      boost::bind(&Client::CallBack_handle_receive, this,
 					  boost::asio::placeholders::error,
@@ -40,6 +42,7 @@ void	Client::CallBack_handle_receive(boost::system::error_code const & error, st
   if (!error || error == boost::asio::error::message_size)
     {
 
+      //      std::cout << "HANDLE RECEIVE....................." << (int)_recv_buffer << std::endl;
       ////////// THREAD SAFE//////////////////////
       // !!! to implement !!!
       // this lock should have a very high priority for locking
@@ -49,7 +52,9 @@ void	Client::CallBack_handle_receive(boost::system::error_code const & error, st
       // MOVED THE LOCK INSIDE CLASS: ADD INT PARAMETER FOR LOCKING PRIORITY
 
       try {
+	//	std::cout << ">>before cond_new_packet<<" << std::endl;
 	Packet * p = reinterpret_cast<Packet *>(_clientManager->Cond_new_Packet(*_remote_endpoint, *_recv_buffer, recv_count));
+	//      std::cout << ">>after cond_new_packet<< (" <<((Packet_v1 *)p)->getComponentId()<< ", " << ((Packet_v1 *)p)->getRequestId() << ")" << std::endl;
 	_packetQueue->PushPacket(p);
 	_pool->schedule(boost::bind(&Client::Thread_TreatPacket, this));
       }

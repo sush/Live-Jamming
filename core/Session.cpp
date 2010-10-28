@@ -248,7 +248,8 @@ void	Session::PacketTimer::setAutoRetry(Packet_v1 *packet_v1)
 {
   if (_packet_v1 &&
       packet_v1 != _packet_v1)
-    delete _packet_v1;
+    //delete _packet_v1;
+    ;
   _packet_v1 = packet_v1;
   _timer->expires_from_now(boost::posix_time::seconds(_manager->getRetryDelay()));
   _timer->async_wait(boost::bind(&Manager::CallBack_Send_TimeOut, _manager, _session, _packet_v1, boost::asio::placeholders::error));
@@ -257,7 +258,7 @@ void	Session::PacketTimer::setAutoRetry(Packet_v1 *packet_v1)
 void	Session::PacketTimer::CancelAutoRetry()
 {
   _timer->cancel();
-  delete _packet_v1;
+  //  delete _packet_v1;
   _packet_v1 = 0;
 }
 
