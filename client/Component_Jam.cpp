@@ -29,7 +29,8 @@ void	Component_Jam::RegisteredRequests()
 
 void	Component_Jam::StartJam(field_t jamId, Room *room)
 {
-    _audioEngine = new AudioEngine(*this);
+  _jamId = jamId;
+  _audioEngine = new AudioEngine(*this);
 }
 
 void	Component_Jam::StopJam(field_t jamId)
@@ -46,11 +47,12 @@ void	Component_Jam::Recv_Jam(Packet_v1 const *packet_v1, Session *session)
     //audio_engine->processOutput();
 }
 
-void	Component_Jam::Send_Jam(char const *audio, field_t jamId)
+void	Component_Jam::Send_Jam(byte_t const *audio, field_t len)
 {
   Packet_v1_Jam *packet_v1_jam = new Packet_v1_Jam(JAM_SEND);
 
-  // boucle
+  packet_v1_jam->setJamId(_jamId);
+  packet_v1_jam->setAudio(audio, len);
   _clientManager->Send(packet_v1_jam, gl_session);
 }
 

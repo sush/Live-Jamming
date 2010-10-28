@@ -3,7 +3,7 @@
 
 #include <QString>
 #include <QDebug>
-
+#include <Component_Jam.h>
 #include <jack/jack.h>
 #include <jack/ringbuffer.h>
 #include <celt/celt.h>

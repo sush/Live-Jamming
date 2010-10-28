@@ -1,6 +1,6 @@
 #include "audioengine.h"
 #include <QDebug>
-
+#include <Packet.h>
 #include <iostream>
 #include <stdexcept>
 
@@ -9,18 +9,16 @@ class Component_Jam;
 static int process(jack_nframes_t nframes,void *arg){
     AudioEngine *ip = static_cast<AudioEngine*> (arg);
     if (ip->isRunning()){
-        /* BASIC TESTS
-       int i;
-       jack_default_audio_sample_t *in, *out;
-       for ( i = 0; i < ip->nb_ports; i++ )
-       {
-       //REMPLIR UN BUFFER AVEC LE PORT GET_BUFFER DE l'INPUT ENCODE
-       in = (jack_default_audio_sample_t*)jack_port_get_buffer ( ip->input_ports[i], nframes );
-       out = (jack_default_audio_sample_t*)jack_port_get_buffer ( ip->output_ports[i], nframes );
-       memcpy ( out, in, nframes * sizeof ( jack_default_audio_sample_t ) );
-       fprintf ( stderr, "%i frames readed\n", nframes);
-       }
-	*/
+      unsigned int i;
+      jack_default_audio_sample_t *in, *out;
+      for ( i = 0; i < ip->nb_ports; i++ )
+	{
+	  in = (jack_default_audio_sample_t*)jack_port_get_buffer ( ip->input_ports[i], nframes);
+	  out = (jack_default_audio_sample_t*)jack_port_get_buffer ( ip->output_ports[i], nframes);
+	  memcpy ( out, in, nframes * sizeof ( jack_default_audio_sample_t ) );
+	  ip->jam.Send_Jam((byte_t*)in, (field_t)nframes);
+	  fprintf ( stderr, "%i frames readed\n", nframes);
+	}
     }
     return 0;
 }
@@ -117,7 +115,7 @@ void AudioEngine::celtDestroy(){
 AudioEngine::~AudioEngine(){
   running = false;
   
-  for(int i=0;i<nb_ports;i++){
+  for(unsigned int i=0;i<nb_ports;i++){
     qDebug() << "DESTRUCT PORTS : " << i;
     jack_port_unregister(client,input_ports[i]);
     jack_port_unregister(client,output_ports[i]);

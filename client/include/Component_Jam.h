@@ -1,7 +1,7 @@
 #ifndef __COMPONENT_JAM_H__
 #define __COMPONENT_JAM_H__
 
-class Component_Jam;
+
 #include "audioengine.h"
 
 #include <iostream>
@@ -13,6 +13,8 @@ class Component_Jam;
 #include <Protocol_Jam.h>
 #include <Session.h>
 
+class AudioEngine;
+
 class Component_Jam : public IComponent
 {
  public:
@@ -20,7 +22,7 @@ class Component_Jam : public IComponent
   Component_Jam(ClientManager *);
   virtual	~Component_Jam();
 
-  void		Send_Jam(char const *, field_t);
+  void		Send_Jam(byte_t const *, field_t);
 
   void		StartJam(field_t, Room *);
   void		StopJam(field_t);
@@ -40,6 +42,7 @@ class Component_Jam : public IComponent
 
   ClientManager	*_clientManager;
   AudioEngine   *_audioEngine;
+  field_t	_jamId;
 };
 
 #endif // ! __COMPONENT_JAM_H__

@@ -464,6 +464,7 @@ void	Component_RoomManager::Send_Started_Jam(Session *session, field_t roomId)
 {
   Packet_v1_Room *packet_v1_room = new Packet_v1_Room(ROOM_STARTED_JAM);
 
+  packet_v1_room->setRoomId(roomId);
   _serverManager->Send(packet_v1_room, session);
 }
 

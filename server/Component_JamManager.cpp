@@ -46,7 +46,7 @@ void	Component_JamManager::Send_Jam(Session *session, char const *audio, field_t
   packet_v1_jam->setClientSessionId(clientSessionId);
 
   //pareil que commentaire de recv_jam, utilisez le type byte_t(qui est unsigned cahr) plutot que char pcq comme c est du binaire ca risque d avoir des comportements bizarres si un octet depasse  127 (voir arithmetique binaire complement a 2 si besoin precisions)
-  packet_v1_jam->setAudio((byte_t const *)audio, 400);	// !!!!!!!!!!!!!!!!!!!!!!! SET AUDIO DATALEN INSTEAD OF 400 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! //
+  packet_v1_jam->setAudio((byte_t const *)audio, 1024);	// !!!!!!!!!!!!!!!!!!!!!!! SET AUDIO DATALEN INSTEAD OF 400 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! //
 
   _serverManager->Send(packet_v1_jam, session);
 }
@@ -68,14 +68,11 @@ void	Component_JamManager::Recv_Jam(Packet_v1 const *packet_v1, Session *session
     {
       Jam *jam = _jamMap->find(jamId)->second;
       std::map<field_t, Session*> *connected = jam->getRoom()->getConnected();
+      std::map<field_t, Session*>::iterator it, end = connected->end();
       
-      if (connected->find(clientSessionId) != connected->end())
-	{
-	  std::map<field_t, Session*>::iterator it, end = connected->end();
-	  
-	  for (it = connected->begin(); it != end; ++it)
-	    Send_Jam(it->second, audio, clientSessionId);
-	}
+      for (it = connected->begin(); it != end; ++it) {
+	Send_Jam(it->second, audio, clientSessionId);
+      }
     }
 }
 
