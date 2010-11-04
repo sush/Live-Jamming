@@ -22,6 +22,9 @@ class Packet_v1_Room : public Packet_v1
   void                  setRoomId(field_t);
   field_t               getRoomId() const;
 
+  void                  setAdmin(field_t);
+  field_t               getAdmin() const;
+
   void                  setClientSessionId(field_t);
   field_t               getClientSessionId() const;
 
