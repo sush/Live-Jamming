@@ -11,16 +11,28 @@ static int process(jack_nframes_t nframes,void *arg){
     if (ip->isRunning()){
       unsigned int i;
       jack_default_audio_sample_t *in, *out;
-      for ( i = 0; i < ip->nb_ports; i++ )
+      for ( i = 0; i < 1; i++ )
 	{
 	  in = (jack_default_audio_sample_t*)jack_port_get_buffer ( ip->input_ports[i], nframes);
-	  out = (jack_default_audio_sample_t*)jack_port_get_buffer ( ip->output_ports[i], nframes);
-	  memcpy ( out, in, nframes * sizeof ( jack_default_audio_sample_t ) );
-	  ip->jam.Send_Jam((byte_t*)in, (field_t)nframes);
-	  fprintf ( stderr, "%i frames readed\n", nframes);
+	  fprintf ( stderr, "%i frames read\n", nframes);
+	  //RECEPTION
+	  //ip->jam.Send_Jam((byte_t*)in, (field_t)nframes);
+	  ip->processOutput((char*)in);
+	  if (jack_ringbuffer_read_space(ip->rb) > 1024){
+	    char tmp[nframes];
+	    out = (jack_default_audio_sample_t*)jack_port_get_buffer ( ip->output_ports[i], nframes);
+	    fprintf ( stderr, "OUT \n" );
+	    jack_ringbuffer_read(ip->rb, tmp, 1024);
+	    memcpy(out, in, 1024);
+	  }
 	}
     }
     return 0;
+}
+
+int AudioEngine::processOutput(const char *audio){
+  jack_ringbuffer_write(rb, audio, 1024);
+  return 0;
 }
 
 AudioEngine::AudioEngine(Component_Jam& jam_) :
@@ -91,7 +103,9 @@ AudioEngine::AudioEngine(Component_Jam& jam_) :
         jack_free(tmpPorts);
     }
     /*Ports are registered and connected, process callback can process data*/
-    celtCreate();
+    //    celtCreate();
+    rb = jack_ringbuffer_create(nb_ports * sizeof(jack_default_audio_sample_t) * 4096);
+    memset(rb->buf, 0, rb->size);
     running = true;
 }
 
@@ -124,7 +138,7 @@ AudioEngine::~AudioEngine(){
   }
   delete [] input_ports;
   delete [] output_ports;
-  celtDestroy();
+  //  celtDestroy();
   jack_deactivate(client);
   jack_client_close(client);
   input_ports = NULL;

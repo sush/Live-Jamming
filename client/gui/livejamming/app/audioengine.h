@@ -21,7 +21,7 @@ class AudioEngine
     ~AudioEngine();
     //static int process(jack_nframes_t, void*);
     bool isRunning();
-
+    int processOutput(const char*);
  public:
     Component_Jam&  jam;
     /* jack stuff */
@@ -32,6 +32,7 @@ class AudioEngine
     jack_port_t **output_ports;
     jack_status_t status;
     jack_options_t options;
+    jack_ringbuffer_t *rb;
     long overruns;
     unsigned int nb_ports;
     int bitdepth;
