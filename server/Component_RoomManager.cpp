@@ -203,7 +203,7 @@ void	Component_RoomManager::Recv_Join(Packet_v1 const *packet_v1, Session *sessi
 
   if (room->addConnected(session, sessionId))
     {
-      Send_Join_OK(session, roomId, roomName);
+      Send_Join_OK(session, roomId, roomName, existing);
 
       std::map<field_t, Session*> *connected = room->getConnected();
       std::map<field_t, Session *>::iterator it, end = connected->end();
@@ -221,12 +221,13 @@ void	Component_RoomManager::Recv_Join(Packet_v1 const *packet_v1, Session *sessi
     Send_Join_NOK_ALREADYINROOM(session, roomId, roomName);
 }
 
-void	Component_RoomManager::Send_Join_OK(Session *session, field_t roomId, char const *roomName)
+void	Component_RoomManager::Send_Join_OK(Session *session, field_t roomId, char const *roomName, bool existing)
 {
   Packet_v1_Room *packet_v1_room = new Packet_v1_Room(ROOM_JOIN_OK);
 
   packet_v1_room->setRoomName(roomName);
   packet_v1_room->setRoomId(roomId);
+  existing  ? packet_v1_room->setAdmin(0) : packet_v1_room->setAdmin(1);
 
   _serverManager->Send(packet_v1_room, session);
 }

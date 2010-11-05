@@ -55,6 +55,16 @@ void            Packet_v1_Room::setClientSessionId(field_t clientSessionId)
   setField(clientSessionId, PROTOV1_ROOM_CLIENTSESSIONID_OFF, PROTOV1_ROOM_CLIENTSESSIONID_SIZE);
 }
 
+void		Packet_v1_Room::setAdmin(field_t admin)
+{
+  setField(admin, PROTOV1_ROOM_ADMIN_OFF, PROTOV1_ROOM_ADMIN_SIZE);
+}
+
+field_t         Packet_v1_Room::getAdmin() const
+{
+  return getField(PROTOV1_ROOM_ADMIN_OFF, PROTOV1_ROOM_ADMIN_SIZE);
+}
+
 void            Packet_v1_Room::setMessage(char const * message)
 {
   //  assert(getRequestId() == CHANNEL_MESSAGE || getRequestId() == CHANNEL_MESSAGE_RECV);
