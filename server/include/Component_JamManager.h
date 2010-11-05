@@ -33,7 +33,7 @@ class Component_JamManager : public IComponent
   virtual void	BindingsRecv();
   virtual void	RegisteredRequests();
 
-  void		Send_Jam(Session *, char const *, field_t);
+  void		Send_Jam(Session *, byte_t const *);
   void		Recv_Jam(Packet_v1 const *, Session *);
 
   void		Connect(Session *);
