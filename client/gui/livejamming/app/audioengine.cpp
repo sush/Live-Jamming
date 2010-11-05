@@ -16,13 +16,13 @@ static int process(jack_nframes_t nframes,void *arg){
 	  in = (jack_default_audio_sample_t*)jack_port_get_buffer ( ip->input_ports[i], nframes);
 	  //fprintf ( stderr, "%i frames read\n", nframes);
 	  //RECEPTION
-	  ip->jam.Send_Jam((byte_t*)in, (field_t)nframes*sizeof ( jack_default_audio_sample_t ));
+	  ip->jam.Send_Jam((byte_t*)in, (field_t)nframes * sizeof ( jack_default_audio_sample_t ));
 	  //ip->processOutput((char*)in);
-	  if (jack_ringbuffer_read_space(ip->rb) > ip->buffer_size){
+	  if (jack_ringbuffer_read_space(ip->rb) > (nframes * sizeof ( jack_default_audio_sample_t ))){
 	    char tmp[nframes*sizeof ( jack_default_audio_sample_t )];
 	    out = (jack_default_audio_sample_t*)jack_port_get_buffer ( ip->output_ports[i], nframes);
 	    //fprintf ( stderr, "OUT \n" );
-	    jack_ringbuffer_read(ip->rb, tmp, nframes*sizeof ( jack_default_audio_sample_t ));
+	    jack_ringbuffer_read(ip->rb, tmp, nframes * sizeof ( jack_default_audio_sample_t ));
 	    memcpy(out, tmp, nframes * sizeof ( jack_default_audio_sample_t ));
 	  }
 	}
@@ -31,7 +31,7 @@ static int process(jack_nframes_t nframes,void *arg){
 }
 
 int AudioEngine::processOutput(const char *audio){
-  jack_ringbuffer_write(rb, audio, buffer_size *sizeof ( jack_default_audio_sample_t ));
+  jack_ringbuffer_write(rb, audio, buffer_size * sizeof ( jack_default_audio_sample_t ));
   return 0;
 }
 
@@ -60,7 +60,7 @@ AudioEngine::AudioEngine(Component_Jam& jam_) :
     jack_set_process_callback(client, process, this);
     sample_rate = jack_get_sample_rate(client);
     buffer_size = jack_get_buffer_size(client);
-
+    
     if (jack_activate(client) != 0)
         throw std::runtime_error("Could not activate jack");
 
@@ -104,7 +104,9 @@ AudioEngine::AudioEngine(Component_Jam& jam_) :
     }
     /*Ports are registered and connected, process callback can process data*/
     //    celtCreate();
-    rb = jack_ringbuffer_create(nb_ports *buffer_size* sizeof(jack_default_audio_sample_t) * 4096);
+    /*UGLY FIXED SIZE*/
+    rb = jack_ringbuffer_create(nb_ports * buffer_size * sizeof(jack_default_audio_sample_t) * 20000);
+    /*UGLY FIXED SIZE*/
     memset(rb->buf, 0, rb->size);
     running = true;
 }
