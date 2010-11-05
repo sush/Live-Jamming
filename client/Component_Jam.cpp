@@ -42,7 +42,6 @@ void	Component_Jam::Recv_Jam(Packet_v1 const *packet_v1, Session *session)
 {
     Packet_v1_Jam const *packet_v1_jam = 
     static_cast<Packet_v1_Jam const *>(packet_v1);
-    qDebug() << "GET AUDIO DATA LEN" << packet_v1_jam->getAudioDataLen();
     _audioEngine->processOutput((const char*)packet_v1_jam->getAudio(1024));
 }
 
