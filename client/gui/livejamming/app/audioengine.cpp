@@ -7,17 +7,18 @@
 class Component_Jam;
 
 static int process(jack_nframes_t nframes,void *arg){
-    AudioEngine *ip = static_cast<AudioEngine*> (arg);
-    if (ip->isRunning()){
-      unsigned int i;
-      jack_default_audio_sample_t *in, *out;
-      for ( i = 0; i < 1; i++ )
-	{
-	  in = (jack_default_audio_sample_t*)jack_port_get_buffer ( ip->input_ports[i], nframes);
-	  //fprintf ( stderr, "%i frames read\n", nframes);
-	  //RECEPTION
-	  ip->jam.Send_Jam((byte_t*)in, (field_t)nframes * sizeof ( jack_default_audio_sample_t ));
-	  //ip->processOutput((char*)in);
+  AudioEngine *ip = static_cast<AudioEngine*> (arg);
+  if (ip->isRunning()){
+    unsigned int i;
+    jack_default_audio_sample_t *in, *out;
+    for ( i = 0; i < 1; i++ )
+      {
+	in = (jack_default_audio_sample_t*)jack_port_get_buffer ( ip->input_ports[i], nframes);
+	//fprintf ( stderr, "%i frames read\n", nframes);
+	//RECEPTION
+	ip->jam.Send_Jam((byte_t*)in, (field_t)nframes * sizeof ( jack_default_audio_sample_t ));
+	//ip->processOutput((char*)in);
+	if (ip->mutex.tryLock()){
 	  if (jack_ringbuffer_read_space(ip->rb) > (nframes * sizeof ( jack_default_audio_sample_t ))){
 	    char tmp[nframes*sizeof ( jack_default_audio_sample_t )];
 	    out = (jack_default_audio_sample_t*)jack_port_get_buffer ( ip->output_ports[i], nframes);
@@ -25,13 +26,18 @@ static int process(jack_nframes_t nframes,void *arg){
 	    jack_ringbuffer_read(ip->rb, tmp, nframes * sizeof ( jack_default_audio_sample_t ));
 	    memcpy(out, tmp, nframes * sizeof ( jack_default_audio_sample_t ));
 	  }
+	  ip->mutex.unlock();
 	}
-    }
-    return 0;
+      }
+  }
+  return 0;
 }
 
 int AudioEngine::processOutput(const char *audio){
-  jack_ringbuffer_write(rb, audio, buffer_size * sizeof ( jack_default_audio_sample_t ));
+  if (mutex.tryLock()){
+    jack_ringbuffer_write(rb, audio, buffer_size * sizeof ( jack_default_audio_sample_t ));
+    mutex.unlock();
+  }
   return 0;
 }
 

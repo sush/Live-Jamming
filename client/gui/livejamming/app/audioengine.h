@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QDebug>
+#include <QMutex>
 #include <Component_Jam.h>
 #include <jack/jack.h>
 #include <jack/ringbuffer.h>
@@ -33,6 +34,7 @@ class AudioEngine
     jack_status_t status;
     jack_options_t options;
     jack_ringbuffer_t *rb;
+    QMutex mutex;
     long overruns;
     unsigned int nb_ports;
     int bitdepth;
