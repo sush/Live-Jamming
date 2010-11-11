@@ -14,30 +14,27 @@ static int process(jack_nframes_t nframes,void *arg){
     for ( i = 0; i < 1; i++ )
       {
 	in = (jack_default_audio_sample_t*)jack_port_get_buffer ( ip->input_ports[i], nframes);
-	//fprintf ( stderr, "%i frames read\n", nframes);
-	//RECEPTION
 	ip->jam.Send_Jam((byte_t*)in, (field_t)nframes * sizeof ( jack_default_audio_sample_t ));
-	//ip->processOutput((char*)in);
-	if (ip->mutex.tryLock()){
+	//qDebug() << "SEND --> " << ((unsigned int*)in)[0] << " : " << ((unsigned int*)in)[1] << " : " << ((unsigned int*)in)[2] << " : " ;
+	ip->mutex.lock();
 	  if (jack_ringbuffer_read_space(ip->rb) > (nframes * sizeof ( jack_default_audio_sample_t ))){
 	    char tmp[nframes*sizeof ( jack_default_audio_sample_t )];
 	    out = (jack_default_audio_sample_t*)jack_port_get_buffer ( ip->output_ports[i], nframes);
-	    //fprintf ( stderr, "OUT \n" );
 	    jack_ringbuffer_read(ip->rb, tmp, nframes * sizeof ( jack_default_audio_sample_t ));
 	    memcpy(out, tmp, nframes * sizeof ( jack_default_audio_sample_t ));
 	  }
-	  ip->mutex.unlock();
-	}
+	ip->mutex.unlock();
       }
   }
   return 0;
 }
 
 int AudioEngine::processOutput(const char *audio){
-  if (mutex.tryLock()){
-    jack_ringbuffer_write(rb, audio, buffer_size * sizeof ( jack_default_audio_sample_t ));
-    mutex.unlock();
-  }
+  //qDebug() << "RECV --> " << ((unsigned int*)audio)[0] << " : " << ((unsigned int*)audio)[1] << " : " <<((unsigned int*)audio)[2] << " : " ;
+  qDebug() << "Available Bytes" << jack_ringbuffer_write_space(rb);
+  mutex.lock();
+  jack_ringbuffer_write(rb, audio, buffer_size * sizeof ( jack_default_audio_sample_t ));
+  mutex.unlock();
   return 0;
 }
 
@@ -79,14 +76,14 @@ AudioEngine::AudioEngine(Component_Jam& jam_) :
         sprintf (name, "input%d", i+1);
         input_ports[i] = jack_port_register(client, name, JACK_DEFAULT_AUDIO_TYPE, JackPortIsInput, 0);
         if(input_ports[i] == NULL)
-            throw std::runtime_error(std::string("cannot register input port").append(name)); //trouvr un moyen de close le client
+            throw std::runtime_error(std::string("cannot register input port").append(name));
     }
     for (i=0; i < nb_ports; i++) {
         char    name[64];
         sprintf (name, "output%d", i+1);
         output_ports[i] = jack_port_register(client, name, JACK_DEFAULT_AUDIO_TYPE, JackPortIsOutput, 0);
         if(output_ports[i] == NULL)
-            throw std::runtime_error(std::string("cannot register output port").append(name)); //trouvr un moyen de close le client
+            throw std::runtime_error(std::string("cannot register output port").append(name));
     }
 
     const char	**tmpPorts;
@@ -108,10 +105,9 @@ AudioEngine::AudioEngine(Component_Jam& jam_) :
         }
         jack_free(tmpPorts);
     }
-    /*Ports are registered and connected, process callback can process data*/
-    //    celtCreate();
+
     /*UGLY FIXED SIZE*/
-    rb = jack_ringbuffer_create(nb_ports * buffer_size * sizeof(jack_default_audio_sample_t) * 20000);
+    rb = jack_ringbuffer_create(nb_ports * buffer_size * sizeof(jack_default_audio_sample_t) * 4096);
     /*UGLY FIXED SIZE*/
     memset(rb->buf, 0, rb->size);
     running = true;
@@ -146,7 +142,6 @@ AudioEngine::~AudioEngine(){
   }
   delete [] input_ports;
   delete [] output_ports;
-  //  celtDestroy();
   jack_deactivate(client);
   jack_client_close(client);
   input_ports = NULL;

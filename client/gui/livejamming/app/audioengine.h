@@ -4,10 +4,12 @@
 #include <QString>
 #include <QDebug>
 #include <QMutex>
-#include <Component_Jam.h>
+
 #include <jack/jack.h>
 #include <jack/ringbuffer.h>
 #include <celt/celt.h>
+
+#include <Component_Jam.h>
 
 const int NB_CHANNELS = 2;
 const size_t SAMPLE_SIZE = sizeof(jack_default_audio_sample_t);
