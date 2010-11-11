@@ -5,10 +5,15 @@
 extern Session* gl_session;
 
 Component_Jam::Component_Jam(ClientManager *clientManager)
-  : IComponent(JAM_COMPONENTID), _clientManager(clientManager)
-{}
+  : IComponent(JAM_COMPONENTID), _clientManager(clientManager){
+  std::cerr << "BEFORE AUDIO ENGINE" << std::endl;
+  _audioEngine = new AudioEngine(*this);
+  std::cerr << "AFTER AUDIO ENGINE" << std::endl;
+}
 
-Component_Jam::~Component_Jam() {}
+Component_Jam::~Component_Jam() {
+  delete _audioEngine;
+}
 
 void	Component_Jam::BindingsRecv()
 {
@@ -27,19 +32,18 @@ void	Component_Jam::RegisteredRequests()
     new Request(JAM_RECV, RECV, "JAM_RECV", RESPONSETONOTHING);
 }
 
-void	Component_Jam::StartJam(field_t jamId, Room *room)
-{
+void	Component_Jam::StartJam(field_t jamId, Room *room){
   _jamId = jamId;
-  _audioEngine = new AudioEngine(*this);
+  _audioEngine->start();
 }
 
-void	Component_Jam::StopJam(field_t jamId)
-{
-      delete _audioEngine;
+void	Component_Jam::StopJam(field_t jamId){
+  _audioEngine->stop();
 }
 
 void	Component_Jam::Recv_Jam(Packet_v1 const *packet_v1, Session *session)
 {
+  std::cerr << "(recv_jam) : audioengine= " << (unsigned int)_audioEngine << std::endl;
     Packet_v1_Jam const *packet_v1_jam = 
     static_cast<Packet_v1_Jam const *>(packet_v1);
     _audioEngine->processOutput((const char*)packet_v1_jam->getAudio(1024));

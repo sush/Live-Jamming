@@ -25,6 +25,8 @@ class AudioEngine
     //static int process(jack_nframes_t, void*);
     bool isRunning();
     int processOutput(const char*);
+    void start();
+    void stop();
  public:
     Component_Jam&  jam;
     /* jack stuff */
@@ -40,6 +42,7 @@ class AudioEngine
     long overruns;
     unsigned int nb_ports;
     int bitdepth;
+
     const char*   clientName;
 
  private:

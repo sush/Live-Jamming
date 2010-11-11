@@ -31,7 +31,7 @@ static int process(jack_nframes_t nframes,void *arg){
 
 int AudioEngine::processOutput(const char *audio){
   //qDebug() << "RECV --> " << ((unsigned int*)audio)[0] << " : " << ((unsigned int*)audio)[1] << " : " <<((unsigned int*)audio)[2] << " : " ;
-  qDebug() << "Available Bytes" << jack_ringbuffer_write_space(rb);
+  //qDebug() << "Available Bytes" << jack_ringbuffer_write_space(rb);
   mutex.lock();
   jack_ringbuffer_write(rb, audio, buffer_size * sizeof ( jack_default_audio_sample_t ));
   mutex.unlock();
@@ -110,11 +110,19 @@ AudioEngine::AudioEngine(Component_Jam& jam_) :
     rb = jack_ringbuffer_create(nb_ports * buffer_size * sizeof(jack_default_audio_sample_t) * 4096);
     /*UGLY FIXED SIZE*/
     memset(rb->buf, 0, rb->size);
-    running = true;
 }
 
 bool AudioEngine::isRunning(){
     return running;
+}
+
+void AudioEngine::start(){
+  running = true;
+}
+
+void AudioEngine::stop(){
+  running = false;
+  jack_ringbuffer_reset(rb);
 }
 
 void AudioEngine::celtCreate(){
