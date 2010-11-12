@@ -9,6 +9,9 @@ Meet new musicians and share you're creations with them !
 Please, visit our [website](http://www.live-jamming.com).
 
 ## Requirements
+* [Boost](http://www.boost.org/)
+* [Qt](http://qt.nokia.com/products/)
+* [Jack](http://jackaudio.org/) (Tested on jackd 0.118.0)
 
 ## Installing
 

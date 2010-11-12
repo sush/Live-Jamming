@@ -43,10 +43,9 @@ void	Component_Jam::StopJam(field_t jamId){
 
 void	Component_Jam::Recv_Jam(Packet_v1 const *packet_v1, Session *session)
 {
-  std::cerr << "(recv_jam) : audioengine= " << (unsigned int)_audioEngine << std::endl;
-    Packet_v1_Jam const *packet_v1_jam = 
+  Packet_v1_Jam const *packet_v1_jam = 
     static_cast<Packet_v1_Jam const *>(packet_v1);
-    _audioEngine->processOutput((const char*)packet_v1_jam->getAudio(1024));
+_audioEngine->processOutput((const char*)packet_v1_jam->getAudio(1024));
 }
 
 void	Component_Jam::Send_Jam(byte_t const *audio, field_t len)
