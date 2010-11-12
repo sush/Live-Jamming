@@ -59,6 +59,7 @@ private:
     bool            isConnected;
     QLabel          redButton;
     QLabel          greenButton;
+    QLabel          infos;
     QString         currentChannel;
     QMap<QString, UiChannel>   channels;
     QMap<QString, UiClient>    clients;

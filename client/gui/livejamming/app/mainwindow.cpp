@@ -29,6 +29,11 @@
 
 QSettings       settings(QSettings::IniFormat,QSettings::UserScope, "LiveJamming", "live-jamming");
 
+inline QString getSettings(const QString& key)
+{
+    return settings.value(key).toString();
+}
+
 MainWindow::MainWindow(Proxy* proxy) :
     QMainWindow(),
     ui(new Ui::MainWindow),
@@ -40,6 +45,7 @@ MainWindow::MainWindow(Proxy* proxy) :
     qRegisterMetaType<authEventsType>("MainWindow::authEventsType");
     qRegisterMetaType<chanEventsType>("MainWindow::chanEventsType");
 
+    statusBar()->addPermanentWidget(&infos);
     redButton.setPixmap(QIcon(":/images/ledred-48x48.png").pixmap(statusIconSize));
     greenButton.setPixmap(QIcon(":/images/ledgreen-48x48.png").pixmap(statusIconSize));
     statusBar()->addPermanentWidget(&redButton);
@@ -89,7 +95,7 @@ void MainWindow::setConnected(bool connected)
 {
     if (connected != isConnected) {
         isConnected = connected;
-        //ui->statusBar->showMessage(connected ? "Connected" : "Disconnected");
+        infos.setText(connected ? getSettings("user/login") + "@" + getSettings("server/ip") + ":" + getSettings("server/port") : "");
         ui->statusBar->removeWidget(connected ? &redButton : &greenButton);
         ui->statusBar->addPermanentWidget(connected ? &greenButton : &redButton);
         connected ? greenButton.show() : redButton.show();
