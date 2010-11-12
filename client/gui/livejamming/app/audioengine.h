@@ -11,6 +11,7 @@
 
 #include <Component_Jam.h>
 
+const int RB_MULTIPLICATOR = 64;
 const int NB_CHANNELS = 2;
 const size_t SAMPLE_SIZE = sizeof(jack_default_audio_sample_t);
 
@@ -22,7 +23,6 @@ class AudioEngine
  public:
     AudioEngine(Component_Jam&);
     ~AudioEngine();
-    //static int process(jack_nframes_t, void*);
     bool isRunning();
     int processOutput(const char*);
     void start();
