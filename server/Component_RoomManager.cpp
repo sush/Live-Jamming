@@ -181,11 +181,17 @@ void	Component_RoomManager::Recv_Join(Packet_v1 const *packet_v1, Session *sessi
   char const *roomName		= packet_v1_room->getRoomName();
   Room *room;
   bool existing			= false;
+  bool inChan			= false;
+  Room::m_session *connected;
 
   m_room::iterator it, end = _roomMap->end();
   for (it = _roomMap->begin(); it != end; ++it)
     {
       room = it->second;
+      connected = room->getConnected();
+      if (connected->find(sessionId) != connected->end())
+	inChan = true;
+
       if (strcmp(room->getName(), roomName) == 0)
 	{
 	  roomId = it->first;
@@ -194,14 +200,14 @@ void	Component_RoomManager::Recv_Join(Packet_v1 const *packet_v1, Session *sessi
 	}
     }
 
-  if (!existing)
+  if (!existing && inChan == false)
     {
       roomId =  GenRoomId();
       room = new Room(roomName);
       _roomMap->insert(std::pair<field_t, Room*>(roomId, room));
     }
 
-  if (room->addConnected(session, sessionId))
+  if (room->addConnected(session, sessionId) && inChan == false)
     {
       Send_Join_OK(session, roomId, roomName, existing);
 
@@ -260,7 +266,7 @@ void	Component_RoomManager::Recv_Leave(Packet_v1 const *packet_v1, Session *sess
   
   field_t roomId	  = packet_v1_room->getRoomId();
   field_t sessionId	  = session->getSessionId();
-  char const *clientLogin = session->getLogin().c_str();
+  //  char const *clientLogin = session->getLogin().c_str();
 
   if (_roomMap->find(roomId) != _roomMap->end())
     {
@@ -355,7 +361,7 @@ void	Component_RoomManager::Recv_Kick(Packet_v1 const *packet_v1, Session *sessi
     static_cast<Packet_v1_Room const *>(packet_v1);
 
   field_t roomId	  = packet_v1_room->getRoomId();
-  field_t sessionId	  = session->getSessionId();
+  //  field_t sessionId	  = session->getSessionId();
   field_t clientSessionId = packet_v1_room->getClientSessionId();
 
   if (_roomMap->find(roomId) != _roomMap->end())

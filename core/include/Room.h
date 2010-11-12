@@ -26,9 +26,10 @@ class Room
   void                          setName(char const *);
   char const                    *getName() const;
 
+  typedef std::map<field_t, Session*>   m_session;
+
  private:
 
-  typedef std::map<field_t, Session*>   m_session;
   m_session                     *_connected;
   boost::mutex                  _room_mutex;
   std::string                  _name;
