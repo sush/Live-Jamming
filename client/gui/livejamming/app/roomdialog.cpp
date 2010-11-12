@@ -12,6 +12,9 @@
 #include <Component_Room.h>
 #include <Component_Session.h>
 
+#include <boost/thread/mutex.hpp>
+
+boost::mutex    roomLock;
 extern QSettings settings;
 
 RoomDialog::RoomDialog(QWidget *parent, Proxy* proxy, const QString& name) :
@@ -60,13 +63,14 @@ void    RoomDialog::closeEvent(QCloseEvent* e)
     e->accept();
 }
 
-void    RoomDialog::hideEvent(QHideEvent *e)
+void    RoomDialog::hideEvent(QHideEvent *)
 {
     close();
 }
 
 void    RoomDialog::joined(QString client)
 {
+    boost::mutex::scoped_lock(roomLock);
     qDebug() << "\nXXXXXX IN ROOMDIALOG:" << client << "has joined the room\n";
     RoomPlayerItem* item = new RoomPlayerItem(this, client, QString("Paris, France"));
     ui->playersVBox->insertWidget(players.size(), item);

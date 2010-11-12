@@ -80,16 +80,12 @@ HEADERS += Client.h \
     Component_Channel.h \
     Component_Room.h \
     Component_Jam.h
-INCLUDEPATH += ../../../../include/boost
-HEADERS += threadpool.hpp
 INCLUDEPATH += ../../../../server/include
-HEADERS += Config.h
 INCLUDEPATH += ../../../../include
 HEADERS += Protocol.h
 LIBS += -lboost_system \
     -lboost_thread-mt \
     -lboost_program_options \
-    -L../../../../libs
 FORMS += mainwindow.ui \
     accountconnection.ui \
     configuration_dialog.ui \

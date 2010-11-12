@@ -10,6 +10,7 @@
 #include <qdebug.h>
 
 extern QSettings settings;
+extern boost::mutex roomlock;
 
 Proxy::Proxy(Client* client, boost::asio::io_service &service,
              boost::threadpool::pool &pool, boost::asio::ip::udp::socket &socket, boost::asio::ip::udp::endpoint &endpoint) :
@@ -81,6 +82,7 @@ void    Proxy::chanResponse(Packet_v1 const* packet_, Session*)
 
 void    Proxy::roomResponse(const Packet_v1 *packet_, Session *)
 {
+    boost::mutex::scoped_lock(roomLock);
     const Packet_v1_Room* packet = static_cast<const Packet_v1_Room*>(packet_);
     QString login;
 
