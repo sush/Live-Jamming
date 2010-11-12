@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>791</width>
+    <width>790</width>
     <height>745</height>
    </rect>
   </property>
@@ -234,7 +234,7 @@ ChannelList::branch:open:has-children:has-siblings  {
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>791</width>
+     <width>790</width>
      <height>25</height>
     </rect>
    </property>

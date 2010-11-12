@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>302</width>
-    <height>223</height>
+    <height>200</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -29,7 +29,7 @@
    <string>Connection</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="app.qrc">
+   <iconset>
     <normaloff>:/images/live-jamming.png</normaloff>:/images/live-jamming.png</iconset>
   </property>
   <property name="styleSheet">
@@ -142,8 +142,6 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="app.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
