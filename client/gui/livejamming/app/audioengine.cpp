@@ -6,7 +6,7 @@
 
 class Component_Jam;
 
-static int processInput(jack_nframes_t nframes,void *arg){
+static int process(jack_nframes_t nframes,void *arg){
     jack_default_audio_sample_t *in, *out;
     AudioEngine *ae = static_cast<AudioEngine*> (arg);
     size_t toread;
