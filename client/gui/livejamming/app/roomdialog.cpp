@@ -6,10 +6,11 @@
 #include <QSettings>
 #include <QMessageBox>
 #include <QListWidget>
+#include <QDebug>
+#include <QCloseEvent>
 
 #include <Component_Room.h>
 #include <Component_Session.h>
-#include <qdebug.h>
 
 extern QSettings settings;
 
@@ -53,9 +54,15 @@ void RoomDialog::changeEvent(QEvent *e)
     }
 }
 
-void    RoomDialog::closeEvent(QCloseEvent*)
+void    RoomDialog::closeEvent(QCloseEvent* e)
 {
     proxy->room()->Send_Leave(proxy->roomid);
+    e->accept();
+}
+
+void    RoomDialog::hideEvent(QHideEvent *e)
+{
+    close();
 }
 
 void    RoomDialog::joined(QString client)
@@ -76,8 +83,6 @@ void    RoomDialog::leaved(const QString& client)
 
 void    RoomDialog::sendMessage(const QString &msg)
 {
-    qDebug() << "ROOMID = " <<  proxy->roomid;
-    qDebug() << "I SAY:" << msg;
     proxy->room()->Send_Message(msg.toUtf8().data(), proxy->roomid);
 }
 

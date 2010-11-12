@@ -23,7 +23,8 @@ public:
     RoomDialog(QWidget *parent, Proxy* proxy, const QString& name);
     ~RoomDialog();
 
-    void closeEvent(QCloseEvent*);
+    virtual void closeEvent(QCloseEvent* e);
+    virtual void hideEvent(QHideEvent *e);
     QMap<QString, UiRoomPlayer> players;
 
 public slots:
