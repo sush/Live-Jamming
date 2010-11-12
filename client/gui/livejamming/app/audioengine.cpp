@@ -8,27 +8,30 @@ class Component_Jam;
 
 static int process(jack_nframes_t nframes,void *arg){
     jack_default_audio_sample_t *in, *out;
-    AudioEngine *ip = static_cast<AudioEngine*> (arg);
+    AudioEngine *ae = static_cast<AudioEngine*> (arg);
+    size_t toread;
 
-    if (ip->isRunning()){
-
+    if (ae->isRunning()){
         for (int i = 0; i < 1; i++ )
         {
-            in = (jack_default_audio_sample_t*)jack_port_get_buffer ( ip->input_ports[i], nframes);
-            ip->jam.Send_Jam((byte_t*)in, (field_t)nframes * sizeof ( jack_default_audio_sample_t ));
+            in = (jack_default_audio_sample_t*)jack_port_get_buffer ( ae->input_ports[i], nframes);
+            ae->jam.Send_Jam((byte_t*)in, (field_t)nframes * SAMPLE_SIZE);
             //qDebug() << "SEND --> " << ((unsigned int*)in)[0] << " : " << ((unsigned int*)in)[1] << " : " << ((unsigned int*)in)[2] << " : " ;
-            ip->mutex.lock();
-            if (jack_ringbuffer_read_space(ip->rb) > (nframes * sizeof ( jack_default_audio_sample_t ))){
-                char tmp[nframes*sizeof ( jack_default_audio_sample_t )];
-                out = (jack_default_audio_sample_t*)jack_port_get_buffer ( ip->output_ports[i], nframes);
-                jack_ringbuffer_read(ip->rb, tmp, nframes * sizeof ( jack_default_audio_sample_t ));
-                memcpy(out, tmp, nframes * sizeof ( jack_default_audio_sample_t ));
+            ae->mutex.lock();
+            if ((toread = jack_ringbuffer_read_space(ae->rb)) > (nframes * SAMPLE_SIZE)){
+                qDebug() << "FILLED : " << (toread / (ae->nb_ports * ae->buffer_size * SAMPLE_SIZE)) << "/" << RB_MULTIPLICATOR;
+                qDebug() << "EMPTY  : " << jack_ringbuffer_write_space(ae->rb) / (ae->nb_ports * ae->buffer_size * SAMPLE_SIZE) << "/" << RB_MULTIPLICATOR;
+                char tmp[nframes*SAMPLE_SIZE];
+                out = (jack_default_audio_sample_t*)jack_port_get_buffer ( ae->output_ports[i], nframes);
+                jack_ringbuffer_read(ae->rb, tmp, nframes * SAMPLE_SIZE);
+                memcpy(out, tmp, nframes * SAMPLE_SIZE);
             }
-            ip->mutex.unlock();
+            ae->mutex.unlock();
         }
     } else {
+        //if jam is not running, just flush the output buffer
         for (int i=0;i<1;i++){
-            out = (jack_default_audio_sample_t*)jack_port_get_buffer ( ip->output_ports[i], nframes);
+            out = (jack_default_audio_sample_t*)jack_port_get_buffer ( ae->output_ports[i], nframes);
             for (unsigned int j=0; j < nframes;j++){
                 out[j] = 0;
             }
@@ -38,12 +41,12 @@ static int process(jack_nframes_t nframes,void *arg){
 }
 
 int AudioEngine::processOutput(const char *audio){
-    //qDebug() << "RECV --> " << ((unsigned int*)audio)[0] << " : " << ((unsigned int*)audio)[1] << " : " <<((unsigned int*)audio)[2] << " : " ;
-    //qDebug() << "Available Bytes" << jack_ringbuffer_write_space(rb);
-    mutex.lock();
-    jack_ringbuffer_write(rb, audio, buffer_size * sizeof ( jack_default_audio_sample_t ));
-    mutex.unlock();
-    return 0;
+  //qDebug() << "RECV --> " << ((unsigned int*)audio)[0] << " : " << ((unsigned int*)audio)[1] << " : " <<((unsigned int*)audio)[2] << " : " ;
+  //qDebug() << "AVAILABLE BUFFER : " << jack_ringbuffer_write_space(rb) / (nb_ports *buffer_size * SAMPLE_SIZE);
+  mutex.lock();
+  jack_ringbuffer_write(rb, audio, buffer_size * SAMPLE_SIZE);
+  mutex.unlock();
+  return 0;
 }
 
 AudioEngine::AudioEngine(Component_Jam& jam_) :
@@ -115,7 +118,8 @@ AudioEngine::AudioEngine(Component_Jam& jam_) :
     }
 
     /*UGLY FIXED SIZE*/
-    rb = jack_ringbuffer_create(nb_ports * buffer_size * sizeof(jack_default_audio_sample_t) * 4096);
+    rb = jack_ringbuffer_create(nb_ports * buffer_size * SAMPLE_SIZE * RB_MULTIPLICATOR);
+    qDebug() << "RBSIZE : " << (rb->size / (nb_ports * buffer_size * SAMPLE_SIZE));
     /*UGLY FIXED SIZE*/
     memset(rb->buf, 0, rb->size);
 }
@@ -147,10 +151,9 @@ void AudioEngine::celtDestroy(){
 }
 
 AudioEngine::~AudioEngine(){
-    running = false;
+    stop();
 
     for(unsigned int i=0;i<nb_ports;i++){
-        qDebug() << "DESTRUCT PORTS : " << i;
         jack_port_unregister(client,input_ports[i]);
         jack_port_unregister(client,output_ports[i]);
         input_ports[i] = NULL;
