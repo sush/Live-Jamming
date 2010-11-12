@@ -9,6 +9,8 @@
 
 #include <qdebug.h>
 
+extern QSettings settings;
+
 Proxy::Proxy(Client* client, boost::asio::io_service &service,
              boost::threadpool::pool &pool, boost::asio::ip::udp::socket &socket, boost::asio::ip::udp::endpoint &endpoint) :
                     ClientManager(service, pool, socket, endpoint),
@@ -86,15 +88,18 @@ void    Proxy::roomResponse(const Packet_v1 *packet_, Session *)
     {
     case ROOM_JOIN_OK:
         roomid = packet->getRoomId();
+        clientIdToName[packet->getSessionId()] = settings.value("user/login").toString();
+        qDebug() << "JOIN OK HAS ARRIVED";
         emit joinOk(packet->getRoomName()); break;
     case ROOM_JOINED:
         login = packet->getClientLogin();
         clientIdToName[packet->getClientSessionId()] = login;
-        qDebug() << __FUNCTION__ << ": HELLO BANDE DE GAY ICI C'EST LA GUERRE PUTAIN ! !"<< login << ": has joined the room ";
+        qDebug() << "\nXXXXX IN PROXY:"<< login << " has joined the room\n";
         emit joined(login); break;
     case ROOM_LEAVED:
-        emit leaved(clientIdToName.take(packet->getSessionId())); break;
+        emit leaved(clientIdToName.take(packet->getClientSessionId())); break;
     case ROOM_MESSAGE_RECV:
+        qDebug() << "XXXXXXXXXXXX message recved from" << packet->getClientSessionId();
         login = clientIdToName.value(packet->getClientSessionId());
         qDebug() << "ROOM :" << login << "HAS SAID:" << packet->getMessage();
         emit messageRecv(clientIdToName.value(packet->getClientSessionId()), packet->getMessage()); break;
@@ -107,6 +112,8 @@ void    Proxy::roomResponse(const Packet_v1 *packet_, Session *)
     case ROOM_USER_KICKED:
         emit userKicked();
     }
+    char buf__[] = {"OUT OF PROXY\n"};
+    write(2, buf__, sizeof(buf__) - 1);
 }
 
 void    Proxy::disconnect()

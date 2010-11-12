@@ -25,21 +25,18 @@ void    roomResponse(Packet_v1 const*, Session*);
 // New interface not used yet (be aware of new connections / disconnections
 // void	Connect(Session *){}
 // void	Disconnect(Session *){}
-   //////////////////////////////////////
+//////////////////////////////////////
+Component_Session*    session() {return _session; }
+Component_Channel*    channel() {return _channel; }
+Component_Room*       room() {return _room; }
+Client *              client;
+typedef void    (Proxy::*pMethod)(Packet_v1 const*, Session*);
+
 void    disconnect();
 field_t roomid;
 QMap<field_t, QString>    clientIdToName;
 QMap<field_t, QString>    channelIdToName;
 unsigned int channelNameToId(const QString& name);
-
-
-typedef void    (Proxy::*pMethod)(Packet_v1 const*, Session*);
-
-Component_Session*    session() {return _session; }
-Component_Channel*    channel() {return _channel; }
-Component_Room*       room() {return _room; }
-
-Client *              client;
 
 signals:
 void    sAuthResponse(MainWindow::authEventsType);
