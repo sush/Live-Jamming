@@ -22,6 +22,7 @@ static int process(jack_nframes_t nframes,void *arg){
                 qDebug() << "EMPTY  : " << jack_ringbuffer_write_space(ae->rb) / (ae->nb_ports * ae->buffer_size * SAMPLE_SIZE) << "/" << RB_MULTIPLICATOR;
                 out = (jack_default_audio_sample_t*)jack_port_get_buffer ( ae->output_ports[i], nframes);
                 jack_ringbuffer_read(ae->rb, (char *)out, nframes * SAMPLE_SIZE);
+		jack_ringbuffer_reset(ae->rb);
             }
             ae->mutex.unlock();
         }
