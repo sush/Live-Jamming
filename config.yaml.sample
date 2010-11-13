@@ -1,0 +1,8 @@
+HostName : Live-Jamming
+Port : 5042
+BindAddress : 0.0.0.0
+DbServer : 0.0.0.0
+Db : live-jamming_db
+DbSalt : DYhG93b0qLive-JammingDIENOOBVoUubWwvniR2G0FgaC9mi
+DbUser : user
+DbPassword : password
