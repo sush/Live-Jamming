@@ -85,7 +85,7 @@ INCLUDEPATH += ../../../../include
 HEADERS += Protocol.h
 LIBS += -lboost_system \
     -lboost_thread-mt \
-    -lboost_program_options \
+    -lboost_program_options
 FORMS += mainwindow.ui \
     accountconnection.ui \
     configuration_dialog.ui \
