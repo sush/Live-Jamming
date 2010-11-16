@@ -27,7 +27,9 @@ class AudioEngine
     int processOutput(const char*);
     void start();
     void stop();
+
  public:
+    /* I NEED TO MOVE A LOT OF STUFF TO PRIVATE */
     Component_Jam&  jam;
     /* jack stuff */
     jack_nframes_t buffer_size;

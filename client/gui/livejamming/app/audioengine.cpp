@@ -7,35 +7,6 @@
 class Component_Jam;
 
 static int process(jack_nframes_t nframes,void *arg){
-<<<<<<< HEAD
-    jack_default_audio_sample_t *in, *out;
-    AudioEngine *ae = static_cast<AudioEngine*> (arg);
-    size_t toread;
-
-    if (ae->isRunning()){
-        for (int i = 0; i < 1; i++ ){
-            in = (jack_default_audio_sample_t*)jack_port_get_buffer ( ae->input_ports[i], nframes);
-            ae->jam.Send_Jam((byte_t*)in, (field_t)nframes * SAMPLE_SIZE);
-            //qDebug() << "SEND --> " << ((unsigned int*)in)[0] << " : " << ((unsigned int*)in)[1] << " : " << ((unsigned int*)in)[2] << " : " ;
-            ae->mutex.lock();
-            if ((toread = jack_ringbuffer_read_space(ae->rb)) > (nframes * SAMPLE_SIZE)){
-                qDebug() << "FILLED : " << (toread / (ae->nb_ports * ae->buffer_size * SAMPLE_SIZE)) << "/" << RB_MULTIPLICATOR;
-                qDebug() << "EMPTY  : " << jack_ringbuffer_write_space(ae->rb) / (ae->nb_ports * ae->buffer_size * SAMPLE_SIZE) << "/" << RB_MULTIPLICATOR;
-                out = (jack_default_audio_sample_t*)jack_port_get_buffer ( ae->output_ports[i], nframes);
-                jack_ringbuffer_read(ae->rb, (char *)out, nframes * SAMPLE_SIZE);
-		//		jack_ringbuffer_reset(ae->rb);
-            }
-            ae->mutex.unlock();
-        }
-    } else {
-        //if jam is not running, just flush the output buffer
-        for (int i=0;i<1;i++){
-            out = (jack_default_audio_sample_t*)jack_port_get_buffer ( ae->output_ports[i], nframes);
-            for (unsigned int j=0; j < nframes;j++){
-                out[j] = 0;
-            }
-        }
-=======
   jack_default_audio_sample_t *in, *out;
   AudioEngine *ae = static_cast<AudioEngine*> (arg);
   size_t toread;
@@ -43,18 +14,16 @@ static int process(jack_nframes_t nframes,void *arg){
   if (ae->isRunning()){
     for (int i = 0; i < 1; i++ ){
       in = (jack_default_audio_sample_t*)jack_port_get_buffer ( ae->input_ports[i], nframes);
-      ae->jam.Send_Jam((byte_t*)in, (field_t)nframes * SAMPLE_SIZE);
       //qDebug() << "SEND --> " << ((unsigned int*)in)[0] << " : " << ((unsigned int*)in)[1] << " : " << ((unsigned int*)in)[2] << " : " ;
+      ae->jam.Send_Jam((byte_t*)in, (field_t)nframes * SAMPLE_SIZE);
       ae->mutex.lock();
       if ((toread = jack_ringbuffer_read_space(ae->rb)) > (nframes * SAMPLE_SIZE)){
 	qDebug() << "FILLED : " << (toread / (ae->nb_ports * ae->buffer_size * SAMPLE_SIZE)) << "/" << RB_MULTIPLICATOR;
 	qDebug() << "EMPTY  : " << jack_ringbuffer_write_space(ae->rb) / (ae->nb_ports * ae->buffer_size * SAMPLE_SIZE) << "/" << RB_MULTIPLICATOR;
 	out = (jack_default_audio_sample_t*)jack_port_get_buffer ( ae->output_ports[i], nframes);
 	jack_ringbuffer_read(ae->rb, (char *)out, nframes * SAMPLE_SIZE);
-	//jack_ringbuffer_reset(ae->rb);
       }
       ae->mutex.unlock();
->>>>>>> audioengine
     }
   } else {
     //if jam is not running, just flush the output buffer
@@ -72,6 +41,8 @@ int AudioEngine::processOutput(const char *audio){
   //qDebug() << "RECV --> " << ((unsigned int*)audio)[0] << " : " << ((unsigned int*)audio)[1] << " : " <<((unsigned int*)audio)[2] << " : " ;
   //qDebug() << "AVAILABLE BUFFER : " << jack_ringbuffer_write_space(rb) / (nb_ports *buffer_size * SAMPLE_SIZE);
   mutex.lock();
+  if ((size_t)jack_ringbuffer_read_space(rb) > (buffer_size * SAMPLE_SIZE))
+    jack_ringbuffer_reset(rb);
   jack_ringbuffer_write(rb, audio, buffer_size * SAMPLE_SIZE);
   mutex.unlock();
   return 0;
@@ -145,10 +116,8 @@ AudioEngine::AudioEngine(Component_Jam& jam_) :
     jack_free(tmpPorts);
   }
 
-  /*UGLY FIXED SIZE*/
   rb = jack_ringbuffer_create(nb_ports * buffer_size * SAMPLE_SIZE * RB_MULTIPLICATOR);
   qDebug() << "RBSIZE : " << (rb->size / (nb_ports * buffer_size * SAMPLE_SIZE));
-  /*UGLY FIXED SIZE*/
   memset(rb->buf, 0, rb->size);
   //  celtCreate();
 }
