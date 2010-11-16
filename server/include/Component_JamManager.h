@@ -15,10 +15,18 @@ class Component_JamManager;
 #include <Room.h>
 #include <Jam.h>
 
+#define AUDIOBUFFER_LEN 1024
+
 class Component_JamManager : public IComponent
 {
   friend class Session;
   friend class ServerManager;
+
+ private:
+  
+  typedef float	audio_t;
+  typedef std::map<field_t, size_t>	m_audioBuffer_count;
+  typedef std::map<field_t, audio_t *>	m_audioBuffer;
 
  public:
 
@@ -33,17 +41,23 @@ class Component_JamManager : public IComponent
   virtual void	BindingsRecv();
   virtual void	RegisteredRequests();
 
-  void		Send_Jam(Session *, byte_t const *);
+  void		Send_Jam(Session *, audio_t const *);
   void		Recv_Jam(Packet_v1 const *, Session *);
 
   void		Connect(Session *);
   void		Disconnect(Session *);
 
- private:
-
   typedef std::map<field_t, Jam *> m_jam;
-  m_jam		*_jamMap;
-  ServerManager *_serverManager;
+
+  void		Send_Jam_Buffered(field_t, audio_t const *);
+  void		MixAudio(audio_t *, audio_t const *, size_t);
+  
+private:
+
+  m_jam			*_jamMap;
+  m_audioBuffer		_audioBufferMap;
+  m_audioBuffer_count	_audioBufferCountMap;
+  ServerManager		*_serverManager;
 };
 
 #endif // ! __COMPONENT_JAMMANAGER_H__

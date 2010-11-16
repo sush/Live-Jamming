@@ -25,6 +25,7 @@ class Room
 
   void                          setName(char const *);
   char const                    *getName() const;
+  std::size_t			size() const;
 
   typedef std::map<field_t, Session*>   m_session;
 
