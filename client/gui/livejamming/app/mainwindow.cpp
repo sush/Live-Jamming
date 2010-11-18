@@ -29,6 +29,8 @@
 
 QSettings       settings(QSettings::IniFormat,QSettings::UserScope, "LiveJamming", "live-jamming");
 
+Watcher*    watcher;
+
 inline QString getSettings(const QString& key)
 {
     return settings.value(key).toString();
@@ -344,7 +346,8 @@ void MainWindow::createRoom(const QString &name)
 {
     RoomDialog* room =
     new RoomDialog(this, proxy, name);
-    room->joined(settings.value("user/login").toString());
+    //room->joined(settings.value("user/login").toString());
+    watcher = new Watcher(room);
 }
 
 void MainWindow::on_actionList_channels_triggered()

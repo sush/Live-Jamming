@@ -3,6 +3,10 @@
 
 #include <QDialog>
 #include <QMap>
+#include <QSignalMapper>
+
+#include <QDebug>
+#include <QTimer>
 
 namespace Ui {
     class RoomDialog;
@@ -45,6 +49,22 @@ protected:
 private:
     Ui::RoomDialog *ui;
     Proxy*  proxy;
+};
+
+class Watcher : public QObject
+{
+    Q_OBJECT
+public:
+    Watcher(RoomDialog* parent = 0);
+    ~Watcher() {qDebug() << "watcher destroyed";}
+    void    pendingJoin(const QString& login);
+    void    stopTrying();
+private:
+    QTimer  t;
+    QString login;
+    RoomDialog*   room;
+    bool    pending;
+    QSignalMapper mapper;
 };
 
 #endif // ROOMDIALOG_H

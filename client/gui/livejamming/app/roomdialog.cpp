@@ -14,8 +14,11 @@
 
 #include <boost/thread/mutex.hpp>
 
+#include <QTimer>
+
 boost::mutex    roomLock;
 extern QSettings settings;
+extern Watcher* watcher;
 
 RoomDialog::RoomDialog(QWidget *parent, Proxy* proxy, const QString& name) :
     QDialog(parent),
@@ -59,19 +62,21 @@ void RoomDialog::changeEvent(QEvent *e)
 
 void    RoomDialog::closeEvent(QCloseEvent* e)
 {
+    qDebug() << "in roomdialog sending leave";
     proxy->room()->Send_Leave(proxy->roomid);
     e->accept();
 }
 
-void    RoomDialog::hideEvent(QHideEvent *)
+void    RoomDialog::hideEvent(QHideEvent *e)
 {
-    close();
+    e->ignore();
 }
 
 void    RoomDialog::joined(QString client)
 {
     boost::mutex::scoped_lock(roomLock);
-    qDebug() << "\nXXXXXX IN ROOMDIALOG:" << client << "has joined the room\n";
+    watcher->stopTrying();
+    qDebug() << "\nXXXXXX IN ROOMDIALOG:" << (sender() ? client : "Me") << "has joined the room\n";
     RoomPlayerItem* item = new RoomPlayerItem(this, client, QString("Paris, France"));
     ui->playersVBox->insertWidget(players.size(), item);
     players.insert(client, (UiRoomPlayer){item});
@@ -84,7 +89,7 @@ void    RoomDialog::leaved(const QString& client)
         qDebug() << player;
 
     qDebug() << "client leaving" << client;
-    Q_ASSERT(players.contains(client));
+    //Q_ASSERT(players.contains(client));
 
     delete players.value(client).item;
     players.remove(client);
@@ -137,4 +142,21 @@ void    RoomDialog::youvebeenKicked()
 {
     QMessageBox::information(this, "Kickage", "You've been kicked by admin");
     delete this;
+}
+
+Watcher::Watcher(RoomDialog* parent) : QObject(parent)
+{
+    connect(&t, SIGNAL(timeout()), &mapper, SLOT(map()));
+    connect(&mapper, SIGNAL(mapped(QString)), room, SLOT(joined(QString)));
+}
+
+void    Watcher::pendingJoin(const QString &login)
+{
+    mapper.setMapping(&t, login);
+    t.start(500);
+}
+
+void    Watcher::stopTrying()
+{
+    t.stop();
 }

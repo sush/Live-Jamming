@@ -8,15 +8,19 @@
 #include <proxy.h>
 
 #include <qdebug.h>
+#include <QTimer>
+#include "roomdialog.h"
 
 extern QSettings settings;
 extern boost::mutex roomlock;
+extern Watcher* watcher;
 
 Proxy::Proxy(Client* client, boost::asio::io_service &service,
              boost::threadpool::pool &pool, boost::asio::ip::udp::socket &socket, boost::asio::ip::udp::endpoint &endpoint) :
                     ClientManager(service, pool, socket, endpoint),
                     client(client)
 {
+    roomPendingSignals = 0;
 }
 
 
@@ -80,9 +84,12 @@ void    Proxy::chanResponse(Packet_v1 const* packet_, Session*)
         emit sChanResponse(type, packet);
 }
 
+#define unbufwrite(x) {char t[] = x; write(2, t, sizeof(t));}
+
 void    Proxy::roomResponse(const Packet_v1 *packet_, Session *)
 {
     boost::mutex::scoped_lock(roomLock);
+    qDebug() <<"IN PROXY ! !";
     const Packet_v1_Room* packet = static_cast<const Packet_v1_Room*>(packet_);
     QString login;
 
@@ -96,7 +103,8 @@ void    Proxy::roomResponse(const Packet_v1 *packet_, Session *)
     case ROOM_JOINED:
         login = packet->getClientLogin();
         clientIdToName[packet->getClientSessionId()] = login;
-        qDebug() << "\nXXXXX IN PROXY:"<< login << " has joined the room\n";
+        qDebug() << "\nproxy:"<< login << " has joined the room\n";
+        watcher->pendingJoin(login);
         emit joined(login); break;
     case ROOM_LEAVED:
         emit leaved(clientIdToName.take(packet->getClientSessionId())); break;
@@ -114,8 +122,7 @@ void    Proxy::roomResponse(const Packet_v1 *packet_, Session *)
     case ROOM_USER_KICKED:
         emit userKicked();
     }
-    char buf__[] = {"OUT OF PROXY\n"};
-    write(2, buf__, sizeof(buf__) - 1);
+    qDebug() << "OUT OF PROXY ! !";
 }
 
 void    Proxy::disconnect()

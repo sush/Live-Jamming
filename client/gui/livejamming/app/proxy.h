@@ -38,6 +38,9 @@ QMap<field_t, QString>    clientIdToName;
 QMap<field_t, QString>    channelIdToName;
 unsigned int channelNameToId(const QString& name);
 
+//bug#23 trick
+int roomPendingSignals;
+
 signals:
 void    sAuthResponse(MainWindow::authEventsType);
 void    sChanResponse(MainWindow::chanEventsType, const Packet_v1_Channel*);
