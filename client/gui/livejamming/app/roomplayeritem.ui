@@ -31,13 +31,18 @@
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QFrame" name="frame">
+     <property name="maximumSize">
+      <size>
+       <width>443</width>
+       <height>146</height>
+      </size>
+     </property>
      <property name="autoFillBackground">
       <bool>false</bool>
      </property>
      <property name="styleSheet">
       <string notr="true">#frame {
-	border: 1px solid #9BD97A;	
-	background: rgb(132, 132, 132);	
+background:url(:/images/bg_room_mate.png)
 }
 #avatar {
 	border: none;
@@ -49,7 +54,7 @@
 	border: none;
 }
 #spectrum {
-border: 1px solid #9BD97A;	
+border: none;
 }</string>
      </property>
      <property name="frameShape">
@@ -109,11 +114,16 @@ border: 1px solid #9BD97A;
             <height>30</height>
            </size>
           </property>
+          <property name="styleSheet">
+           <string notr="true">#speaker{
+	margin-left:22px;
+}</string>
+          </property>
           <property name="text">
            <string/>
           </property>
           <property name="pixmap">
-           <pixmap resource="app.qrc">:/images/kmixdocked-30x30.png</pixmap>
+           <pixmap resource="app.qrc">:/images/speaker_ico.png</pixmap>
           </property>
          </widget>
         </item>
@@ -124,6 +134,36 @@ border: 1px solid #9BD97A;
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>250</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="cursor">
+           <cursorShape>OpenHandCursor</cursorShape>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QSlider::groove:horizontal {
+         height: 10px; /* the groove expands to the size of the slider by default. by giving it a height, it has a fixed size */
+		 background:url(:/images/barre_vol_off.png);
+         margin: 2px 0;
+     }
+
+    QSlider::handle:horizontal {
+         background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #b4b4b4, stop:1 #8f8f8f);
+         border: 1px solid #5c5c5c;
+         width: 18px;
+         margin: -2px 0; /* handle is placed by default on the contents rect of the groove. Expand outside the groove */
+         border-radius: 3px;
+     }
+
+     QSlider::sub-page:horizontal {
+
+         background:url(:/images/barre_vol_on_middle.png) repeat-x;
+		margin:2px;
+    }</string>
           </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
@@ -138,6 +178,9 @@ border: 1px solid #9BD97A;
             <height>30</height>
            </size>
           </property>
+          <property name="cursor">
+           <cursorShape>OpenHandCursor</cursorShape>
+          </property>
           <property name="maximum">
            <number>99</number>
           </property>
@@ -147,6 +190,13 @@ border: 1px solid #9BD97A;
          </widget>
         </item>
        </layout>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
       </item>
       <item row="3" column="0" colspan="3">
        <widget class="QLabel" name="spectrum">
@@ -165,13 +215,6 @@ border: 1px solid #9BD97A;
         <property name="frameShape">
          <enum>QFrame::Box</enum>
         </property>
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QLabel" name="label">
         <property name="text">
          <string/>
         </property>

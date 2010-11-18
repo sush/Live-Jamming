@@ -34,23 +34,22 @@ QInputDialog {
 QInputDialog QLabel {
 color: #FFFFFF;
 }
+
 QInputDialog QPushButton {
-background:url(:/images/btn.png) transparent no-repeat;
-border:0px;
-width:80px;
-height:20px;
+	color: #333;
+	border: 2px solid #555;
+	border-radius: 11px;
+	padding: 5px;
+	background-color:#575657;
+	min-width: 80px;
 }
 QInputDialog QPushButton:hover {
-background:url(:/images/btn_hover.png) transparent no-repeat;
-border:0;
-width:70px;
-height:25px;
+	background-color:#575657;
 }
 QInputDialog QPushButton:pressed {
-background:url(:/images/btn_hover.png) transparent no-repeat;
-border:0;
-width:70px;
-height:25px;
+background: qradialgradient(cx: 0.4, cy: -0.1,
+fx: 0.4, fy: -0.1,
+radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
 }
 
 QMenuBar{
@@ -71,13 +70,73 @@ QMenuBar::item {
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
-      <widget class="ChannelList" name="channelList">
-       <property name="contextMenuPolicy">
-        <enum>Qt::CustomContextMenu</enum>
-       </property>
+      <widget class="QTabWidget" name="tabWidget">
        <property name="styleSheet">
-        <string notr="true">#channelList {
+        <string notr="true">QTabWidget::pane {
+	color: rgb(246, 246, 244);
+	margin: 0px,1px,1px,1px;
+
+	border-radius: 10px;
+	background: #E6E6E3;
+      }
+
+  QTabWidget::tab-bar {          
+	left: 5px; /* move to the right by 5px */
+	bottom: -1px;      } 
+
+/* Style the tab using the tab sub-control. Note that          it reads QTabBar _not_ QTabWidget */
+QTabBar::tab { 
+	background: rgb(132,132,132);
+    border: 2px solid #C4C4C3; 
+	border-bottom-color: #C2C7CB; /* same as the pane color */          
+	border-top-left-radius: 4px;          
+	border-top-right-radius: 4px;     
+	min-width: 8ex;
+	padding: 2px;
+	color: #FFFFFF;   
+}
+       
+QTabBar::tab:selected, QTabBar::tab:hover {	
+
+}
+
+QTabBar::tab:selected {
+	background: rgb(80,80,80); 
+	border-color: #9BD97a;          
+	border-bottom-color: #C2C7CB; /* same as pane color */
+}
+
+QTabBar::tab:!selected {
+    margin-top: 2px; /* make non-selected tabs look smaller */
+}
+</string>
+       </property>
+       <property name="currentIndex">
+        <number>1</number>
+       </property>
+       <property name="tabsClosable">
+        <bool>false</bool>
+       </property>
+       <widget class="QWidget" name="channelsTab">
+        <property name="styleSheet">
+         <string notr="true">#tab {	
+	background: rgb(80, 80, 80);
+	border: 1px rgb(155, 217, 122);
+}</string>
+        </property>
+        <attribute name="title">
+         <string>Channels</string>
+        </attribute>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="ChannelList" name="channelList">
+           <property name="contextMenuPolicy">
+            <enum>Qt::CustomContextMenu</enum>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">#channelList {
 	background: rgb(132, 132, 132);
+	border: 1px solid #9BD97a;
 	color: #FFFFFF;
 }
 
@@ -92,27 +151,53 @@ ChannelList::branch:open:has-children:has-siblings  {
          border-image: none;
          image: url(:/images/branch-open.png);
  }</string>
-       </property>
-       <property name="selectionMode">
-        <enum>QAbstractItemView::ContiguousSelection</enum>
-       </property>
-       <property name="headerHidden">
-        <bool>true</bool>
-       </property>
-       <attribute name="headerVisible">
-        <bool>false</bool>
-       </attribute>
-       <attribute name="headerVisible">
-        <bool>false</bool>
-       </attribute>
-       <column>
-        <property name="text">
-         <string notr="true">Channels</string>
+           </property>
+           <property name="selectionMode">
+            <enum>QAbstractItemView::ContiguousSelection</enum>
+           </property>
+           <property name="headerHidden">
+            <bool>true</bool>
+           </property>
+           <attribute name="headerVisible">
+            <bool>false</bool>
+           </attribute>
+           <attribute name="headerVisible">
+            <bool>false</bool>
+           </attribute>
+           <column>
+            <property name="text">
+             <string notr="true">Channels</string>
+            </property>
+            <property name="textAlignment">
+             <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+            </property>
+           </column>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="FriendsTab">
+        <property name="styleSheet">
+         <string notr="true">#tab_2 {
+	background: rgb(80, 80, 80)
+}</string>
         </property>
-        <property name="textAlignment">
-         <set>AlignHCenter|AlignVCenter|AlignCenter</set>
-        </property>
-       </column>
+        <attribute name="title">
+         <string>Friends</string>
+        </attribute>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <widget class="QListWidget" name="friendsList">
+           <property name="styleSheet">
+            <string notr="true">#friendsList {
+	background: rgb(132, 132, 132);
+	border: 1px solid #9BD97a;
+}</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
       </widget>
      </widget>
     </item>
@@ -243,10 +328,6 @@ ChannelList::branch:open:has-children:has-siblings  {
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionConnect">
-   <property name="icon">
-    <iconset resource="app.qrc">
-     <normaloff>:/images/chan_ico.png</normaloff>:/images/chan_ico.png</iconset>
-   </property>
    <property name="text">
     <string>&amp;Connect</string>
    </property>

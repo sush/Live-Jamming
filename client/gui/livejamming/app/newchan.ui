@@ -26,35 +26,30 @@
    <string>New Chan</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QDialog {
-	background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.00934579 rgba(155, 217, 122, 255), stop:0.0116822 rgba(59, 61, 59, 255), stop:0.995455 rgba(59, 61, 59, 255));
+   <string notr="true">#NewChan {
+	background: url(:/images/background_connection.png);
 }
-
-QDialog QLabel {
-	color: #FFFFFF;
+#NewChan QLineEdit{
+	background: url(:/images/send_box_connection.png) transparent no-repeat;
+	border:none;
+	height:24px;
+	color:white;
 }
-QDialog QPushButton {
-color: #333;
-border: 2px solid #555;
-border-radius: 11px;
-padding: 5px;
-background: qradialgradient(cx: 0.3, cy: -0.4,
-fx: 0.3, fy: -0.4,
-radius: 1.35, stop: 0 #fff, stop: 1 #888);
-min-width: 80px;
+#NewChan QLabel{
+	color:white;
 }
-QDialog QPushButton:hover {
-background: qradialgradient(cx: 0.3, cy: -0.4,
-fx: 0.3, fy: -0.4,
-radius: 1.35, stop: 0 #fff, stop: 1 #bbb);
+#NewChan QPushButton {
+background:url(:/images/btn.png) transparent no-repeat;
+border:none;
+width:80px;
+height:22px;
 }
-QDialog QPushButton:pressed {
-background: qradialgradient(cx: 0.4, cy: -0.1,
-fx: 0.4, fy: -0.1,
-radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
-}
-
-</string>
+#NewChan QPushButton:hover {
+background:url(:/images/btn_hover.png) transparent no-repeat;
+border:0;
+width:70px;
+height:26px;
+}</string>
   </property>
   <layout class="QFormLayout" name="formLayout">
    <property name="fieldGrowthPolicy">
@@ -82,7 +77,9 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="app.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>buttonBox</sender>
