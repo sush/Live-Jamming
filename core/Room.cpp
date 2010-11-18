@@ -42,6 +42,11 @@ char const              *Room::getName() const
   return _name.c_str();
 }
 
+std::size_t		Room::size() const
+{
+  return _connected->size();
+}
+
 void                    Room::setName(char const * name)
 {
   _name = name;

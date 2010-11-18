@@ -53,9 +53,9 @@ MainWindow::MainWindow(Proxy* proxy) :
     isConnected = false;
     connect(QCoreApplication::instance(), SIGNAL(aboutToQuit()), this, SLOT(on_actionDisconnect_triggered()));
 
-    connect(proxy, SIGNAL(sAuthResponse(MainWindow::authEventsType)), this, SLOT(authEvents(MainWindow::authEventsType)), Qt::QueuedConnection);
-    connect(proxy, SIGNAL(sChanResponse(MainWindow::chanEventsType, const Packet_v1_Channel*)), this, SLOT(chanEvents(MainWindow::chanEventsType, const Packet_v1_Channel*)),Qt::QueuedConnection);
-    connect(proxy, SIGNAL(joinOk(QString)), this, SLOT(createRoom(QString)), Qt::QueuedConnection);
+    connect(proxy, SIGNAL(sAuthResponse(MainWindow::authEventsType)), this, SLOT(authEvents(MainWindow::authEventsType)));
+    connect(proxy, SIGNAL(sChanResponse(MainWindow::chanEventsType, const Packet_v1_Channel*)), this, SLOT(chanEvents(MainWindow::chanEventsType, const Packet_v1_Channel*)));
+    connect(proxy, SIGNAL(joinOk(QString)), this, SLOT(createRoom(QString)));
 
     QTimer::singleShot(0, this, SLOT(on_actionConnect_triggered()));
     /* Set apllication indentity*/
@@ -315,7 +315,7 @@ void MainWindow::on_channelList_customContextMenuRequested(QPoint pos)
         QAction invite("Invite", 0);
         QAction* action = QMenu::exec(QList<QAction*>() << &invite, ui->channelList->mapToGlobal(pos));
         if (action == &invite)
-            ;//proxy->channel()->Se
+        {}//proxy->channel()->Se
     }
 }
 

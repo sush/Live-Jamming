@@ -10,7 +10,7 @@ class Manager;
 #include <Protocol.h>
 
 #define PACKET_STRING "==================================="
-#define PACKET_MAXSIZE 2048
+#define PACKET_MAXSIZE 4096
 
 typedef unsigned char			      byte_t;
 

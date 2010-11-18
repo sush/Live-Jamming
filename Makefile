@@ -66,7 +66,7 @@ LIB_DIR		=
 CXXFLAGS	=		-W -Wall -ansi $(INCLUDE_DIR) -DMYSQLPP_MYSQL_HEADERS_BURIED # if not def mysql++ doesnt find loads of files
 LDFLAGS		=		-lboost_system -lboost_thread-mt -lboost_program_options -lyaml-cpp -lmysqlpp
 ifeq ($(DEBUG), yes)
-	CXXFLAGS	+=		-g3 -pg -D_DEBUG
+	CXXFLAGS	+=		-g3 -pg -D_DEBUG -fno-default-inline
 	LDFLAGS		+=		-pg
 else
 	CXXFLAGS	+=		-O3 -DNDEBUG
