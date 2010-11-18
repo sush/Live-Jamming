@@ -66,7 +66,7 @@ void	Component_JamManager::Send_Jam(Session *session, audio_t const *audio)
 void	Component_JamManager::MixAudio(audio_t *audio_mixed, audio_t const *audio_channel, size_t len)
 {
   for (size_t i = 0; i <len; ++i)
-    audio_mixed[i] += audio_channel[i];
+    audio_mixed[i] = audio_mixed[i] + audio_channel[i] - (audio_mixed[i] * audio_channel[i]);
 }
 
 void	Component_JamManager::Send_Jam_Buffered(field_t jamId, audio_t const * audioBuffer)
