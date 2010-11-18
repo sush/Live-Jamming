@@ -15,7 +15,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">#ConfigurationDialog {
-background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.00934579 rgba(155, 217, 122, 255), stop:0.0116822 rgba(59, 61, 59, 255), stop:0.995455 rgba(59, 61, 59, 255));
+background-color:#4a4a4a;
 }
 
 #ConfigurationDialog QPushButton {

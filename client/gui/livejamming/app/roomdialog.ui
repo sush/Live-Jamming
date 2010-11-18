@@ -6,47 +6,46 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>750</width>
-    <height>550</height>
+    <width>758</width>
+    <height>642</height>
    </rect>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>758</width>
+    <height>642</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Room</string>
   </property>
   <property name="styleSheet">
    <string notr="true">QDialog {
-	background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.00934579 rgba(155, 217, 122, 255), stop:0.0116822 rgba(59, 61, 59, 255), stop:0.995455 rgba(59, 61, 59, 255));
+	background:url(:/images/background_main.png)
 }
-
-QDialog QPushButton {
-color: #333;
-border: 2px solid #555;
-border-radius: 11px;
-padding: 5px;
-background: qradialgradient(cx: 0.3, cy: -0.4,
-fx: 0.3, fy: -0.4,
-radius: 1.35, stop: 0 #fff, stop: 1 #888);
-min-width: 80px;
+#startButton{
+	background:url(:/images/btn_letsplay_room.png) transparent no-repeat;
+	border:none;
 }
-QDialog QPushButton:hover {
-background: qradialgradient(cx: 0.3, cy: -0.4,
-fx: 0.3, fy: -0.4,
-radius: 1.35, stop: 0 #fff, stop: 1 #bbb);
+#startButton:hover{
+	background:url(:/images/btn_letsplay_room_hover.png) transparent no-repeat;
+	border:none;
 }
-QDialog QPushButton:pressed {
-background: qradialgradient(cx: 0.4, cy: -0.1,
-fx: 0.4, fy: -0.1,
-radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
+#startButton:pressed{
+	background:url(:/images/btn_letsplay_room_hover.png) transparent no-repeat;
+	border:none;
 }
-QDialog QTextEdit {
-	background: rgb(132, 132, 132);
-	border: 1px solid #9BD97A;
-	color: #FFFFFF;
+#invite{
+	background:url(:/images/btn_invite.png) transparent no-repeat;
+	border:none;
 }
-QDialog QLineEdit {
-	background: rgb(132, 132, 132);
-	border: 1px solid #9BD97A;
-	color: #FFFFFF;
+#invite:hover{
+	background:url(:/images/btn_invite_hover.png) transparent no-repeat;
+	border:none;
+}
+#invite:pressed{
+	background:url(:/images/btn_invite.png) transparent no-repeat;
+	border:none;
 }</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
@@ -66,8 +65,11 @@ QDialog QLineEdit {
          <height>31</height>
         </size>
        </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
        <property name="text">
-        <string>&amp;invite</string>
+        <string/>
        </property>
       </widget>
      </item>
@@ -85,8 +87,25 @@ QDialog QLineEdit {
          <height>31</height>
         </size>
        </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#pushButton{
+	background:url(:/images/btn_kick.png) transparent no-repeat;
+	border:none;
+}
+#pushButton:hover{
+	background:url(:/images/btn_kick_hover.png) transparent no-repeat;
+	border:none;
+}
+#pushButton:pressed{
+	background:url(:/images/btn_kick_hover.png) transparent no-repeat;
+	border:none;
+}</string>
+       </property>
        <property name="text">
-        <string>&amp;kick</string>
+        <string/>
        </property>
       </widget>
      </item>
@@ -108,18 +127,20 @@ QDialog QLineEdit {
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <property name="text">
-        <string>Start</string>
-       </property>
-       <property name="icon">
-        <iconset resource="app.qrc">
-         <normaloff>:/images/player_play-30x30.png</normaloff>:/images/player_play-30x30.png</iconset>
-       </property>
-       <property name="iconSize">
+       <property name="minimumSize">
         <size>
-         <width>30</width>
-         <height>30</height>
+         <width>97</width>
+         <height>24</height>
         </size>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string/>
        </property>
        <property name="checkable">
         <bool>true</bool>

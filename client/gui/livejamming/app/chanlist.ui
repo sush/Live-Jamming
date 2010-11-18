@@ -6,21 +6,26 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>780</width>
-    <height>524</height>
+    <width>573</width>
+    <height>603</height>
    </rect>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>573</width>
+    <height>603</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
   <property name="styleSheet">
    <string notr="true">QDialog{
-	background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.00934579 rgba(155, 217, 122, 255), stop:0.0116822 rgba(59, 61, 59, 255), stop:0.995455 rgba(59, 61, 59, 255))
+	background-color:#4a4a4a;
 }
 QDialog QPushButton {
 color: #333;
 border: 2px solid #555;
-border-radius: 11px;
 padding: 5px;
 background: qradialgradient(cx: 0.3, cy: -0.4,
 fx: 0.3, fy: -0.4,
@@ -41,12 +46,25 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="ChannelList" name="channelTree">
-     <property name="styleSheet">
-      <string notr="true">QTreeWidget{
-background: rgb(132, 132, 132);
-border-radius: 20px;
-}</string>
+     <property name="maximumSize">
+      <size>
+       <width>555</width>
+       <height>530</height>
+      </size>
      </property>
+     <property name="styleSheet">
+      <string notr="true">QTreeWidget {
+background: url(:/images/background_tree.png) no-repeat;
+background-color:#363636;
+}
+</string>
+     </property>
+     <attribute name="headerVisible">
+      <bool>true</bool>
+     </attribute>
+     <attribute name="headerVisible">
+      <bool>true</bool>
+     </attribute>
      <column>
       <property name="text">
        <string>Channel</string>
@@ -79,7 +97,12 @@ border-radius: 20px;
      <item row="0" column="1">
       <widget class="QLineEdit" name="findLineEdit">
        <property name="styleSheet">
-        <string notr="true"/>
+        <string notr="true">#ChannelSearch QLineEdit{
+	background:url(:/images/send_box_search.png) repeat-x;
+	border:none;
+	height:23px;
+	color:white;
+}</string>
        </property>
       </widget>
      </item>
@@ -109,9 +132,8 @@ border-radius: 20px;
    <header location="global">channellist.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="app.qrc"/>
+ </resources>
  <connections/>
- <buttongroups>
-  <buttongroup name="buttonGroup"/>
- </buttongroups>
 </ui>

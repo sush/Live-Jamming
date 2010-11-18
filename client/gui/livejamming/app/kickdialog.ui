@@ -13,6 +13,38 @@
   <property name="windowTitle">
    <string>Kick players</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">#KickDialog {
+	background:url(:/images/background_connection.png);
+	width:200%;
+}
+#KickDialog QLabel{
+	color:white;
+}
+
+#KickDialog QPushButton {
+background:url(:/images/btn.png) transparent no-repeat;
+border:0px;
+width:80px;
+height:20px;
+}
+#KickDialog QPushButton:hover {
+background:url(:/images/btn_hover.png) transparent no-repeat;
+border:0;
+width:70px;
+height:25px;
+}
+#KickDialog QPushButton:pressed {
+background:url(:/images/btn_hover.png) transparent no-repeat;
+border:0;
+width:70px;
+height:25px;
+}
+#KickDialog QListWidget{
+background-color:#4a4a4a;
+color:white;
+}</string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="label">
@@ -36,7 +68,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="app.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>buttonBox</sender>
