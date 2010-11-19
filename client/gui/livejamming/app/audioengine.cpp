@@ -149,17 +149,20 @@ JackInput::~JackInput(){
  */
 static int output_process(jack_nframes_t nframes, void *arg){
     JackOutput *output = static_cast<JackOutput*> (arg);
-    jack_default_audio_sample_t *out;
+    jack_default_audio_sample_t *out, tmp[nframes * SAMPLE_SIZE];
+                size_t toread;
+    if ((toread = jack_ringbuffer_read_space(output->rb)) > (nframes * SAMPLE_SIZE))
+    jack_ringbuffer_read(output->rb, (char *)tmp, nframes * SAMPLE_SIZE);
     for (unsigned int i=0;i<output->nb_ports;i++){
         if (output->isRunning()){
-            size_t toread;
+
             output->mutex.lock();
-            if ((toread = jack_ringbuffer_read_space(output->rb)) > (nframes * SAMPLE_SIZE)){
-                qDebug() << "FILLED : " << (toread / (output->nb_ports * output->buffer_size * SAMPLE_SIZE)) << "/" << RB_MULTIPLICATOR;
-                qDebug() << "EMPTY  : " << jack_ringbuffer_write_space(output->rb) / (output->nb_ports * output->buffer_size * SAMPLE_SIZE) << "/" << RB_MULTIPLICATOR;
+           // if ((toread = jack_ringbuffer_read_space(output->rb)) > (nframes * SAMPLE_SIZE)){
+//                qDebug() << "FILLED : " << (toread / (output->nb_ports * output->buffer_size * SAMPLE_SIZE)) << "/" << RB_MULTIPLICATOR;
+//                qDebug() << "EMPTY  : " << jack_ringbuffer_write_space(output->rb) / (output->nb_ports * output->buffer_size * SAMPLE_SIZE) << "/" << RB_MULTIPLICATOR;
                 out = (jack_default_audio_sample_t*)jack_port_get_buffer ( output->ports[i], nframes);
-                jack_ringbuffer_read(output->rb, (char *)out, nframes * SAMPLE_SIZE);
-            }
+                memcpy(out, tmp,nframes * SAMPLE_SIZE );
+            //}
             output->mutex.unlock();
         }else {
             //if jam is not running, just flush the output buffers
@@ -174,13 +177,17 @@ static int output_process(jack_nframes_t nframes, void *arg){
 
 void JackOutput::process(const char *audio){
     mutex.lock();
-  if ((size_t)jack_ringbuffer_read_space(rb) > (buffer_size * SAMPLE_SIZE * nb_ports))
-        jack_ringbuffer_reset(rb);
-   jack_ringbuffer_write(rb, audio, buffer_size * SAMPLE_SIZE * nb_ports);
+//  if ((size_t)jack_ringbuffer_read_space(rb) > (buffer_size * SAMPLE_SIZE * nb_ports))
+//        jack_ringbuffer_reset(rb);
+//   jack_ringbuffer_write(rb, audio, buffer_size * SAMPLE_SIZE * nb_ports);
+    if ((size_t)jack_ringbuffer_read_space(rb) > (buffer_size * SAMPLE_SIZE))
+          jack_ringbuffer_reset(rb);
+     jack_ringbuffer_write(rb, audio, buffer_size * SAMPLE_SIZE);
    mutex.unlock();
 }
 
 JackOutput::JackOutput(){
+
     jack_set_process_callback(client, output_process, this);
     //jack_on_shutdown(client, shutdown, this);
 
