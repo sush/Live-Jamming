@@ -94,6 +94,7 @@ void		Client::Thread_TreatPacket()
   _clientManager->Manage(packet);
   ////////////////////////// WAIT //////////////////
   usleep(treat_delay); // wait <treat_delay> to fake for delay introduced by treatment
+  delete packet;
   ////////////////////////// WAIT //////////////////
 }
 
