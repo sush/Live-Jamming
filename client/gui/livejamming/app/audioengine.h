@@ -12,7 +12,7 @@
 #include <Component_Jam.h>
 
 const int RB_MULTIPLICATOR = 64;
-const unsigned int NB_CHANNELS = 1;
+const unsigned int NB_CHANNELS = 2;
 const size_t SAMPLE_SIZE = sizeof(jack_default_audio_sample_t);
 
 class Component_Jam;
