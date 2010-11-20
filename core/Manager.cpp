@@ -97,14 +97,7 @@ void		Manager::CallBack_handle_send(Packet_v1 *packet_v1) const
   static int	count = 0;
 
   if (!getRegisteredRequest(packet_v1->getComponentId(), packet_v1->getRequestId()).getRetry())
-    {
-      std::cout << "!!!! [FREE]  ";
-      std::cout << "ComponentID = " << packet_v1->getComponentId()
-		<< "REQUESTID = " << packet_v1->getRequestId()
-		<< std::endl;
-      std::cout << "FREE count = " << ++count << std::endl;
-      delete packet_v1;
-    }
+    delete packet_v1;
 }
 
 void		Manager::CallBack_Send_TimeOut(Session * session, Packet_v1 *packet_v1, boost::system::error_code error_code)

@@ -1,9 +1,18 @@
 #include <Packet.h>
 #include <stdexcept>
 
+#ifdef _DEBUG
+int	alloc_count = 0;
+int	free_count = 0;
+#endif
+
 Packet::Packet(boost::asio::ip::udp::endpoint const * endpoint, buffer_t *buffer, std::size_t len)
   :_buffer(buffer), _len(len), _endpoint(endpoint)
 {
+#ifdef _DEBUG
+  ++alloc_count;
+#endif
+  
   for (std::size_t i = len; i < PACKET_MAXSIZE; ++i)
     _buffer->at(i) = '\0';
 }
@@ -11,6 +20,10 @@ Packet::Packet(boost::asio::ip::udp::endpoint const * endpoint, buffer_t *buffer
 Packet::Packet(boost::asio::ip::udp::endpoint const * endpoint)
   :_len(BINARYTOBYTE_LEN(PROTO_PROTOVERSION_SIZE)), _endpoint(endpoint)
 {
+#ifdef _DEBUG
+  ++alloc_count;
+#endif
+
   _buffer = new buffer_t;
   for (std::size_t i = 0; i < PACKET_MAXSIZE; ++i)
     _buffer->at(i) = '\0';
@@ -19,6 +32,10 @@ Packet::Packet(boost::asio::ip::udp::endpoint const * endpoint)
 Packet::Packet()
   :_len(BINARYTOBYTE_LEN(PROTO_PROTOVERSION_SIZE)), _endpoint(0)
 {
+#ifdef _DEBUG
+  ++alloc_count;
+#endif
+
   _buffer = new buffer_t;
   for (std::size_t i = 0; i < PACKET_MAXSIZE; ++i)
     _buffer->at(i) = '\0';
@@ -26,6 +43,9 @@ Packet::Packet()
 
 Packet::~Packet()
 {
+#ifdef _DEBUG
+  ++free_count;
+#endif
   delete _buffer;
 }
 

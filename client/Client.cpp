@@ -15,22 +15,18 @@ const int	treat_delay = 0; //micro seconds
 
 void		Client::Run()
 {
-  std::cout << "* ";
+  std::cerr << "* ";
   Time::Print();
-  std::cout << "Client started..." << std::endl;
+  std::cerr << "Client started..." << std::endl;
  
   start_receive();
-  std::cout << "^^^^^^^^^^^^^^            RUN           ^^^^^^^^^^^^^^^" << std::endl;
   _io_service->reset();
   _io_service->run();
-  std::cout << "^^^^^^^^^^^^^^            END_RUN           ^^^^^^^^^^^^^^^" << std::endl;
 }
 
 void Client::start_receive()
 {
-  //  std::cout << "BEFORE START RECEIVE....................." << (int)_recv_buffer << std::endl;
   _recv_buffer = new Packet::buffer_t;
-  //  std::cout << "AFTER START RECEIVE....................." << (int)_recv_buffer << std::endl;
   _socket->async_receive_from(boost::asio::buffer(*_recv_buffer), *_remote_endpoint,
 			      boost::bind(&Client::CallBack_handle_receive, this,
 					  boost::asio::placeholders::error,
@@ -122,8 +118,6 @@ void		Client::BindToLocalPort()
 void		Client::Connect(std::string const & login, std::string const & password, std::string const & server, int port)
 {
   // string to int
-  std::cout << " ########################### CONNECT #################################" << std::endl;
-  std::cout << "login = " << login << ", pass = " << password << ", server = " << server << ", port = " << port << std::endl;
   connect_address = server.c_str();
   _connect_port = port;
   _remote_endpoint->address(boost::asio::ip::address::from_string(connect_address));
@@ -138,9 +132,10 @@ void		Client::Connect(std::string const & login, std::string const & password, s
 
 void		Client::Disconnect()
 {
-  std::cout << " _ _ _ _ _ _ _ *** _ _ _ _ _ _ DISCONNECT #################################" << std::endl;
   _clientManager->Disconnect(0);
-  std::cout << "^^^^^^^^^^^^^^            STOP           ^^^^^^^^^^^^^^^" << std::endl;
+#ifdef _DEBUG
+  std::cerr << "[PACKET ALLOCATION SUMMARY] alloc = " << alloc_count << ", free = " << free_count << ", diff = " << alloc_count - free_count << std::endl;
+#endif
 }
 
 void		Client::Init(int argc, char *argv[])

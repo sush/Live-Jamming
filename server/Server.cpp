@@ -17,7 +17,7 @@ const int		treat_delay = 0; //micro seconds
 void sighandler(int sig)
 {
 #ifdef _DEBUG
-  std::cout<< "Signal " << sig << " caught..." << std::endl;
+  std::cerr<< "Signal " << sig << " caught..." << std::endl;
 #endif
   Server::Stop();
 }
@@ -27,16 +27,19 @@ void		Server::Stop()
   Server	*server=Server::getInstance();
   server->_io_service->reset();
   server->_io_service->stop();
-  std::cout << "* ";
+  std::cerr << "* ";
   Time::Print();
-  std::cout << " Server ended." << std::endl;
+  std::cerr << " Server ended." << std::endl;
+#ifdef _DEBUG
+  std::cerr << "[PACKET ALLOCATION SUMMARY] alloc = " << alloc_count << ", free = " << free_count << ", diff = " << alloc_count - free_count << std::endl;
+#endif
 }
 
 void		Server::Run()
 {
-  std::cout << "* ";
+  std::cerr << "* ";
   Time::Print();
-  std::cout << " Server started..." << std::endl;
+  std::cerr << " Server started..." << std::endl;
   
   start_receive();
   _io_service->run();
@@ -71,7 +74,7 @@ void	Server::CallBack_handle_receive(boost::system::error_code const & error, st
       }
       catch (std::runtime_error &e)
 	{
-	  std::cout << e.what() << ":" << Packet_v1::peekComponentId(*_recv_buffer) << std::endl;
+	  std::cerr << e.what() << ":" << Packet_v1::peekComponentId(*_recv_buffer) << std::endl;
 	  delete _recv_buffer;
 	  _recv_buffer = 0;
 	}
