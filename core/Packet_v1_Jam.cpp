@@ -77,7 +77,7 @@ byte_t const      *Packet_v1_Jam::getAudio(field_t len) const
 
 void            Packet_v1_Jam::setMixCount(field_t mixcount)
 {
-  setField(clientSessionId, PROTOV1_JAM_CLIENTSESSIONID_OFF, PROTOV1_JAM_CLIENTSESSIONID_SIZE);
+  setField(mixcount, PROTOV1_JAM_MIXCOUNT_OFF, PROTOV1_JAM_MIXCOUNT_SIZE);
 }
 
 field_t         Packet_v1_Jam::getMixCount() const
