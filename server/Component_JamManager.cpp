@@ -72,8 +72,8 @@ void	Component_JamManager::MixAudio(audio_t *audio_mixed, audio_t const *audio_c
 void	Component_JamManager::Send_Jam_Buffered(field_t jamId, audio_t const * audioBuffer)
 {
   audio_t		*audio_mixed;
-  size_t		audio_count;
-  size_t		roomsize;
+  std::size_t		audio_count;
+  std::size_t		roomsize;
 
   audio_mixed = _audioBufferMap.find(jamId)->second;
   audio_count = ++_audioBufferCountMap.find(jamId)->second;
@@ -86,16 +86,18 @@ void	Component_JamManager::Send_Jam_Buffered(field_t jamId, audio_t const * audi
       std::map<field_t, Session*> *connected = jam->getRoom()->getConnected();
       std::map<field_t, Session*>::iterator it, end = connected->end();
       
+      // Create one packet only for everybody
+      Packet_v1_Jam	*packet_v1_jam = new Packet_v1_Jam(JAM_RECV);
+      packet_v1_jam->setAudio((byte_t const *)audio_mixed, AUDIOBUFFER_LEN);
+      packet_v1_jam->setDeleteTTL(connected->size());
+
       for (it = connected->begin(); it != end; ++it)
-	Send_Jam(it->second, audio_mixed);
+	_serverManager->Send(packet_v1_jam, it->second);
+
       memset(_audioBufferMap.find(jamId)->second, 0, AUDIOBUFFER_LEN);
       _audioBufferCountMap.find(jamId)->second = 0;
 
     }
-  // mix audio with audio_save;
-  // if count > jam size
-  // send to all
-  
 }
 
 void	Component_JamManager::Recv_Jam(Packet_v1 const *packet_v1, Session *session)

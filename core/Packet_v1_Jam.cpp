@@ -74,3 +74,13 @@ byte_t const      *Packet_v1_Jam::getAudio(field_t len) const
 
   return getStartOfData(PROTOV1_JAM_START_OF_DATA, PROTOV1_JAM_DATA_AUDIO);
 }
+
+void            Packet_v1_Jam::setMixCount(field_t mixcount)
+{
+  setField(clientSessionId, PROTOV1_JAM_CLIENTSESSIONID_OFF, PROTOV1_JAM_CLIENTSESSIONID_SIZE);
+}
+
+field_t         Packet_v1_Jam::getMixCount() const
+{
+  return getField(PROTOV1_JAM_MIXCOUNT_OFF, PROTOV1_JAM_MIXCOUNT_SIZE);
+}

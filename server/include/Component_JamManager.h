@@ -41,7 +41,9 @@ class Component_JamManager : public IComponent
   virtual void	BindingsRecv();
   virtual void	RegisteredRequests();
 
+  // obsolete: Send_Jam_buffered allocs just one packet and sends it to everybody
   void		Send_Jam(Session *, audio_t const *);
+
   void		Recv_Jam(Packet_v1 const *, Session *);
 
   void		Connect(Session *);

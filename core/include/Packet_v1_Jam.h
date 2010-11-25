@@ -29,6 +29,10 @@ class Packet_v1_Jam : public Packet_v1
 						  //(ex if PROTOV1_JAM_AUDIODATALEN_SIZE = 16, field_t cannot exceed 65535)
   field_t               getAudioDataLen() const;
 
+  void			setMixCount(field_t);
+  field_t		getMixCount() const;
+
+
   void                  setAudio(byte_t const *, field_t);
   byte_t const            *getAudio(field_t) const;
 

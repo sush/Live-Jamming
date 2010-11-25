@@ -7,7 +7,7 @@ int	free_count = 0;
 #endif
 
 Packet::Packet(boost::asio::ip::udp::endpoint const * endpoint, buffer_t *buffer, std::size_t len)
-  :_buffer(buffer), _len(len), _endpoint(endpoint)
+  :_buffer(buffer), _len(len), _endpoint(endpoint), _ttl_delete(1)
 {
 #ifdef _DEBUG
   ++alloc_count;
@@ -18,7 +18,7 @@ Packet::Packet(boost::asio::ip::udp::endpoint const * endpoint, buffer_t *buffer
 }
 
 Packet::Packet(boost::asio::ip::udp::endpoint const * endpoint)
-  :_len(BINARYTOBYTE_LEN(PROTO_PROTOVERSION_SIZE)), _endpoint(endpoint)
+  :_len(BINARYTOBYTE_LEN(PROTO_PROTOVERSION_SIZE)), _endpoint(endpoint), _ttl_delete(1)
 {
 #ifdef _DEBUG
   ++alloc_count;
@@ -30,7 +30,7 @@ Packet::Packet(boost::asio::ip::udp::endpoint const * endpoint)
 }
 
 Packet::Packet()
-  :_len(BINARYTOBYTE_LEN(PROTO_PROTOVERSION_SIZE)), _endpoint(0)
+  :_len(BINARYTOBYTE_LEN(PROTO_PROTOVERSION_SIZE)), _endpoint(0), _ttl_delete(1)
 {
 #ifdef _DEBUG
   ++alloc_count;
@@ -304,6 +304,25 @@ void						Packet::appendData(unsigned int start_of_data, unsigned int idx, byte_
 void		Packet::setDataLen(field_t dataLen)
 {
   setField(dataLen, PROTO_DATALEN_OFF, PROTO_DATALEN_SIZE);
+}
+
+void		Packet::setDeleteTTL(std::size_t delete_ttl)
+{
+  // THREAD SAFE ??
+
+  _ttl_delete =  delete_ttl;
+}
+
+void		Packet::decDeleteTTL()
+{
+  // THREAD SAFE ??
+
+  --_ttl_delete;
+}
+
+std::size_t	Packet::getDeleteTTL() const
+{
+  return _ttl_delete;
 }
 
 field_t		Packet::getDataLen() const
