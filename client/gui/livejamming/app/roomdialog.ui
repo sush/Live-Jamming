@@ -6,13 +6,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>758</width>
-    <height>642</height>
+    <width>738</width>
+    <height>379</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>738</width>
+    <height>379</height>
+   </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>758</width>
+    <width>738</width>
     <height>642</height>
    </size>
   </property>
@@ -21,7 +27,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">QDialog {
-	background:url(:/images/background_main.png)
+	background:url(:/images/bg_room.png)
 }
 #startButton{
 	background:url(:/images/btn_letsplay_room.png) transparent no-repeat;
@@ -51,6 +57,36 @@
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
     <layout class="QVBoxLayout" name="playersVBox">
+     <item>
+      <spacer name="verticalSpacer">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item row="0" column="1" rowspan="2">
+    <widget class="ConversationSet" name="convSet" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetMinAndMaxSize</enum>
+     </property>
      <item>
       <widget class="QPushButton" name="invite">
        <property name="sizePolicy">
@@ -109,16 +145,6 @@
        </property>
       </widget>
      </item>
-    </layout>
-   </item>
-   <item row="0" column="1">
-    <widget class="ConversationSet" name="convSet" native="true"/>
-   </item>
-   <item row="1" column="0" colspan="2">
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <property name="sizeConstraint">
-      <enum>QLayout::SetFixedSize</enum>
-     </property>
      <item>
       <widget class="QPushButton" name="startButton">
        <property name="sizePolicy">
