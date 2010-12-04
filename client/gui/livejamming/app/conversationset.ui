@@ -6,14 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>597</width>
-    <height>367</height>
+    <width>370</width>
+    <height>408</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="maximumSize">
    <size>
-    <width>597</width>
-    <height>367</height>
+    <width>1234567</width>
+    <height>1234567</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -24,32 +30,8 @@
 	background-color:#363636;
 }
 
-#ConversationSet QPushButton {
-background:url(:/images/btn_send.png) no-repeat transparent;
-padding: 5px;
-border:none;
-min-width: 80px;
-}
-#ConversationSet QPushButton:hover {
-background:url(:/images/btn_send_hover.png) no-repeat transparent;
-padding: 5px;
-border:none;
-min-width: 80px;
-}
-#ConversationSet QPushButton:pressed {
-background:url(:/images/btn_send.png) no-repeat transparent;
-padding: 5px;
-border:none;
-min-width: 80px;
-}
-#ConversationSet QTextEdit {
-	background:url(:/images/background_wide.png);
-}
-#ConversationSet QLineEdit {
-	background:url(:/images/send_box_search.png);
-	border:none;
-	color:white;
-}
+
+
 </string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
@@ -74,14 +56,23 @@ min-width: 80px;
    </item>
    <item row="1" column="0" colspan="2">
     <widget class="QTextEdit" name="display">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="maximumSize">
       <size>
-       <width>597</width>
-       <height>300</height>
+       <width>12345678</width>
+       <height>12345678</height>
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true"/>
+      <string notr="true">#display{
+background-color:#363636;
+color:white;
+}</string>
      </property>
      <property name="undoRedoEnabled">
       <bool>false</bool>
@@ -94,7 +85,24 @@ min-width: 80px;
    <item row="2" column="1">
     <widget class="QPushButton" name="send">
      <property name="styleSheet">
-      <string notr="true"/>
+      <string notr="true">#send {
+background:url(:/images/btn_send.png) no-repeat transparent;
+padding: 5px;
+border:none;
+min-width: 80px;
+}
+#send:hover {
+background:url(:/images/btn_send_hover.png) no-repeat transparent;
+padding: 5px;
+border:none;
+min-width: 80px;
+}
+#send:pressed {
+background:url(:/images/btn_send.png) no-repeat transparent;
+padding: 5px;
+border:none;
+min-width: 80px;
+}</string>
      </property>
      <property name="text">
       <string/>
@@ -108,6 +116,13 @@ min-width: 80px;
        <width>501</width>
        <height>24</height>
       </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#input {
+	background:url(:/images/send_box_search.png);
+	border:none;
+	color:white;
+}</string>
      </property>
     </widget>
    </item>
