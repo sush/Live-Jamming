@@ -65,3 +65,19 @@ m_userinfo const *unserialize(char const *userInfos)
     }
   return m_userInfos;
 }
+
+// platform dependent                                                                                                                                                 
+// implement for other platform mac osx, *bsd, ...                                                                                     
+int             compute_Ncores()
+{
+#ifdef __linux__
+  return sysconf( _SC_NPROCESSORS_ONLN );
+#elif defined(_WIN32)
+  SYSTEM_INFO sysinfo;
+
+  GetSystemInfo( &sysinfo );
+  return sysinfo.dwNumberOfProcessors;
+#else
+        #error "count_cores uninplemented for this sytem => implement"
+#endif
+}
