@@ -5,11 +5,11 @@
 #include <Time.h>
 #include <string>
 #include <iostream>
+#include <Tools.h>
 
 // unix dependent, do analogue treatment on windows
 #include <signal.h>
 
-const int		Server::_poolSize = 2;
 const int		updateTime = 1;
 const int		treat_delay = 0; //micro seconds
 
@@ -123,6 +123,8 @@ void		Server::Init(int argc, char *argv[])
 {
   _argc = argc;
   _argv = argv;
+
+  _poolSize = compute_Ncores();
 
   _debug_print_packet = 0;
   _debug_print_session = 0;
