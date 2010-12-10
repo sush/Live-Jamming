@@ -32,9 +32,11 @@ class Packet_v1_Jam : public Packet_v1
   void			setMixCount(field_t);
   field_t		getMixCount() const;
 
+  void			setTimestamp(field_t);
+  field_t		getTimestamp() const;
 
   void                  setAudio(byte_t const *, field_t);
-  byte_t const            *getAudio(field_t) const;
+  byte_t const            *getAudio() const;
 
  protected:
 

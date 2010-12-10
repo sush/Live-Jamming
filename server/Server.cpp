@@ -113,7 +113,7 @@ void		Server::Thread_TreatPacket()
   
   _serverManager->Manage(packet);
   ////////////////////////// WAIT //////////////////
-  usleep(treat_delay); // wait <treat_delay> to fake for delay introduced by treatment
+  //  usleep(treat_delay); // wait <treat_delay> to fake for delay introduced by treatment
   delete packet;
   ////////////////////////// WAIT //////////////////
 }

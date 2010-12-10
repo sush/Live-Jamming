@@ -1,59 +1,54 @@
-#include <AudioMixingEngine.cpp>
+#include <AudioMixingEngine.h>
+#include <AudioFrame.h>
+#include <MixingBuffer.h>
+#include <Exception.h>
+#include <ServerManager.h>
+#include <Room.h>
+#include <Packet_v1_Jam.h>
 
-// PSEUDO CODE
-/*
-  ON NEW FRAME ARRIVAL
-
-  ADD TO USER FRAME LIST
-  IF newframe from that user IN mixbuffer
-	IF newframe more recent than the first one in the mixbuffer
-		ADD TO mixbuffer (if there's space ELSE DROP)
-	ELSE
-		DROP
-  ELSE
-	ADD to mixbuffer
-
-////////
-
-SEND ON either mixbuffer timer expiration
-OR		mixbuffer full
- 
-*/
-       
-
-AudioMixingEngine::AudioMixingEngine(Room *room)
-  :_size(room->size()), _connected(room->getConnected())
-{
+AudioMixingEngine::AudioMixingEngine(ServerManager * serverManager, Room *room)
+  : _serverManager(serverManager), _room(room), _size(room->size()), _connected(room->getConnected())
+{	
+  std::cout << "*** AUDIO MIXING ENGINE ***" << std::endl;
   Init();
 }
 
 AudioMixingEngine::~AudioMixingEngine()
 {
-  
+  delete _mixingBuffer;
 }
 
-void		AudioMixing::Init()
+void		AudioMixingEngine::Init()
 {
-  m_session_cit	it, end = _connected->end();
-  std::size	i;		
+  Room::m_session_cit	it, end = _connected->end();
+  std::size_t	i;		
   
-  for (it = _connected.begin(), i = 0; it != end; ++it, ++i)
+  _mixingBuffer = new MixingBuffer(_serverManager, _room, MIXBUFFER_SIZE);
+  for (it = _connected->begin(), i = 0; it != end; ++it, ++i)
     _sepFrameMap[it->first] = new l_frame;
-    
-
 }
 
 
 
 
-void	AudioMixingEngine::AddFrame(audio_t *frame)
+void	AudioMixingEngine::recvAudioData(Packet_v1_Jam const * p_jam)
 {
+  // add to user's frame list
+  unsigned int		sid = p_jam->getSessionId();
+  unsigned int		timestamp = p_jam->getTimestamp();
+  audio_t		*audio = (audio_t *)p_jam->getAudio();
+  std::size_t		audio_len = p_jam->getAudioDataLen();
+  AudioFrame		*audioFrame;
+
+  if (_sepFrameMap.find(sid) == _sepFrameMap.end()) // modified packet
+    throw std::runtime_error(X_BADJAM);
   
-  
+  audioFrame = new AudioFrame(sid, audio, audio_len, timestamp);
+  _sepFrameMap[sid]->push_back(audioFrame);
+  _mixingBuffer->pushFrame(audioFrame);
 }
 
-void    AudioMixingEngine::Mix(audio_t *audio_mixed, audio_t const *audio_channel, std::size_t len)
+std::size_t	AudioMixingEngine::getDropCount() const
 {
-  for (size_t i = 0; i <len; ++i)
-    audio_mixed[i] = audio_mixed[i] + audio_channel[i] - (audio_mixed[i] * audio_channel[i]);
+  return _mixingBuffer->getDropCount();
 }

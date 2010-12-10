@@ -35,21 +35,25 @@ void	Component_Jam::RegisteredRequests(){
 void	Component_Jam::StartJam(field_t jamId, Room *room){
     _jamId = jamId;
     _audioEngine->start();
+    _sendCount = 0;
 }
 
 void	Component_Jam::StopJam(field_t jamId){
     _audioEngine->stop();
+    _jamId = 0;
+    _sendCount = 0;
 }
 
 void	Component_Jam::Recv_Jam(Packet_v1 const *packet_v1, Session *session){
     Packet_v1_Jam const *packet_v1_jam =
             static_cast<Packet_v1_Jam const *>(packet_v1);
-    _audioEngine->output->process((const char*)packet_v1_jam->getAudio(1024));
+    _audioEngine->output->process((const char*)packet_v1_jam->getAudio());
 }
 
 void	Component_Jam::Send_Jam(byte_t const *audio, field_t len){
     Packet_v1_Jam *packet_v1_jam = new Packet_v1_Jam(JAM_SEND);
     packet_v1_jam->setJamId(_jamId);
+    packet_v1_jam->setTimestamp(++_sendCount);
     packet_v1_jam->setAudio(audio, len);
     _clientManager->Send(packet_v1_jam, gl_session);
 }
