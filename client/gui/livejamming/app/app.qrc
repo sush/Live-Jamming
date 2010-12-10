@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="/">
+    <file>images/room_dialog_buton_separator.png</file>
+    <file>images/room_dialog_bottom_separation.png</file>
     <file>images/bg_room_mate.png</file>
     <file>images/room_player_item_icon.png</file>
     <file>images/bg_room_dialog_player.png</file>
@@ -28,13 +30,13 @@
     <file>images/btn_hover.png</file>
     <file>images/send_box_search.png</file>
     <file>images/btn.png</file>
-    <file>images/send_box_connection.png</file>
     <file>images/btn_cancel_hover.png</file>
+    <file>images/send_box_connection.png</file>
     <file>images/btn_letsplay.png</file>
     <file>images/btn_letsplay_hover.png</file>
     <file>images/btn_cancel.png</file>
-    <file>images/background_connection.png</file>
     <file>images/player_stop-30x30.png</file>
+    <file>images/background_connection.png</file>
     <file>images/player_play-30x30.png</file>
     <file>images/branch-closed.png</file>
     <file>images/branch-more.png</file>

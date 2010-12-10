@@ -22,7 +22,7 @@
   <property name="maximumSize">
    <size>
     <width>302</width>
-    <height>223</height>
+    <height>192</height>
    </size>
   </property>
   <property name="font">
@@ -71,12 +71,24 @@
 }</string>
      </property>
      <property name="text">
-      <string>login</string>
+      <string>Login</string>
      </property>
     </widget>
    </item>
    <item row="0" column="1">
     <widget class="QLineEdit" name="loginLineEdit">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>205</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="styleSheet">
       <string notr="true"/>
      </property>
@@ -90,7 +102,7 @@
 }</string>
      </property>
      <property name="text">
-      <string>password</string>
+      <string>Password</string>
      </property>
     </widget>
    </item>

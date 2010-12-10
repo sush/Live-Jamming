@@ -1,0 +1,6 @@
+build/livejammin_server_debug
+client/gui/livejamming/Makefile
+client/gui/livejamming/app/Makefile
+client/gui/livejamming/livejamming_client
+config.yaml
+livejammin_server
