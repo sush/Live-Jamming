@@ -264,10 +264,6 @@ ChannelList::branch:open:has-children:has-siblings  {
     <property name="title">
      <string>&amp;File</string>
     </property>
-    <property name="icon">
-     <iconset resource="app.qrc">
-      <normaloff>:/images/file_ico.png</normaloff>:/images/file_ico.png</iconset>
-    </property>
     <property name="separatorsCollapsible">
      <bool>false</bool>
     </property>
