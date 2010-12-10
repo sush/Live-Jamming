@@ -55,8 +55,23 @@
 }</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <property name="leftMargin">
+    <number>2</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>9</number>
+   </property>
    <item row="0" column="0">
     <layout class="QVBoxLayout" name="playersVBox">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>20</number>
+     </property>
      <item>
       <spacer name="verticalSpacer">
        <property name="orientation">
@@ -72,7 +87,7 @@
      </item>
     </layout>
    </item>
-   <item row="0" column="1" rowspan="2">
+   <item row="0" column="1" rowspan="3">
     <widget class="ConversationSet" name="convSet" native="true">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -83,6 +98,48 @@
     </widget>
    </item>
    <item row="1" column="0">
+    <widget class="QWidget" name="verticalWidget" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>331</width>
+       <height>3</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>200</width>
+       <height>3</height>
+      </size>
+     </property>
+     <property name="baseSize">
+      <size>
+       <width>0</width>
+       <height>3</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#verticalWidget{
+	background: url(:/images/room_dialog_bottom_separation.png) repeat-x;
+}
+</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="spacing">
+       <number>1</number>
+      </property>
+      <property name="sizeConstraint">
+       <enum>QLayout::SetNoConstraint</enum>
+      </property>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <property name="sizeConstraint">
       <enum>QLayout::SetMinAndMaxSize</enum>
@@ -97,8 +154,8 @@
        </property>
        <property name="maximumSize">
         <size>
-         <width>94</width>
-         <height>31</height>
+         <width>74</width>
+         <height>20</height>
         </size>
        </property>
        <property name="cursor">
@@ -107,6 +164,23 @@
        <property name="text">
         <string/>
        </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QFrame" name="spacerBetweenInviteAndKickButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>20</width>
+         <height>0</height>
+        </size>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_5"/>
       </widget>
      </item>
      <item>
@@ -119,8 +193,8 @@
        </property>
        <property name="maximumSize">
         <size>
-         <width>94</width>
-         <height>31</height>
+         <width>67</width>
+         <height>20</height>
         </size>
        </property>
        <property name="cursor">
@@ -146,6 +220,69 @@
       </widget>
      </item>
      <item>
+      <widget class="QFrame" name="verticalFrame">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>5</width>
+         <height>0</height>
+        </size>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_3"/>
+      </widget>
+     </item>
+     <item>
+      <widget class="QWidget" name="verticalSeparator" native="true">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#verticalSeparator{
+ background: url(:/images/room_dialog_buton_separator.png) no-repeat;
+}</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="sizeConstraint">
+         <enum>QLayout::SetDefaultConstraint</enum>
+        </property>
+        <property name="leftMargin">
+         <number>1</number>
+        </property>
+        <property name="rightMargin">
+         <number>1</number>
+        </property>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QFrame" name="verticalFrame">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>10</width>
+         <height>0</height>
+        </size>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_4"/>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="startButton">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -155,8 +292,8 @@
        </property>
        <property name="minimumSize">
         <size>
-         <width>97</width>
-         <height>24</height>
+         <width>93</width>
+         <height>22</height>
         </size>
        </property>
        <property name="cursor">

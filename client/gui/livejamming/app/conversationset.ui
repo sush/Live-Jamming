@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>370</width>
-    <height>408</height>
+    <width>367</width>
+    <height>467</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -36,7 +36,7 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <property name="leftMargin">
-    <number>0</number>
+    <number>9</number>
    </property>
    <property name="topMargin">
     <number>6</number>
@@ -47,14 +47,13 @@
    <property name="bottomMargin">
     <number>0</number>
    </property>
+   <property name="horizontalSpacing">
+    <number>6</number>
+   </property>
+   <property name="verticalSpacing">
+    <number>0</number>
+   </property>
    <item row="0" column="0" colspan="2">
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="0" colspan="2">
     <widget class="QTextEdit" name="display">
      <property name="minimumSize">
       <size>
@@ -72,6 +71,7 @@
       <string notr="true">#display{
 background-color:#363636;
 color:white;
+border:none;
 }</string>
      </property>
      <property name="undoRedoEnabled">
@@ -82,8 +82,73 @@ color:white;
      </property>
     </widget>
    </item>
-   <item row="2" column="1">
+   <item row="1" column="0">
+    <widget class="QLineEdit" name="input">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>200</width>
+       <height>23</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>435</width>
+       <height>23</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#input {
+	background:url(:/images/send_box_search.png);
+	border:none;
+	color:white;
+}</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1" rowspan="2">
     <widget class="QPushButton" name="send">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>76</width>
+       <height>24</height>
+      </size>
+     </property>
+     <property name="sizeIncrement">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="baseSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
      <property name="styleSheet">
       <string notr="true">#send {
 background:url(:/images/btn_send.png) no-repeat transparent;
@@ -107,22 +172,11 @@ min-width: 80px;
      <property name="text">
       <string/>
      </property>
-    </widget>
-   </item>
-   <item row="2" column="0">
-    <widget class="QLineEdit" name="input">
-     <property name="maximumSize">
+     <property name="iconSize">
       <size>
-       <width>501</width>
-       <height>24</height>
+       <width>16</width>
+       <height>16</height>
       </size>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">#input {
-	background:url(:/images/send_box_search.png);
-	border:none;
-	color:white;
-}</string>
      </property>
     </widget>
    </item>
