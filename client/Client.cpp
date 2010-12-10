@@ -3,7 +3,7 @@
 #include <Packet_v1.h>
 #include <sstream>
 #include <string>
-#include <Time.h>
+#include <LJ_Time.h>
 
 char const	*connect_address = "127.0.0.1";
 
@@ -11,7 +11,6 @@ int		Client::_connect_port	= 5042;
 int		Client::_port	= _connect_port + 1;
 int		Client::_poolSize = 2;
 const int	updateTime = 1;
-const int	treat_delay = 0; //micro seconds
 
 void		Client::Run()
 {
@@ -88,10 +87,7 @@ void		Client::Thread_TreatPacket()
 
   //        packet->Print();
   _clientManager->Manage(packet);
-  ////////////////////////// WAIT //////////////////
-  usleep(treat_delay); // wait <treat_delay> to fake for delay introduced by treatment
   delete packet;
-  ////////////////////////// WAIT //////////////////
 }
 
 void		Client::CallBack_handle_send()
