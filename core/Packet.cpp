@@ -1,5 +1,6 @@
 #include <Packet.h>
 #include <stdexcept>
+#include <string.h>
 
 Packet::Packet(boost::asio::ip::udp::endpoint const * endpoint, buffer_t *buffer, std::size_t len)
   :_buffer(buffer), _len(len), _endpoint(endpoint)
@@ -257,7 +258,13 @@ void						Packet::appendData(unsigned int start_of_data, unsigned int idx, byte_
   unsigned int					i, j;
 
   ///// watch out for BOF ////////////////////////
+#ifdef _WIN32
+  size_t str_len;
+  for (str_len =0;str_len < PACKET_MAXSIZE && value[str_len];str_len++);
+  len = str_len;
+#else
   len = strnlen((char *)value, PACKET_MAXSIZE);
+#endif
   ////////////////////////////////////////////////
   if (idx == 0)
     res = &(_buffer->at(start_of_data));
