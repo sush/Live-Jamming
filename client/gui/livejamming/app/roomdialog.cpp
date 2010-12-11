@@ -101,14 +101,14 @@ void RoomDialog::on_startButton_clicked(bool play)
         proxy->room()->Send_Start_Jam(proxy->roomid);
     else
         proxy->room()->Send_Stop_Jam(proxy->roomid);
-    ui->startButton->setText("Pending...");
+    //ui->startButton->setText("Pending...");
     ui->startButton->setIcon(QIcon());
 }
 
 void    RoomDialog::startedStopedJam(bool started)
 {
-    ui->startButton->setText(started ? "stop" : "start");
-    ui->startButton->setIcon(QIcon(started ? ":/images/player_stop-30x30.png" : ":/images/player_play-30x30.png"));
+    ui->startButton->setText(started ? "Stop" : "Let's play");
+    ui->startButton->setStyleSheet((started ? "background-image: url(:/images/btn_stop_jam_empty.png);" : "background-image: url(:/images/btn_letsplay_room_empty.png);"));
 }
 
 void RoomDialog::on_pushButton_clicked()

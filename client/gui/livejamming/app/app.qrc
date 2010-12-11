@@ -1,5 +1,8 @@
 <RCC>
   <qresource prefix="/">
+    <file>images/btn_stop_jam_empty.png</file>
+    <file>images/btn_letsplay_room_empty.png</file>
+    <file>images/btn_stop_jam.png</file>
     <file>images/room_dialog_buton_separator.png</file>
     <file>images/room_dialog_bottom_separation.png</file>
     <file>images/bg_room_mate.png</file>
