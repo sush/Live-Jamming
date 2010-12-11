@@ -4,3 +4,4 @@ client/gui/livejamming/app/Makefile
 client/gui/livejamming/livejamming_client
 config.yaml
 livejammin_server
+gmon.out
