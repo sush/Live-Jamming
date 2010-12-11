@@ -37,10 +37,6 @@
 	background:url(:/images/btn_letsplay_room_hover.png) transparent no-repeat;
 	border:none;
 }
-#startButton:pressed{
-	background:url(:/images/btn_letsplay_room_hover.png) transparent no-repeat;
-	border:none;
-}
 #invite{
 	background:url(:/images/btn_invite.png) transparent no-repeat;
 	border:none;
