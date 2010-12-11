@@ -49,7 +49,7 @@ SOURCES += Manager.cpp \
     Room.cpp \
     Jam.cpp \
     Tools.cpp \
-    Time.cpp \
+    LJ_Time.cpp \
     IComponent.cpp
 HEADERS += Session.h \
     Manager.h \
@@ -83,9 +83,9 @@ HEADERS += Client.h \
 INCLUDEPATH += ../../../../server/include
 INCLUDEPATH += ../../../../include
 HEADERS += Protocol.h
-LIBS += -lboost_system \
+LIBS += -lboost_system-mt \
     -lboost_thread-mt \
-    -lboost_program_options
+    -lboost_program_options-mt
 FORMS += mainwindow.ui \
     accountconnection.ui \
     configuration_dialog.ui \
@@ -96,10 +96,33 @@ FORMS += mainwindow.ui \
     roomplayeritem.ui \
     kickdialog.ui
 DEFINES += _GUI
+
+win32 {
+#use this line top compile boost.\bjam.exe --with-program_options --with-system --with-thread link=shared runtime-link=shared --layout=tagged --toolset=gcc
+BOOST_DIR = D:\temp\boost
+JACK_DIR = $$quote(D:\Program Files\Jack v1.9.6)
+CELT_DIR = D:\temp\celt
+
+LIBS += -lws2_32 \
+        -ljack \
+        -lcelt0 \
+        -ljackserver \
+        -L$$BOOST_DIR\stage\lib \
+        -L$$CELT_DIR\celt\.libs \
+        -L$$JACK_DIR\lib
+INCLUDEPATH += $$BOOST_DIR \
+               $$JACK_DIR\includes \
+               $$CELT_DIR
+QMAKE_CXXFLAGS += -D_WIN32_WINNT=0x0501
+}
+
+unix {
 CONFIG += link_pkgconfig
 PKGCONFIG += jack
 PKGCONFIG += celt
-debug:QMAKE_CXXFLAGS += -D_DEBUG \
-    -g3 \
-    -pg
+debug:QMAKE_CXXFLAGS += -g3 \
+                        -pg
+}
+
+debug:QMAKE_CXXFLAGS += -D_DEBUG
 else:QMAKE_CXXFLAGS += -D_NDEBUG

@@ -28,6 +28,8 @@ class Room
   std::size_t			size() const;
 
   typedef std::map<field_t, Session*>   m_session;
+  typedef m_session::const_iterator	m_session_cit;
+  typedef m_session::iterator		m_session_it;
 
  private:
 

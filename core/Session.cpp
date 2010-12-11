@@ -213,7 +213,6 @@ Packet_v1 const *			Session::getOriginatedPacket(field_t componentId, field_t re
   std::cout << "getOriginatedPacket() componentId = " << componentId << ", requestId = " << requestId << std::endl;
   if (_timerMapMap.find(componentId) == _timerMapMap.end())
     {
-      std::cout << "!!! AAAA !!! " << std::endl;
       assert(1);
       return 0;
     }
@@ -221,11 +220,9 @@ Packet_v1 const *			Session::getOriginatedPacket(field_t componentId, field_t re
   
   if (timerMap->find(requestId) == timerMap->end())
     {
-      std::cout << "!!! BBBB !!! " << std::endl;
       assert(1);
       return 0;
     }
-  std::cout << " !!! CCC !!!" << std::endl;
   packetTimer = timerMap->find(requestId)->second;
   return packetTimer->getPacket();
 }

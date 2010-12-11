@@ -38,7 +38,7 @@ class Server : public Singleton<Server>
 
   int				_argc;
   char				**_argv;
-  static const int		_poolSize;
+  int				_poolSize;
 
   boost::asio::io_service		*_io_service;
   boost::threadpool::pool		*_pool;

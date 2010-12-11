@@ -114,8 +114,7 @@ void    Proxy::roomResponse(const Packet_v1 *packet_, Session *)
     case ROOM_USER_KICKED:
         emit userKicked();
     }
-    char buf__[] = {"OUT OF PROXY\n"};
-    write(2, buf__, sizeof(buf__) - 1);
+    qDebug("OUT OF PROXY");
 }
 
 void    Proxy::disconnect()

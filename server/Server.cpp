@@ -5,11 +5,11 @@
 #include <Time.h>
 #include <string>
 #include <iostream>
+#include <Tools.h>
 
 // unix dependent, do analogue treatment on windows
 #include <signal.h>
 
-const int		Server::_poolSize = 2;
 const int		updateTime = 1;
 const int		treat_delay = 0; //micro seconds
 
@@ -17,7 +17,7 @@ const int		treat_delay = 0; //micro seconds
 void sighandler(int sig)
 {
 #ifdef _DEBUG
-  std::cout<< "Signal " << sig << " caught..." << std::endl;
+  std::cerr<< "Signal " << sig << " caught..." << std::endl;
 #endif
   Server::Stop();
 }
@@ -27,16 +27,19 @@ void		Server::Stop()
   Server	*server=Server::getInstance();
   server->_io_service->reset();
   server->_io_service->stop();
-  std::cout << "* ";
+  std::cerr << "* ";
   Time::Print();
-  std::cout << " Server ended." << std::endl;
+  std::cerr << " Server ended." << std::endl;
+#ifdef _DEBUG
+  std::cerr << "[PACKET ALLOCATION SUMMARY] alloc = " << alloc_count << ", free = " << free_count << ", diff = " << alloc_count - free_count << std::endl;
+#endif
 }
 
 void		Server::Run()
 {
-  std::cout << "* ";
+  std::cerr << "* ";
   Time::Print();
-  std::cout << " Server started..." << std::endl;
+  std::cerr << " Server started..." << std::endl;
   
   start_receive();
   _io_service->run();
@@ -71,7 +74,7 @@ void	Server::CallBack_handle_receive(boost::system::error_code const & error, st
       }
       catch (std::runtime_error &e)
 	{
-	  std::cout << e.what() << ":" << Packet_v1::peekComponentId(*_recv_buffer) << std::endl;
+	  std::cerr << e.what() << ":" << Packet_v1::peekComponentId(*_recv_buffer) << std::endl;
 	  delete _recv_buffer;
 	  _recv_buffer = 0;
 	}
@@ -110,7 +113,8 @@ void		Server::Thread_TreatPacket()
   
   _serverManager->Manage(packet);
   ////////////////////////// WAIT //////////////////
-  usleep(treat_delay); // wait <treat_delay> to fake for delay introduced by treatment
+  //  usleep(treat_delay); // wait <treat_delay> to fake for delay introduced by treatment
+  delete packet;
   ////////////////////////// WAIT //////////////////
 }
 
@@ -119,6 +123,8 @@ void		Server::Init(int argc, char *argv[])
 {
   _argc = argc;
   _argv = argv;
+
+  _poolSize = compute_Ncores();
 
   _debug_print_packet = 0;
   _debug_print_session = 0;
@@ -136,6 +142,7 @@ void		Server::Init(int argc, char *argv[])
   _timer = new boost::asio::deadline_timer(*_io_service, boost::posix_time::seconds(updateTime));
   _timer->async_wait(boost::bind(&Server::CallBack_Debug_Print, this));
   _pool = new boost::threadpool::pool(_poolSize);
+  std::cerr << "poolsize = " << _poolSize << std::endl;
   _serverManager = new ServerManager(*_io_service, *_pool, *_socket, _config);
   signal(SIGABRT, &sighandler);
   signal(SIGTERM, &sighandler);

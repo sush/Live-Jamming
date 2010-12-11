@@ -21,6 +21,9 @@ SERVER_SRC	=		server/main.cpp\
 				server/Component_RoomManager.cpp\
 				server/Component_JamManager.cpp\
 				server/Component_UserInfoManager.cpp\
+				server/AudioMixingEngine.cpp\
+				server/AudioFrame.cpp\
+				server/MixingBuffer.cpp\
 				core/IComponent.cpp\
 				core/Time.cpp\
 				core/Tools.cpp\

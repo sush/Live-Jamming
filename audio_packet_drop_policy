@@ -1,0 +1,29 @@
+[client 1]
+	[a1] [a2] [a3] [a4] ....;
+
+
+[client 2]
+	[b1] [b2] [b3] [b4] ....;
+
+[--------------------- TIMESTAMP ------------------]
+
+[serv]
+    [a1] [a2] [a3][a4]  [a6]         [a5]
+                   [b1][b2] [b3][b4]
+
+[keep each jammer's 
+stack of audio data for post mortem reconstruction]
+
+    [a1] => buf
+    [a2] => buf => send [a1] 
+    [a3] => buf => send [a2]
+    [a4] => buf => send [a3]
+    [b1] => mix [a4 + b1] => send 
+    [b2] => buf
+    [a5] => mix [b2 + a5] => send
+    [b3] => buf
+    [b4] => buf => send [b3]
+
+
+
+[new packet]
