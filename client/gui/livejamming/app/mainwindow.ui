@@ -34,22 +34,23 @@ QInputDialog {
 QInputDialog QLabel {
 color: #FFFFFF;
 }
-
 QInputDialog QPushButton {
-	color: #333;
-	border: 2px solid #555;
-	border-radius: 11px;
-	padding: 5px;
-	background-color:#575657;
-	min-width: 80px;
+background:url(:/images/btn.png) transparent no-repeat;
+border:0px;
+width:80px;
+height:20px;
 }
 QInputDialog QPushButton:hover {
-	background-color:#575657;
+background:url(:/images/btn_hover.png) transparent no-repeat;
+border:0;
+width:70px;
+height:25px;
 }
 QInputDialog QPushButton:pressed {
-background: qradialgradient(cx: 0.4, cy: -0.1,
-fx: 0.4, fy: -0.1,
-radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
+background:url(:/images/btn_hover.png) transparent no-repeat;
+border:0;
+width:70px;
+height:25px;
 }
 
 QMenuBar{
