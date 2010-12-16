@@ -17,7 +17,10 @@ SOURCES += mainwindow.cpp \
     conversationset.cpp \
     roomplayeritem.cpp \
     channelsearch.cpp \
-    audioengine.cpp
+    audioengine.cpp \
+    jackdefault.cpp \
+    jackinput.cpp \
+    jackoutput.cpp
 HEADERS += mainwindow.h \
     accountconnection.h \
     configuration_dialog.h \
@@ -27,7 +30,10 @@ HEADERS += mainwindow.h \
     conversationset.h \
     roomplayeritem.h \
     channelsearch.h \
-    audioengine.h
+    audioengine.h \
+    jackdefault.h \
+    jackinput.h \
+    jackoutput.h
 
 # OTHER
 DEPENDPATH += ../../../../core

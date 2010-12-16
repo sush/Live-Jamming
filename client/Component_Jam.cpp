@@ -1,5 +1,6 @@
 #include <Component_Jam.h>
 #include <Bind_recv.h>
+#include <QDebug>
 #include "audioengine.h"
 
 extern Session* gl_session;
@@ -8,8 +9,8 @@ Component_Jam::Component_Jam(ClientManager *clientManager)
     : IComponent(JAM_COMPONENTID), _clientManager(clientManager){
     try {
         _audioEngine = new AudioEngine(*this);
-    } catch (std::exception *e){
-        qDebug() << "Component_JAM :: " << e->what();
+    } catch (std::exception &e){
+        qDebug() << "Component_JAM :: " << e.what();
     }
 }
 

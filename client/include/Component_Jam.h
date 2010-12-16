@@ -1,7 +1,6 @@
 #ifndef __COMPONENT_JAM_H__
 #define __COMPONENT_JAM_H__
 
-
 #include "audioengine.h"
 
 #include <iostream>
