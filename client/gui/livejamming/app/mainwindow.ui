@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>790</width>
-    <height>745</height>
+    <width>737</width>
+    <height>586</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,42 +19,50 @@
   </property>
   <property name="styleSheet">
    <string notr="true">#MainWindow {
-	background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.00934579 rgba(155, 217, 122, 255), stop:0.0116822 rgba(59, 61, 59, 255), stop:0.995455 rgba(59, 61, 59, 255));
-
+	background:url(:/images/background_main.png)
 }
 
 QToolBar {
-	background: rgb(155, 217, 122);
+	background-color:#575657;
+border:none;
 }
 
 QInputDialog {
-background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.00934579 rgba(155, 217, 122, 255), stop:0.0116822 rgba(59, 61, 59, 255), stop:0.995455 rgba(59, 61, 59, 255));
+	background-color:#575657;
 }
 
 QInputDialog QLabel {
 color: #FFFFFF;
 }
-
 QInputDialog QPushButton {
-color: #333;
-border: 2px solid #555;
-border-radius: 11px;
-padding: 5px;
-background: qradialgradient(cx: 0.3, cy: -0.4,
-fx: 0.3, fy: -0.4,
-radius: 1.35, stop: 0 #fff, stop: 1 #888);
-min-width: 80px;
+background:url(:/images/btn.png) transparent no-repeat;
+border:0px;
+width:80px;
+height:20px;
 }
 QInputDialog QPushButton:hover {
-background: qradialgradient(cx: 0.3, cy: -0.4,
-fx: 0.3, fy: -0.4,
-radius: 1.35, stop: 0 #fff, stop: 1 #bbb);
+background:url(:/images/btn_hover.png) transparent no-repeat;
+border:0;
+width:70px;
+height:25px;
 }
 QInputDialog QPushButton:pressed {
-background: qradialgradient(cx: 0.4, cy: -0.1,
-fx: 0.4, fy: -0.1,
-radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
-}</string>
+background:url(:/images/btn_hover.png) transparent no-repeat;
+border:0;
+width:70px;
+height:25px;
+}
+
+QMenuBar{
+background-color:#575657;
+}
+
+QMenuBar::item {
+     spacing: 3px; /* spacing between menu bar items */
+     padding: 1px 10px;
+	background-color:#575657;
+ }
+</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
@@ -105,7 +113,7 @@ QTabBar::tab:!selected {
 </string>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <property name="tabsClosable">
         <bool>false</bool>
@@ -212,9 +220,6 @@ ChannelList::branch:open:has-children:has-siblings  {
           <property name="text">
            <string/>
           </property>
-          <property name="pixmap">
-           <pixmap resource="app.qrc">:/images/live-jamming.png</pixmap>
-          </property>
           <property name="scaledContents">
            <bool>false</bool>
           </property>
@@ -234,13 +239,34 @@ ChannelList::branch:open:has-children:has-siblings  {
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>790</width>
-     <height>25</height>
+     <width>737</width>
+     <height>19</height>
     </rect>
    </property>
+   <property name="defaultUp">
+    <bool>false</bool>
+   </property>
    <widget class="QMenu" name="menuFile">
+    <property name="baseSize">
+     <size>
+      <width>0</width>
+      <height>0</height>
+     </size>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <property name="tearOffEnabled">
+     <bool>false</bool>
+    </property>
     <property name="title">
      <string>&amp;File</string>
+    </property>
+    <property name="separatorsCollapsible">
+     <bool>false</bool>
     </property>
     <addaction name="actionConnect"/>
     <addaction name="actionCreate_account"/>
@@ -266,6 +292,9 @@ ChannelList::branch:open:has-children:has-siblings  {
    <widget class="QMenu" name="menuChans">
     <property name="title">
      <string>&amp;Channels</string>
+    </property>
+    <property name="separatorsCollapsible">
+     <bool>false</bool>
     </property>
     <addaction name="actionCreate_Channel"/>
     <addaction name="actionList_channels"/>
@@ -300,6 +329,10 @@ ChannelList::branch:open:has-children:has-siblings  {
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionConnect">
+   <property name="icon">
+    <iconset resource="app.qrc">
+     <normaloff>:/images/chan_ico.png</normaloff>:/images/chan_ico.png</iconset>
+   </property>
    <property name="text">
     <string>&amp;Connect</string>
    </property>
