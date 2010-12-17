@@ -1,5 +1,9 @@
 <RCC>
   <qresource prefix="/">
+    <file>images/scroll_down.png</file>
+    <file>images/scroll_up.png</file>
+    <file>images/scroll_mid.png</file>
+    <file>images/scroll_button.png</file>
     <file>images/btn_stop_jam_empty.png</file>
     <file>images/btn_letsplay_room_empty.png</file>
     <file>images/btn_stop_jam.png</file>

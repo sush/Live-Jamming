@@ -29,7 +29,9 @@
    <string notr="true">#ConversationSet {
 	background-color:#363636;
 }
-
+QScrollBar{
+color:#fff;
+}
 
 
 </string>
@@ -121,7 +123,7 @@ border:none;
      </property>
      <property name="minimumSize">
       <size>
-       <width>0</width>
+       <width>90</width>
        <height>0</height>
       </size>
      </property>
