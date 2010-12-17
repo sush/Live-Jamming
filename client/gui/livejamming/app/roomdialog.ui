@@ -6,52 +6,192 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>750</width>
-    <height>550</height>
+    <width>738</width>
+    <height>379</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>738</width>
+    <height>379</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>738</width>
+    <height>642</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Room</string>
   </property>
   <property name="styleSheet">
    <string notr="true">QDialog {
-	background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.00934579 rgba(155, 217, 122, 255), stop:0.0116822 rgba(59, 61, 59, 255), stop:0.995455 rgba(59, 61, 59, 255));
+	background:url(:/images/bg_room.png)
+}
+#startButton{
+	background:url(:/images/btn_letsplay_room.png) transparent no-repeat;
+	border:none;
+}
+#startButton:hover{
+	background:url(:/images/btn_letsplay_room_hover.png) transparent no-repeat;
+	border:none;
+}
+#invite{
+	background:url(:/images/btn_invite.png) transparent no-repeat;
+	border:none;
+}
+#invite:hover{
+	background:url(:/images/btn_invite_hover.png) transparent no-repeat;
+	border:none;
+}
+#invite:pressed{
+	background:url(:/images/btn_invite.png) transparent no-repeat;
+	border:none;
+}
+QScrollBar:vertical {
+	background:url(:/images/scroll_mid.png) transparent repeat-y;
+	width:15px;
+	border: none;
+	margin: 22px 0 22px 0;
+}
+QScrollBar::handle:vertical {
+	min-height:20px;
+	background:url(:/images/scroll_button.png) transparent no-repeat;
+}
+QScrollBar::sub-line:vertical {
+	height:26px;
+	subcontrol-position: top;
+	subcontrol-origin: margin;
+	background:url(:/images/scroll_up.png) transparent no-repeat;
+}
+QScrollBar::add-line:vertical{
+	height:26px;
+	margin-bottom:5px;
+	subcontrol-position: bottom;
+	subcontrol-origin: margin;
+	background:url(:/images/scroll_down.png) transparent no-repeat;
+}
+QScrollBar::up-arrow:vertical{
+	width:12px;
+	border: none;
+}
+QScrollBar::down-arrow:vertical {
+	width:12px;
+	border: none;
 }
 
-QDialog QPushButton {
-color: #333;
-border: 2px solid #555;
-border-radius: 11px;
-padding: 5px;
-background: qradialgradient(cx: 0.3, cy: -0.4,
-fx: 0.3, fy: -0.4,
-radius: 1.35, stop: 0 #fff, stop: 1 #888);
-min-width: 80px;
-}
-QDialog QPushButton:hover {
-background: qradialgradient(cx: 0.3, cy: -0.4,
-fx: 0.3, fy: -0.4,
-radius: 1.35, stop: 0 #fff, stop: 1 #bbb);
-}
-QDialog QPushButton:pressed {
-background: qradialgradient(cx: 0.4, cy: -0.1,
-fx: 0.4, fy: -0.1,
-radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
-}
-QDialog QTextEdit {
-	background: rgb(132, 132, 132);
-	border: 1px solid #9BD97A;
-	color: #FFFFFF;
-}
-QDialog QLineEdit {
-	background: rgb(132, 132, 132);
-	border: 1px solid #9BD97A;
-	color: #FFFFFF;
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+	background: none;
 }</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <property name="leftMargin">
+    <number>2</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>9</number>
+   </property>
    <item row="0" column="0">
     <layout class="QVBoxLayout" name="playersVBox">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>20</number>
+     </property>
+     <item>
+      <spacer name="verticalSpacer">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item row="0" column="1" rowspan="3">
+    <widget class="ConversationSet" name="convSet" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QWidget" name="verticalWidget" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>331</width>
+       <height>3</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>200</width>
+       <height>3</height>
+      </size>
+     </property>
+     <property name="baseSize">
+      <size>
+       <width>0</width>
+       <height>3</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#verticalWidget{
+	background: url(:/images/room_dialog_bottom_separation.png) repeat-x;
+}
+</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="spacing">
+       <number>1</number>
+      </property>
+      <property name="sizeConstraint">
+       <enum>QLayout::SetNoConstraint</enum>
+      </property>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetMinAndMaxSize</enum>
+     </property>
+     <item>
+      <widget class="QFrame" name="verticalFrame">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>10</width>
+         <height>0</height>
+        </size>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_6"/>
+      </widget>
+     </item>
      <item>
       <widget class="QPushButton" name="invite">
        <property name="sizePolicy">
@@ -62,12 +202,15 @@ QDialog QLineEdit {
        </property>
        <property name="maximumSize">
         <size>
-         <width>94</width>
-         <height>31</height>
+         <width>74</width>
+         <height>20</height>
         </size>
        </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
        <property name="text">
-        <string>&amp;invite</string>
+        <string/>
        </property>
       </widget>
      </item>
@@ -81,25 +224,95 @@ QDialog QLineEdit {
        </property>
        <property name="maximumSize">
         <size>
-         <width>94</width>
-         <height>31</height>
+         <width>67</width>
+         <height>20</height>
         </size>
        </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#pushButton{
+	background:url(:/images/btn_kick.png) transparent no-repeat;
+	border:none;
+}
+#pushButton:hover{
+	background:url(:/images/btn_kick_hover.png) transparent no-repeat;
+	border:none;
+}
+#pushButton:pressed{
+	background:url(:/images/btn_kick_hover.png) transparent no-repeat;
+	border:none;
+}</string>
+       </property>
        <property name="text">
-        <string>&amp;kick</string>
+        <string/>
        </property>
       </widget>
      </item>
-    </layout>
-   </item>
-   <item row="0" column="1">
-    <widget class="ConversationSet" name="convSet" native="true"/>
-   </item>
-   <item row="1" column="0" colspan="2">
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <property name="sizeConstraint">
-      <enum>QLayout::SetFixedSize</enum>
-     </property>
+     <item>
+      <widget class="QFrame" name="verticalFrame">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>5</width>
+         <height>0</height>
+        </size>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_3"/>
+      </widget>
+     </item>
+     <item>
+      <widget class="QWidget" name="verticalSeparator" native="true">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#verticalSeparator{
+ background: url(:/images/room_dialog_buton_separator.png) no-repeat;
+}</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="sizeConstraint">
+         <enum>QLayout::SetDefaultConstraint</enum>
+        </property>
+        <property name="leftMargin">
+         <number>1</number>
+        </property>
+        <property name="rightMargin">
+         <number>1</number>
+        </property>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QFrame" name="verticalFrame">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>10</width>
+         <height>0</height>
+        </size>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_4"/>
+      </widget>
+     </item>
      <item>
       <widget class="QPushButton" name="startButton">
        <property name="sizePolicy">
@@ -108,18 +321,20 @@ QDialog QLineEdit {
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <property name="text">
-        <string>Start</string>
-       </property>
-       <property name="icon">
-        <iconset resource="app.qrc">
-         <normaloff>:/images/player_play-30x30.png</normaloff>:/images/player_play-30x30.png</iconset>
-       </property>
-       <property name="iconSize">
+       <property name="minimumSize">
         <size>
-         <width>30</width>
-         <height>30</height>
+         <width>93</width>
+         <height>22</height>
         </size>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string/>
        </property>
        <property name="checkable">
         <bool>true</bool>

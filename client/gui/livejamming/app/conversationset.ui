@@ -6,53 +6,39 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>367</width>
+    <height>467</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1234567</width>
+    <height>1234567</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <property name="styleSheet">
    <string notr="true">#ConversationSet {
-	background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.00934579 rgba(155, 217, 122, 255), stop:0.0116822 rgba(59, 61, 59, 255), stop:0.995455 rgba(59, 61, 59, 255));
+	background-color:#363636;
+}
+QScrollBar{
+color:#fff;
 }
 
-#ConversationSet QPushButton {
-color: #333;
-border: 2px solid #555;
-border-radius: 11px;
-padding: 5px;
-background: qradialgradient(cx: 0.3, cy: -0.4,
-fx: 0.3, fy: -0.4,
-radius: 1.35, stop: 0 #fff, stop: 1 #888);
-min-width: 80px;
-}
-#ConversationSet QPushButton:hover {
-background: qradialgradient(cx: 0.3, cy: -0.4,
-fx: 0.3, fy: -0.4,
-radius: 1.35, stop: 0 #fff, stop: 1 #bbb);
-}
-#ConversationSet QPushButton:pressed {
-background: qradialgradient(cx: 0.4, cy: -0.1,
-fx: 0.4, fy: -0.1,
-radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
-}
-#ConversationSet QTextEdit {
-	background: 	rgb(132, 132, 132);
-	color: #FFFFFF;
-	border: 1px solid #9BD97a;
-}
-#ConversationSet QLineEdit {
-	background: 	rgb(132, 132, 132);
-	color: #FFFFFF;
-	border: 1px solid #9BD97a;
-}
+
 </string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <property name="leftMargin">
-    <number>0</number>
+    <number>9</number>
    </property>
    <property name="topMargin">
     <number>6</number>
@@ -63,30 +49,32 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
    <property name="bottomMargin">
     <number>0</number>
    </property>
-   <item row="2" column="0">
-    <widget class="QLineEdit" name="input"/>
-   </item>
-   <item row="2" column="1">
-    <widget class="QPushButton" name="send">
-     <property name="styleSheet">
-      <string notr="true"/>
-     </property>
-     <property name="text">
-      <string>&amp;send</string>
-     </property>
-    </widget>
-   </item>
+   <property name="horizontalSpacing">
+    <number>6</number>
+   </property>
+   <property name="verticalSpacing">
+    <number>0</number>
+   </property>
    <item row="0" column="0" colspan="2">
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="0" colspan="2">
     <widget class="QTextEdit" name="display">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>12345678</width>
+       <height>12345678</height>
+      </size>
+     </property>
      <property name="styleSheet">
-      <string notr="true"/>
+      <string notr="true">#display{
+background-color:#363636;
+color:white;
+border:none;
+}</string>
      </property>
      <property name="undoRedoEnabled">
       <bool>false</bool>
@@ -96,8 +84,108 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
      </property>
     </widget>
    </item>
+   <item row="1" column="0">
+    <widget class="QLineEdit" name="input">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>200</width>
+       <height>23</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>435</width>
+       <height>23</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#input {
+	background:url(:/images/send_box_search.png);
+	border:none;
+	color:white;
+}</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1" rowspan="2">
+    <widget class="QPushButton" name="send">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>90</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>76</width>
+       <height>24</height>
+      </size>
+     </property>
+     <property name="sizeIncrement">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="baseSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#send {
+background:url(:/images/btn_send.png) no-repeat transparent;
+padding: 5px;
+border:none;
+min-width: 80px;
+}
+#send:hover {
+background:url(:/images/btn_send_hover.png) no-repeat transparent;
+padding: 5px;
+border:none;
+min-width: 80px;
+}
+#send:pressed {
+background:url(:/images/btn_send.png) no-repeat transparent;
+padding: 5px;
+border:none;
+min-width: 80px;
+}</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>16</width>
+       <height>16</height>
+      </size>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="app.qrc"/>
+ </resources>
  <connections/>
 </ui>
