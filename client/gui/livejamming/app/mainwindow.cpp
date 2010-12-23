@@ -136,11 +136,12 @@ void MainWindow::authEvents(authEventsType event)
 
 void    MainWindow::chanEvents(chanEventsType event, const Packet_v1_Channel* packet)
 {
-  char const * channelName = proxy->channel()->getChannelName(packet->getChannelId());
+  char const * channelName ;
 
     switch(event) {
     case JOIN_OK:
-        proxy->channelIdToName[packet->getChannelId()] = proxy->channel()->getChannelName(packet->getChannelId());
+        channelName = packet->getChannelName();
+        proxy->channelIdToName[packet->getChannelId()] = channelName;
         proxy->clientIdToName[proxy->_session->getSessionId()] = settings.value("user/login").toString();
         joinChannel(channelName);
         break;
@@ -149,7 +150,7 @@ void    MainWindow::chanEvents(chanEventsType event, const Packet_v1_Channel* pa
         proxy->channelIdToName.remove(packet->getChannelId());
         break;
     case JOINED:
-        qDebug() << "FROM PROXY" << packet->getClientLogin() << "joined" << proxy->channel()->getChannelName(packet->getChannelId());
+        qDebug() << "FROM PROXY" << packet->getClientLogin() << "joined";
         proxy->clientIdToName[packet->getClientSessionId()] = packet->getClientLogin();
         addClientToChannel(proxy->channelIdToName[packet->getChannelId()], packet->getClientLogin());
         break;
