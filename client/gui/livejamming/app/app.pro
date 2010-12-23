@@ -105,16 +105,15 @@ DEFINES += _GUI
 
 win32 {
 #use this line top compile boost.\bjam.exe --with-program_options --with-system --with-thread link=shared runtime-link=shared --layout=tagged --toolset=gcc
-BOOST_DIR = D:\temp\boost
-JACK_DIR = $$quote(D:\Program Files\Jack v1.9.6)
-CELT_DIR = D:\temp\celt
-
+BOOST_DIR = E:\libs\boost_1_45_0\boost_1_45_0
+JACK_DIR = $$quote(C:\Program Files\Jack v1.9.6)
+CELT_DIR = E:\libs\celt\libcelt
 LIBS += -lws2_32 \
         -ljack \
         -lcelt0 \
         -ljackserver \
         -L$$BOOST_DIR\stage\lib \
-        -L$$CELT_DIR\celt\.libs \
+        -L$$CELT_DIR\.libs \
         -L$$JACK_DIR\lib
 INCLUDEPATH += $$BOOST_DIR \
                $$JACK_DIR\includes \
