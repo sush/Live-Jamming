@@ -71,7 +71,6 @@ QMenuBar::item {
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
-<<<<<<< HEAD
       <widget class="ChannelList" name="channelList">
        <property name="contextMenuPolicy">
         <enum>Qt::CustomContextMenu</enum>
@@ -114,15 +113,6 @@ ChannelList::branch:open:has-children:has-siblings  {
          <set>AlignHCenter|AlignVCenter|AlignCenter</set>
         </property>
        </column>
-=======
-      <widget class="QListWidget" name="friendsList">
-       <property name="styleSheet">
-        <string notr="true">#friendsList {
-	background: rgb(132, 132, 132);
-	border: 1px solid #9BD97a;
-}</string>
-       </property>
->>>>>>> f6b3ebed69303ac80b5ab8bef8b1c2ef15be58a3
       </widget>
      </widget>
     </item>
@@ -164,11 +154,7 @@ ChannelList::branch:open:has-children:has-siblings  {
      <x>0</x>
      <y>0</y>
      <width>737</width>
-<<<<<<< HEAD
      <height>19</height>
-=======
-     <height>21</height>
->>>>>>> f6b3ebed69303ac80b5ab8bef8b1c2ef15be58a3
     </rect>
    </property>
    <property name="defaultUp">
