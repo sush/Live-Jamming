@@ -10,6 +10,18 @@
     <height>586</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>737</width>
+    <height>586</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>737</width>
+    <height>586</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>LiveJammin</string>
   </property>
@@ -19,7 +31,8 @@
   </property>
   <property name="styleSheet">
    <string notr="true">#MainWindow {
-	background:url(:/images/background_main.png)
+	background:url(:/images/background_main.png);
+	color:#FFFFFF;
 }
 
 QToolBar {
@@ -71,48 +84,44 @@ QMenuBar::item {
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
-      <widget class="ChannelList" name="channelList">
+      <widget class="ChannelList" name="channelList" native="true">
        <property name="contextMenuPolicy">
         <enum>Qt::CustomContextMenu</enum>
        </property>
        <property name="styleSheet">
         <string notr="true">#channelList {
-	background: rgb(132, 132, 132);
+	background: #4a4a4a;
 	color: #FFFFFF;
+	border:none;
 }
 
 ChannelList::branch:has-children:!has-siblings:closed,
 ChannelList::branch:closed:has-children:has-siblings {
-         border-image: none;
-         image: url(:/images/branch-closed.png);
+	border: none;
+	image: url(:/images/tic_chan.png);
+	color: #FFFFFF;
  }
 
 ChannelList::branch:open:has-children:!has-siblings,
 ChannelList::branch:open:has-children:has-siblings  {
-         border-image: none;
-         image: url(:/images/branch-open.png);
- }</string>
+    border-image: none;
+	image: url(:/images/tic_chan.png);
+	color: #FFFFFF;
+ }
+
+ChannelList::branch:has-siblings:adjoins-item {
+	image: url(:/images/tic_man.png);
+ }
+ChannelList::branch:has-siblings:!adjoins-item {
+	image: url(:/images/tic_man.png);
+}
+ChannelList::branch:!has-children:!has-siblings:adjoins-item {
+	image: url(:/images/tic_man.png);
+}</string>
        </property>
-       <property name="selectionMode">
-        <enum>QAbstractItemView::ContiguousSelection</enum>
-       </property>
-       <property name="headerHidden">
+       <property name="headerHidden" stdset="0">
         <bool>true</bool>
        </property>
-       <attribute name="headerVisible">
-        <bool>false</bool>
-       </attribute>
-       <attribute name="headerVisible">
-        <bool>false</bool>
-       </attribute>
-       <column>
-        <property name="text">
-         <string notr="true">Channels</string>
-        </property>
-        <property name="textAlignment">
-         <set>AlignHCenter|AlignVCenter|AlignCenter</set>
-        </property>
-       </column>
       </widget>
      </widget>
     </item>
@@ -130,6 +139,24 @@ ChannelList::branch:open:has-children:has-siblings  {
          <widget class="QLabel" name="label">
           <property name="enabled">
            <bool>true</bool>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>440</width>
+            <height>502</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>440</width>
+            <height>502</height>
+           </size>
           </property>
           <property name="text">
            <string/>
@@ -350,6 +377,13 @@ ChannelList::branch:open:has-children:has-siblings  {
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>ChannelList</class>
+   <extends>QWidget</extends>
+   <header>channellist.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="app.qrc"/>
  </resources>

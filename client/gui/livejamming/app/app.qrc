@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="/">
+    <file>images/tic_chan.png</file>
+    <file>images/tic_man.png</file>
     <file>images/scroll_down.png</file>
     <file>images/scroll_up.png</file>
     <file>images/scroll_mid.png</file>
@@ -42,18 +44,9 @@
     <file>images/btn_letsplay.png</file>
     <file>images/btn_letsplay_hover.png</file>
     <file>images/btn_cancel.png</file>
-    <file>images/player_stop-30x30.png</file>
     <file>images/background_connection.png</file>
-    <file>images/player_play-30x30.png</file>
-    <file>images/branch-closed.png</file>
-    <file>images/branch-more.png</file>
-    <file>images/branch-end.png</file>
-    <file>images/branch-open.png</file>
-    <file>images/kmixdocked-30x30.png</file>
-    <file>images/kmixdocked_error-30x30.png</file>
     <file>images/ledred-48x48.png</file>
     <file>images/ledorange-48x48.png</file>
-    <file>images/cc-user_male-60x60.png</file>
     <file>images/ledgreen-48x48.png</file>
     <file>images/live-jamming.png</file>
   </qresource>
