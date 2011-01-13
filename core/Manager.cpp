@@ -94,15 +94,12 @@ boost::asio::io_service		&Manager::getIO()
 
 void		Manager::CallBack_handle_send(Packet_v1 *packet_v1) const
 {
-  static int	count = 0;
-
   if (!getRegisteredRequest(packet_v1->getComponentId(), packet_v1->getRequestId()).getRetry())
     {
       std::cout << "!!!! [FREE]  ";
       std::cout << "ComponentID = " << packet_v1->getComponentId()
 		<< "REQUESTID = " << packet_v1->getRequestId()
 		<< std::endl;
-      std::cout << "FREE count = " << ++count << std::endl;
       delete packet_v1;
     }
 }

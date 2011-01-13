@@ -91,7 +91,6 @@ void		Client::Thread_TreatPacket()
 
   //        packet->Print();
   _clientManager->Manage(packet);
-  delete packet;
 }
 
 void		Client::CallBack_handle_send()
