@@ -14,9 +14,6 @@ class Manager;
 
 typedef unsigned char			      byte_t;
 
-extern int alloc_count;
-extern int free_count;
-
 class Packet
 {
 public:
