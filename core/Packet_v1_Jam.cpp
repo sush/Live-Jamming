@@ -23,10 +23,6 @@ void            Packet_v1_Jam::Print(std::string const &componentName, Manager c
 void            Packet_v1_Jam::Print_v1_Jam(std::string const &componentName, Manager const * manager) const
 {
   Print_v1(componentName, manager);
-  std::cout	<< "[AUDIODATALEN: " << getAudioDataLen() << " {" << PROTOV1_JAM_AUDIODATALEN_SIZE << "}]"
-		<< "[MIXCOUNT: " << getMixCount() << " {" << PROTOV1_JAM_MIXCOUNT_SIZE << "}]"
-		<< "[TIMESTAMP: " << getTimestamp() << "{" << PROTOV1_JAM_TIMESTAMP_SIZE << "}]"
-		<< std::endl;
 }
 
 field_t         Packet_v1_Jam::getJamId() const
@@ -72,7 +68,7 @@ void            Packet_v1_Jam::setAudio(byte_t const * audio, field_t len)
     res[i] = audio[i];
 }
 
-byte_t const      *Packet_v1_Jam::getAudio() const
+byte_t const      *Packet_v1_Jam::getAudio(field_t len) const
 {
   //  assert(getRequestId() == CHANNEL_MESSAGE || getRequestId() == CHANNEL_MESSAGE_RECV);                            
 
@@ -88,14 +84,3 @@ field_t         Packet_v1_Jam::getMixCount() const
 {
   return getField(PROTOV1_JAM_MIXCOUNT_OFF, PROTOV1_JAM_MIXCOUNT_SIZE);
 }
-
-void            Packet_v1_Jam::setTimestamp(field_t timestamp)
-{
-  setField(timestamp, PROTOV1_JAM_TIMESTAMP_OFF, PROTOV1_JAM_TIMESTAMP_SIZE);
-}
-
-field_t         Packet_v1_Jam::getTimestamp() const
-{
-  return getField(PROTOV1_JAM_TIMESTAMP_OFF, PROTOV1_JAM_TIMESTAMP_SIZE);
-}
-

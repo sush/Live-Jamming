@@ -42,7 +42,6 @@ class Component_Jam : public IComponent
   ClientManager	*_clientManager;
   AudioEngine   *_audioEngine;
   field_t	_jamId;
-  std::size_t	_sendCount; // used to timestamp
 };
 
 #endif // ! __COMPONENT_JAM_H__

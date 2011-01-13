@@ -4,7 +4,7 @@
 EXEC_SERVER	=		livejammin_server
 EXEC_CLIENT	=		livejammin_client
 BUILD_DIR	=		build
-DEBUG		=		yes
+DEBUG		=		no
 CPP		=		g++
 
 SERVER_SRC	=		server/main.cpp\
@@ -21,9 +21,6 @@ SERVER_SRC	=		server/main.cpp\
 				server/Component_RoomManager.cpp\
 				server/Component_JamManager.cpp\
 				server/Component_UserInfoManager.cpp\
-				server/AudioMixingEngine.cpp\
-				server/AudioFrame.cpp\
-				server/MixingBuffer.cpp\
 				core/IComponent.cpp\
 				core/Time.cpp\
 				core/Tools.cpp\
