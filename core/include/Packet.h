@@ -14,10 +14,8 @@ class Manager;
 
 typedef unsigned char			      byte_t;
 
-#ifdef _DEBUG
 extern int alloc_count;
 extern int free_count;
-#endif
 
 class Packet
 {
@@ -35,11 +33,7 @@ public:
   buffer_t const &				getRawData() const;
   field_t					getProtoVersion() const;
   void						setProtoVersion(field_t);
-  void						setDeleteTTL(std::size_t);
-
   std::size_t					getLen() const;
-  std::size_t					getDeleteTTL() const;
-  void						decDeleteTTL();
 
 protected:
 						Packet(boost::asio::ip::udp::endpoint const *);
@@ -67,8 +61,7 @@ protected:
 private:
   buffer_t *					_buffer;
   std::size_t					_len;
-  boost::asio::ip::udp::endpoint const *        _endpoint;
-  std::size_t					_ttl_delete;
+  boost::asio::ip::udp::endpoint const *       _endpoint;
 };
 
 #endif // !__PACKET_H__

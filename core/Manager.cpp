@@ -96,9 +96,7 @@ void		Manager::CallBack_handle_send(Packet_v1 *packet_v1) const
 {
   static int	count = 0;
 
-  //  if (!getRegisteredRequest(packet_v1->getComponentId(), packet_v1->getRequestId()).getRetry())
-  packet_v1->decDeleteTTL();
-  if (!packet_v1->getDeleteTTL())
+  if (!getRegisteredRequest(packet_v1->getComponentId(), packet_v1->getRequestId()).getRetry())
     delete packet_v1;
 }
 

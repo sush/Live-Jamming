@@ -142,7 +142,6 @@ void		Server::Init(int argc, char *argv[])
   _timer = new boost::asio::deadline_timer(*_io_service, boost::posix_time::seconds(updateTime));
   _timer->async_wait(boost::bind(&Server::CallBack_Debug_Print, this));
   _pool = new boost::threadpool::pool(_poolSize);
-  std::cerr << "poolsize = " << _poolSize << std::endl;
   _serverManager = new ServerManager(*_io_service, *_pool, *_socket, _config);
   signal(SIGABRT, &sighandler);
   signal(SIGTERM, &sighandler);
