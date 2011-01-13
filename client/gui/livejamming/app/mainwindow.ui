@@ -111,34 +111,36 @@ QMenuBar::item {
        </property>
        <property name="styleSheet">
         <string notr="true">#channelList {
-	background: #4a4a4a;
-	color: #FFFFFF;
-	border:none;
+             background: #4a4a4a;
+             color: #FFFFFF;
+             border:none;
 }
 
+ChannelList::item{
+background: #4a4a4a;
+}
+
+ChannelList::branch{
+background: #4a4a4a;
+}
 ChannelList::branch:has-children:!has-siblings:closed,
 ChannelList::branch:closed:has-children:has-siblings {
-	border: none;
-	image: url(:/images/tic_chan.png);
-	color: #FFFFFF;
+                                                     border: none;
+                                                     image: url(:/images/tic_chan.png);
+                                                     color: #FFFFFF;
  }
 
 ChannelList::branch:open:has-children:!has-siblings,
 ChannelList::branch:open:has-children:has-siblings  {
     border-image: none;
-	image: url(:/images/tic_chan.png);
-	color: #FFFFFF;
+    image: url(:/images/tic_chan.png);
+    color: #FFFFFF;
  }
 
-ChannelList::branch:has-siblings:adjoins-item {
-	image: url(:/images/tic_man.png);
- }
-ChannelList::branch:has-siblings:!adjoins-item {
-	image: url(:/images/tic_man.png);
-}
 ChannelList::branch:!has-children:!has-siblings:adjoins-item {
-	image: url(:/images/tic_man.png);
-}</string>
+                                                             image: url(:/images/tic_man.png);
+}
+</string>
        </property>
        <property name="headerHidden" stdset="0">
         <bool>true</bool>
