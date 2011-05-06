@@ -6,8 +6,6 @@ With Live-Jamming a musician can create an online record studio in order to play
 
 Meet new musicians and share you're creations with them !
 
-Please, visit our [website](http://www.live-jamming.com).
-
 ## Requirements
 * [Boost](http://www.boost.org/)
 * [Qt](http://qt.nokia.com/products/)
@@ -22,10 +20,3 @@ Please report any issues you have with the software to the [issue tracker](http:
 ## Licence
 
 Live Jamming is offered under an [MIT license](http://www.opensource.org/licenses/mit-license.php).
-
-### Authors
-* [Pierre Nespo](http://github.com/pi3r)
-* [Aylic Petit](http://github.com/Sushl)
-* [Gregory O-connell](http://github.com/kryzantem)
-* [Mathieu Dupuy](http://github.com/deronnax)
-* [Charles Sarda](http://github.com/CharlesS)
